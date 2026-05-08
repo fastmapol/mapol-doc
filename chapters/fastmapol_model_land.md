@@ -53,6 +53,40 @@ $\mathbf{K}_{pol}$ is the polarization Kernel proportional to the Fresnel reflec
 ## **I inserted a definition of R to explain the factor $|\cos\theta_s|$. pwzhai 03/26/2026 **
 -->
 
+### Scaled Parameter Formulation (Training Representation)
+
+For parameter sampling (e.g., in neural network training), a scaled formulation is used to reduce the number of free parameters and capture main physics:
+
+$$
+\mathbf{R}(\theta_s,\theta_v,\phi_r) =
+\left[
+f_{iso}(\lambda)
+\left(
+1
++
+k_{vol} K_{vol}
++
+k_{geo} K_{geo}
+\right)
+\right]\mathbf{E}
++
+B_{pol}\mathbf{K}_{pol}
+$$
+
+where 
+- $f_{iso}(\lambda)$ is spectrally dependent, and
+- $k_{vol}$ and $k_{geo}$ are spectrally invariant  
+
+The relationship to the physical parameters is:
+
+$$
+f_{vol}(\lambda) = f_{iso}(\lambda) \times k_{vol}
+$$
+
+$$
+f_{geo}(\lambda) = f_{iso}(\lambda) \times k_{geo}
+$$
+
 ### Parameter Definitions
 
 | Parameter | Description |
@@ -62,48 +96,14 @@ $\mathbf{K}_{pol}$ is the polarization Kernel proportional to the Fresnel reflec
 | $\theta_v$ | viewing zenith angle |
 | $\phi_v$ | viewing azimuth angle |
 | $\phi_r=\phi_v-\phi_s$ | relative azimuth angle |
-| $f_{iso}$ | isotropic reflectance coefficient |
-| $f_{vol}$ | volumetric scattering coefficient |
-| $f_{geo}$ | geometric scattering coefficient |
-| $B_{pol}$ | polarization strength |
+| $f_{iso}(\lambda)$ | isotropic reflectance coefficient |
+| $f_{vol}(\lambda)$ | volumetric scattering coefficient |
+| $f_{geo}(\lambda)$ | geometric scattering coefficient |
+| $k_{vol}$ | scaled volumetric scattering coefficient |
+| $k_{geo}$ | scaled geometric scattering coefficient |
+| $B_{pol}$ | polarization scaling parameter |
 
-### Scaled Parameter Formulation (Training Representation)
 
-For parameter sampling (e.g., in neural network training), a scaled formulation similar to **RemoTAP** is used:
-
-$$
-\mathbf{R}(\theta_s,\theta_v,\phi_r) =
-\left[
-f'_{iso}(\lambda)
-\left(
-1
-+
-f'_{vol} K_{vol}
-+
-f'_{geo} K_{geo}
-\right)
-\right]\mathbf{E}
-+
-B_{pol}\mathbf{K}_{pol}
-$$
-
-where 
-- $f'\_{iso}(\lambda)$ is spectrally dependent, and
-- $f'\_{vol}$ and $f'\_{geo}$ are spectrally invariant  
-
-The relationship to the physical parameters is:
-
-$$
-f_{iso}(\lambda) = f'_{iso}(\lambda)
-$$
-
-$$
-f_{vol}(\lambda) = f'_{iso}(\lambda) \times f'_{vol}
-$$
-
-$$
-f_{geo}(\lambda) = f'_{iso}(\lambda) \times f'_{geo}
-$$
 
 ### Geometry Definition
 
@@ -279,18 +279,13 @@ $$
 
 ## Polarized Surface Reflectance (BPDF)
 
-Define scattering cosine:
-
-$$
-C =
-\mu_s\mu_v +
-\sqrt{1-\mu_s^2}\sqrt{1-\mu_v^2}\cos\phi_r
-$$
-
+Scattering angle have been defined above $\Theta$. Assuming a flat surface which produce the same scattering angle, the incident angle relative to the flat surface would be: 
 $$
 \theta_1 =
 \frac{\pi - \arccos(C)}{2}
 $$
+
+which also equivalent to $\theta_1=(\theta_s+\theta_v)/2$
 
 ### Fresnel Reflection
 
@@ -316,7 +311,7 @@ r_s =
 {\cos\theta_1 + \sqrt{n^2-\sin^2\theta_1}}
 $$
 
-**Assumption: $ n = 1.5 + 0i $, for leaves?**
+**Assumption: $ n = 1.5 + 0i $ **
 
 ### Fresnel Mueller Matrix
 
@@ -342,6 +337,9 @@ A-B & A+B & 0 & 0 \\
 \end{bmatrix}
 $$
 
+Nadir reflectance (A+B) can be approximated as $[(n-1)/(n+1)]^2=0.04$ for n=1.5.
+Brewster angle can be observed at the maximum of Abs(A-B)/(A+B).
+
 ### Polarization Kernel
 
 $$
@@ -349,7 +347,7 @@ $$
 \frac{
 e^{-\tan\theta_1}e^{-v_{fac}}
 }{4(|\mu_s|+|\mu_v|)}
-F
+F (n, \theta_1)
 $$
 
 with

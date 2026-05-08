@@ -12,74 +12,98 @@ The output is a **4×4 Mueller matrix** describing polarized surface reflection.
 
 ## Surface Reflectance Model
 
-The polarized land surface reflectance is expressed as
+The bidirectional reflectance distribution matrix $\mathbf{R}$ of land surface converts the downwelling irradiance vector $\mathbf{F}_s$ to upwelling radiance vector $\mathbf{I}$ by:
 
 $$
-\mathbf{R}(\theta_s,\theta_v,\phi) =
-|\cos\theta_s|
+\mathbf{I}(\theta_v,\phi_v)= \frac{1}{\pi}\mathbf{R}(\theta_s,\theta_v,\phi_r) \\, |\cos\theta_s| \\, \mathbf{F}_s(\theta_s,\phi_s) 
+$$
+
+where $\theta$ and $\phi$ are the zenith and azimuth angles, respectively; the subscripts $s$ and $v$ denote the incident and reflected directions, respectively; $\phi_r=\phi_v-\phi_s$ is the relative azimuth angle of the reflected and incident directions.
+
+In the FastMAPOL algorithm the matrix $\mathbf{R}$ is modeled by:
+
+$$
+\mathbf{R}(\theta_s,\theta_v,\phi_r) =
 \left[
 f_{iso}
 +
-f_{vol} K_{vol}(\theta_s,\theta_v,\phi)
+f_{vol} K_{vol}(\theta_s,\theta_v,\phi_r)
 +
-f_{geo} K_{geo}(\theta_s,\theta_v,\phi)
-\right]\mathbf{I}
+f_{geo} K_{geo}(\theta_s,\theta_v,\phi_r)
+\right]\mathbf{E}
 +
 B_{pol}\mathbf{K}_{pol}
 $$
 
-**Questions: why $|\cos\theta_s|$ is used here, how $\mathbf{R}$ is defined?**
+where $\mathbf{E}$ is the 4 $\times$ 4 null matrix except for $E_{11}=1$,
+
+$$
+\mathbf{E} =
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+$$
+
+$\mathbf{K}_{pol}$ is the polarization Kernel proportional to the Fresnel reflection matrix.
+
+<!-- **Questions: why $|\cos\theta_s|$ is used here, how $\mathbf{R}$ is defined?**
+## **I inserted a definition of R to explain the factor $|\cos\theta_s|$. pwzhai 03/26/2026 **
+-->
+
+### Scaled Parameter Formulation (Training Representation)
+
+For parameter sampling (e.g., in neural network training), a scaled formulation is used to reduce the number of free parameters and capture main physics:
+
+$$
+\mathbf{R}(\theta_s,\theta_v,\phi_r) =
+\left[
+f_{iso}(\lambda)
+\left(
+1
++
+k_{vol} K_{vol}
++
+k_{geo} K_{geo}
+\right)
+\right]\mathbf{E}
++
+B_{pol}\mathbf{K}_{pol}
+$$
+
+where 
+- $f_{iso}(\lambda)$ is spectrally dependent, and
+- $k_{vol}$ and $k_{geo}$ are spectrally invariant  
+
+The relationship to the physical parameters is:
+
+$$
+f_{vol}(\lambda) = f_{iso}(\lambda) \times k_{vol}
+$$
+
+$$
+f_{geo}(\lambda) = f_{iso}(\lambda) \times k_{geo}
+$$
 
 ### Parameter Definitions
 
 | Parameter | Description |
 |---|---|
-| $ \theta_s $ | solar zenith angle |
-| $ \theta_v $ | viewing zenith angle |
-| $ \phi $ | relative azimuth angle |
-| $ f_{iso} $ | isotropic reflectance coefficient |
-| $ f_{vol} $ | volumetric scattering coefficient |
-| $ f_{geo} $ | geometric scattering coefficient |
-| $ B_{pol} $ | polarization strength |
+| $\theta_s$ | solar zenith angle |
+| $\phi_s$ | solar azimuth angle |
+| $\theta_v$ | viewing zenith angle |
+| $\phi_v$ | viewing azimuth angle |
+| $\phi_r=\phi_v-\phi_s$ | relative azimuth angle |
+| $f_{iso}(\lambda)$ | isotropic reflectance coefficient |
+| $f_{vol}(\lambda)$ | volumetric scattering coefficient |
+| $f_{geo}(\lambda)$ | geometric scattering coefficient |
+| $k_{vol}$ | scaled volumetric scattering coefficient |
+| $k_{geo}$ | scaled geometric scattering coefficient |
+| $B_{pol}$ | polarization scaling parameter |
 
-### Scaled Parameter Formulation (Training Representation)
 
-For parameter sampling (e.g., in neural network training), a scaled formulation similar to **RemoTAP** is used:
-
-$$
-\mathbf{R}(\theta_s,\theta_v,\phi) =
-|\cos\theta_s|
-\left[
-f'_{iso}(\lambda)
-\left(
-1
-+
-f'_{vol} K_{vol}
-+
-f'_{geo} K_{geo}
-\right)
-\right]\mathbf{I}
-+
-B_{pol}\mathbf{K}_{pol}
-$$
-
-where:
-- $ f'_{iso}(\lambda) $ is spectrally dependent  
-- $ f'_{vol} $, $ f'_{geo} $ are spectrally invariant  
-
-The relationship to the physical parameters is:
-
-$$
-f_{iso}(\lambda) = f'_{iso}(\lambda)
-$$
-
-$$
-f_{vol}(\lambda) = f'_{iso}(\lambda) \times f'_{vol}
-$$
-
-$$
-f_{geo}(\lambda) = f'_{iso}(\lambda) \times f'_{geo}
-$$
 
 ### Geometry Definition
 
@@ -111,23 +135,23 @@ $$
 
 ### RTSOS Geometry Convention
 
-The model follows the **RTSOS photon ray convention**.
+The model follows the **RTSOS light ray convention**, i.e., the zenith and azimuth angles are associated with the directional vector of the ligh ray.
 
 #### Geometry Definitions
 
 | Quantity | RTSOS definition |
 |---|---|
-| solar zenith | $ \theta_s > 90^\circ $ |
-| solar azimuth | $ \phi_s = 0 $ |
-| viewing zenith | $ \theta_v < 90^\circ $ |
-| relative azimuth | $ \phi_r = \phi_v - \phi_s $ |
+| solar zenith | $\theta_s > 90^\circ$ |
+| solar azimuth | $\phi_s = 0$ |
+| viewing zenith | $\theta_v < 90^\circ$ |
+| relative azimuth | $\phi_r = \phi_v - \phi_s$ |
 
 #### Scattering Planes
 
 | Condition | Geometry |
 |---|---|
-| $ \phi_r = 0 $ | forward scattering |
-| $ \phi_r = \pi $ | backscattering |
+| $\phi_r = 0$ | forward scattering |
+| $\phi_r = \pi$ | backscattering |
 
 #### Scattering Angle
 
@@ -155,39 +179,37 @@ The volumetric kernel represents multiple scattering within vegetation canopies.
 
 $$
 K_{vol} =
-\frac{\left(\frac{\pi}{2}-\Theta\right)\cos\Theta + \sin\Theta}
-{|\mu_s| + |\mu_v|}
--
-\frac{\pi}{4}
+\frac{\left(\frac{\pi}{2}-\Theta_{phase}\right)\cos\Theta_{phase} + \sin\Theta_{phase}}
+{|\mu_s| + |\mu_v|}-\frac{\pi}{4}
 $$
 
-Reference: Wanner et al. (1995), JGR.
+Reference: Roujean et al. (1992), JGR Atmosphere; Wanner et al. (1995), JGR.
 
 ## Li Geometric Kernel (Li-Sparse-R)
 
 Define tangent terms:
 
 $$
-\tan\theta_s = \frac{\sqrt{1-\mu_s^2}}{|\mu_s|}
+|\tan\theta_s| = \frac{\sqrt{1-\mu_s^2}}{|\mu_s|}
 $$
 
 $$
-\tan\theta_v = \frac{\sqrt{1-\mu_v^2}}{|\mu_v|}
+|\tan\theta_v| = \frac{\sqrt{1-\mu_v^2}}{|\mu_v|}
 $$
 
 Projected angles:
 
 $$
-\theta'_s = \tan^{-1}(B/R \cdot \tan\theta_s)
+\theta'_s = \tan^{-1}(B/R \cdot |\tan\theta_s|)
 $$
 
 $$
-\theta'_v = \tan^{-1}(B/R \cdot \tan\theta_v)
+\theta'_v = \tan^{-1}(B/R \cdot |\tan\theta_v|)
 $$
 
 | Parameter | Meaning |
 |---|---|
-| $ B/R $ | vertical-to-horizontal crown ratio |
+| $B/R$ | vertical-to-horizontal crown ratio |
 
 ### Projected Phase Angle
 
@@ -211,22 +233,22 @@ $$
 Define:
 
 $$
-sec_s = \frac{1}{\cos\theta'_s}
+\sec\theta'_s = \frac{1}{\cos\theta'_s}
 $$
 
 $$
-sec_v = \frac{1}{\cos\theta'_v}
+\sec\theta'_v = \frac{1}{\cos\theta'_v}
 $$
 
-### Ancillary Function (meaning?)
+### Ancillary Function <!-- (meaning?) -->
 
 $$
 \cos t =
-\frac{H/B
+\frac{H}{B}\frac{
 \sqrt{
 D^2 + (\tan\theta'_s\tan\theta'_v\sin(\phi_r+\pi))^2
 }}
-{sec_s + sec_v}
+{\sec\theta'_s + \sec\theta'_v}
 $$
 
 If
@@ -245,37 +267,25 @@ Otherwise
 
 $$
 O =
-(\arccos(\cos t) - \sin t \cos t)
-\frac{sec_s + sec_v}{\pi}
+\frac{1}{\pi}(t - \sin t \\, \cos t)
+(\sec\theta'_s + \sec\theta'_v)
 $$
 
 ## Final Geometric Kernel
 
 $$
-K_{geo} =
-O
--
-sec_s
--
-sec_v
-+
-\frac{1}{2}(1+\cos\xi)sec_s sec_v
+K_{geo} = O - \sec\theta'_s - \sec\theta'_v + \frac{1}{2}(1+\cos\xi) \\, \sec\theta'_s \\,  \sec\theta'_v
 $$
 
 ## Polarized Surface Reflectance (BPDF)
 
-Define scattering cosine:
-
-$$
-C =
-\mu_s\mu_v +
-\sqrt{1-\mu_s^2}\sqrt{1-\mu_v^2}\cos\phi_r
-$$
-
+Scattering angle have been defined above $\Theta$. Assuming a flat surface which produce the same scattering angle, the incident angle relative to the flat surface would be: 
 $$
 \theta_1 =
 \frac{\pi - \arccos(C)}{2}
 $$
+
+which also equivalent to $\theta_1=(\theta_s+\theta_v)/2$
 
 ### Fresnel Reflection
 
@@ -301,7 +311,7 @@ r_s =
 {\cos\theta_1 + \sqrt{n^2-\sin^2\theta_1}}
 $$
 
-**Assumption: $ n = 1.5 + 0i $, for leaves?**
+**Assumption: $ n = 1.5 + 0i $ **
 
 ### Fresnel Mueller Matrix
 
@@ -327,6 +337,9 @@ A-B & A+B & 0 & 0 \\
 \end{bmatrix}
 $$
 
+Nadir reflectance (A+B) can be approximated as $[(n-1)/(n+1)]^2=0.04$ for n=1.5.
+Brewster angle can be observed at the maximum of Abs(A-B)/(A+B).
+
 ### Polarization Kernel
 
 $$
@@ -334,7 +347,7 @@ $$
 \frac{
 e^{-\tan\theta_1}e^{-v_{fac}}
 }{4(|\mu_s|+|\mu_v|)}
-F
+F (n, \theta_1)
 $$
 
 with
@@ -343,11 +356,12 @@ $$
 v_{fac} = 0.1
 $$
 
-### Final Surface Mueller Matrix
 
+<!-- This expression is redundant with R above. I suggest to delete it
+### Final Surface Mueller Matrix
+  
 $$
 \mathbf{M} =
-|\mu_s|
 \left[
 f_{iso}
 +
@@ -355,21 +369,16 @@ f_{vol}K_{vol}
 +
 f_{geo}K_{geo}
 \right]
-\mathbf{I}
+\mathbf{E}
 +
 B_{pol}\mathbf{K}_{pol}
 $$
 
 
-Note: The original formulation includes an NDVI factor in $\mathbf{K}_{pol}$, which is absorbed into $ B_{pol} $.
+Note: The original formulation includes an NDVI factor in $\mathbf{K}_{pol}$ , which is absorbed into $B_{pol}$ .
+-->
 
-For scalar radiative transfer simulations, only
-
-$$
-M_{11}
-$$
-
-is used.
+For scalar radiative transfer simulations, only $R_{11}$ is used.
 
 ---
 
@@ -381,3 +390,5 @@ Journal of Geophysical Research.
 
 MODIS Surface Reflectance ATBD  
 https://modis.gsfc.nasa.gov/data/atbd/atbd_mod09.pdf
+
+Roujean, J.-L., M.Leroy, and P.-Y.Deschamps (1992), A bidirectional reflectance model of the Earth's surface for the correction of remote sensing data, J. Geophys. Res., 97(D18), 20455–20468, doi:10.1029/92JD01411.
