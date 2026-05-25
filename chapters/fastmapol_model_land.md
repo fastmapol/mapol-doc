@@ -324,7 +324,7 @@ $$
 $$
 
 $$
-F =
+\mathbf{F} =
 \begin{bmatrix}
 A+B & A-B & 0 & 0 \\
 A-B & A+B & 0 & 0 \\
@@ -345,10 +345,10 @@ $$
 \frac{
 e^{-\tan\theta_1}e^{-v_{fac}}
 }{4(|\mu_s|+|\mu_v|)}
-F (n, \theta_1)
+\mathbf{L(\pi-i_2)}\mathbf{F} (n, \theta_1) \mathbf{L(i_1)}
 $$
 
-with
+where $\mathbf{L(i_1)}$ and $\mathbf{L(\pi-i_2)}$ rotate the Stokes vector from the incident meridian plane to the scattering plane and back to the viewing meridian plane; $i_1$ and $i_2$ are the rotation angles; The factor $v_{fac}$ is:
 
 $$
 v_{fac} = 0.1
