@@ -163,10 +163,6 @@ $$
 \sqrt{1-\mu_s^2}\sqrt{1-\mu_v^2}\cos(\phi_r)
 $$
 
-$$
-\Theta = \arccos(\cos\Theta)
-$$
-
 The phase angle used in BRDF models is
 
 $$
@@ -280,9 +276,9 @@ $$
 ## Polarized Surface Reflectance (BPDF)
 
 Scattering angle have been defined above $\Theta$. Assuming a flat surface which produce the same scattering angle, the incident angle relative to the flat surface would be: 
+
 $$
-\theta_1 =
-\frac{\pi - \arccos(C)}{2}
+\theta_1 =\frac{\pi - \Theta}{2}
 $$
 
 which also equivalent to $\theta_1=(\theta_s+\theta_v)/2$
@@ -311,7 +307,7 @@ r_s =
 {\cos\theta_1 + \sqrt{n^2-\sin^2\theta_1}}
 $$
 
-**Assumption: $ n = 1.5 + 0i $ **
+**Assumption: $n = 1.5 + 0i$ **
 
 ### Fresnel Mueller Matrix
 
@@ -328,7 +324,7 @@ $$
 $$
 
 $$
-F =
+\mathbf{F} =
 \begin{bmatrix}
 A+B & A-B & 0 & 0 \\
 A-B & A+B & 0 & 0 \\
@@ -342,15 +338,17 @@ Brewster angle can be observed at the maximum of Abs(A-B)/(A+B).
 
 ### Polarization Kernel
 
+In the current framework, we adopt the polarized Kernel based on Maignan et al., (2009):
+
 $$
 \mathbf{K}_{pol} =
 \frac{
 e^{-\tan\theta_1}e^{-v_{fac}}
 }{4(|\mu_s|+|\mu_v|)}
-F (n, \theta_1)
+\mathbf{L(\pi-i_2)}\mathbf{F} (n, \theta_1) \mathbf{L(i_1)}
 $$
 
-with
+where $\mathbf{L(i_1)}$ and $\mathbf{L(\pi-i_2)}$ rotate the Stokes vector from the incident meridian plane to the scattering plane and back to the viewing meridian plane; $i_1$ and $i_2$ are the rotation angles; The factor $v_{fac}$ is:
 
 $$
 v_{fac} = 0.1
@@ -384,11 +382,16 @@ For scalar radiative transfer simulations, only $R_{11}$ is used.
 
 ## References
 
-Wanner, W., Li, X., & Strahler, A. (1995)  
-*On the derivation of kernels for kernel-driven BRDF models.*  
-Journal of Geophysical Research.
+Maignan, F., et al., (2009)
+*Polarized reflectances of natural surfaces: Spaceborne measurements and analytical modeling.*
+Remote Sensing of Environment, Volume 113, Issue 12, Pages 2642-2650,
+https://doi.org/10.1016/j.rse.2009.07.022.
 
 MODIS Surface Reflectance ATBD  
 https://modis.gsfc.nasa.gov/data/atbd/atbd_mod09.pdf
 
 Roujean, J.-L., M.Leroy, and P.-Y.Deschamps (1992), A bidirectional reflectance model of the Earth's surface for the correction of remote sensing data, J. Geophys. Res., 97(D18), 20455–20468, doi:10.1029/92JD01411.
+
+Wanner, W., Li, X., & Strahler, A. (1995)  
+*On the derivation of kernels for kernel-driven BRDF models.*  
+Journal of Geophysical Research.
