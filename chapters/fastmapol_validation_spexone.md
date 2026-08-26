@@ -14,11 +14,11 @@ FastMAPOL performs coupled aerosol–surface retrievals using an optimal-estimat
 
 ## Retrieval Products Evaluated
 
-### Aerosol
+**Aerosol**
 - Total, fine-mode, and coarse-mode aerosol optical depth (AOD)
 - Total, fine-mode, and coarse-mode single-scattering albedo (SSA)
 
-### Ocean
+**Ocean**
 - Ocean remote-sensing reflectance ($R_{rs}$)
 
 ## Validation Strategy
@@ -39,7 +39,7 @@ The objective is to assess both the physical realism of the retrieved fields and
 
 ## Global Level-3 Products
 
-### Aerosol Products (556 nm)
+**Aerosol Products (556 nm)**
 
 Global distributions of total, fine-mode, and coarse-mode AOD and SSA at 556 nm:
 
@@ -47,7 +47,7 @@ Global distributions of total, fine-mode, and coarse-mode AOD and SSA at 556 nm:
 
 ---
 
-### Ocean Products
+**Ocean Products**
 
 Global distributions of $R_{rs}$ (443, 556, 667 nm) and chlorophyll-*a*:
 

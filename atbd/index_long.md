@@ -31,7 +31,49 @@ FastMAPOL retrieval products include aerosol optical and microphysical propertie
 
 This Algorithm Theoretical Basis Document (ATBD) describes the physical basis, radiative transfer models, neural network forward models, inversion methodology, uncertainty characterization, data products, and validation of FastMAPOL for PACE HARP2 and SPEXone observations.
 
-The remainder of this document is organized into chapters describing the FastMAPOL algorithm, forward models, retrieval methodology, data products, and validation results. A high-level overview is first provided in algorithm summary for readers who want a concise description of the algorithm and products before proceeding to the detailed technical sections.
+---
+
+# Introduction
+
+The PACE mission includes three primary instruments:
+
+- Ocean Color Instrument (OCI)
+- Hyper-Angular Rainbow Polarimeter-2 (HARP2)
+- SPEXone polarimeter
+
+Multi-angle polarimetric observations provide enhanced sensitivity to aerosol optical and microphysical properties while improving the separation of atmospheric and surface contributions. FastMAPOL is designed to exploit this information through a coupled atmosphere-surface, physics-based inversion framework accelerated by neural network forward models.
+
+FastMAPOL is applied to PACE HARP2 and SPEXone observations for aerosol retrieval over ocean. Aerosol retrieval over land has also been implemented for HARP2, with the corresponding product available as MAPOL_LAND. The land retrieval follows the same coupled atmosphere-surface radiative transfer framework, with a land surface model replacing the ocean surface and bio-optical models.
+
+---
+
+# Scope of Document
+
+This Algorithm Theoretical Basis Document (ATBD) describes the methodology used by FastMAPOL to retrieve aerosol, ocean, and land surface properties from PACE multi-angle polarimetric measurements.
+
+The document covers the following major components:
+
+- FastMAPOL algorithm architecture and retrieval framework
+- Coupled atmosphere-surface vector radiative transfer
+- Aerosol optical and microphysical models
+- Ocean bio-optical and surface models
+- Land surface reflectance model
+- Neural network forward-model training and architecture
+- Analytical Jacobian calculation using automatic differentiation
+- Nonlinear least-squares retrieval methodology
+- Adaptive multi-angle data screening
+- Pixel-level uncertainty estimation and uncertainty correlations
+- Atmospheric and bidirectional reflectance correction
+- Level-2 data product definitions and formats
+- Validation using PACE HARP2 and SPEXone observations
+
+---
+
+# Document Organization
+
+The remainder of this document is organized into chapters describing the FastMAPOL algorithm, forward models, retrieval methodology, data products, and validation results. A high-level overview is first provided in **FastMAPOL in a Nutshell** for readers who want a concise description of the algorithm and products before proceeding to the detailed technical sections.
+
+---
 
 # Document Information
 
@@ -43,3 +85,5 @@ The remainder of this document is organized into chapters describing the FastMAP
 | Authors | Meng Gao, Pengwang Zhai, Kamal Aryal, Kirk Knobelspiesse, Bryan Franz |
 | Institution | NASA Goddard Space Flight Center (GSFC) |
 | Project | PACE Mission |
+
+---

@@ -291,94 +291,12 @@ basis, radiative transfer models, neural network forward models,
 inversion methodology, uncertainty characterization, data products, and
 validation of FastMAPOL for PACE HARP2 and SPEXone observations.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\bookmarksetup{startatroot}
-
-\chapter{Introduction}\label{introduction}
-
-The PACE mission includes three primary instruments:
-
-\begin{itemize}
-\tightlist
-\item
-  Ocean Color Instrument (OCI)
-\item
-  Hyper-Angular Rainbow Polarimeter-2 (HARP2)
-\item
-  SPEXone polarimeter
-\end{itemize}
-
-Multi-angle polarimetric observations provide enhanced sensitivity to
-aerosol optical and microphysical properties while improving the
-separation of atmospheric and surface contributions. FastMAPOL is
-designed to exploit this information through a coupled
-atmosphere-surface, physics-based inversion framework accelerated by
-neural network forward models.
-
-FastMAPOL is applied to PACE HARP2 and SPEXone observations for aerosol
-retrieval over ocean. Aerosol retrieval over land has also been
-implemented for HARP2, with the corresponding product available as
-MAPOL\_LAND. The land retrieval follows the same coupled
-atmosphere-surface radiative transfer framework, with a land surface
-model replacing the ocean surface and bio-optical models.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\bookmarksetup{startatroot}
-
-\chapter{Scope of Document}\label{scope-of-document}
-
-This Algorithm Theoretical Basis Document (ATBD) describes the
-methodology used by FastMAPOL to retrieve aerosol, ocean, and land
-surface properties from PACE multi-angle polarimetric measurements.
-
-The document covers the following major components:
-
-\begin{itemize}
-\tightlist
-\item
-  FastMAPOL algorithm architecture and retrieval framework
-\item
-  Coupled atmosphere-surface vector radiative transfer
-\item
-  Aerosol optical and microphysical models
-\item
-  Ocean bio-optical and surface models
-\item
-  Land surface reflectance model
-\item
-  Neural network forward-model training and architecture
-\item
-  Analytical Jacobian calculation using automatic differentiation
-\item
-  Nonlinear least-squares retrieval methodology
-\item
-  Adaptive multi-angle data screening
-\item
-  Pixel-level uncertainty estimation and uncertainty correlations
-\item
-  Atmospheric and bidirectional reflectance correction
-\item
-  Level-2 data product definitions and formats
-\item
-  Validation using PACE HARP2 and SPEXone observations
-\end{itemize}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\bookmarksetup{startatroot}
-
-\chapter{Document Organization}\label{document-organization}
-
 The remainder of this document is organized into chapters describing the
 FastMAPOL algorithm, forward models, retrieval methodology, data
 products, and validation results. A high-level overview is first
-provided in \textbf{FastMAPOL in a Nutshell} for readers who want a
-concise description of the algorithm and products before proceeding to
-the detailed technical sections.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+provided in algorithm summary for readers who want a concise description
+of the algorithm and products before proceeding to the detailed
+technical sections.
 
 \bookmarksetup{startatroot}
 
@@ -405,8 +323,6 @@ Bryan Franz \\
 Institution & NASA Goddard Space Flight Center (GSFC) \\
 Project & PACE Mission \\
 \end{longtable}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \bookmarksetup{startatroot}
 
@@ -648,7 +564,9 @@ are summarized in Table~\ref{tbl-nn-arch}.
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3000}}
   >{\raggedleft\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4000}}@{}}
 \caption{Neural network architectures and associated uncertainties used
-in FastMAPOL.}\label{tbl-nn-arch}\tabularnewline
+in FastMAPOL for SPEXone (34 spectral bands). For HARP2 the output bands
+are 4 with similar structures (M. Gao, Franz, et al.
+2023).}\label{tbl-nn-arch}\tabularnewline
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 \textbf{Quantity}
@@ -1595,30 +1513,11 @@ presented here complements the main chapters and is intended for readers
 who require a deeper understanding of the underlying theory,
 assumptions, and implementation details.
 
-The appendices include:
-
-\begin{itemize}
-\tightlist
-\item
-  Details in the NN and automatic differentation
-\item
-  Detailed formulations of aerosol size distributions and their
-  moments\\
-\item
-  Derivations of lidar-related quantities, including lidar ratio and
-  depolarization\\
-\item
-  Inversion methods connecting bulk aerosol properties to submode
-  representations\\
-\item
-  Treatment of aerosol mixing and component partitioning\\
-\item
-  Pixel-level and correlated uncertainty analysis\\
-\item
-  Surface reflectance models for ocean and land
-\item
-  Multi-angle atmospheric correction
-\end{itemize}
+The appendices include: - Details in radiative transfer model - Details
+in the NN and automatic differentation - Detailed formulations of
+aerosol size distributions and their moments\\
+- Surface reflectance models for ocean and land - Multi-angle
+atmospheric correction
 
 These technical details are not required for general use or
 interpretation of the FastMAPOL products but are essential for algorithm
@@ -2658,19 +2557,8 @@ radiatively weighted quantities. The relationships summarized here
 provide the basis for size integration, mode summation, and the
 calculation of operational aerosol products in FastMAPOL.
 
-\chapter{Retrieval Uncertainty}\label{retrieval-uncertainty}
-
-Pixel-level retrieval uncertainties can be estimated through propagation
-of measurement uncertainties using the Jacobian of the forward model.
-
-Although this capability has been demonstrated in previous studies,
-pixel-level uncertainties are not currently included in the operational
-FastMAPOL Level-2 product.
-
-Future product versions may include retrieval uncertainty estimates.
-
-\chapter{Angular uncertainty
-correlations}\label{angular-uncertainty-correlations}
+\chapter{Uncertainty estimation and angular
+correlations}\label{uncertainty-estimation-and-angular-correlations}
 
 In this section, we discuss the general retrieval approach considering
 correlation between angles following (M. Gao, Knobelspiesse, et al.
@@ -3030,136 +2918,6 @@ beyond the zero-order term. The Python packages StatsModels (Seabold and
 Perktold 2010) and SciPy (Virtanen et al. 2018) are used to conduct the
 autocorrelation analyses.
 
-\chapter{Multi-angle ocean color
-product}\label{multi-angle-ocean-color-product}
-
-Ocean color signals are often represented by the remote sensing
-reflectance, \(R_{rs}(\lambda;\theta_0, \theta_v, \phi_v)\), which is
-defined as the ratio of upwelling radiance originating from the ocean
-body to downwelling irradiance just above the ocean surface, with units
-of \(\mathrm{sr}^{-1}\) (Mobley et al. 2016). Here \(\theta_0\) and
-\(\theta_v\) are the solar and viewing zenith angles, and \(\phi_v\) is
-the relative viewing azimuth angle. For simplicity, the wavelength
-dependence, \(\lambda\), which applies to all ocean reflectance-related
-variables, is omitted in the following notation. To derive this
-quantity, we need to remove the atmospheric path radiance and compute
-the water-leaving reflectance (\(\rho_w\)) as the reflectance
-originating from scattering in the ocean that reaches the satellite
-sensor:
-
-\begin{equation}\phantomsection\label{eq-rhow}{
-\rho_w(\theta_0,\theta_v,\phi_v)
-=
-\rho_t(\theta_0,\theta_v,\phi_v)
--
-\rho^{f}_{t,\mathrm{atm+sfc}}(\theta_0,\theta_v,\phi_v).
-}\end{equation}
-
-where \(\rho_t\) is the measured total reflectance at the top of
-atmosphere (TOA), and \(\rho^{f}_{t,\mathrm{atm+sfc}}\) is the
-reflectance with only atmospheric and ocean surface contributions (such
-as sunglint, white caps, etc.) computed in the forward model, denoted by
-superscript \(f\). With the multi-angle polarimetric observations
-provided by PACE, wind speed can be retrieved simultaneously with
-aerosol properties (M. Gao et al. 2021, 2022). The joint retrieval
-algorithm enables the retrieval of ocean signals in regions affected by
-sunglint, which are often excluded or difficult to process using
-conventional single-angle ocean color remote sensing approaches (Harmel
-and Chami 2013; Neukermans et al. 2018).
-
-The remote sensing reflectance at arbitrary solar and viewing geometries
-can be derived from the water-leaving reflectance by considering the
-transmittance of both solar irradiance and surface radiance (M. Gao et
-al. 2021) as:
-
-\begin{equation}\phantomsection\label{eq-rrs}{
-R_{rs}(\theta_0,\theta_v,\phi_v)
-=
-\left[
-\frac{\rho_w(\theta_0,\theta_v,\phi_v)}{\pi}
-\right]
-\times
-\left[
-\frac{1}
-{T_d(\theta_0)\,t_u(\theta_0,\theta_v,\phi_v)}
-\right].
-}\end{equation}
-
-where \(T_d\) represents the downwelling irradiance transmittance of the
-solar irradiance from the top of atmosphere to the surface, and \(t_u\)
-represents the upwelling radiance transmittance for the water-leaving
-radiance from the bottom of atmosphere to the satellite sensor, with
-more details in M. Gao et al. (2021).
-
-Furthermore, a BRDF correction procedure is commonly applied by mapping
-\(R_{rs}(\theta_0, \theta_v, \phi_v)\) at arbitrary geometry to the sun
-at zenith and viewing angle at nadir, denoted as \(R_{rs}(0,0)\). The
-reduction of the solar and viewing geometry angular dependency allows
-for geometrically consistent cross-instrument comparisons and validation
-with in-situ data. Based on the radiative transfer model used in this
-study, the BRDF correction factor can be computed through the modeled
-\(R_{rs}^f\) as defined in Eqs. Equation~\ref{eq-rhow} and
-Equation~\ref{eq-rrs} by replacing the real measurement by the forward
-model simulation:
-
-\begin{equation}\phantomsection\label{eq-cbrdf}{
-C_{\mathrm{BRDF}}(\theta_0,\theta,\phi)
-=
-\frac{R^f_{rs}(0,0)}
-{R^f_{rs}(\theta_0,\theta,\phi)}.
-}\end{equation}
-
-The angular distribution of the water-leaving light field, and thus this
-correction term, depends on ocean parameters including Chl-a and wind
-speed, as well as aerosol properties that modulate the diffuse skylight.
-All of these parameters are retrieved simultaneously in the algorithm.
-Note that this is an extension of the previous model in M. Gao et al.
-(2021) for smaller viewing zenith angles, and has been applied in
-synthetic PACE polarimeter data (M. Gao, Franz, et al. 2023; Aryal et
-al. 2024; Zhang et al. 2025). Such a correction can be applied to
-estimate \(R_{rs}(0,0)\):
-
-\begin{equation}\phantomsection\label{eq-rrs00}{
-R_{rs}(0,0)
-=
-R_{rs}(\theta_0,\theta,\phi)
-\times
-C_{\mathrm{BRDF}}(\theta_0,\theta,\phi).
-}\end{equation}
-
-To expedite this process, we further developed two neural networks which
-compute \(1/(T_d t_u)\) and \(C_{\mathrm{BRDF}}/(T_d t_u)\) as
-summarized in Appendix B, which can be used to efficiently produce
-\(R_{rs}\) with and without BRDF correction.
-
-Since HARP2 and SPEXone makes measurements at multiple viewing zenith
-angles in the along-track direction), we can apply the atmospheric
-correction to each of these and derive \(R_{rs}\) with a new angle
-dimension. This satellite-based angular remote sensing reflectance
-contains information on oceanic particles and potentially also
-uncertainties from imperfect atmospheric correction. At first order, we
-can compute the angular mean and standard deviation. The mean value can
-be used to reduce random noise, while the standard deviation can be used
-to evaluate angular variability.
-
-Moreover, if the satellite-derived \(R_{rs}\) agrees with the modeled
-\(R^f_{rs}\) from the forward model, assuming the bio-optical model
-accurately represents the real water properties, we would expect the
-angular variation of the \(R_{rs}\) to be reduced by the BRDF
-correction. Therefore, BRDF correction applied on angular \(R_{rs}\) can
-be used as an indicator of the closure of the radiative transfer model
-and atmospheric correction.
-
-Multiple BRDF correction schemes have been proposed in the ocean color
-literature (Morel, Antoine, and Gentili 2002; Park and Ruddick 2005; Lee
-et al. 2011; He et al. 2017; Twardowski and Tonizzo 2018; Zhang et al.
-2025; D'Alimonte et al. 2025; Pitarch et al. 2025). The angular
-\(R_{rs}\) observations provided by PACE from simultaneous multi-angle
-measurements can be used to evaluate these BRDF correction schemes
-across different water types, as well as angular closure analyses before
-and after BRDF correction on a pixel-by-pixel basis. For more details
-and validation results, please refer to Meng Gao et al. (2026).
-
 \chapter{Ocean Bio-Optical Model}\label{ocean-bio-optical-model}
 
 \section{Overview}\label{overview-3}
@@ -3416,6 +3174,136 @@ remaining parameters are constrained using empirical relationships
 derived from observations.
 
 \emph{(Details of the Bio-3 parameterization will be described soon.)}
+
+\chapter{Multi-angle ocean color
+product}\label{multi-angle-ocean-color-product}
+
+Ocean color signals are often represented by the remote sensing
+reflectance, \(R_{rs}(\lambda;\theta_0, \theta_v, \phi_v)\), which is
+defined as the ratio of upwelling radiance originating from the ocean
+body to downwelling irradiance just above the ocean surface, with units
+of \(\mathrm{sr}^{-1}\) (Mobley et al. 2016). Here \(\theta_0\) and
+\(\theta_v\) are the solar and viewing zenith angles, and \(\phi_v\) is
+the relative viewing azimuth angle. For simplicity, the wavelength
+dependence, \(\lambda\), which applies to all ocean reflectance-related
+variables, is omitted in the following notation. To derive this
+quantity, we need to remove the atmospheric path radiance and compute
+the water-leaving reflectance (\(\rho_w\)) as the reflectance
+originating from scattering in the ocean that reaches the satellite
+sensor:
+
+\begin{equation}\phantomsection\label{eq-rhow}{
+\rho_w(\theta_0,\theta_v,\phi_v)
+=
+\rho_t(\theta_0,\theta_v,\phi_v)
+-
+\rho^{f}_{t,\mathrm{atm+sfc}}(\theta_0,\theta_v,\phi_v).
+}\end{equation}
+
+where \(\rho_t\) is the measured total reflectance at the top of
+atmosphere (TOA), and \(\rho^{f}_{t,\mathrm{atm+sfc}}\) is the
+reflectance with only atmospheric and ocean surface contributions (such
+as sunglint, white caps, etc.) computed in the forward model, denoted by
+superscript \(f\). With the multi-angle polarimetric observations
+provided by PACE, wind speed can be retrieved simultaneously with
+aerosol properties (M. Gao et al. 2021, 2022). The joint retrieval
+algorithm enables the retrieval of ocean signals in regions affected by
+sunglint, which are often excluded or difficult to process using
+conventional single-angle ocean color remote sensing approaches (Harmel
+and Chami 2013; Neukermans et al. 2018).
+
+The remote sensing reflectance at arbitrary solar and viewing geometries
+can be derived from the water-leaving reflectance by considering the
+transmittance of both solar irradiance and surface radiance (M. Gao et
+al. 2021) as:
+
+\begin{equation}\phantomsection\label{eq-rrs}{
+R_{rs}(\theta_0,\theta_v,\phi_v)
+=
+\left[
+\frac{\rho_w(\theta_0,\theta_v,\phi_v)}{\pi}
+\right]
+\times
+\left[
+\frac{1}
+{T_d(\theta_0)\,t_u(\theta_0,\theta_v,\phi_v)}
+\right].
+}\end{equation}
+
+where \(T_d\) represents the downwelling irradiance transmittance of the
+solar irradiance from the top of atmosphere to the surface, and \(t_u\)
+represents the upwelling radiance transmittance for the water-leaving
+radiance from the bottom of atmosphere to the satellite sensor, with
+more details in M. Gao et al. (2021).
+
+Furthermore, a BRDF correction procedure is commonly applied by mapping
+\(R_{rs}(\theta_0, \theta_v, \phi_v)\) at arbitrary geometry to the sun
+at zenith and viewing angle at nadir, denoted as \(R_{rs}(0,0)\). The
+reduction of the solar and viewing geometry angular dependency allows
+for geometrically consistent cross-instrument comparisons and validation
+with in-situ data. Based on the radiative transfer model used in this
+study, the BRDF correction factor can be computed through the modeled
+\(R_{rs}^f\) as defined in Eqs. Equation~\ref{eq-rhow} and
+Equation~\ref{eq-rrs} by replacing the real measurement by the forward
+model simulation:
+
+\begin{equation}\phantomsection\label{eq-cbrdf}{
+C_{\mathrm{BRDF}}(\theta_0,\theta,\phi)
+=
+\frac{R^f_{rs}(0,0)}
+{R^f_{rs}(\theta_0,\theta,\phi)}.
+}\end{equation}
+
+The angular distribution of the water-leaving light field, and thus this
+correction term, depends on ocean parameters including Chl-a and wind
+speed, as well as aerosol properties that modulate the diffuse skylight.
+All of these parameters are retrieved simultaneously in the algorithm.
+Note that this is an extension of the previous model in M. Gao et al.
+(2021) for smaller viewing zenith angles, and has been applied in
+synthetic PACE polarimeter data (M. Gao, Franz, et al. 2023; Aryal et
+al. 2024; Zhang et al. 2025). Such a correction can be applied to
+estimate \(R_{rs}(0,0)\):
+
+\begin{equation}\phantomsection\label{eq-rrs00}{
+R_{rs}(0,0)
+=
+R_{rs}(\theta_0,\theta,\phi)
+\times
+C_{\mathrm{BRDF}}(\theta_0,\theta,\phi).
+}\end{equation}
+
+To expedite this process, we further developed two neural networks which
+compute \(1/(T_d t_u)\) and \(C_{\mathrm{BRDF}}/(T_d t_u)\) as
+summarized in Appendix B, which can be used to efficiently produce
+\(R_{rs}\) with and without BRDF correction.
+
+Since HARP2 and SPEXone makes measurements at multiple viewing zenith
+angles in the along-track direction), we can apply the atmospheric
+correction to each of these and derive \(R_{rs}\) with a new angle
+dimension. This satellite-based angular remote sensing reflectance
+contains information on oceanic particles and potentially also
+uncertainties from imperfect atmospheric correction. At first order, we
+can compute the angular mean and standard deviation. The mean value can
+be used to reduce random noise, while the standard deviation can be used
+to evaluate angular variability.
+
+Moreover, if the satellite-derived \(R_{rs}\) agrees with the modeled
+\(R^f_{rs}\) from the forward model, assuming the bio-optical model
+accurately represents the real water properties, we would expect the
+angular variation of the \(R_{rs}\) to be reduced by the BRDF
+correction. Therefore, BRDF correction applied on angular \(R_{rs}\) can
+be used as an indicator of the closure of the radiative transfer model
+and atmospheric correction.
+
+Multiple BRDF correction schemes have been proposed in the ocean color
+literature (Morel, Antoine, and Gentili 2002; Park and Ruddick 2005; Lee
+et al. 2011; He et al. 2017; Twardowski and Tonizzo 2018; Zhang et al.
+2025; D'Alimonte et al. 2025; Pitarch et al. 2025). The angular
+\(R_{rs}\) observations provided by PACE from simultaneous multi-angle
+measurements can be used to evaluate these BRDF correction schemes
+across different water types, as well as angular closure analyses before
+and after BRDF correction on a pixel-by-pixel basis. For more details
+and validation results, please refer to Meng Gao et al. (2026).
 
 \chapter{Land Surface Reflectance Model (Ross--Li BRDF and Polarized
 BPDF)}\label{land-surface-reflectance-model-rossli-brdf-and-polarized-bpdf}
