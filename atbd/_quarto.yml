@@ -12,25 +12,25 @@ book:
     - index.md
     - ../chapters/fastmapol_summary.md
     - ../chapters/fastmapol_retrieval.md
-    - ../chapters/fastmapol_neural_network.md
-    - ../chapters/fastmapol_pace_simulator.md
-    - ../chapters/fastmapol_aerosol_summary.md
-    - ../chapters/fastmapol_ocean_color.md
     - ../chapters/fastmapol_product.md
-    - ../chapters/fastmapol_validation_harp2.md
-    - ../chapters/fastmapol_validation_spexone.md
     - ../chapters/fastmapol_tutorial.md
+    - ../chapters/fastmapol_validation_spexone.md
+    - ../chapters/fastmapol_validation_harp2.md
 
   appendices:
     - ../chapters/fastmapol_appendix_intro.md   # <-- creates "Technical Details" section
-    - ../chapters/fastmapol_aerosol_size.md
-    - ../chapters/fastmapol_aerosol_lidar.md
-    - ../chapters/fastmapol_aerosol_inversion.md
-    - ../chapters/fastmapol_aerosol_mixing.md
-    - ../chapters/fastmapol_uncertainty_pixel.md
+    - ../chapters/fastmapol_pace_simulator.md
+    - ../chapters/fastmapol_neural_network.md
+    #- ../chapters/fastmapol_aerosol_summary.md
+    #- ../chapters/fastmapol_aerosol_size.md
+    #- ../chapters/fastmapol_aerosol_lidar.md
+    #- ../chapters/fastmapol_aerosol_inversion.md
+    #- ../chapters/fastmapol_aerosol_mixing.md
+    #- ../chapters/fastmapol_uncertainty_pixel.md
     - ../chapters/fastmapol_uncertainty_correlation.md
     - ../chapters/fastmapol_model_ocean.md
     - ../chapters/fastmapol_model_land.md
+    - ../chapters/fastmapol_ocean_color.md
 
 bibliography: ../bib/lmfit5.bib
 
@@ -48,6 +48,8 @@ format:
   pdf:
     keep-tex: true
     documentclass: scrbook
+    classoption:
+      - open=any
     toc: true
     toc-depth: 3
     lof: true
