@@ -216,7 +216,7 @@
 \makeatother
 \subtitle{PACE Polarimeter Aerosol and Ocean Retrieval}
 \author{Drafting}
-\date{2026-03-26}
+\date{2026-08-25}
 \begin{document}
 \frontmatter
 \maketitle
@@ -585,10 +585,11 @@ Group: \texttt{/geophysical\_data}
 
 The geophysical group contains aerosol optical properties, aerosol
 microphysical parameters, and ocean color products retrieved by
-FastMAPOL.
+FastMAPOL. Two data suites, MAPOL\_OCEAN and MAPOL\_LAND, are available
+for aerosol over ocean and land, respectively.
 
-\subsection{Aerosol Optical
-Properties}\label{aerosol-optical-properties}
+\subsection{Aerosol Optical Properties (MAPOL\_OCEAN and
+MAPOL\_LAND)}\label{aerosol-optical-properties-mapol_ocean-and-mapol_land}
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
@@ -627,9 +628,11 @@ fraction \\
 \end{longtable}
 
 These parameters describe aerosol optical loading and spectral behavior.
+Note that Ångström exponent (440-870 nm) is only available for HARP2
+data since SPEXone do not have 870nm band.
 
-\subsection{Aerosol Microphysical
-Properties}\label{aerosol-microphysical-properties}
+\subsection{Aerosol Microphysical Properties (MAPOL\_OCEAN and
+MAPOL\_LAND)}\label{aerosol-microphysical-properties-mapol_ocean-and-mapol_land}
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
@@ -655,12 +658,24 @@ veff\_fine & (number\_of\_lines, pixels\_per\_line) & Fine-mode
 effective variance \\
 veff\_coarse & (number\_of\_lines, pixels\_per\_line) & Coarse-mode
 effective variance \\
-mr & (number\_of\_lines, pixels\_per\_line, wavelength) & Real
-refractive index \\
-mi & (number\_of\_lines, pixels\_per\_line, wavelength) & Imaginary
-refractive index \\
-sph & (number\_of\_lines, pixels\_per\_line) & Spherical particle
-fraction \\
+mr\_fine & (number\_of\_lines, pixels\_per\_line, wavelength) &
+Fine-mode Real refractive index \\
+mr\_coarse & (number\_of\_lines, pixels\_per\_line, wavelength) &
+Coarse-mode Real refractive index \\
+mr & (number\_of\_lines, pixels\_per\_line, wavelength) & Mode-average
+Real refractive index \\
+mi\_fine & (number\_of\_lines, pixels\_per\_line, wavelength) &
+Fine-mode Imaginary refractive index \\
+mi\_coarse & (number\_of\_lines, pixels\_per\_line, wavelength) &
+Coarse-mode Imaginary refractive index \\
+mi & (number\_of\_lines, pixels\_per\_line, wavelength) & Mode-average
+Imaginary refractive index \\
+sph\_fine & (number\_of\_lines, pixels\_per\_line) & Fine-mode Spherical
+particle fraction \\
+sph\_coarse & (number\_of\_lines, pixels\_per\_line) & Coarse-mode
+Spherical particle fraction \\
+sph & (number\_of\_lines, pixels\_per\_line) & Volum-average Spherical
+particle fraction \\
 vd\_fine & (number\_of\_lines, pixels\_per\_line) & Fine-mode volume
 density \\
 vd\_coarse & (number\_of\_lines, pixels\_per\_line) & Coarse-mode volume
@@ -673,7 +688,8 @@ alh & (number\_of\_lines, pixels\_per\_line) & Aerosol layer height \\
 These variables constrain aerosol particle size distribution,
 composition, and shape.
 
-\subsection{Ocean Color Products}\label{ocean-color-products}
+\subsection{Ocean Products
+(MAPOL\_OCEAN)}\label{ocean-products-mapol_ocean}
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
@@ -691,51 +707,73 @@ Description
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Rrs1 & (number\_of\_lines, pixels\_per\_line, wavelength,
-number\_of\_views) & Remote sensing reflectance before BRDF
+Rrs\_angular & (number\_of\_lines, pixels\_per\_line, wavelength,
+number\_of\_views) & Angular remote sensing reflectance before BRDF
 correction \\
-Rrs2 & (number\_of\_lines, pixels\_per\_line, wavelength,
-number\_of\_views) & Remote sensing reflectance after BRDF correction \\
-Rrs1\_mean & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Angular mean of Rrs1 \\
-Rrs1\_std & (number\_of\_lines, pixels\_per\_line, wavelength) & Angular
-standard deviation of Rrs1 \\
-Rrs2\_mean & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Angular mean of Rrs2 \\
-Rrs2\_std & (number\_of\_lines, pixels\_per\_line, wavelength) & Angular
-standard deviation of Rrs2 \\
-\end{longtable}
-
-The remote sensing reflectance represents ocean-leaving reflectance
-after atmospheric correction.
-
-Because the full angular arrays can be large, the Level-2 product
-typically includes the \textbf{angular mean and standard deviation}.
-
-\subsection{Additional Surface
-Variables}\label{additional-surface-variables}
-
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Variable
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Dimensions
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Description
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
+Rrs\_nadir & (number\_of\_lines, pixels\_per\_line, wavelength,
+number\_of\_views) & Nadir adjusted remote sensing reflectance after
+BRDF correction \\
+Rrs\_angular\_mean & (number\_of\_lines, pixels\_per\_line, wavelength)
+& Angular mean of Rrs\_angular \\
+Rrs\_angular\_std & (number\_of\_lines, pixels\_per\_line, wavelength) &
+Angular standard deviation of Rrs\_angular \\
+Rrs\_nadir\_mean & (number\_of\_lines, pixels\_per\_line, wavelength) &
+Angular mean of Rrs\_nadir \\
+Rrs\_nadir\_std & (number\_of\_lines, pixels\_per\_line, wavelength) &
+Angular standard deviation of Rrs\_nadir \\
 wind\_speed & (number\_of\_lines, pixels\_per\_line) & Surface wind
 speed \\
 chla & (number\_of\_lines, pixels\_per\_line) & Chlorophyll-a
 concentration \\
 \end{longtable}
+
+The remote sensing reflectance represents ocean-leaving reflectance
+after atmospheric correction. To compare with AERONET OC or other
+dataset for validation purpose after BRDF correction, variable
+Rrs\_nadir\_mean is suggested to use.
+
+Note that V3 data contains \textbf{Rrs1} and \textbf{Rrs2}, which are
+renmaed as \textbf{Rrs\_angular} and \textbf{Rrs\_nadir} in current V4
+data.
+
+\subsection{Land surface product
+(MAPOL\_LAND)}\label{land-surface-product-mapol_land}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Dimensions
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+rhos\_angular & (number\_of\_lines, pixels\_per\_line, wavelength,
+number\_of\_views) & Angular land surface reflectance before BRDF
+correction \\
+rhos\_nadir & (number\_of\_lines, pixels\_per\_line, wavelength,
+number\_of\_views) & Nadir adjusted land surface reflectance after BRDF
+correction \\
+rhos\_angular\_mean & (number\_of\_lines, pixels\_per\_line, wavelength)
+& Angular mean of rhos\_angular \\
+rhos\_angular\_std & (number\_of\_lines, pixels\_per\_line, wavelength)
+& Angular standard deviation of rhos\_angular \\
+rhos\_nadir\_mean & (number\_of\_lines, pixels\_per\_line, wavelength) &
+Angular mean of rhos\_nadir \\
+rhos\_nadir\_std & (number\_of\_lines, pixels\_per\_line, wavelength) &
+Angular standard deviation of rhos\_nadir \\
+\end{longtable}
+
+The land surface reflectance represents reflectance after atmospheric
+correction. To compare with validation dataset after BRDF correction,
+variable rhos\_nadir\_mean is suggested to use.
 
 \section{Diagnostic Data}\label{diagnostic-data}
 
@@ -3675,8 +3713,56 @@ B_{pol}\mathbf{K}_{pol}
 \]
 
 where \(\mathbf{E}\) is the 4 \(\times\) 4 null matrix except for
-\(E_{11}=1\), \(\mathbf{K}_{pol}\) is the polarization Kernel
-proportional to the Fresnel reflection matrix.
+\(E_{11}=1\),
+
+\[
+\mathbf{E} =
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+\]
+
+\(\mathbf{K}_{pol}\) is the polarization Kernel proportional to the
+Fresnel reflection matrix.
+
+\subsection{Scaled Parameter Formulation (Training
+Representation)}\label{scaled-parameter-formulation-training-representation}
+
+For parameter sampling (e.g., in neural network training), a scaled
+formulation is used to reduce the number of free parameters and capture
+main physics:
+
+\[
+\mathbf{R}(\theta_s,\theta_v,\phi_r) =
+\left[
+f_{iso}(\lambda)
+\left(
+1
++
+k_{vol} K_{vol}
++
+k_{geo} K_{geo}
+\right)
+\right]\mathbf{E}
++
+B_{pol}\mathbf{K}_{pol}
+\]
+
+where - \(f_{iso}(\lambda)\) is spectrally dependent, and - \(k_{vol}\)
+and \(k_{geo}\) are spectrally invariant
+
+The relationship to the physical parameters is:
+
+\[
+f_{vol}(\lambda) = f_{iso}(\lambda) \times k_{vol}
+\]
+
+\[
+f_{geo}(\lambda) = f_{iso}(\lambda) \times k_{geo}
+\]
 
 \subsection{Parameter Definitions}\label{parameter-definitions}
 
@@ -3688,52 +3774,17 @@ Parameter & Description \\
 \bottomrule\noalign{}
 \endlastfoot
 \(\theta_s\) & solar zenith angle \\
+\(\phi_s\) & solar azimuth angle \\
 \(\theta_v\) & viewing zenith angle \\
-\(\phi_r\) & relative azimuth angle \\
-\(f_{iso}\) & isotropic reflectance coefficient \\
-\(f_{vol}\) & volumetric scattering coefficient \\
-\(f_{geo}\) & geometric scattering coefficient \\
-\(B_{pol}\) & polarization strength \\
+\(\phi_v\) & viewing azimuth angle \\
+\(\phi_r=\phi_v-\phi_s\) & relative azimuth angle \\
+\(f_{iso}(\lambda)\) & isotropic reflectance coefficient \\
+\(f_{vol}(\lambda)\) & volumetric scattering coefficient \\
+\(f_{geo}(\lambda)\) & geometric scattering coefficient \\
+\(k_{vol}\) & scaled volumetric scattering coefficient \\
+\(k_{geo}\) & scaled geometric scattering coefficient \\
+\(B_{pol}\) & polarization scaling parameter \\
 \end{longtable}
-
-\subsection{Scaled Parameter Formulation (Training
-Representation)}\label{scaled-parameter-formulation-training-representation}
-
-For parameter sampling (e.g., in neural network training), a scaled
-formulation similar to \textbf{RemoTAP} is used:
-
-\[
-\mathbf{R}(\theta_s,\theta_v,\phi_r) =
-\left[
-f'_{iso}(\lambda)
-\left(
-1
-+
-f'_{vol} K_{vol}
-+
-f'_{geo} K_{geo}
-\right)
-\right]\mathbf{E}
-+
-B_{pol}\mathbf{K}_{pol}
-\]
-
-where: - \(f'_{iso}(\lambda)\) is spectrally dependent\\
-- \(f'_{vol}\) and \(f'_{geo}\) are spectrally invariant
-
-The relationship to the physical parameters is:
-
-\[
-f_{iso}(\lambda) = f'_{iso}(\lambda)
-\]
-
-\[
-f_{vol}(\lambda) = f'_{iso}(\lambda) \times f'_{vol}
-\]
-
-\[
-f_{geo}(\lambda) = f'_{iso}(\lambda) \times f'_{geo}
-\]
 
 \subsection{Geometry Definition}\label{geometry-definition}
 
@@ -3828,7 +3879,8 @@ K_{vol} =
 {|\mu_s| + |\mu_v|}-\frac{\pi}{4}
 \]
 
-Reference: Wanner et al.~(1995), JGR.
+Reference: Roujean et al.~(1992), JGR Atmosphere; Wanner et al.~(1995),
+JGR.
 
 \section{Li Geometric Kernel
 (Li-Sparse-R)}\label{li-geometric-kernel-li-sparse-r}
@@ -3836,21 +3888,21 @@ Reference: Wanner et al.~(1995), JGR.
 Define tangent terms:
 
 \[
-\tan\theta_s = \frac{\sqrt{1-\mu_s^2}}{|\mu_s|}
+|\tan\theta_s| = \frac{\sqrt{1-\mu_s^2}}{|\mu_s|}
 \]
 
 \[
-\tan\theta_v = \frac{\sqrt{1-\mu_v^2}}{|\mu_v|}
+|\tan\theta_v| = \frac{\sqrt{1-\mu_v^2}}{|\mu_v|}
 \]
 
 Projected angles:
 
 \[
-\theta'_s = \tan^{-1}(B/R \cdot \tan\theta_s)
+\theta'_s = \tan^{-1}(B/R \cdot |\tan\theta_s|)
 \]
 
 \[
-\theta'_v = \tan^{-1}(B/R \cdot \tan\theta_v)
+\theta'_v = \tan^{-1}(B/R \cdot |\tan\theta_v|)
 \]
 
 \begin{longtable}[]{@{}ll@{}}
@@ -3885,11 +3937,11 @@ D =
 Define:
 
 \[
-sec_s = \frac{1}{\cos\theta'_s}
+\sec\theta'_s = \frac{1}{\cos\theta'_s}
 \]
 
 \[
-sec_v = \frac{1}{\cos\theta'_v}
+\sec\theta'_v = \frac{1}{\cos\theta'_v}
 \]
 
 \subsection{\texorpdfstring{Ancillary Function
@@ -3901,7 +3953,7 @@ sec_v = \frac{1}{\cos\theta'_v}
 \sqrt{
 D^2 + (\tan\theta'_s\tan\theta'_v\sin(\phi_r+\pi))^2
 }}
-{sec_s + sec_v}
+{\sec\theta'_s + \sec\theta'_v}
 \]
 
 If
@@ -3921,30 +3973,26 @@ Otherwise
 \[
 O =
 \frac{1}{\pi}(t - \sin t \\, \cos t)
-(sec_s + sec_v)
+(\sec\theta'_s + \sec\theta'_v)
 \]
 
 \section{Final Geometric Kernel}\label{final-geometric-kernel}
 
 \[
-K_{geo} = O - sec_s - sec_v + \frac{1}{2}(1+\cos\xi) \\, sec_s \\,  sec_v
+K_{geo} = O - \sec\theta'_s - \sec\theta'_v + \frac{1}{2}(1+\cos\xi) \\, \sec\theta'_s \\,  \sec\theta'_v
 \]
 
 \section{Polarized Surface Reflectance
 (BPDF)}\label{polarized-surface-reflectance-bpdf}
 
-Define scattering cosine:
-
-\[
-C =
-\mu_s\mu_v +
-\sqrt{1-\mu_s^2}\sqrt{1-\mu_v^2}\cos\phi_r
-\]
-
-\[
+Scattering angle have been defined above \(\Theta\). Assuming a flat
+surface which produce the same scattering angle, the incident angle
+relative to the flat surface would be: \[
 \theta_1 =
 \frac{\pi - \arccos(C)}{2}
 \]
+
+which also equivalent to \(\theta_1=(\theta_s+\theta_v)/2\)
 
 \subsection{Fresnel Reflection}\label{fresnel-reflection}
 
@@ -3970,7 +4018,7 @@ r_s =
 {\cos\theta_1 + \sqrt{n^2-\sin^2\theta_1}}
 \]
 
-\textbf{Assumption: \$ n = 1.5 + 0i \$, for leaves?}
+\textbf{Assumption: \$ n = 1.5 + 0i \$ }
 
 \subsection{Fresnel Mueller Matrix}\label{fresnel-mueller-matrix}
 
@@ -3996,6 +4044,10 @@ A-B & A+B & 0 & 0 \\
 \end{bmatrix}
 \]
 
+Nadir reflectance (A+B) can be approximated as \([(n-1)/(n+1)]^2=0.04\)
+for n=1.5. Brewster angle can be observed at the maximum of
+Abs(A-B)/(A+B).
+
 \subsection{Polarization Kernel}\label{polarization-kernel}
 
 \[
@@ -4003,7 +4055,7 @@ A-B & A+B & 0 & 0 \\
 \frac{
 e^{-\tan\theta_1}e^{-v_{fac}}
 }{4(|\mu_s|+|\mu_v|)}
-F
+F (n, \theta_1)
 \]
 
 with
@@ -4024,6 +4076,11 @@ Journal of Geophysical Research.
 
 MODIS Surface Reflectance ATBD\\
 https://modis.gsfc.nasa.gov/data/atbd/atbd\_mod09.pdf
+
+Roujean, J.-L., M.Leroy, and P.-Y.Deschamps (1992), A bidirectional
+reflectance model of the Earth's surface for the correction of remote
+sensing data, J. Geophys. Res., 97(D18), 20455--20468,
+doi:10.1029/92JD01411.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}

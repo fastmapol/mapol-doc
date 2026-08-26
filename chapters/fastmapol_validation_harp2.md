@@ -1,8 +1,10 @@
-# HARP2 L2 aerosol product validation (Pre-Launch DITL test)
+# HARP2 L2 aerosol product validation
 
 ## Overview
 
 Pre-launch Day-in-the-Life (DITL) simulations provide an end-to-end benchmark of HARP2 measurement realism, L2 retrieval performance, and uncertainty characterization. The results below highlight three key aspects: synthetic observations, pixel-wise retrieval performance, and uncertainty analysis. Details are provided in @Gao:2023aa.
+
+Validation of the production data (V3 and V4) is ongoing, following the methodologies reported in @Gao:2026aa. Updated validation results will be provided on the [PACE FastMAPOL validation page](https://pace.oceansciences.org/pace_fastmapol.htm).
 
 ## Summary Information
 

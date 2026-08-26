@@ -75,9 +75,9 @@ These variables define the geographic location of each retrieval pixel.
 
 Group: `/geophysical_data`
 
-The geophysical group contains aerosol optical properties, aerosol microphysical parameters, and ocean color products retrieved by FastMAPOL.
+The geophysical group contains aerosol optical properties, aerosol microphysical parameters, and ocean color products retrieved by FastMAPOL. Two data suites, MAPOL_OCEAN and MAPOL_LAND, are available for aerosol over ocean and land, respectively.  
 
-### Aerosol Optical Properties
+### Aerosol Optical Properties (MAPOL_OCEAN and MAPOL_LAND)
 
 | Variable | Dimensions | Description |
 |----------|-------------|-------------|
@@ -91,9 +91,9 @@ The geophysical group contains aerosol optical properties, aerosol microphysical
 | angstrom_440_670 | (number_of_lines, pixels_per_line) | Ångström exponent (440-670 nm) |
 | fmf | (number_of_lines, pixels_per_line) | Fine-mode optical depth fraction |
 
-These parameters describe aerosol optical loading and spectral behavior.
+These parameters describe aerosol optical loading and spectral behavior. Note that Ångström exponent (440-870 nm) is only available for HARP2 data since SPEXone do not have 870nm band. 
 
-### Aerosol Microphysical Properties
+### Aerosol Microphysical Properties (MAPOL_OCEAN and MAPOL_LAND)
 
 | Variable | Dimensions | Description |
 |----------|-------------|-------------|
@@ -101,9 +101,15 @@ These parameters describe aerosol optical loading and spectral behavior.
 | reff_coarse | (number_of_lines, pixels_per_line) | Coarse-mode effective radius |
 | veff_fine | (number_of_lines, pixels_per_line) | Fine-mode effective variance |
 | veff_coarse | (number_of_lines, pixels_per_line) | Coarse-mode effective variance |
-| mr | (number_of_lines, pixels_per_line, wavelength) | Real refractive index |
-| mi | (number_of_lines, pixels_per_line, wavelength) | Imaginary refractive index |
-| sph | (number_of_lines, pixels_per_line) | Spherical particle fraction |
+| mr_fine | (number_of_lines, pixels_per_line, wavelength) | Fine-mode Real refractive index |
+| mr_coarse | (number_of_lines, pixels_per_line, wavelength) | Coarse-mode Real refractive index |
+| mr | (number_of_lines, pixels_per_line, wavelength) | Mode-average Real refractive index |
+| mi_fine | (number_of_lines, pixels_per_line, wavelength) | Fine-mode Imaginary refractive index |
+| mi_coarse | (number_of_lines, pixels_per_line, wavelength) | Coarse-mode Imaginary refractive index |
+| mi | (number_of_lines, pixels_per_line, wavelength) | Mode-average Imaginary refractive index |
+| sph_fine | (number_of_lines, pixels_per_line) | Fine-mode Spherical particle fraction |
+| sph_coarse | (number_of_lines, pixels_per_line) | Coarse-mode Spherical particle fraction |
+| sph | (number_of_lines, pixels_per_line) | Volum-average Spherical particle fraction |
 | vd_fine | (number_of_lines, pixels_per_line) | Fine-mode volume density |
 | vd_coarse | (number_of_lines, pixels_per_line) | Coarse-mode volume density |
 | fvf | (number_of_lines, pixels_per_line) | Fine-mode volume fraction |
@@ -111,27 +117,35 @@ These parameters describe aerosol optical loading and spectral behavior.
 
 These variables constrain aerosol particle size distribution, composition, and shape.
 
-### Ocean Color Products
+### Ocean Products (MAPOL_OCEAN)
 
 | Variable | Dimensions | Description |
 |----------|-------------|-------------|
-| Rrs1 | (number_of_lines, pixels_per_line, wavelength, number_of_views) | Remote sensing reflectance before BRDF correction |
-| Rrs2 | (number_of_lines, pixels_per_line, wavelength, number_of_views) | Remote sensing reflectance after BRDF correction |
-| Rrs1_mean | (number_of_lines, pixels_per_line, wavelength) | Angular mean of Rrs1 |
-| Rrs1_std | (number_of_lines, pixels_per_line, wavelength) | Angular standard deviation of Rrs1 |
-| Rrs2_mean | (number_of_lines, pixels_per_line, wavelength) | Angular mean of Rrs2 |
-| Rrs2_std | (number_of_lines, pixels_per_line, wavelength) | Angular standard deviation of Rrs2 |
-
-The remote sensing reflectance represents ocean-leaving reflectance after atmospheric correction.
-
-Because the full angular arrays can be large, the Level-2 product typically includes the **angular mean and standard deviation**.
-
-### Additional Surface Variables
-
-| Variable | Dimensions | Description |
-|----------|-------------|-------------|
+| Rrs_angular | (number_of_lines, pixels_per_line, wavelength, number_of_views) | Angular remote sensing reflectance before BRDF correction |
+| Rrs_nadir | (number_of_lines, pixels_per_line, wavelength, number_of_views) | Nadir adjusted remote sensing reflectance after BRDF correction |
+| Rrs_angular_mean | (number_of_lines, pixels_per_line, wavelength) | Angular mean of Rrs_angular |
+| Rrs_angular_std | (number_of_lines, pixels_per_line, wavelength) | Angular standard deviation of Rrs_angular |
+| Rrs_nadir_mean | (number_of_lines, pixels_per_line, wavelength) | Angular mean of Rrs_nadir |
+| Rrs_nadir_std | (number_of_lines, pixels_per_line, wavelength) | Angular standard deviation of Rrs_nadir |
 | wind_speed | (number_of_lines, pixels_per_line) | Surface wind speed |
 | chla | (number_of_lines, pixels_per_line) | Chlorophyll-a concentration |
+
+The remote sensing reflectance represents ocean-leaving reflectance after atmospheric correction. To compare with AERONET OC or other dataset for validation purpose after BRDF correction, variable Rrs_nadir_mean is suggested to use. 
+
+Note that V3 data contains **Rrs1** and **Rrs2**, which are renmaed as **Rrs_angular** and **Rrs_nadir** in current V4 data.
+
+### Land surface product (MAPOL_LAND)
+
+| Variable | Dimensions | Description |
+|----------|-------------|-------------|
+| rhos_angular | (number_of_lines, pixels_per_line, wavelength, number_of_views) | Angular land surface reflectance before BRDF correction |
+| rhos_nadir | (number_of_lines, pixels_per_line, wavelength, number_of_views) | Nadir adjusted land surface reflectance after BRDF correction |
+| rhos_angular_mean | (number_of_lines, pixels_per_line, wavelength) | Angular mean of rhos_angular |
+| rhos_angular_std | (number_of_lines, pixels_per_line, wavelength) | Angular standard deviation of rhos_angular |
+| rhos_nadir_mean | (number_of_lines, pixels_per_line, wavelength) | Angular mean of rhos_nadir |
+| rhos_nadir_std | (number_of_lines, pixels_per_line, wavelength) | Angular standard deviation of rhos_nadir |
+
+The land surface reflectance represents reflectance after atmospheric correction. To compare with validation dataset after BRDF correction, variable rhos_nadir_mean is suggested to use. 
 
 ## Diagnostic Data
 

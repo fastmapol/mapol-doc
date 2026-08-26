@@ -9,8 +9,8 @@ The document is written in **Markdown** and compiled into a structured report (H
 
 
 ## Rendered pdf preview:
-pdf: https://oceancolor.gsfc.nasa.gov/fileshare/meng_gao/pace/fastmapol_atbd_v1/_book/FastMAPOL-Algorithm-Theoretical-Basis-Document.pdf
-html (for only internal user): http://localhost:8200/fileshare/meng_gao/pace/fastmapol_atbd_v1/_book/
+pdf: https://oceancolor.gsfc.nasa.gov/fileshare/meng_gao/pace/atbd/_book/FastMAPOL-Algorithm-Theoretical-Basis-Document.pdf
+html (for only internal user): http://localhost:8200/fileshare/meng_gao/pace/atbd/_book/
 
 ---
 
@@ -30,7 +30,7 @@ The ATBD provides a complete description of these components and their implement
 ## Repository Structure
 
     mapoldoc/
-    ├── atbd_v1/        # build atbd directory with Quarto 
+    ├── atbd/        # build atbd directory with Quarto 
     ├── chapters/       # Chapter files (Markdown)
     ├── figure/         # Figures
     ├── bib/            # Bibliography files (optional)
@@ -83,12 +83,12 @@ Guidelines:
 
 Generate the document using Quarto:
 
-    cd atbd_v1
+    cd atbd
     quarto render
 
 Output will be located in:
 
-    atbd_v1/_site/
+    atbd/_site/
 
 ---
 
