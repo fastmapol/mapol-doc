@@ -40,8 +40,6 @@ $$
 $$ {#eq-D}
 
 
-**NN Forward Model**
-
 | **Layers** | **NN forward model** |
 |---|---|
 | Input | $\mathbf{h}_0=\mathbf{x}$ |
@@ -52,8 +50,6 @@ $$ {#eq-D}
 : NN forward model. {#tbl-nn-forward}
 
 
-**AD: Forward Mode**
-
 | **Layers** | **AD: Forward mode** |
 |---|---|
 | Input | $\dot{\mathbf{h}}_{0,mij}=\delta_{ij}$ |
@@ -63,8 +59,6 @@ $$ {#eq-D}
 
 : Jacobian matrix computed using forward-mode automatic differentiation (AD). {#tbl-ad-forward}
 
-
-**AD: Reverse Mode**
 
 | **Layers** | **AD: Reverse mode** |
 |---|---|

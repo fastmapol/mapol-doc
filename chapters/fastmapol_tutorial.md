@@ -1,4 +1,5 @@
-# Jupyter notebook tutorials
+# Jupyter Notebook Tutorials
+
 Notebook tutorials are available through the [PACE Help Hub](https://nasa.github.io/oceandata-notebooks/sections/cloud-atmosphere.html).
 
 - [HARP2 Ocean Aerosols (FastMAPOL)](https://nasa.github.io/oceandata-notebooks/notebooks/harp2/harp2_l2_fastmapol_aerosol_ocean_product.html) - Working with aerosol data over ocean from the HARP2 polarimeter with the FastMAPOL algorithm

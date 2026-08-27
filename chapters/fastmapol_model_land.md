@@ -1,7 +1,6 @@
 # Land Surface Reflectance Model (Ross–Li BRDF and Polarized BPDF)
 
 This document describes the mathematical formulation of the land surface reflectance model implemented in the **PACE simulator**. 
-**Need proof read to be consistent with the code and formulation**
 
 The model combines:
 - Ross–Li kernel-driven BRDF  

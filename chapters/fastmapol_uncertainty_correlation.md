@@ -1,4 +1,4 @@
-# Uncertainty estimation and angular correlations
+# Uncertainty Estimation and Angular Correlations
 
 In this section, we discuss the general retrieval approach considering correlation between angles following [@Gao:2023bb]. The same maximum-likelihood approach is used to retrieve the state parameters in FastMAPOL by minimizing a cost function that represents the difference between the measurements and forward-model calculations [@Rodgers:2000aa] but in a matrix form:
 

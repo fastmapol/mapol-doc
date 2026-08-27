@@ -1,4 +1,4 @@
-# Aerosol characterization: mixing with size, mode and shapes
+# Aerosol Characterization: mixing with size, mode and shapes
 
 ## Overview
 

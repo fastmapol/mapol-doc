@@ -1,4 +1,4 @@
-# Multi-angle ocean color product
+# Multi-angle Ocean Color Product
 
 Ocean color signals are often represented by the remote sensing reflectance, $R_{rs}(\lambda;\theta_0, \theta_v, \phi_v)$, which is defined as the ratio of upwelling radiance originating from the ocean body to downwelling irradiance just above the ocean surface, with units of $\mathrm{sr}^{-1}$ [@Mobley:2016aa]. Here $\theta_0$ and $\theta_v$ are the solar and viewing zenith angles, and $\phi_v$ is the relative viewing azimuth angle. For simplicity, the wavelength dependence, $\lambda$, which applies to all ocean reflectance-related variables, is omitted in the following notation. To derive this quantity, we need to remove the atmospheric path radiance and compute the water-leaving reflectance ($\rho_w$) as the reflectance originating from scattering in the ocean that reaches the satellite sensor:
 

@@ -1,4 +1,4 @@
-# Aerosol characterization: Two-way conversions between submode volume density and bulk effective size
+# Aerosol Characterization: Two-way conversions between submode volume density and bulk effective size
 
 In the aerosol model adopted here, the retrieved state vector contains the volume densities of the fixed log-normal submodes. From these submode volume densities, one can compute bulk properties such as total fine-mode volume density, total coarse-mode volume density, effective radius, and effective variance for the fine and coarse aerosol populations.
 

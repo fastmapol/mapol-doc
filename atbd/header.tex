@@ -1,10 +1,62 @@
-\usepackage{fancyhdr}
+% --------------------------------------------------
+% FastMAPOL ATBD PDF formatting
+% --------------------------------------------------
 
-% Header / footer style
-\pagestyle{fancy}
-\fancyhead[L]{FastMAPOL ATBD}
-\fancyhead[R]{Draft}
-\fancyfoot[C]{\thepage}
+\usepackage{scrlayer-scrpage}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{microtype}
 
-% Rename Appendix (KOMA-compatible)
-\renewcommand{\appendixname}{Technical Details}
+% --------------------------------------------------
+% Colors
+% --------------------------------------------------
+
+\definecolor{NASABlue}{HTML}{0B3D91}
+\definecolor{NASARed}{HTML}{FC3D21}
+\definecolor{DarkGray}{HTML}{444444}
+
+% --------------------------------------------------
+% Headings
+% --------------------------------------------------
+
+\addtokomafont{chapter}{\color{NASABlue}}
+\addtokomafont{section}{\color{NASABlue}}
+\addtokomafont{subsection}{\color{DarkGray}}
+
+% Slightly cleaner chapter heading
+\RedeclareSectionCommand[
+  beforeskip=0pt,
+  afterskip=1.5\baselineskip
+]{chapter}
+
+% --------------------------------------------------
+% Header / footer
+% --------------------------------------------------
+
+\clearpairofpagestyles
+
+\ihead{\small FastMAPOL ATBD}
+\ohead{\small PACE Mission}
+
+\ifoot{\small NASA GSFC}
+\ofoot{\small \pagemark}
+
+\setkomafont{pageheadfoot}{\normalfont\small\color{DarkGray}}
+\setkomafont{pagenumber}{\normalfont\small}
+
+\pagestyle{scrheadings}
+
+% --------------------------------------------------
+% Tables
+% --------------------------------------------------
+
+\renewcommand{\arraystretch}{1.15}
+
+% --------------------------------------------------
+% Paragraph spacing
+% --------------------------------------------------
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}

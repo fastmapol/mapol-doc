@@ -1,4 +1,4 @@
-# Adaptive multi-angle data screening
+# Adaptive Multi-angle Data Screening
 
 Within the FastMAPOL retrieval algorithm, an adaptive multi-angle data screening approach is implemented, which conducts automatic data quality analysis and data screening. A flowchart is summarized in Figure @fig-flowchart-screening B ((../figure/fig_data_screening.png). More details in the algorithm and applications are in @2021bb.
 

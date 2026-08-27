@@ -1,1 +1,1 @@
-# Aerosol characterization: component approach (Kamal Aryal)
+# Aerosol Characterization: Component Approach (Kamal Aryal)

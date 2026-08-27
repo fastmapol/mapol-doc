@@ -1,4 +1,4 @@
-# HARP2 L2 aerosol product validation
+# HARP2 L2 Aerosol and Ocean Product Validation
 
 ## Overview
 

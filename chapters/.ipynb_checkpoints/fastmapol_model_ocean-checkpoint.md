@@ -19,7 +19,7 @@ These models describe the spectral absorption and scattering properties of four 
 - non-algal particles (NAP)
 - colored dissolved organic matter (CDOM)
 
-The total inherent optical properties are constructed from the contributions of these components.
+The total inherent optical properties are constructed from the contributions of these components. **Bio-1** is used in default for the current released data product. 
 
 ## Bio-1 Optical Model (Open Ocean)
 

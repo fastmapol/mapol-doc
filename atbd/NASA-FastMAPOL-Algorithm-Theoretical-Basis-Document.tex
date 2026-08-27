@@ -7,7 +7,8 @@
 \documentclass[
   11pt,
   letterpaper,
-]{scrreprt}
+  DIV=11,
+  numbers=noendperiod]{scrreprt}
 \usepackage{xcolor}
 \usepackage[top=1in,bottom=1in,left=1in,right=1in]{geometry}
 \usepackage{amsmath,amssymb}
@@ -202,6 +203,7 @@
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.45em}
+\KOMAoption{captions}{tableheading}
 \makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
 \makeatother
@@ -250,8 +252,8 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={FastMAPOL Algorithm Theoretical Basis Document},
-  pdfauthor={Meng Gao; Pengwang Zhai; Kamal Aryal; Kirk Knobelspiesse; Bryan Franz},
+  pdftitle={NASA FastMAPOL Algorithm Theoretical Basis Document},
+  pdfauthor={Meng Gao, Pengwang Zhai, Kamal Aryal, Kirk Knobelspiesse, Bryan Franz},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -260,34 +262,17 @@
   pdfcreator={LaTeX via pandoc}}
 
 
-% ============================================================
-% FastMAPOL ATBD custom title
-% ============================================================
-
-\title{%
-\begin{tabular}{c}
-\includegraphics[height=1.15in]{../logo/nasa_logo.png}
-\\[0.6cm]
-\LARGE\bfseries FastMAPOL Algorithm Theoretical Basis Document
-\\[0.35cm]
-\Large\mdseries PACE Multi-Angle Polarimetric Aerosol, Ocean, and Land
-Retrieval
-\end{tabular}%
+\title{NASA FastMAPOL Algorithm Theoretical Basis Document}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
-
-\author{%
-\normalsize
-Meng Gao, \quad
-Pengwang Zhai, \quad
-Kamal Aryal, \quad
-Kirk Knobelspiesse, \quad
-Bryan Franz}
-
-\date{%
-NASA PACE Mission
-\\[0.15cm]
-2026-08-26
-}
+\makeatother
+\subtitle{PACE Polarimeter Aerosol and Surface Retrieval}
+\author{Meng Gao, Pengwang Zhai, Kamal Aryal, Kirk Knobelspiesse, Bryan
+Franz}
+\date{2026-08-26}
 \begin{document}
 \maketitle
 
@@ -302,508 +287,31 @@ NASA PACE Mission
 
 \bookmarksetup{startatroot}
 
-\chapter*{About This Document}\label{about-this-document}
-\addcontentsline{toc}{chapter}{About This Document}
+\chapter{FastMAPOL Algorithm Theoretical Basis
+Document}\label{fastmapol-algorithm-theoretical-basis-document}
 
-\markboth{About This Document}{About This Document}
+PACE Multi-Angle Polarimetric Aerosol, Ocean, and Land Retrieval
 
-This Algorithm Theoretical Basis Document (ATBD) describes the
-theoretical basis, implementation, data products, and validation of the
-Fast Multi-Angle Polarimetric Ocean and Land (FastMAPOL) retrieval
-algorithm developed for the NASA Plankton, Aerosol, Cloud, ocean
-Ecosystem (PACE) mission.
-
-FastMAPOL retrieves aerosol, ocean, and land surface properties from
-multi-angle polarimetric observations acquired by the PACE polarimeters,
-HARP2 and SPEXone. The algorithm is currently run in production and
-produce operational aerosol, ocean color and land surface products with
-public available data through NASA Earth Data Cloud.
-
-The following chapters provide information on data access through NASA
-Earthdata and product release notes. These are followed by
-\textbf{FastMAPOL at a Glance}, which provides a high-level overview of
-the algorithm. The algorithm overview, data product format, and
-validation results are then summarized in the subsequent chapters. More
-detailed technical descriptions of the algorithm and its underlying
-methodology are provided in the second part of this document.
+\hfill\break
 
 \bookmarksetup{startatroot}
 
-\chapter*{Earthdata Access}\label{earthdata-access}
-\addcontentsline{toc}{chapter}{Earthdata Access}
-
-\markboth{Earthdata Access}{Earthdata Access}
-
-FastMAPOL Level-2 (L2) and Level-3 mapped (L3M) products are distributed
-through NASA Earthdata. The most recent production version is listed
-first below.
-
-\section*{Version 4.0}\label{version-4.0}
-\addcontentsline{toc}{section}{Version 4.0}
-
-\markright{Version 4.0}
-
-\textbf{SPEXone MAPOL\_OCEAN}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{L2:}
-  \url{https://doi.org/10.5067/PACE/SPEXONE/L2/MAPOL_OCEAN/4.0}
-\item
-  \textbf{L3M:} Replace \texttt{L2} with \texttt{L3M} in the DOI path.
-\end{itemize}
-
-\textbf{HARP2 MAPOL\_OCEAN}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{L2:}
-  \url{https://doi.org/10.5067/PACE/HARP2/L2/MAPOL_OCEAN/4.0}
-\item
-  \textbf{L3M:} Replace \texttt{L2} with \texttt{L3M} in the DOI path.
-\end{itemize}
-
-\textbf{HARP2 MAPOL\_LAND}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{L2:}
-  \url{https://doi.org/10.5067/PACE/HARP2/L2/MAPOL_LAND/4.0}
-\item
-  \textbf{L3M:} Replace \texttt{L2} with \texttt{L3M} in the DOI path.
-\end{itemize}
-
-\section*{Version 3.0}\label{version-3.0}
-\addcontentsline{toc}{section}{Version 3.0}
-
-\markright{Version 3.0}
-
-Version 3.0 products remain available for users who need access to the
-earlier FastMAPOL production release.
-
-\textbf{SPEXone MAPOL\_OCEAN}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{L2:}
-  \url{https://doi.org/10.5067/PACE/SPEXONE/L2/MAPOL_OCEAN/3.0}
-\item
-  \textbf{L3M:} Replace \texttt{L2} with \texttt{L3M} in the DOI path.
-\end{itemize}
-
-\textbf{HARP2 MAPOL\_OCEAN}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{L2:}
-  \url{https://doi.org/10.5067/PACE/HARP2/L2/MAPOL_OCEAN/3.0}
-\item
-  \textbf{L3M:} Replace \texttt{L2} with \texttt{L3M} in the DOI path.
-\end{itemize}
-
-\bookmarksetup{startatroot}
-
-\chapter*{Release Notes}\label{release-notes}
-\addcontentsline{toc}{chapter}{Release Notes}
-
-\markboth{Release Notes}{Release Notes}
-
-\section*{FastMAPOL Product Release Notes
-(V4)}\label{fastmapol-product-release-notes-v4}
-\addcontentsline{toc}{section}{FastMAPOL Product Release Notes (V4)}
-
-\markright{FastMAPOL Product Release Notes (V4)}
-
-The FastMAPOL Version 4 release notes are available through the
-\href{https://pace.oceansciences.org/access_pace_data.htm}{NASA PACE
-Data Access page}.
-
-\subsection*{HARP2 Level-2 Products}\label{harp2-level-2-products}
-\addcontentsline{toc}{subsection}{HARP2 Level-2 Products}
-
-\begin{itemize}
-\item
-  MAPOL\_LAND (Aerosol and Land Properties, FastMAPOL Algorithm)
-\item
-  MAPOL\_OCEAN (Aerosol and Ocean Properties, FastMAPOL Algorithm)
-\end{itemize}
-
-\textbf{Changes from Version 3}
-
-\begin{itemize}
-\item
-  Uses Version 4 L1C data, with the same FastMAPOL retrieval algorithm
-  previously applied to Version 3 data.
-\item
-  Aerosol retrieval quality is improved for the MAPOL\_OCEAN data
-  suites. Quality flags 0 and 1 are recommended for scientific
-  applications.
-\item
-  Quality flag definitions have been updated. Please refer to the new
-  HelpHub notebooks for details:
-
-  \url{https://nasa.github.io/oceandata-notebooks/sections/cloud-atmosphere.html}
-\item
-  Ocean surface reflectance products Rrs1 and Rrs2 have been renamed
-  Rrs\_angular and Rrs\_nadir, respectively. These represent angular Rrs
-  before and after BRDF correction.
-\item
-  New MAPOL\_LAND data suites have been added. Multi-angle land surface
-  reflectances are reported as rhos\_angular and rhos\_nadir.
-\end{itemize}
-
-\textbf{Known issues}
-
-\begin{itemize}
-\item
-  A substantial fraction of aerosol retrievals is associated with
-  lower-quality retrieval conditions, including larger \(\chi^2\) values
-  and fewer valid viewing angles (nv\_ref and nv\_dolp). These
-  retrievals can exhibit larger biases in aerosol optical properties
-  such as AOD. Users are encouraged to apply the recommended quality
-  flags.
-\item
-  MAPOL\_LAND is undergoing active testing and improvement. The current
-  version shows significant biases in both fine- and coarse-mode aerosol
-  properties and should therefore be used with caution.
-\end{itemize}
-
-\subsection*{HARP2 Level-3 Products}\label{harp2-level-3-products}
-\addcontentsline{toc}{subsection}{HARP2 Level-3 Products}
-
-HARP2 Level-2 products are composited into global Level-3 binned and
-mapped products. Daily, 8-day, and monthly Level-3 mapped products are
-produced on an equirectangular grid at 0.1-deg and 1-deg resolution. The
-available list of mapped product types now include:
-
-\begin{itemize}
-\tightlist
-\item
-  MAPOL\_OCEAN: aerosol and ocean properties from FastMAPOL algorithm
-\item
-  MAPOL\_LAND: aerosol and land properties from FastMAPOL algorithm
-\end{itemize}
-
-\subsection*{SPEXone Level-2 Products}\label{spexone-level-2-products}
-\addcontentsline{toc}{subsection}{SPEXone Level-2 Products}
-
-\textbf{Changes from Version 3}
-
-\begin{itemize}
-\item
-  Uses Version 4 L1C data, with the same FastMAPOL retrieval algorithm
-  previously applied to Version 3 data.
-\item
-  Retrieval performance is similar to the reported validation results
-  against AERONET and AERONET-OC observations (Gao, M., K. Aryal, P.
-  Zhai, K. Knobelspiesse, B. Franz, B. Cairns, I. Cetinić, G. Fu, O.
-  Hasekamp, A. Ibrahim, A. M. Sayer, and P. J. Werdell. 2026. ``Where
-  Sky Meets Sea: Integrated Aerosol and Ocean Color Retrieval from PACE
-  SPEXone Multi-Angle Polarimetry.'' \emph{Remote Sensing of
-  Environment}, 345, 115603.
-  \url{https://doi.org/10.1016/j.rse.2026.115603}).
-\item
-  Rrs1 and Rrs2 have been renamed Rrs\_angular and Rrs\_nadir,
-  respectively, representing angular Rrs before and after BRDF
-  correction.
-\end{itemize}
-
-\textbf{Known issues}
-
-\begin{itemize}
-\item
-  Ocean Rrs bias is reduced, but still with a positive bias of
-  approximately 0.001 sr⁻¹ in the blue bands.
-\item
-  Over coastal waters, Rrs and AOD exhibit stronger coupling and higher
-  retrieval uncertainties, as discussed in the above paper. Improvements
-  are planned to better account for complex water optical properties
-  (Aryal, K., M. Gao, P. Zhai, B. A. Franz, K. Knobelspiesse, A.
-  Ibrahim, and J. Werdell. 2026. ``Aerosol and Ocean Color Retrievals
-  from the FastMAPOL/Component Algorithm Using NASA's PACE Polarimetric
-  Measurements.'' \emph{Optics Express}, 34(16), 29139.
-  \url{https://doi.org/10.1364/OE.607432}).
-\end{itemize}
-
-\subsection*{SPEXone Level-3 Products}\label{spexone-level-3-products}
-\addcontentsline{toc}{subsection}{SPEXone Level-3 Products}
-
-SPEXone Level-2 products are composited into global Level-3 binned and
-mapped products. Daily, 8-day, and monthly Level-3 mapped products are
-produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The
-available list of mapped product types now include:
-
-\begin{itemize}
-\tightlist
-\item
-  AER\_RTAP: aerosol optical and microphysical properties over land and
-  ocean from RemoTAP algorithm
-\item
-  AER\_RTAPLAND: retrieved land surface parameters (Ross-Li) from
-  RemoTAP
-\item
-  AER\_RTAPOCEAN: retrieved ocean surface parameters (phytoplankton
-  chlorophyll) from RemoTAP
-\item
-  MAPOL\_OCEAN: aerosol and ocean properties from FastMAPOL algorithm
-\item
-  MAPOL\_LAND: aerosol and land properties from FastMAPOL algorithm
-\end{itemize}
-
-\section*{FastMAPOL Product Release Notes
-(V3)}\label{fastmapol-product-release-notes-v3}
-\addcontentsline{toc}{section}{FastMAPOL Product Release Notes (V3)}
-
-\markright{FastMAPOL Product Release Notes (V3)}
-
-The FastMAPOL Version 3 release notes are available through the
-\href{https://pace.oceansciences.org/access_pace_data.htm}{NASA PACE
-Data Access page}.
-
-\subsection*{SPEXone Level-2 Products}\label{spexone-level-2-products-1}
-\addcontentsline{toc}{subsection}{SPEXone Level-2 Products}
-
-\begin{itemize}
-\tightlist
-\item
-  MAPOL\_OCEAN (Aerosol and Ocean Properties from FastMAPOL Algorithm)
-\end{itemize}
-
-This is the first release of Level-2 and Level-3 products from the
-FastMAPOL algorithm as applied to SPEXone Version 3 Level-1C. The
-FastMAPOL algorithm generates a large suite of aerosol and ocean
-properties. A subset is listed here.
-
-\textbf{Provisional Products}
-
-\begin{itemize}
-\tightlist
-\item
-  Aerosol Optical Thickness (aot)
-\item
-  Single Scattering Albedo (ssa)
-\item
-  Effective Radius of Fine Mode Aerosols (reff\_fine)
-\item
-  Effective Radius of Coarse Mode Aerosols (reff\_fine)
-\item
-  Fine Mode Fraction (fmf)
-\item
-  Fine Mode Fraction by Volume (fvf)
-\item
-  Real Index of Refraction (mr)
-\item
-  Imaginary Index of Refraction (mi)
-\item
-  Wind speed (wind\_speed)
-\item
-  Chlorophyll a concentration (Chla)
-\item
-  Angular Mean Water-Leaving Reflectance before BRDF correction
-  (Rrs1\_mean)
-\item
-  Standard Deviation of Rrs1 (Rrs1\_std)
-\item
-  Angular Mean Water-Leaving Reflectance after BRDF correction
-  (Rrs2\_mean)
-\item
-  Standard Deviation of Rrs2 (Rrs2\_std)
-\end{itemize}
-
-\textbf{Known issues}
-
-\begin{itemize}
-\tightlist
-\item
-  Small negative Rrs offset (\textasciitilde-0.001) is often observed at
-  wavelengths \textgreater{} 600 nm.
-\item
-  BRDF correction does not fully remove Rrs angular dependence (as seen
-  in Rrs2).
-\item
-  High Rrs bias at 678 nm likely due to influence of the Oxygen A-band.
-\end{itemize}
-
-\subsection*{SPEXone Level-3 Products}\label{spexone-level-3-products-1}
-\addcontentsline{toc}{subsection}{SPEXone Level-3 Products}
-
-SPEXone Level-2 products are composited into global Level-3 binned and
-mapped products. Daily, 8-day, and monthly Level-3 mapped products are
-produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The
-available list of mapped product types now include:
-
-\begin{itemize}
-\tightlist
-\item
-  AER\_RTAP: aerosol optical and microphysical properties over land and
-  ocean from RemoTAP algorithm
-\item
-  AER\_RTAPLAND: retrieved land surface parameters (Ross-Li)
-\item
-  AER\_RTAP\_OCEAN: retrieved ocean surface parameters (phytoplankton
-  chlorophyll)
-\item
-  MAPOL\_OCEAN: aerosol and ocean properties over ocean from FastMAPOL
-  algorithm
-\end{itemize}
-
-\subsection*{HARP2 Level-2 Products}\label{harp2-level-2-products-1}
-\addcontentsline{toc}{subsection}{HARP2 Level-2 Products}
-
-\textbf{MAPOL\_OCEAN (Aerosol and Ocean Properties from FastMAPOL
-Algorithm)}
-
-This is the first release of Level-2 and Level-3 products from the
-FastMAPOL algorithm as applied to HARP2 Version 3 Level-1C. The
-FastMAPOL algorithm generates a large suite of aerosol and ocean optical
-properties. A subset is listed here.
-
-\textbf{Provisional Products}
-
-\begin{itemize}
-\tightlist
-\item
-  Aerosol Optical Thickness (aot)
-\item
-  Single Scattering Albedo (ssa)
-\item
-  Effective Radius of Fine Mode Aerosols (reff\_fine)
-\item
-  Effective Radius of Coarse Mode Aerosols (reff\_fine)
-\item
-  Fine Mode Fraction (fmf)
-\item
-  Fine Mode Fraction by Volume (fvf)
-\item
-  Real Index of Refraction (mr)
-\item
-  Imaginary Index of Refraction (mi)
-\item
-  Wind speed (wind\_speed)
-\item
-  Chlorophyll a concentration (Chla)
-\item
-  Angular Mean Water-Leaving Reflectance before BRDF correction
-  (Rrs1\_mean)
-\item
-  Standard Deviation of Rrs1 (Rrs1\_std)
-\item
-  Angular Mean Water-Leaving Reflectance after BRDF correction
-  (Rrs2\_mean)
-\item
-  Standard Deviation of Rrs2 (Rrs2\_std)
-\end{itemize}
-
-\textbf{Known issues}
-
-\begin{itemize}
-\tightlist
-\item
-  Aerosol optical depth is biased high (\textasciitilde0.07) as compared
-  with AERONET-OC.
-\item
-  Remote-sensing reflectance (Rrs) is biased low (-0.001) as compared
-  with AERONET-OC.
-\item
-  High uncertainty in aerosol microphysical retrievals (mr, mi, sph, alh
-  etc).
-\item
-  Fewer polarization measurements than radiance measurements are
-  successfully fitted, as indicated by valid angle counts (Nv\_ref and
-  Nv\_dolp) and angular data mask (mask\_ref and mask\_dolp).
-\end{itemize}
-
-\subsection*{HARP2 Level-3 Products}\label{harp2-level-3-products-1}
-\addcontentsline{toc}{subsection}{HARP2 Level-3 Products}
-
-HARP2 Level-2 products are composited into global Level-3 binned and
-mapped products. Daily, 8-day, and monthly Level-3 mapped products are
-produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The
-available list of mapped product types now include:
-
-\begin{itemize}
-\tightlist
-\item
-  MAPOL\_OCEAN: aerosol and ocean properties over ocean from FastMAPOL
-  algorithm
-\end{itemize}
-
-\bookmarksetup{startatroot}
-
-\chapter{FastMAPOL at a Glance}\label{fastmapol-at-a-glance}
+\chapter{Executive Summary}\label{executive-summary}
 
 FastMAPOL (Fast Multi-Angle Polarimetric Ocean and Land) is a nonlinear
 least-squares retrieval algorithm developed for the NASA Plankton,
-Aerosol, Cloud, ocean Ecosystem (PACE) mission. It retrieves aerosol,
-ocean, and land surface properties from multi-angle polarimetric
-observations acquired by the PACE polarimeters, HARP2 and SPEXone.
+Aerosol, Cloud, ocean Ecosystem (PACE) mission. It retrieves aerosol and
+surface properties from multi-angle polarimetric observations acquired
+by the PACE polarimeters, HARP2 and SPEXone.
 
 FastMAPOL combines physics-based vector radiative transfer with neural
-network (NN) emulators and numerical optimization to achieve both
-physical consistency and computational efficiency, enabling
-operational-scale processing of PACE polarimetric observations. The
-algorithm jointly retrieves aerosol and surface properties and provides
-associated pixel-level uncertainty estimates.
+network (NN) emulators to achieve both retrieval accuracy and
+computational efficiency, enabling operational-scale processing of PACE
+polarimetric observations. The algorithm jointly retrieves aerosol and
+surface properties and provides associated pixel-level uncertainty
+estimates.
 
-This chapter provides a high-level overview of the FastMAPOL algorithm,
-retrieval products, product format, and validation. Detailed
-descriptions of the theoretical basis and individual algorithm
-components are provided in subsequent chapters and technical sections.
-
-\section{Algorithm Overview}\label{algorithm-overview}
-
-At a high level, FastMAPOL operates through the following steps:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  \textbf{Forward modeling:} Coupled atmosphere-ocean and
-  atmosphere-land vector radiative transfer models describe the measured
-  multi-angle radiance and polarization as functions of aerosol
-  properties, surface properties, and observation geometry.
-\item
-  \textbf{Neural network acceleration:} NNs trained using rigorous
-  radiative transfer simulations serve as fast forward-model emulators,
-  enabling efficient calculations of radiance and polarization during
-  iterative retrievals.
-\item
-  \textbf{Joint optimization:} Aerosol and surface parameters are
-  retrieved simultaneously by minimizing the differences between
-  measured and modeled multi-angle reflectance and degree of linear
-  polarization (DoLP).
-\item
-  \textbf{Adaptive data screening:} Measurements that cannot be
-  adequately represented by the forward model, for example because of
-  cloud contamination or subpixel heterogeneity, are identified from
-  fitting residuals and can be adaptively excluded from subsequent
-  retrieval iterations.
-\item
-  \textbf{Uncertainty estimation:} Pixel-level retrieval uncertainties
-  are estimated using measurement and forward-model uncertainties
-  together with the Jacobian matrix. Spectral and angular uncertainty
-  correlations can also be incorporated into the retrieval framework.
-\item
-  \textbf{Surface reflectance retrieval:} Following aerosol retrieval
-  and atmospheric correction, FastMAPOL derives surface reflectance
-  products, including angular remote sensing reflectance (\(R_{rs}\))
-  over ocean and angular surface reflectance over land. Bidirectional
-  reflectance corrections can further be applied to provide standardized
-  surface reflectance products.
-\end{enumerate}
-
-The resulting framework exploits the information contained in
-multi-angle polarimetric measurements to jointly constrain atmospheric
-and surface properties while maintaining consistency among aerosol
-retrieval, atmospheric correction, and surface reflectance retrieval.
-
-\section{Major Algorithm Features}\label{major-algorithm-features}
-
-The major features of FastMAPOL include:
+Major features of FastMAPOL include:
 
 \begin{itemize}
 \tightlist
@@ -811,9 +319,8 @@ The major features of FastMAPOL include:
   Coupled atmosphere-surface vector radiative transfer using the PACE
   Simulator
 \item
-  Cascaded neural network forward-model emulators
-\item
-  Analytical Jacobian calculations using automatic differentiation
+  Cascaded neural network forward-model emulators with analytical
+  Jacobians
 \item
   Nonlinear least-squares optimization for joint aerosol and surface
   retrieval
@@ -828,22 +335,110 @@ The major features of FastMAPOL include:
   surface reflectance
 \end{itemize}
 
-\section{Retrieval Products}\label{retrieval-products}
-
 FastMAPOL retrieval products include aerosol optical and microphysical
 properties, aerosol layer height, ocean bio-optical properties,
 multi-angle remote sensing reflectance over ocean, and surface
-reflectance properties over land. The products also include associated
-retrieval diagnostics and pixel-level uncertainty estimates.
-
-\section{Technical Details}\label{technical-details}
+reflectance properties over land.
 
 This Algorithm Theoretical Basis Document (ATBD) describes the physical
 basis, radiative transfer models, neural network forward models,
 inversion methodology, uncertainty characterization, data products, and
 validation of FastMAPOL for PACE HARP2 and SPEXone observations.
 
-The subsequent technical sections provide detailed descriptions of:
+The remainder of this document is organized into chapters describing the
+FastMAPOL algorithm, forward models, retrieval methodology, data
+products, and validation results. A high-level overview is first
+provided in algorithm summary for readers who want a concise description
+of the algorithm and products before proceeding to the detailed
+technical sections.
+
+\bookmarksetup{startatroot}
+
+\chapter{Document Information}\label{document-information}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Item
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Document Title & FastMAPOL Algorithm Theoretical Basis Document \\
+Version & v2026.8.26 \\
+Date & 2026-08-26 \\
+Authors & Meng Gao, Pengwang Zhai, Kamal Aryal, Kirk Knobelspiesse,
+Bryan Franz \\
+Institution & NASA Goddard Space Flight Center (GSFC) \\
+Project & PACE Mission \\
+\end{longtable}
+
+\bookmarksetup{startatroot}
+
+\chapter{Algorithm Overview}\label{algorithm-overview}
+
+Before diving into the full document, this chapter provides a high-level
+overview of the FastMAPOL algorithm, data products, product format, and
+validation results.
+
+FastMAPOL is a physics-based retrieval algorithm designed to retrieve
+aerosol, ocean color, and land surface properties from multi-angle
+polarimetric observations. It combines a coupled vector radiative
+transfer framework with neural network (NN) forward models and numerical
+optimization to achieve both physical consistency and computational
+efficiency.
+
+At a high level, FastMAPOL works through the following steps:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Forward modeling:} A coupled atmosphere-ocean or
+  atmosphere-land vector radiative transfer model describes the measured
+  multi-angle radiance and polarization as functions of aerosol
+  properties, surface properties, and observation geometry.
+\item
+  \textbf{Neural network acceleration:} NNs trained using rigorous
+  radiative transfer simulations serve as fast forward-model emulators,
+  allowing radiance and polarization to be calculated efficiently during
+  iterative retrievals.
+\item
+  \textbf{Joint optimization:} Aerosol and surface parameters are
+  retrieved simultaneously by minimizing the differences between the
+  measured and modeled multi-angle reflectance and degree of linear
+  polarization (DoLP).
+\item
+  \textbf{Adaptive data screening:} Measurements that cannot be
+  adequately represented by the forward model, for example because of
+  cloud contamination or other subpixel heterogeneity, can be identified
+  from the fitting residuals and adaptively excluded from subsequent
+  retrieval iterations.
+\item
+  \textbf{Uncertainty estimation:} Pixel-level retrieval uncertainties
+  are estimated using the measurement uncertainties, forward-model
+  uncertainties, and Jacobian matrix, with uncertainty correlations
+  considered where applicable.
+\item
+  \textbf{Surface reflectance retrieval:} Following the aerosol
+  retrieval and atmospheric correction, FastMAPOL derives surface
+  reflectance products, including angular remote sensing reflectance
+  (\(R_{rs}\)) over ocean and angular surface reflectance over land.
+  Bidirectional reflectance corrections can further be applied to
+  provide standardized surface reflectance products.
+\end{enumerate}
+
+The resulting framework uses the information contained in multi-angle
+measurements to jointly constrain atmospheric and surface properties
+while maintaining consistency between aerosol retrieval, atmospheric
+correction, and surface reflectance retrieval.
+
+For more technical details, please refer to the subsequent sections,
+which describe:
 
 \begin{itemize}
 \tightlist
@@ -851,7 +446,7 @@ The subsequent technical sections provide detailed descriptions of:
   Vector radiative transfer, including aerosol, ocean, and land surface
   models
 \item
-  Neural network forward-model training
+  Neural network (NN) forward model training
 \item
   Analytical NN Jacobian calculation using automatic differentiation
 \item
@@ -861,50 +456,42 @@ The subsequent technical sections provide detailed descriptions of:
 \item
   Treatment of uncertainty correlations
 \item
-  Atmospheric and bidirectional reflectance correction
-\item
-  Angular surface reflectance over ocean and land
+  Angular surface reflectance for ocean and land
 \end{itemize}
 
 \bookmarksetup{startatroot}
 
-\chapter{FastMAPOL Retrieval
-Framework}\label{fastmapol-retrieval-framework}
+\chapter{Retrieval algorithm summary}\label{retrieval-algorithm-summary}
 
 FastMAPOL is an efficient coupled aerosol and ocean color retrieval
 algorithm that combines neural network (NN) forward models with
-iterative optimization (\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021};
-\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}). The NN forward
-models emulate vector radiative transfer calculations for a coupled
-atmosphere-ocean system based on the PACE simulator
-(\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009},
-\citeproc{ref-Zhai:2010aa}{2010}; \citeproc{ref-Zhai:2022aa}{Zhai and Hu
-2022}). Please find more details in the NN, automatic differentiaton and
-aerosol and surface model details in the technical section.
+iterative optimization (M. Gao et al. 2021; M. Gao, Franz, et al. 2023).
+The NN forward models emulate vector radiative transfer calculations for
+a coupled atmosphere-ocean system based on the PACE simulator (Zhai et
+al. 2009, 2010; Zhai and Hu 2022). Please find more details in the NN,
+automatic differentiaton and aerosol and surface model details in the
+technical section.
 
 \section{Radiative transfer
 parameterization}\label{radiative-transfer-parameterization}
 
 The radiative transfer (RT) model used in this work is the PACE
-simulator (\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}), which solves
-the polarized radiance field in a coupled atmosphere-ocean system with
-flexible solar and viewing geometries, aerosol microphysical properties,
-and ocean bio-optical models (\citeproc{ref-Gao:2018aa}{Meng Gao et al.
-2018}). The RT model is used to generate the training datasets for the
-neural network forward models (\citeproc{ref-Gao:2021aa}{M. Gao et al.
-2021}; \citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}).
+simulator (Zhai and Hu 2022), which solves the polarized radiance field
+in a coupled atmosphere-ocean system with flexible solar and viewing
+geometries, aerosol microphysical properties, and ocean bio-optical
+models (Meng Gao et al. 2018). The RT model is used to generate the
+training datasets for the neural network forward models (M. Gao et al.
+2021; M. Gao, Franz, et al. 2023).
 
 The forward radiative transfer simulations use atmospheric molecular
 vertical distributions from the U.S. Standard Atmosphere profile
-(\citeproc{ref-Anderson:1986aa}{Anderson et al. 1986}), scaled by
-surface pressure. Absorption by oxygen, water vapor, methane, carbon
-dioxide, ozone, and nitrogen dioxide is accounted for using line-by-line
-calculations and the double-k distribution method
-(\citeproc{ref-Duan:2005aa}{Duan, Min, and Li 2005};
-\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}). Surface pressure \(P_s\)
-and ozone column density \(n_{\mathrm{O}_3}\) are considered as input
-parameters, with values obtained from the MERRA-2 reanalysis
-(\citeproc{ref-Gelaro:2017aa}{Gelaro et al. 2017}).
+(Anderson et al. 1986), scaled by surface pressure. Absorption by
+oxygen, water vapor, methane, carbon dioxide, ozone, and nitrogen
+dioxide is accounted for using line-by-line calculations and the
+double-k distribution method (Duan, Min, and Li 2005; Zhai and Hu 2022).
+Surface pressure \(P_s\) and ozone column density \(n_{\mathrm{O}_3}\)
+are considered as input parameters, with values obtained from the
+MERRA-2 reanalysis (Gelaro et al. 2017).
 
 Aerosols are represented by a multi-modal framework that allows
 independent characterization of fine- and coarse-mode size
@@ -915,45 +502,41 @@ while the coarse mode is represented by two submodes. Each submode is
 described by a log-normal size distribution with mean radii of 0.1,
 0.1732, 0.3, 1.0, and 2.9 \(\mu\mathrm{m}\) and geometric standard
 deviations of 0.35, 0.35, 0.35, 0.5, and 0.5, respectively, consistent
-with Oleg Dubovik et al. (\citeproc{ref-Dubovik:2006aa}{2006}) and Xu et
-al. (\citeproc{ref-Xu:2016aa}{2016}). The volume density of each submode
-is denoted by \(V_i\).
+with Oleg Dubovik et al. (2006) and Xu et al. (2016). The volume density
+of each submode is denoted by \(V_i\).
 
 Both fine and coarse modes allow mixtures of spherical and spheroidal
-particles to account for particle non-sphericity
-(\citeproc{ref-Dubovik:2006aa}{Oleg Dubovik et al. 2006}). The
-corresponding spherical fractions are represented by \(\mathrm{sph}_f\)
-and \(\mathrm{sph}_c\). The aerosol vertical distribution is
-parameterized by the aerosol layer height (\(z_c\)), defined as the
-center of a Gaussian vertical profile describing aerosol number density.
+particles to account for particle non-sphericity (Oleg Dubovik et al.
+2006). The corresponding spherical fractions are represented by
+\(\mathrm{sph}_f\) and \(\mathrm{sph}_c\). The aerosol vertical
+distribution is parameterized by the aerosol layer height (\(z_c\)),
+defined as the center of a Gaussian vertical profile describing aerosol
+number density.
 
 Ocean bio-optical properties, including contributions from pure
 seawater, phytoplankton, and colored dissolved organic matter (CDOM),
 are parameterized using chlorophyll-a concentration (Chl-a). The
 scattering phase functions of phytoplankton are represented by the
-Fournier-Forand (FF) phase function
-(\citeproc{ref-Fournier:1994aa}{Fournier and Forand 1994}), which is
+Fournier-Forand (FF) phase function (Fournier and Forand 1994), which is
 mixed with the pure seawater phase function to describe total scattering
 in seawater. The Mueller matrix is represented by the product of the
 mixed phase function and the average normalized Mueller matrix measured
-by Voss and Fry (\citeproc{ref-Voss:1984aa}{1984}) and parameterized by
-Kokhanovsky (\citeproc{ref-Kokhanovsky:2003aa}{2003}).
+by Voss and Fry (1984) and parameterized by Kokhanovsky (2003).
 
 Ocean surface roughness is described using the Cox-Munk model,
 parameterized by surface wind speed (\(w_s\)). The whitecap fraction is
 parameterized in terms of wind speed, with whitecap reflectance based on
-Koepke (\citeproc{ref-Koepke:1984aa}{1984}).
+Koepke (1984).
 
 The current bio-optical model is best suited for waters optically
 dominated by phytoplankton and performs well over most global ocean
-waters (\citeproc{ref-Gao:2026aa}{Meng Gao et al. 2026}), but it faces
-challenges in accurately representing optically complex coastal waters,
-particularly those influenced by non-algal particles and strong CDOM
-absorption. Ongoing development of more advanced bio-optical models
-capable of representing complex water types will enable more realistic
-retrievals in coastal waters, particularly in regions influenced by both
-complex aerosol properties and bright ocean constituents Aryal et al.
-(\citeproc{ref-Aryal:2026aa}{2026}).
+waters (Meng Gao et al. 2026), but it faces challenges in accurately
+representing optically complex coastal waters, particularly those
+influenced by non-algal particles and strong CDOM absorption. Ongoing
+development of more advanced bio-optical models capable of representing
+complex water types will enable more realistic retrievals in coastal
+waters, particularly in regions influenced by both complex aerosol
+properties and bright ocean constituents Aryal et al. (2026).
 
 All forward-model parameters and their ranges are summarized in
 Table~\ref{tbl-param-ranges}. Solar and viewing geometries are specified
@@ -1013,7 +596,7 @@ accuracy. A smaller, computationally efficient neural network is used to
 generate an initial first guess, while a larger and more accurate neural
 network is applied in subsequent refinement steps of the retrieval. This
 two-stage strategy balances computational efficiency with retrieval
-accuracy (\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}).
+accuracy (M. Gao, Franz, et al. 2023).
 
 In addition to the TOA forward models, separate neural network models
 are developed to support atmospheric correction. These include NNs
@@ -1036,8 +619,8 @@ are summarized in Table~\ref{tbl-nn-arch}.
   >{\raggedleft\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4000}}@{}}
 \caption{Neural network architectures and associated uncertainties used
 in FastMAPOL for SPEXone (34 spectral bands). For HARP2 the output bands
-are 4 with similar structures (\citeproc{ref-Gao:2023aa}{M. Gao, Franz,
-et al. 2023}).}\label{tbl-nn-arch}\tabularnewline
+are 4 with similar structures (M. Gao, Franz, et al.
+2023).}\label{tbl-nn-arch}\tabularnewline
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 \textbf{Quantity}
@@ -1105,7 +688,7 @@ sensor altitude, \(F_0\) is the extraterrestrial solar irradiance, and
 
 The differences between the measurements and model predictions are
 represented by a cost function, \(\chi^2\), based on Bayesian theory
-(\citeproc{ref-Rodgers:2000aa}{Rodgers 2000}):
+(Rodgers 2000):
 
 \begin{equation}\phantomsection\label{eq-cost}{
 \chi^2({\mathbf x})
@@ -1155,9 +738,8 @@ uncertainties \(\sigma_{\mathrm{RT}}\) used to train the NN:
 }\end{equation}
 
 The NN forward-model uncertainties are determined during NN training and
-evaluation (\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021};
-\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}), with the current
-NN architectures and associated uncertainties summarized in
+evaluation (M. Gao et al. 2021; M. Gao, Franz, et al. 2023), with the
+current NN architectures and associated uncertainties summarized in
 Table~\ref{tbl-nn-arch}. At present, uncertainties are assumed to be
 spectrally and angularly uncorrelated.
 
@@ -1196,13 +778,12 @@ f(\chi^2,k)
 
 Here, \(\chi^2\) is the cost function defined in Equation~\ref{eq-cost},
 \(k\) is the number of degrees of freedom (DOF), and \(\Gamma(k/2)\)
-denotes the gamma function (\citeproc{ref-Frederick:2006aa}{James
-2006}). Neglecting potential correlations among measurement
-uncertainties, the DOF can be approximated by the total number of
-measurements, \(N\). More rigorously, the effective DOF depends on the
-number and information content of the retrieved parameters and can be
-evaluated using the Jacobian and error covariance matrices
-(\citeproc{ref-Rodgers:2000aa}{Rodgers 2000}).
+denotes the gamma function (James 2006). Neglecting potential
+correlations among measurement uncertainties, the DOF can be
+approximated by the total number of measurements, \(N\). More
+rigorously, the effective DOF depends on the number and information
+content of the retrieved parameters and can be evaluated using the
+Jacobian and error covariance matrices (Rodgers 2000).
 
 \bookmarksetup{startatroot}
 
@@ -1685,7 +1266,7 @@ sensor\_view\_angle & (number\_of\_views) & Viewing angle geometry \\
 
 \bookmarksetup{startatroot}
 
-\chapter{Jupyter Notebook Tutorials}\label{jupyter-notebook-tutorials}
+\chapter{Jupyter notebook tutorials}\label{jupyter-notebook-tutorials}
 
 Notebook tutorials are available through the
 \href{https://nasa.github.io/oceandata-notebooks/sections/cloud-atmosphere.html}{PACE
@@ -1712,8 +1293,8 @@ or tutorial content on FastMAPOL products.
 
 \bookmarksetup{startatroot}
 
-\chapter{SPEXone Aerosol and Ocean Product
-Validation}\label{spexone-aerosol-and-ocean-product-validation}
+\chapter{SPEXone aerosol and ocean product
+validation}\label{spexone-aerosol-and-ocean-product-validation}
 
 This page summarizes validation results for aerosol and ocean products
 retrieved from the PACE multi-angle polarimeters using the
@@ -1726,7 +1307,7 @@ models. This page focuses only on the validation results and their
 interpretation.
 
 \textbf{Additional validation results are available in Meng Gao et al.
-(\citeproc{ref-Gao:2026aa}{2026}) and will be updated on the
+(2026) and will be updated on the
 \href{https://pace.oceansciences.org/pace_fastmapol.htm}{PACE FastMAPOL
 validation page}.}
 
@@ -1817,8 +1398,8 @@ components.
 
 \bookmarksetup{startatroot}
 
-\chapter{HARP2 L2 Aerosol and Ocean Product
-Validation}\label{harp2-l2-aerosol-and-ocean-product-validation}
+\chapter{HARP2 L2 aerosol product
+validation}\label{harp2-l2-aerosol-product-validation}
 
 \section{Overview}\label{overview-1}
 
@@ -1827,12 +1408,11 @@ benchmark of HARP2 measurement realism, L2 retrieval performance, and
 uncertainty characterization. The results below highlight three key
 aspects: synthetic observations, pixel-wise retrieval performance, and
 uncertainty analysis. Details are provided in M. Gao, Franz, et al.
-(\citeproc{ref-Gao:2023aa}{2023}).
+(2023).
 
 Validation of the production data (V3 and V4) is ongoing, following the
-methodologies reported in Meng Gao et al.
-(\citeproc{ref-Gao:2026aa}{2026}). Updated validation results will be
-provided on the
+methodologies reported in Meng Gao et al. (2026). Updated validation
+results will be provided on the
 \href{https://pace.oceansciences.org/pace_fastmapol.htm}{PACE FastMAPOL
 validation page}.
 
@@ -1882,7 +1462,7 @@ a realistic testbed for retrieval evaluation:
 \caption{\label{fig-validation_harp2_l1c}Global HARP2 simulation (550
 nm): reflectance (a--c) and DoLP (d--f) from 15 orbits on 21 March 2022,
 showing three along-track viewing angles. Figure is adopted from M. Gao,
-Franz, et al. (\citeproc{ref-Gao:2023aa}{2023})}
+Franz, et al. (2023)}
 
 \end{figure}%
 
@@ -1915,8 +1495,7 @@ truth and meaningful uncertainty estimates:
 
 \caption{\label{fig-validation_harp2_l2}Retrieval performance: AOD (550
 nm) and ALH showing retrieval, truth, and uncertainty (a--c, d--f).
-Figure is adopted from M. Gao, Franz, et al.
-(\citeproc{ref-Gao:2023aa}{2023})}
+Figure is adopted from M. Gao, Franz, et al. (2023)}
 
 \end{figure}%
 
@@ -1950,7 +1529,7 @@ Their comparisons are shown in Figure~\ref{fig-validation_harp2_unc},
 \caption{\label{fig-validation_harp2_unc}Theoretical (red) vs.~retrieved
 (blue) uncertainties as a function of AOD for AOD, SSA, mr, reff, veff,
 wind speed, and Chl a. AOD ranges from 0.01--0.45 (Δ=0.01). Figure is
-adopted from M. Gao, Franz, et al. (\citeproc{ref-Gao:2023aa}{2023})}
+adopted from M. Gao, Franz, et al. (2023)}
 
 \end{figure}%
 
@@ -1980,7 +1559,7 @@ using DITL data.
 \addcontentsline{toc}{part}{Appendices}
 \appendix
 
-\chapter{Technical Details}\label{technical-details-1}
+\chapter{Technical Details}\label{technical-details}
 
 This section provides detailed mathematical formulations, derivations,
 and supporting information for the FastMAPOL algorithm. The material
@@ -2001,26 +1580,24 @@ development, validation, and advanced scientific analysis.
 All equations and formulations follow the conventions introduced in the
 main text unless otherwise noted.
 
-\chapter{Radiative Transfer Model}\label{radiative-transfer-model}
+\chapter{Radiative transfer model for PACE (PACE
+Simulator)}\label{radiative-transfer-model-for-pace-pace-simulator}
 
 The Radiative Transfer model is based on the Successive Order of
-Scattering (RTSOS) method Zhai et al.
-(\citeproc{ref-Zhai:2010aa}{2010}).
+Scattering (RTSOS) method Zhai et al. (2010).
 
 Key features: - RTSOS is capable of solving polarized radiative transfer
 for both atmosphere-ocean and atmosphere-land systems. - In
 atmosphere-ocean systems, it can also simulate inelastic scattering
 processes, including Raman scattering and fluorescence by chlorophyll
-and colored dissolved organic matter Zhai et al.
-(\citeproc{ref-Zhai:2017aa}{2017}). - An improved pseudos-spherical
-shell (IPSS) algorithm is used to improve the simulation of radiance
-field over polar regions (\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}).
+and colored dissolved organic matter Zhai et al. (2017). - An improved
+pseudos-spherical shell (IPSS) algorithm is used to improve the
+simulation of radiance field over polar regions (Zhai and Hu 2022).
 
 For this work, RTSOS is configured to simulate polarized radiance fields
-for randomly generated Earth systems for the PACE instruments
-(\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}). The data are then used
-to train neural network forward models, which emulates the behavior of
-the radiative transfer system.
+for randomly generated Earth systems for the PACE instruments (Zhai and
+Hu 2022). The data are then used to train neural network forward models,
+which emulates the behavior of the radiative transfer system.
 
 \textbf{Code repository} The RTSOS is made public by Dr.~Pengwang Zhai
 in github.
@@ -2035,23 +1612,20 @@ further increases the demand for CPU computations because the retrieval
 must be repeated several times. Therefore, fast forward model and
 Jacobian matrix calculations are advantageous for efficient processing,
 which was a motivation for the use of NN forward models for AirHARP in
-M. Gao et al. (\citeproc{ref-Gao:2021aa}{2021}). In this work, we
-provide the definition of the NN and the use of automatic
-differentiation to compute the Jacobian matrix analytically, as opposed
-to numerically through finite differencing, by exploiting the
-differentiable properties of the NN models. For details on the NN
-training strategies, please refer to M. Gao, Franz, et al.
-(\citeproc{ref-Gao:2023aa}{2023}) and M. Gao et al.
-(\citeproc{ref-Gao:2021aa}{2021}).
+M. Gao et al. (2021). In this work, we provide the definition of the NN
+and the use of automatic differentiation to compute the Jacobian matrix
+analytically, as opposed to numerically through finite differencing, by
+exploiting the differentiable properties of the NN models. For details
+on the NN training strategies, please refer to M. Gao, Franz, et al.
+(2023) and M. Gao et al. (2021).
 
-The NN forward model developed in M. Gao et al.
-(\citeproc{ref-Gao:2021aa}{2021}) is a feed-forward neural network as
-defined in Table~\ref{tbl-nn-forward}, where \(\mathbf{h}_0=\mathbf{x}\)
-is the input layer that contains all 15 forward model parameters. Two
-sets of weight matrices \(\mathbf{W}_{p+1}\) and bias vectors
-\(\mathbf{b}_{p+1}\) have been determined from the NN training process
-for reflectance and DoLP, respectively (\citeproc{ref-Gao:2021aa}{M. Gao
-et al. 2021}; \citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}).
+The NN forward model developed in M. Gao et al. (2021) is a feed-forward
+neural network as defined in Table~\ref{tbl-nn-forward}, where
+\(\mathbf{h}_0=\mathbf{x}\) is the input layer that contains all 15
+forward model parameters. Two sets of weight matrices
+\(\mathbf{W}_{p+1}\) and bias vectors \(\mathbf{b}_{p+1}\) have been
+determined from the NN training process for reflectance and DoLP,
+respectively (M. Gao et al. 2021; M. Gao, Franz, et al. 2023).
 
 Correspondingly, \(\mathbf{y}\) is the output layer for either
 reflectance or DoLP at the four AirHARP bands.
@@ -2098,6 +1672,8 @@ where \(\alpha=0.01\), and \(\mathbf{Z}\) is a matrix with \(m\) and
 \end{cases}
 }\end{equation}
 
+\textbf{NN Forward Model}
+
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
@@ -2128,6 +1704,8 @@ Layer \(p+1\) &
 Output &
 \(\mathbf{y}=\mathbf{W}_{k+1}^T\mathbf{h}_k+\mathbf{b}_{k+1}\) \\
 \end{longtable}
+
+\textbf{AD: Forward Mode}
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
@@ -2160,6 +1738,8 @@ Layer \(p+1\) &
 Output &
 \(\mathbf{K}_{mij}=\dot{\mathbf{y}}_{mij}=\mathbf{W}_{k+1,il}^T\dot{\mathbf{h}}_{k,mlj}\) \\
 \end{longtable}
+
+\textbf{AD: Reverse Mode}
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
@@ -2196,17 +1776,17 @@ Input & \(\mathbf{K}_{mij}=\bar{\mathbf{h}}_{0,mij}\) \\
 Einstein notation.}
 
 The finite difference (FD) method was used to compute the Jacobian
-matrix in FastMAPOL in M. Gao et al. (\citeproc{ref-Gao:2021aa}{2021}),
-where the NN forward model was called twice per input parameter under
-the central difference approximation of derivatives. To reduce the
-computational cost, the Jacobian matrix can be derived analytically from
-the NN forward model using AD based on the chain rule of differentiation
-(\citeproc{ref-Baydin:2018aa}{Baydin et al. 2018}). Two recursive
-relations are obtained to compute the Jacobian matrix, as summarized in
-Table~\ref{tbl-ad-forward} and Table~\ref{tbl-ad-reverse}. The forward
-mode indicates the evaluation sequence from the first layer to the last
-layer, whereas the reverse mode indicates the evaluation sequence from
-the last layer to the first layer.
+matrix in FastMAPOL in M. Gao et al. (2021), where the NN forward model
+was called twice per input parameter under the central difference
+approximation of derivatives. To reduce the computational cost, the
+Jacobian matrix can be derived analytically from the NN forward model
+using AD based on the chain rule of differentiation (Baydin et al.
+2018). Two recursive relations are obtained to compute the Jacobian
+matrix, as summarized in Table~\ref{tbl-ad-forward} and
+Table~\ref{tbl-ad-reverse}. The forward mode indicates the evaluation
+sequence from the first layer to the last layer, whereas the reverse
+mode indicates the evaluation sequence from the last layer to the first
+layer.
 
 To represent the recursive relations, we define \(\dot{\mathbf{h}}_p\)
 (tangent) and \(\bar{\mathbf{h}}_p\) (adjoint) as follows:
@@ -2251,17 +1831,16 @@ the NN architecture.
 
 For optimal efficiency, we implemented AD directly based on the
 formalism summarized in Table~\ref{tbl-ad-forward} and
-Table~\ref{tbl-ad-reverse} using the PyTorch library
-(\citeproc{ref-Paszke:2019aa}{Paszke et al. 2019}). The NN forward model
-is computed layer by layer, with the output from the previous layer
-serving as the input to the next layer, as summarized in
-Table~\ref{tbl-nn-forward}. Forward-mode AD follows the same sequence as
-the NN forward model, from the first layer to the last layer
-(Table~\ref{tbl-ad-forward}), whereas reverse-mode AD proceeds from the
-last layer backward to the first layer (Table~\ref{tbl-ad-reverse}).
-Note that AD in both modes requires the values of matrix \(\mathbf{D}\)
-as defined in Equation~\ref{eq-D}, which are determined by the output of
-the NN forward model at each layer.
+Table~\ref{tbl-ad-reverse} using the PyTorch library (Paszke et al.
+2019). The NN forward model is computed layer by layer, with the output
+from the previous layer serving as the input to the next layer, as
+summarized in Table~\ref{tbl-nn-forward}. Forward-mode AD follows the
+same sequence as the NN forward model, from the first layer to the last
+layer (Table~\ref{tbl-ad-forward}), whereas reverse-mode AD proceeds
+from the last layer backward to the first layer
+(Table~\ref{tbl-ad-reverse}). Note that AD in both modes requires the
+values of matrix \(\mathbf{D}\) as defined in Equation~\ref{eq-D}, which
+are determined by the output of the NN forward model at each layer.
 
 For the NN used in this study, reverse-mode AD provides the highest
 computational efficiency, as investigated further in the next section.
@@ -2271,7 +1850,7 @@ Jacobian matrix, enabling substantial acceleration of retrieval
 algorithms such as FastMAPOL that involve a large number of state
 parameters and making them more suitable for practical applications.
 
-\chapter{Aerosol Characterization : size distribution and
+\chapter{Aerosol characterization : size distribution and
 representation}\label{aerosol-characterization-size-distribution-and-representation}
 
 FastMAPOL supports several aerosol representations with increasing
@@ -2280,14 +1859,11 @@ complexity:
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Aer-1:} five predefined log-normal modes Meng Gao et al.
-  (\citeproc{ref-Gao:2026aa}{2026})
+  \textbf{Aer-1:} five predefined log-normal modes
 \item
   \textbf{Aer-2:} six predefined log-normal modes
-  (\citeproc{ref-Gao:2018aa}{Meng Gao et al. 2018})
 \item
   \textbf{Aer-3:} aerosol components represented by chemical composition
-  (\citeproc{ref-Aryal:2026aa}{Aryal et al. 2026})
 \end{itemize}
 
 These aerosol models share a common mathematical framework for size
@@ -2296,7 +1872,7 @@ products. This chapter summarizes the formulation used to connect the
 retrieved state variables to physically meaningful aerosol quantities,
 including optical depth, effective radius, effective variance, fine-mode
 fraction, and volume fraction. In this chapter, we focused on the first
-two models. \textbf{Aer-1:} is used in currently released data product.
+two models.
 
 \section{Overview}\label{overview-2}
 
@@ -2715,8 +2291,7 @@ important, since the same physical aerosol can have different mean radii
 depending on which representation is used.
 
 For the volume-mode parameterization adopted from O. Dubovik et al.
-(\citeproc{ref-Dubovik:2011aa}{2011}) and Xu et al.
-(\citeproc{ref-Xu:2016aa}{2016}), the nominal mode radii are
+(2011) and Xu et al. (2016), the nominal mode radii are
 
 \[
 0.1,\ 0.1732,\ 0.3,\ 1.0,\ 2.9 \ \mu m
@@ -2730,10 +2305,9 @@ with logarithmic standard deviations
 
 The impact of the number of modes are further discussed by Fu:2020aa. We
 adopted this approach as default aerosol model (Aer-1). Meng Gao et al.
-(\citeproc{ref-Gao:2018aa}{2018}) add an additional coarse mode to deal
-with the larger aerosol size when using the SWIR bands from RSP. The
-nomial radii and standard deviations are 8.4 \(\mu m\) and 0.5, which is
-called (Aer-2).
+(2018) add an additional coarse mode to deal with the larger aerosol
+size when using the SWIR bands from RSP. The nomial radii and standard
+deviations are 8.4 \(\mu m\) and 0.5, which is called (Aer-2).
 
 \section{Averaged extinction cross
 section}\label{averaged-extinction-cross-section}
@@ -2801,6 +2375,101 @@ r_{eff}=\frac{\sum_i m_{3,i}}{\sum_i m_{2,i}},
 \nu_{eff}=\frac{\sum_i m_{4,i} \sum_i m_{2,i}}{(\sum_i m_{3,i})^2}-1.
 \]
 
+\subsection{Sensitivity to component
+volume}\label{sensitivity-to-component-volume}
+
+To propagate retrieval uncertainty from mode volumes to bulk effective
+properties, derivatives with respect to \(V_j\) are required.
+
+For effective radius,
+
+\[
+\frac{\partial r_{eff}}{\partial V_{j}} =
+\frac{1}{\sum_i  m_{2,i}}\frac{\partial m_{3,j}}{\partial V_j}- 
+\frac{\sum_i m_{3,i}}{(\sum_i m_{2,i})^2}\frac{\partial m_{2,j}}{\partial V_j},
+\]
+
+which can be written as
+
+\[
+\frac{\partial r_{eff}}{\partial V_{j}} =
+r_{eff} \left(\frac{m'_{3,j}}{\sum_i  m_{3,i}}-\frac{m'_{2,j}}{\sum_i  m_{2,i}}\right).
+\]
+
+For effective variance,
+
+\[
+\frac{\partial \nu_{eff}}{\partial V_j}=
+\frac{\sum_i m_{2,i}}{(\sum_i m_{3,i})^2}\frac{\partial m_{4,j}}{\partial V_j}+
+\frac{\sum_i m_{4,i}}{(\sum_i m_{3,i})^2}\frac{\partial m_{2,j}}{\partial V_j}
+-2\frac{\sum_i m_{4,i} \sum_i m_{2,i}}{(\sum_i m_{3,i})^3}\frac{\partial m_{3,j}}{\partial V_j},
+\]
+
+or equivalently
+
+\[
+\frac{\partial \nu_{eff}}{\partial V_j}=
+(\nu_{eff}+1) \left(\frac{m'_{4,j}}{\sum_i  m_{4,i}}+\frac{m'_{2,j}}{\sum_i m_{2,i}} 
+-2\frac{m'_{3,j}}{\sum_i  m_{3,i}}\right).
+\]
+
+Here the derivative of the moment with respect to component volume is
+
+\[
+m'_{k,j}=\frac{\partial m_{k,j}}{\partial V_j}=\frac{m_{k,j}}{V_j},
+\]
+
+which gives
+
+\[
+m'_{k,j}=\frac{3}{4 \pi}
+r^{k-3}_{v,j} \exp\left[\frac{(k-3)^2}{2} \sigma_j^2\right].
+\]
+
+For \(k=3\), this derivative is constant because \(m_3\) depends
+linearly on volume and not on radius.
+
+\section{Physical interpretation of low-order
+moments}\label{physical-interpretation-of-low-order-moments}
+
+For a volume-based log-normal mode, the low-order moments are
+
+\[
+m_{2,i}=\frac{3}{4\pi} V_i r_{v,i}^{-1} \exp(\sigma_i^2/2),
+\]
+
+\[
+m_{3,i}=\frac{3}{4\pi} V_i,
+\]
+
+\[
+m_{4,i}=\frac{3}{4\pi} V_i r_{v,i} \exp(\sigma_i^2/2).
+\]
+
+For a single mode, these lead directly to
+
+\[
+r_{eff}=\frac{m_3}{m_2}=r_v \exp(-\sigma^2/2),
+\]
+
+\[
+\nu_{eff}=\frac{m_4 m_2}{m_3^2}-1=\exp (\sigma^2)-1.
+\]
+
+For a multimode aerosol,
+
+\[
+\sum_i m_{3,i}=\frac{3}{4\pi}\sum_i V_i=\frac{3}{4\pi} V_0,
+\]
+
+so the summed third moment is proportional to the total particle volume.
+
+Within a fine-mode or coarse-mode subset, \(m_2\) emphasizes smaller
+particles, whereas \(m_4\) emphasizes larger particles. This makes
+effective radius and effective variance sensitive to the relative
+partitioning among submodes, even when the logarithmic standard
+deviation is fixed within that subset.
+
 \section{Fine and coarse mode
 partitions}\label{fine-and-coarse-mode-partitions}
 
@@ -2822,6 +2491,88 @@ For the Aer-1 and Aer-2 parameterization adopted here:
 Although the first three fine modes share the same logarithmic standard
 deviation, their effective variance can still change because the bulk
 quantity depends on the relative partitioning among the mode volumes.
+
+\section{Phase-matrix averaging}\label{phase-matrix-averaging}
+
+The total number density may be represented as a weighted sum of
+component size distributions,
+
+\[
+n(r)=\sum_i c_i n_i(r),
+\]
+
+with
+
+\[
+\sum_i c_i =1.
+\]
+
+The corresponding size-averaged phase matrix is then
+
+\[
+P(\Omega)_{avg}=\int d r \, n(r) P(\Omega;r),
+\]
+
+which can be expanded as
+
+\[
+P(\Omega)_{avg}= \sum_i c_i \int d r \, n_i(r) P(\Omega;r)
+\]
+
+and written as
+
+\[
+P(\Omega)_{avg}= \sum_i c_i P_i (\Omega).
+\]
+
+If \(P_i\) denotes the size-averaged phase matrix of component \(i\),
+then the total phase matrix is a weighted sum over components. If
+normalized phase matrices \(\tilde{P}_i\) are used, then the weighting
+must be consistent with the corresponding scattering cross sections.
+
+In practice, this requires confirming the normalization convention of
+the scattering subroutine, such as \texttt{spher\_interface}.
+
+\section{Additional notes on units}\label{additional-notes-on-units}
+
+The column number density may also be written as
+
+\[
+N_0=n_0 \delta l,
+\]
+
+where \(\delta l\) is the aerosol layer thickness.
+
+In log-normal expressions, the absolute unit of radius does not matter
+as long as \(r\) and the mean radius use the same unit, since
+
+\[
+\ln r-\ln r_m=\ln(r/r_m).
+\]
+
+Both the logarithmic variance and the effective variance are
+dimensionless.
+
+\section{Optical depth at different
+wavelengths}\label{optical-depth-at-different-wavelengths}
+
+If the aerosol loading is parameterized at a reference wavelength, such
+as \(555 \, nm\), then the corresponding number density can be defined
+as
+
+\[
+n_i=\frac{\tau_{555nm}}{C_{ext,555nm}}.
+\]
+
+The optical depth at any other wavelength is then
+
+\[
+\tau_{\lambda}=n_i C_{ext,\lambda}.
+\]
+
+This relation is useful when the state variable is defined through
+reference-wavelength optical depth while the forward model requires
+spectrally varying extinction.
 
 \section{Aerosol products}\label{aerosol-products}
 
@@ -2860,16 +2611,15 @@ radiatively weighted quantities. The relationships summarized here
 provide the basis for size integration, mode summation, and the
 calculation of operational aerosol products in FastMAPOL.
 
-\chapter{Uncertainty Estimation and Angular
-Correlations}\label{uncertainty-estimation-and-angular-correlations}
+\chapter{Uncertainty estimation and angular
+correlations}\label{uncertainty-estimation-and-angular-correlations}
 
 In this section, we discuss the general retrieval approach considering
-correlation between angles following (\citeproc{ref-Gao:2023bb}{M. Gao,
-Knobelspiesse, et al. 2023}). The same maximum-likelihood approach is
-used to retrieve the state parameters in FastMAPOL by minimizing a cost
-function that represents the difference between the measurements and
-forward-model calculations (\citeproc{ref-Rodgers:2000aa}{Rodgers 2000})
-but in a matrix form:
+correlation between angles following (M. Gao, Knobelspiesse, et al.
+2023). The same maximum-likelihood approach is used to retrieve the
+state parameters in FastMAPOL by minimizing a cost function that
+represents the difference between the measurements and forward-model
+calculations (Rodgers 2000) but in a matrix form:
 
 \begin{equation}\phantomsection\label{eq-chi2}{
 \chi^2
@@ -2895,9 +2645,8 @@ forward model \(\mathbf{f}\) for the state vector \(\mathbf{x}\). The
 measurement vector \(\mathbf{m}\) includes both reflectance (\(\rho_t\))
 and DoLP (\(P_t\)), where the subscript \(t\) indicates the total signal
 measured by the instrument. The total number of measurements, \(N\), at
-each pixel includes contributions from both reflectance and DoLP
-(\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021};
-\citeproc{ref-Gao:2021bb}{Meng Gao et al. 2021}).
+each pixel includes contributions from both reflectance and DoLP (M. Gao
+et al. 2021; Meng Gao et al. 2021).
 
 The error covariance matrix \(\mathbf{S}_{\epsilon}\) in
 Equation~\ref{eq-chi2} specifies both the uncertainty of each
@@ -2919,9 +2668,9 @@ and spectral bands, and \(\mathbb{E}\) denotes the expectation value.
 
 To represent angular uncertainty correlations, an autoregressive model
 of order 1, denoted AR(1), is used. This approach was previously applied
-to RSP data (\citeproc{ref-Knobelspiesse:2012aa}{Knobelspiesse et al.
-2012}) and is adopted here for HARP data. AR(1) represents a linear
-Markov process with the error covariance matrix specified as
+to RSP data (Knobelspiesse et al. 2012) and is adopted here for HARP
+data. AR(1) represents a linear Markov process with the error covariance
+matrix specified as
 
 \begin{equation}\phantomsection\label{eq-covariance}{
 S_{\epsilon;i,j}
@@ -2942,10 +2691,9 @@ and calibration uncertainty (\(\sigma_c\)). Only \(\sigma_c\) is assumed
 to be correlated among measurements at different viewing angles.
 
 The relative contributions of random and calibration uncertainties may
-differ between reflectance and polarized signals
-(\citeproc{ref-Knobelspiesse:2019aa}{Knobelspiesse et al. 2019}). For
-synthetic data generated directly using the forward model, the
-contribution of forward-model uncertainty is not considered.
+differ between reflectance and polarized signals (Knobelspiesse et al.
+2019). For synthetic data generated directly using the forward model,
+the contribution of forward-model uncertainty is not considered.
 \(\Delta_\theta\) is the average angular grid spacing and depends on the
 spectral channel. We model the correlation properties using
 \(\Delta_\theta\) estimated from the viewing angles in the along-track
@@ -2958,9 +2706,9 @@ and \(12^\circ\) for HARP2 at 440, 550, and 870 nm, and approximately
 in Equation~\ref{eq-covariance} is the correlation parameter, with a
 value between 0 and 1. For uncertainties with more complex structures, a
 general autoregressive moving-average (ARMA) model can be used
-(\citeproc{ref-Priestley:1983aa}{Priestley 1983}). However, analysis of
-retrieval results from real AirHARP measurements indicates that the
-AR(1) model provides a useful representation for most cases.
+(Priestley 1983). However, analysis of retrieval results from real
+AirHARP measurements indicates that the AR(1) model provides a useful
+representation for most cases.
 
 To provide a more intuitive representation of strong correlations as
 \(r\) approaches 1, we define a correlation angle \(\theta_c\) according
@@ -2986,7 +2734,7 @@ correlation angle can be derived from \(r\) as
 
 Pixel-wise retrieval uncertainty can be quantified by propagating
 measurement and forward-model uncertainties into the retrieval parameter
-space (\citeproc{ref-Rodgers:2000aa}{Rodgers 2000}):
+space (Rodgers 2000):
 
 \begin{equation}\phantomsection\label{eq-S}{
 \mathbf{S}^{-1}
@@ -3007,8 +2755,7 @@ which imposes an implicit a priori constraint on the retrieval. To
 represent its influence on retrieval uncertainties, the a priori error
 covariance matrix \(\mathbf{S}_a\) in Equation~\ref{eq-S} is assumed to
 be diagonal, with the a priori uncertainty for each state parameter
-approximated by its permitted retrieval range
-(\citeproc{ref-Gao:2022aa}{M. Gao et al. 2022}).
+approximated by its permitted retrieval range (M. Gao et al. 2022).
 
 The uncertainties are defined as the standard deviation (\(1\sigma\))
 around the retrieval solution and are estimated from the square roots of
@@ -3020,21 +2767,20 @@ Because FastMAPOL retrieves a relatively large number of state
 parameters, direct evaluation of retrieval uncertainties can be
 computationally expensive. The uncertainty calculation is accelerated
 using automatic differentiation applied to the neural network forward
-models (\citeproc{ref-Gao:2022aa}{M. Gao et al. 2022}). For example, the
-uncertainty in remote sensing reflectance (\(R_{rs}\)) can be propagated
-using automatic differentiation through the neural networks used for
-atmospheric and BRDF corrections.
+models (M. Gao et al. 2022). For example, the uncertainty in remote
+sensing reflectance (\(R_{rs}\)) can be propagated using automatic
+differentiation through the neural networks used for atmospheric and
+BRDF corrections.
 
 The retrieval uncertainties estimated through error propagation in
 Equation~\ref{eq-S}, hereafter referred to as \textbf{theoretical
 retrieval uncertainties}, represent an optimalized local estimate and
 rely on assumptions such as successful convergence of the retrieval
-parameters to the appropriate solution
-(\citeproc{ref-Sayer:2020aa}{Sayer et al. 2020};
-\citeproc{ref-Gao:2022aa}{M. Gao et al. 2022}). If the retrieval
-solution differs substantially from the true state, both the retrieved
-state and its associated Jacobian may be less representative of the true
-conditions, potentially leading to inaccurate uncertainty estimates.
+parameters to the appropriate solution (Sayer et al. 2020; M. Gao et al.
+2022). If the retrieval solution differs substantially from the true
+state, both the retrieved state and its associated Jacobian may be less
+representative of the true conditions, potentially leading to inaccurate
+uncertainty estimates.
 
 For synthetic retrieval experiments, the retrieval error can be
 calculated directly as the difference between the retrieved and true
@@ -3045,13 +2791,12 @@ evaluating the optimal and actual performance of the retrieval
 algorithm.
 
 The Monte Carlo error propagation (MCEP) method is used for this
-comparison (\citeproc{ref-Gao:2022aa}{M. Gao et al. 2022}). MCEP samples
-retrieval errors from the theoretical retrieval uncertainty
-distributions and directly compares these sampled error distributions
-with errors obtained from the actual retrievals. Multiple sets of random
-samples can be generated to evaluate the influence of sample size on the
-estimated uncertainty statistics (\citeproc{ref-Gao:2022aa}{M. Gao et
-al. 2022}).
+comparison (M. Gao et al. 2022). MCEP samples retrieval errors from the
+theoretical retrieval uncertainty distributions and directly compares
+these sampled error distributions with errors obtained from the actual
+retrievals. Multiple sets of random samples can be generated to evaluate
+the influence of sample size on the estimated uncertainty statistics (M.
+Gao et al. 2022).
 
 \section{Eigenvector decomposition of the error covariance
 matrix}\label{sec-transform}
@@ -3066,7 +2811,7 @@ transformed into a new space in which the error covariance matrix is
 diagonal.
 
 Eigenvector decomposition is applied to the error covariance matrix
-(\citeproc{ref-Rodgers:2000aa}{Rodgers 2000}):
+(Rodgers 2000):
 
 \begin{equation}\phantomsection\label{eq-svd}{
 \mathbf{S}_{\epsilon}
@@ -3139,10 +2884,8 @@ uncertainty matrices and provide several advantages:
   uncorrelated transformed measurements \(\mathbf{y}'\) and can
   therefore be used directly with conventional optimization algorithms,
   such as the subspace trust-region interior-reflective (STIR) algorithm
-  (\citeproc{ref-Branch:1999aa}{Branch, Coleman, and Li 1999}), as
-  implemented in FastMAPOL (\citeproc{ref-Gao:2021aa}{M. Gao et al.
-  2021}, \citeproc{ref-Gao:2022aa}{2022}; \citeproc{ref-Gao:2021bb}{Meng
-  Gao et al. 2021}).
+  (Branch, Coleman, and Li 1999), as implemented in FastMAPOL (M. Gao et
+  al. 2021, 2022; Meng Gao et al. 2021).
 \item
   \textbf{Generation of correlated errors.}\\
   To investigate and visualize angular uncertainty correlations, errors
@@ -3167,8 +2910,7 @@ uncertainty matrices and provide several advantages:
 autocorrelation}\label{sec-ac}
 
 Autocorrelation provides a useful measure of correlation in a discrete
-data sequence and is defined as
-(\citeproc{ref-Priestley:1983aa}{Priestley 1983})
+data sequence and is defined as (Priestley 1983)
 
 \begin{equation}\phantomsection\label{eq-autocorrelation}{
 R_{i,j}
@@ -3184,11 +2926,11 @@ equivalent to the autocovariance when \(\mathbb{E}[y_i]=0\).
 This method can be applied to simulated noise and to retrieval fitting
 residuals. However, the mean and variance of the fitting residuals can
 vary with viewing angle. Such signals are non-stationary and are
-difficult to represent directly using AR models
-(\citeproc{ref-Priestley:1983aa}{Priestley 1983}). To reduce this
-effect, the original residual vector \(\mathbf{y}\) is processed by
-removing its mean and normalizing by its standard deviation. The
-resulting normalized residual is denoted by \(\tilde{\mathbf{y}}\).
+difficult to represent directly using AR models (Priestley 1983). To
+reduce this effect, the original residual vector \(\mathbf{y}\) is
+processed by removing its mean and normalizing by its standard
+deviation. The resulting normalized residual is denoted by
+\(\tilde{\mathbf{y}}\).
 
 For measurements within the same spectral band and polarization state,
 the autocorrelation function of the normalized residuals is equivalent
@@ -3224,13 +2966,11 @@ The corresponding correlation angle \(\theta_c\) is calculated from
 A partial autocorrelation function can also be calculated from the data
 sequence. Partial autocorrelation removes correlations associated with
 intermediate lags and can therefore be used to evaluate whether an AR(1)
-model adequately represents the uncertainty structure
-(\citeproc{ref-Priestley:1983aa}{Priestley 1983}). If AR(1) is
-sufficient, only the first-order lag should remain prominent beyond the
-zero-order term. The Python packages StatsModels
-(\citeproc{ref-Seabold:2010aa}{Seabold and Perktold 2010}) and SciPy
-(\citeproc{ref-Virtanen:2018aa}{Virtanen et al. 2018}) are used to
-conduct the autocorrelation analyses.
+model adequately represents the uncertainty structure (Priestley 1983).
+If AR(1) is sufficient, only the first-order lag should remain prominent
+beyond the zero-order term. The Python packages StatsModels (Seabold and
+Perktold 2010) and SciPy (Virtanen et al. 2018) are used to conduct the
+autocorrelation analyses.
 
 \chapter{Ocean Bio-Optical Model}\label{ocean-bio-optical-model}
 
@@ -3272,8 +3012,7 @@ of four main water constituents:
 \end{itemize}
 
 The total inherent optical properties are constructed from the
-contributions of these components. \textbf{Bio-1} is used in default for
-the current released data product.
+contributions of these components.
 
 \section{Bio-1 Optical Model (Open
 Ocean)}\label{bio-1-optical-model-open-ocean}
@@ -3281,8 +3020,7 @@ Ocean)}\label{bio-1-optical-model-open-ocean}
 The \textbf{Bio-1 model} is a simplified bio-optical parameterization
 designed for \textbf{open ocean waters (Case-1 waters)}. The model is
 derived from the generalized Bio-2 model by imposing constraints on its
-parameters (Zhai et al. (\citeproc{ref-Zhai:2015aa}{2015}), Zhai et al.
-(\citeproc{ref-Zhai:2017aa}{2017})).
+parameters (Zhai et al. (2015), Zhai et al. (2017)).
 
 In this model, the optical properties are parameterized primarily as a
 function of chlorophyll concentration \([Chl\,a]\).
@@ -3357,7 +3095,7 @@ B_p = 0.002 + 0.01\left(0.5 - 0.25\log_{10}[Chl\,a]\right).
 \]
 
 The parameter \(B_p\) is assumed to be \textbf{spectrally independent}
-(Huot et al. (\citeproc{ref-Huot:2008aa}{2008})).
+(Huot et al. (2008)).
 
 \subsection{Phase matrix (TBD)}\label{phase-matrix-tbd}
 
@@ -3491,22 +3229,22 @@ derived from observations.
 
 \emph{(Details of the Bio-3 parameterization will be described soon.)}
 
-\chapter{Multi-angle Ocean Color
-Product}\label{multi-angle-ocean-color-product}
+\chapter{Multi-angle ocean color
+product}\label{multi-angle-ocean-color-product}
 
 Ocean color signals are often represented by the remote sensing
 reflectance, \(R_{rs}(\lambda;\theta_0, \theta_v, \phi_v)\), which is
 defined as the ratio of upwelling radiance originating from the ocean
 body to downwelling irradiance just above the ocean surface, with units
-of \(\mathrm{sr}^{-1}\) (\citeproc{ref-Mobley:2016aa}{Mobley et al.
-2016}). Here \(\theta_0\) and \(\theta_v\) are the solar and viewing
-zenith angles, and \(\phi_v\) is the relative viewing azimuth angle. For
-simplicity, the wavelength dependence, \(\lambda\), which applies to all
-ocean reflectance-related variables, is omitted in the following
-notation. To derive this quantity, we need to remove the atmospheric
-path radiance and compute the water-leaving reflectance (\(\rho_w\)) as
-the reflectance originating from scattering in the ocean that reaches
-the satellite sensor:
+of \(\mathrm{sr}^{-1}\) (Mobley et al. 2016). Here \(\theta_0\) and
+\(\theta_v\) are the solar and viewing zenith angles, and \(\phi_v\) is
+the relative viewing azimuth angle. For simplicity, the wavelength
+dependence, \(\lambda\), which applies to all ocean reflectance-related
+variables, is omitted in the following notation. To derive this
+quantity, we need to remove the atmospheric path radiance and compute
+the water-leaving reflectance (\(\rho_w\)) as the reflectance
+originating from scattering in the ocean that reaches the satellite
+sensor:
 
 \begin{equation}\phantomsection\label{eq-rhow}{
 \rho_w(\theta_0,\theta_v,\phi_v)
@@ -3522,18 +3260,16 @@ reflectance with only atmospheric and ocean surface contributions (such
 as sunglint, white caps, etc.) computed in the forward model, denoted by
 superscript \(f\). With the multi-angle polarimetric observations
 provided by PACE, wind speed can be retrieved simultaneously with
-aerosol properties (\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021},
-\citeproc{ref-Gao:2022aa}{2022}). The joint retrieval algorithm enables
-the retrieval of ocean signals in regions affected by sunglint, which
-are often excluded or difficult to process using conventional
-single-angle ocean color remote sensing approaches
-(\citeproc{ref-Harmel:2013aa}{Harmel and Chami 2013};
-\citeproc{ref-Neukermans:2018aa}{Neukermans et al. 2018}).
+aerosol properties (M. Gao et al. 2021, 2022). The joint retrieval
+algorithm enables the retrieval of ocean signals in regions affected by
+sunglint, which are often excluded or difficult to process using
+conventional single-angle ocean color remote sensing approaches (Harmel
+and Chami 2013; Neukermans et al. 2018).
 
 The remote sensing reflectance at arbitrary solar and viewing geometries
 can be derived from the water-leaving reflectance by considering the
-transmittance of both solar irradiance and surface radiance
-(\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021}) as:
+transmittance of both solar irradiance and surface radiance (M. Gao et
+al. 2021) as:
 
 \begin{equation}\phantomsection\label{eq-rrs}{
 R_{rs}(\theta_0,\theta_v,\phi_v)
@@ -3552,7 +3288,7 @@ where \(T_d\) represents the downwelling irradiance transmittance of the
 solar irradiance from the top of atmosphere to the surface, and \(t_u\)
 represents the upwelling radiance transmittance for the water-leaving
 radiance from the bottom of atmosphere to the satellite sensor, with
-more details in M. Gao et al. (\citeproc{ref-Gao:2021aa}{2021}).
+more details in M. Gao et al. (2021).
 
 Furthermore, a BRDF correction procedure is commonly applied by mapping
 \(R_{rs}(\theta_0, \theta_v, \phi_v)\) at arbitrary geometry to the sun
@@ -3577,12 +3313,10 @@ correction term, depends on ocean parameters including Chl-a and wind
 speed, as well as aerosol properties that modulate the diffuse skylight.
 All of these parameters are retrieved simultaneously in the algorithm.
 Note that this is an extension of the previous model in M. Gao et al.
-(\citeproc{ref-Gao:2021aa}{2021}) for smaller viewing zenith angles, and
-has been applied in synthetic PACE polarimeter data
-(\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023};
-\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024};
-\citeproc{ref-Zhang:2025aa}{Zhang et al. 2025}). Such a correction can
-be applied to estimate \(R_{rs}(0,0)\):
+(2021) for smaller viewing zenith angles, and has been applied in
+synthetic PACE polarimeter data (M. Gao, Franz, et al. 2023; Aryal et
+al. 2024; Zhang et al. 2025). Such a correction can be applied to
+estimate \(R_{rs}(0,0)\):
 
 \begin{equation}\phantomsection\label{eq-rrs00}{
 R_{rs}(0,0)
@@ -3616,19 +3350,14 @@ be used as an indicator of the closure of the radiative transfer model
 and atmospheric correction.
 
 Multiple BRDF correction schemes have been proposed in the ocean color
-literature (\citeproc{ref-Morel:2002aa}{Morel, Antoine, and Gentili
-2002}; \citeproc{ref-Park:2005aa}{Park and Ruddick 2005};
-\citeproc{ref-Lee:2011aa}{Lee et al. 2011}; \citeproc{ref-He:2017aa}{He
-et al. 2017}; \citeproc{ref-Twardowski:2018aa}{Twardowski and Tonizzo
-2018}; \citeproc{ref-Zhang:2025aa}{Zhang et al. 2025};
-\citeproc{ref-DAlimonte:2025aa}{D'Alimonte et al. 2025};
-\citeproc{ref-Pitarch:2025aa}{Pitarch et al. 2025}). The angular
+literature (Morel, Antoine, and Gentili 2002; Park and Ruddick 2005; Lee
+et al. 2011; He et al. 2017; Twardowski and Tonizzo 2018; Zhang et al.
+2025; D'Alimonte et al. 2025; Pitarch et al. 2025). The angular
 \(R_{rs}\) observations provided by PACE from simultaneous multi-angle
 measurements can be used to evaluate these BRDF correction schemes
 across different water types, as well as angular closure analyses before
 and after BRDF correction on a pixel-by-pixel basis. For more details
-and validation results, please refer to Meng Gao et al.
-(\citeproc{ref-Gao:2026aa}{2026}).
+and validation results, please refer to Meng Gao et al. (2026).
 
 \chapter{Land Surface Reflectance Model (Ross--Li BRDF and Polarized
 BPDF)}\label{land-surface-reflectance-model-rossli-brdf-and-polarized-bpdf}

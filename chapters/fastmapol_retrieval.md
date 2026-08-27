@@ -1,4 +1,4 @@
-# Retrieval algorithm summary
+# FastMAPOL Retrieval Framework
 
 FastMAPOL is an efficient coupled aerosol and ocean color retrieval algorithm that combines neural network (NN) forward models with iterative optimization [@Gao:2021aa; @Gao:2023aa]. The NN forward models emulate vector radiative transfer calculations for a coupled atmosphere-ocean system based on the PACE simulator [@Zhai:2009aa; @Zhai:2010aa; @Zhai:2022aa]. Please find more details in the NN, automatic differentiaton and aerosol and surface model details in the technical section. 
 

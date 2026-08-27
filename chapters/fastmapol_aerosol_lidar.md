@@ -1,4 +1,4 @@
-# Aerosol characterization: Lidar ratio and depolarization
+# Aerosol Characterization: Lidar ratio and depolarization
 
 ## Overview
 

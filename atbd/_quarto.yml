@@ -2,11 +2,39 @@ project:
   type: book
   output-dir: book
 
+
+# --------------------------------------------------
+# Book metadata
+# --------------------------------------------------
+
 book:
-  title: "NASA FastMAPOL Algorithm Theoretical Basis Document"
-  subtitle: "PACE Polarimeter Aerosol and Surface Retrieval"
-  author: Meng Gao, Pengwang Zhai, Kamal Aryal, Kirk Knobelspiesse, Bryan Franz
-  date: today
+  title: "FastMAPOL Algorithm Theoretical Basis Document"
+  subtitle: "PACE Multi-Angle Polarimetric Aerosol, Ocean, and Land Retrieval"
+
+  author:
+    - name: Meng Gao
+      affiliations:
+        - ref: ssai
+        - ref: nasa
+
+    - name: Pengwang Zhai
+      affiliations:
+        - ref: umbc
+
+    - name: Kamal Aryal
+      affiliations:
+        - ref: umbc
+        - ref: nasa
+
+    - name: Kirk Knobelspiesse
+      affiliations:
+        - ref: nasa
+
+    - name: Bryan Franz
+      affiliations:
+        - ref: nasa
+
+  date: "2026-08-26"
 
   chapters:
     - index.md
@@ -18,43 +46,104 @@ book:
     - ../chapters/fastmapol_validation_harp2.md
 
   appendices:
-    - ../chapters/fastmapol_appendix_intro.md   # <-- creates "Technical Details" section
+    - ../chapters/fastmapol_appendix_intro.md
     - ../chapters/fastmapol_pace_simulator.md
     - ../chapters/fastmapol_neural_network.md
-    #- ../chapters/fastmapol_aerosol_summary.md
     - ../chapters/fastmapol_aerosol_size.md
-    #- ../chapters/fastmapol_aerosol_lidar.md
-    #- ../chapters/fastmapol_aerosol_inversion.md
-    #- ../chapters/fastmapol_aerosol_mixing.md
-    #- ../chapters/fastmapol_uncertainty_pixel.md
     - ../chapters/fastmapol_uncertainty_correlation.md
     - ../chapters/fastmapol_model_ocean.md
     - ../chapters/fastmapol_ocean_color.md
     - ../chapters/fastmapol_model_land.md
 
+
+# --------------------------------------------------
+# Author affiliations
+# --------------------------------------------------
+
+affiliations:
+  - id: nasa
+    name: NASA Goddard Space Flight Center
+    department: Ocean Ecology Laboratory
+    city: Greenbelt
+    state: MD
+    country: USA
+
+  - id: ssai
+    name: Science Systems and Applications, Inc.
+    city: Lanham
+    state: MD
+    country: USA
+
+  - id: umbc
+    name: University of Maryland, Baltimore County
+    city: Baltimore
+    state: MD
+    country: USA
+
+
+# --------------------------------------------------
+# Document metadata
+# --------------------------------------------------
+
+version: "v2026.8.26"
+institution: "NASA Goddard Space Flight Center (GSFC)"
+mission: "PACE"
+
+
+# --------------------------------------------------
+# Bibliography and numbering
+# --------------------------------------------------
+
 bibliography: ../bib/lmfit5.bib
+link-citations: true
 
 number-sections: true
 number-depth: 3
 
+crossref:
+  chapters: true
+
+
+# --------------------------------------------------
+# Output formats
+# --------------------------------------------------
+
 format:
+
   html:
     toc: true
     toc-depth: 3
     theme: cosmo
     code-fold: false
     smooth-scroll: true
+    link-external-newwindow: true
 
   pdf:
     keep-tex: true
-    documentclass: scrbook
-    classoption:
-      - open=any
+
+    # Technical-report style
+    documentclass: scrreprt
+    papersize: letter
+    fontsize: 11pt
+
     toc: true
     toc-depth: 3
     lof: true
     lot: true
+
     colorlinks: true
+    linkcolor: blue
+    citecolor: blue
+    urlcolor: blue
+
     geometry:
-      - margin=1in
-    include-in-header: header.tex   # optional (see below)
+      - top=1in
+      - bottom=1in
+      - left=1in
+      - right=1in
+
+    include-in-header: header.tex
+
+    # Custom PDF title page
+    template-partials:
+      - title.tex

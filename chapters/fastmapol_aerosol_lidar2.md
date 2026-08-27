@@ -1,4 +1,4 @@
-# Aerosol characterization: Backscattering fraction and its relation to lidar ratio and single-scattering albedo
+# Aerosol Characterization: Backscattering fraction and its relation to lidar ratio and single-scattering albedo
 
 ## Overview
 
