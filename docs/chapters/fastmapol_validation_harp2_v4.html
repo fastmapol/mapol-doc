@@ -8,7 +8,7 @@
 
 <meta name="keywords" content="PACE, Polarization, Multi-angle, Aerosol, Ocean Color, Deep Learning">
 
-<title>7&nbsp; HARP2 Aerosol, OCEAN and LAND Product Validation (V4) – FastMAPOL Algorithm Theoretical Basis Document</title>
+<title>6&nbsp; HARP2 Aerosol, OCEAN and LAND Product Validation (V4) – FastMAPOL Algorithm Theoretical Basis Document</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -135,7 +135,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/fastmapol_validation_harp2_v4.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/fastmapol_validation_harp2_v4.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -150,8 +150,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../logo/fastmapol3.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
-      <img src="../logo/fastmapol3.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      <img src="../logo/fastmapol4.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../logo/fastmapol4.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">FastMAPOL Algorithm Theoretical Basis Document</a> 
@@ -168,6 +168,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About This Document</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jupyter Notebook Tutorials from PACE HelpHub</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -190,26 +196,20 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/fastmapol_tutorial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Jupyter Notebook Tutorials</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/fastmapol_validation_spexone_v3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">SPEXone Aerosol and Ocean Product Validation (V3)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">SPEXone Aerosol and Ocean Product Validation (V3)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/fastmapol_validation_harp2_ditl.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/fastmapol_validation_harp2_v4.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -287,9 +287,9 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#summary-information" id="toc-summary-information" class="nav-link active" data-scroll-target="#summary-information"><span class="header-section-number">7.1</span> Summary Information</a></li>
-  <li><a href="#retrieval-products-to-be-evaluated-ongoing" id="toc-retrieval-products-to-be-evaluated-ongoing" class="nav-link" data-scroll-target="#retrieval-products-to-be-evaluated-ongoing"><span class="header-section-number">7.2</span> Retrieval Products to be evaluated (ongoing)</a></li>
-  <li><a href="#global-level-3-products" id="toc-global-level-3-products" class="nav-link" data-scroll-target="#global-level-3-products"><span class="header-section-number">7.3</span> Global Level-3 Products</a></li>
+  <li><a href="#summary-information" id="toc-summary-information" class="nav-link active" data-scroll-target="#summary-information"><span class="header-section-number">6.1</span> Summary Information</a></li>
+  <li><a href="#retrieval-products-to-be-evaluated-ongoing" id="toc-retrieval-products-to-be-evaluated-ongoing" class="nav-link" data-scroll-target="#retrieval-products-to-be-evaluated-ongoing"><span class="header-section-number">6.2</span> Retrieval Products to be evaluated (ongoing)</a></li>
+  <li><a href="#global-level-3-products" id="toc-global-level-3-products" class="nav-link" data-scroll-target="#global-level-3-products"><span class="header-section-number">6.3</span> Global Level-3 Products</a></li>
   </ul>
 </nav>
     </div>
@@ -298,7 +298,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></h1>
 </div>
 
 
@@ -328,8 +328,8 @@ window.Quarto = {
 
 <p>This page summarizes validation results for aerosol and surface products retrieved from the PACE multi-angle polarimeters using the <strong>FastMAPOL</strong> algorithm, with emphasis on <strong>HARP2</strong> aerosol optical properties, ocean remote-sensing reflectance (<span class="math inline">\(R_{rs}\)</span>) and land surface reflectance (<span class="math inline">\(\rho_s\)</span>).</p>
 <p>FastMAPOL performs coupled aerosol–surface retrievals using an optimal-estimation framework accelerated by deep neural network forward models. The validation efforts on HARP2 is ongoing, this page provide the validation plan following the work by <span class="citation" data-cites="Gao:2026aa">Gao et al. (<a href="#ref-Gao:2026aa" role="doc-biblioref">2026</a>)</span>. More results will be updated on the <a href="https://pace.oceansciences.org/pace_fastmapol.htm">PACE FastMAPOL validation page</a>.</p>
-<section id="summary-information" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="summary-information"><span class="header-section-number">7.1</span> Summary Information</h2>
+<section id="summary-information" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="summary-information"><span class="header-section-number">6.1</span> Summary Information</h2>
 <ul>
 <li><strong>FastMAPOL version:</strong> v4.0<br>
 </li>
@@ -338,8 +338,8 @@ window.Quarto = {
 <li><strong>Reference:</strong> AERONET v3, Level 1.5</li>
 </ul>
 </section>
-<section id="retrieval-products-to-be-evaluated-ongoing" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="retrieval-products-to-be-evaluated-ongoing"><span class="header-section-number">7.2</span> Retrieval Products to be evaluated (ongoing)</h2>
+<section id="retrieval-products-to-be-evaluated-ongoing" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="retrieval-products-to-be-evaluated-ongoing"><span class="header-section-number">6.2</span> Retrieval Products to be evaluated (ongoing)</h2>
 <p><strong>Aerosol</strong> - Total, fine-mode, and coarse-mode aerosol optical depth (AOD) - Total, fine-mode, and coarse-mode single-scattering albedo (SSA)</p>
 <p><strong>Ocean</strong> - Ocean remote-sensing reflectance (<span class="math inline">\(R_{rs}\)</span>)</p>
 <p><strong>LAND</strong> - Land surface reflectance (<span class="math inline">\(R_{rs}\)</span>) - ## Validation Strategy</p>
@@ -354,8 +354,8 @@ Evaluate aerosol and <span class="math inline">\(R_{rs}\)</span> simultaneously 
 </ol>
 <p>The objective is to assess both the physical realism of the retrieved fields and the consistency of aerosol and ocean products.</p>
 </section>
-<section id="global-level-3-products" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="global-level-3-products"><span class="header-section-number">7.3</span> Global Level-3 Products</h2>
+<section id="global-level-3-products" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="global-level-3-products"><span class="header-section-number">6.3</span> Global Level-3 Products</h2>
 <p><strong>Aerosol Products (556 nm)</strong></p>
 <p>Global distributions of total, fine-mode, and coarse-mode AOD and SSA at 556 nm:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -794,7 +794,7 @@ Gao, Meng, Kamal Aryal, Peng-Wang Zhai, Kirk Knobelspiesse, Bryan Franz, Brian C
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../chapters/fastmapol_validation_harp2_ditl.html" class="pagination-link" aria-label="HARP2 L2 Aerosol and Ocean Product Validation with DITL data">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

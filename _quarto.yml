@@ -13,6 +13,11 @@ keywords:
   - Aerosol
   - Ocean Color
   - Deep Learning
+
+atbd-website:
+  name: FastMAPOL ATBD
+  url: https://kiwiriver.github.io/mapol-doc/
+  
 # --------------------------------------------------
 # Book metadata
 # --------------------------------------------------
@@ -55,14 +60,14 @@ book:
     style: docked
     background: light
     collapse-level: 2
-    logo: logo/fastmapol3.png
+    logo: logo/fastmapol4.png
     
   chapters:
     - index.md
+    - chapters/fastmapol_tutorial.md
     - chapters/fastmapol_summary.md
     - chapters/fastmapol_retrieval.md
     - chapters/fastmapol_product.md
-    - chapters/fastmapol_tutorial.md
     - chapters/fastmapol_validation_spexone_v3.md
     - chapters/fastmapol_validation_harp2_ditl.md
     - chapters/fastmapol_validation_harp2_v4.md

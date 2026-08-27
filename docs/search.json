@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "FastMAPOL Algorithm Theoretical Basis Document",
     "section": "",
-    "text": "About This Document\nThis Algorithm Theoretical Basis Document (ATBD) describes the theoretical basis, implementation, data products, and validation of the Fast Multi-Angle Polarimetric Ocean and Land (FastMAPOL) retrieval algorithm developed for the NASA Plankton, Aerosol, Cloud, ocean Ecosystem (PACE) mission.\nFastMAPOL retrieves aerosol, ocean, and land surface properties from multi-angle polarimetric observations acquired by the PACE polarimeters, HARP2 and SPEXone. The algorithm is currently run in production and produce operational aerosol, ocean color and land surface products with public available data through NASA Earth Data Cloud.\nThe following chapters provide information on data access through NASA Earthdata and product release notes. These are followed by FastMAPOL at a Glance, which provides a high-level overview of the algorithm. The algorithm overview, data product format, and validation results are then summarized in the subsequent chapters. More detailed technical descriptions of the algorithm and its underlying methodology are provided in the second part of this document.",
+    "text": "About This Document\nThis Algorithm Theoretical Basis Document (ATBD) describes the theoretical basis, implementation, data products, and validation of the Fast Multi-Angle Polarimetric Ocean and Land (FastMAPOL) retrieval algorithm developed for the NASA Plankton, Aerosol, Cloud, ocean Ecosystem (PACE) mission.\nFastMAPOL retrieves aerosol, ocean, and land surface properties from multi-angle polarimetric observations acquired by the PACE polarimeters, HARP2 and SPEXone. The algorithm is currently run in production and produce operational aerosol, ocean color and land surface products with public available data through NASA Earth Data Cloud.\nThe following chapters provide information on data access through NASA Earthdata and product release notes. These are followed by FastMAPOL at a Glance, which provides a high-level overview of the algorithm. The algorithm overview, data product format, and validation results are then summarized in the subsequent chapters. More detailed technical descriptions of the algorithm and its underlying methodology are provided in the second part of this document.\nA web version of this document is available at FastMAPOL ATBD and may provide more timely updates. Both the web content and the link location are subject to change. Please contact the authors for the latest information.",
     "crumbs": [
       "About This Document"
     ]
@@ -14,7 +14,17 @@
     "href": "index.html#document-information",
     "title": "FastMAPOL Algorithm Theoretical Basis Document",
     "section": "Document Information",
-    "text": "Document Information\n\n\n\nMission\nPACE\n\n\nPoint of Contact\nMeng Gao (meng.gao@nasa.gov)\n\n\nKeywords\nPACE · Polarimeter · FastMAPOL · Aerosol · Ocean · Land",
+    "text": "Document Information\n\n\n\nMission\nPACE\n\n\nPoint of Contact\nMeng Gao (meng.gao@nasa.gov)\n\n\nKeywords\nPACE · Polarimeter · FastMAPOL · Aerosol · Ocean · Land\n\n\nWebsite\nFastMAPOL ATBD",
+    "crumbs": [
+      "About This Document"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-cite",
+    "href": "index.html#how-to-cite",
+    "title": "FastMAPOL Algorithm Theoretical Basis Document",
+    "section": "How to Cite",
+    "text": "How to Cite\nWhen using or referring to FastMAPOL, please cite this document as:\n\nGao, M., P. Zhai, K. Aryal, K. Knobelspiesse, and B. Franz. FastMAPOL Algorithm Theoretical Basis Document: Coupled Aerosol, Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry. NASA Goddard Space Flight Center, Version v1.0, 2026. FastMAPOL ATBD.\n\nPlease also cite the relevant peer-reviewed publications when using the algorithm or data products.",
     "crumbs": [
       "About This Document"
     ]
@@ -57,6 +67,16 @@
     "text": "FastMAPOL Product Release Notes (V3)\nThe FastMAPOL Version 3 release notes are available through the NASA PACE Data Access page.\n\nSPEXone Level-2 Products\n\nMAPOL_OCEAN (Aerosol and Ocean Properties from FastMAPOL Algorithm)\n\nThis is the first release of Level-2 and Level-3 products from the FastMAPOL algorithm as applied to SPEXone Version 3 Level-1C. The FastMAPOL algorithm generates a large suite of aerosol and ocean properties. A subset is listed here.\nProvisional Products\n\nAerosol Optical Thickness (aot)\nSingle Scattering Albedo (ssa)\nEffective Radius of Fine Mode Aerosols (reff_fine)\nEffective Radius of Coarse Mode Aerosols (reff_fine)\nFine Mode Fraction (fmf)\nFine Mode Fraction by Volume (fvf)\nReal Index of Refraction (mr)\nImaginary Index of Refraction (mi)\nWind speed (wind_speed)\nChlorophyll a concentration (Chla)\nAngular Mean Water-Leaving Reflectance before BRDF correction (Rrs1_mean)\nStandard Deviation of Rrs1 (Rrs1_std)\nAngular Mean Water-Leaving Reflectance after BRDF correction (Rrs2_mean)\nStandard Deviation of Rrs2 (Rrs2_std)\n\nKnown issues\n\nSmall negative Rrs offset (~-0.001) is often observed at wavelengths &gt; 600 nm.\nBRDF correction does not fully remove Rrs angular dependence (as seen in Rrs2).\nHigh Rrs bias at 678 nm likely due to influence of the Oxygen A-band.\n\n\n\nSPEXone Level-3 Products\nSPEXone Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:\n\nAER_RTAP: aerosol optical and microphysical properties over land and ocean from RemoTAP algorithm\nAER_RTAPLAND: retrieved land surface parameters (Ross-Li)\nAER_RTAP_OCEAN: retrieved ocean surface parameters (phytoplankton chlorophyll)\nMAPOL_OCEAN: aerosol and ocean properties over ocean from FastMAPOL algorithm\n\n\n\nHARP2 Level-2 Products\nMAPOL_OCEAN (Aerosol and Ocean Properties from FastMAPOL Algorithm)\nThis is the first release of Level-2 and Level-3 products from the FastMAPOL algorithm as applied to HARP2 Version 3 Level-1C. The FastMAPOL algorithm generates a large suite of aerosol and ocean optical properties. A subset is listed here.\nProvisional Products\n\nAerosol Optical Thickness (aot)\nSingle Scattering Albedo (ssa)\nEffective Radius of Fine Mode Aerosols (reff_fine)\nEffective Radius of Coarse Mode Aerosols (reff_fine)\nFine Mode Fraction (fmf)\nFine Mode Fraction by Volume (fvf)\nReal Index of Refraction (mr)\nImaginary Index of Refraction (mi)\nWind speed (wind_speed)\nChlorophyll a concentration (Chla)\nAngular Mean Water-Leaving Reflectance before BRDF correction (Rrs1_mean)\nStandard Deviation of Rrs1 (Rrs1_std)\nAngular Mean Water-Leaving Reflectance after BRDF correction (Rrs2_mean)\nStandard Deviation of Rrs2 (Rrs2_std)\n\nKnown issues\n\nAerosol optical depth is biased high (~0.07) as compared with AERONET-OC.\nRemote-sensing reflectance (Rrs) is biased low (-0.001) as compared with AERONET-OC.\nHigh uncertainty in aerosol microphysical retrievals (mr, mi, sph, alh etc).\nFewer polarization measurements than radiance measurements are successfully fitted, as indicated by valid angle counts (Nv_ref and Nv_dolp) and angular data mask (mask_ref and mask_dolp).\n\n\n\nHARP2 Level-3 Products\nHARP2 Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:\n\nMAPOL_OCEAN: aerosol and ocean properties over ocean from FastMAPOL algorithm",
     "crumbs": [
       "About This Document"
+    ]
+  },
+  {
+    "objectID": "chapters/fastmapol_tutorial.html",
+    "href": "chapters/fastmapol_tutorial.html",
+    "title": "Jupyter Notebook Tutorials from PACE HelpHub",
+    "section": "",
+    "text": "Notebook tutorials are available through the PACE Help Hub.\n\nHARP2 Ocean Aerosols (FastMAPOL) - Working with aerosol data over ocean from the HARP2 polarimeter with the FastMAPOL algorithm\nHARP2 Land Aerosols (FastMAPOL) - Working with aerosol data over land from the HARP2 polarimeter with the FastMAPOL algorithm\nSPEXone Aerosols (FastMAPOL) - Analyzing aerosol retrievals over ocean from SPEXone measurements with the FastMAPOL algorithm",
+    "crumbs": [
+      "Jupyter Notebook Tutorials from PACE HelpHub"
     ]
   },
   {
@@ -220,163 +240,153 @@
     ]
   },
   {
-    "objectID": "chapters/fastmapol_tutorial.html",
-    "href": "chapters/fastmapol_tutorial.html",
-    "title": "4  Jupyter Notebook Tutorials",
-    "section": "",
-    "text": "Notebook tutorials are available through the PACE Help Hub.\n\nHARP2 Ocean Aerosols (FastMAPOL) - Working with aerosol data over ocean from the HARP2 polarimeter with the FastMAPOL algorithm\nHARP2 Land Aerosols (FastMAPOL) - Working with aerosol data over land from the HARP2 polarimeter with the FastMAPOL algorithm\nSPEXone Aerosols (FastMAPOL) - Analyzing aerosol retrievals over ocean from SPEXone measurements with the FastMAPOL algorithm\n\nPlease contact Meng Gao (meng.gao@nasa.gov) for additional information or tutorial content on FastMAPOL products.",
-    "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Jupyter Notebook Tutorials</span>"
-    ]
-  },
-  {
     "objectID": "chapters/fastmapol_validation_spexone_v3.html",
     "href": "chapters/fastmapol_validation_spexone_v3.html",
-    "title": "5  SPEXone Aerosol and Ocean Product Validation (V3)",
+    "title": "4  SPEXone Aerosol and Ocean Product Validation (V3)",
     "section": "",
-    "text": "5.1 Summary Information\nThis page summarizes validation results for aerosol and ocean products retrieved from the PACE multi-angle polarimeters using the FastMAPOL algorithm, with emphasis on SPEXone aerosol optical properties and ocean remote-sensing reflectance (\\(R_{rs}\\)).\nFastMAPOL performs coupled aerosol–surface retrievals using an optimal-estimation framework accelerated by deep neural network forward models. This page focuses on the validation results and their interpretation for Version 3 (V3) data. Version 4 (V4) data show generally similar performance, as summarized in the V4 data release notes. More detailed V4 validation is ongoing.\nAdditional quantified validation results are available in Gao et al. (2026) and will be updated on the PACE FastMAPOL validation page.",
+    "text": "4.1 Summary Information\nThis page summarizes validation results for aerosol and ocean products retrieved from the PACE multi-angle polarimeters using the FastMAPOL algorithm, with emphasis on SPEXone aerosol optical properties and ocean remote-sensing reflectance (\\(R_{rs}\\)).\nFastMAPOL performs coupled aerosol–surface retrievals using an optimal-estimation framework accelerated by deep neural network forward models. This page focuses on the validation results and their interpretation for Version 3 (V3) data. Version 4 (V4) data show generally similar performance, as summarized in the V4 data release notes. More detailed V4 validation is ongoing.\nAdditional quantified validation results are available in Gao et al. (2026) and will be updated on the PACE FastMAPOL validation page.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>SPEXone Aerosol and Ocean Product Validation (V3)</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>SPEXone Aerosol and Ocean Product Validation (V3)</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_spexone_v3.html#summary-information",
     "href": "chapters/fastmapol_validation_spexone_v3.html#summary-information",
-    "title": "5  SPEXone Aerosol and Ocean Product Validation (V3)",
+    "title": "4  SPEXone Aerosol and Ocean Product Validation (V3)",
     "section": "",
     "text": "FastMAPOL version: v3.0\n\nData period: 2024/03–2025/12\n\nReference: AERONET v3, Level 1.5",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>SPEXone Aerosol and Ocean Product Validation (V3)</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>SPEXone Aerosol and Ocean Product Validation (V3)</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_spexone_v3.html#retrieval-products-evaluated",
     "href": "chapters/fastmapol_validation_spexone_v3.html#retrieval-products-evaluated",
-    "title": "5  SPEXone Aerosol and Ocean Product Validation (V3)",
-    "section": "5.2 Retrieval Products Evaluated",
-    "text": "5.2 Retrieval Products Evaluated\nAerosol - Total, fine-mode, and coarse-mode aerosol optical depth (AOD) - Total, fine-mode, and coarse-mode single-scattering albedo (SSA)\nOcean - Ocean remote-sensing reflectance (\\(R_{rs}\\))",
+    "title": "4  SPEXone Aerosol and Ocean Product Validation (V3)",
+    "section": "4.2 Retrieval Products Evaluated",
+    "text": "4.2 Retrieval Products Evaluated\nAerosol - Total, fine-mode, and coarse-mode aerosol optical depth (AOD) - Total, fine-mode, and coarse-mode single-scattering albedo (SSA)\nOcean - Ocean remote-sensing reflectance (\\(R_{rs}\\))",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>SPEXone Aerosol and Ocean Product Validation (V3)</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>SPEXone Aerosol and Ocean Product Validation (V3)</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_spexone_v3.html#validation-strategy",
     "href": "chapters/fastmapol_validation_spexone_v3.html#validation-strategy",
-    "title": "5  SPEXone Aerosol and Ocean Product Validation (V3)",
-    "section": "5.3 Validation Strategy",
-    "text": "5.3 Validation Strategy\nValidation is organized into three levels:\n\nGlobal Level-3 assessment\nEvaluate large-scale spatial and seasonal patterns as shown below.\nGlobal aerosol validation\nCompare retrievals with AERONET observations\nJoint aerosol–ocean validation\nEvaluate aerosol and \\(R_{rs}\\) simultaneously using AERONET-OC matchups, study the mutual dependencies on the retrieval uncertainties.\n\nThe objective is to assess both the physical realism of the retrieved fields and the consistency of aerosol and ocean products.",
+    "title": "4  SPEXone Aerosol and Ocean Product Validation (V3)",
+    "section": "4.3 Validation Strategy",
+    "text": "4.3 Validation Strategy\nValidation is organized into three levels:\n\nGlobal Level-3 assessment\nEvaluate large-scale spatial and seasonal patterns as shown below.\nGlobal aerosol validation\nCompare retrievals with AERONET observations\nJoint aerosol–ocean validation\nEvaluate aerosol and \\(R_{rs}\\) simultaneously using AERONET-OC matchups, study the mutual dependencies on the retrieval uncertainties.\n\nThe objective is to assess both the physical realism of the retrieved fields and the consistency of aerosol and ocean products.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>SPEXone Aerosol and Ocean Product Validation (V3)</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>SPEXone Aerosol and Ocean Product Validation (V3)</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_spexone_v3.html#global-level-3-products",
     "href": "chapters/fastmapol_validation_spexone_v3.html#global-level-3-products",
-    "title": "5  SPEXone Aerosol and Ocean Product Validation (V3)",
-    "section": "5.4 Global Level-3 Products",
-    "text": "5.4 Global Level-3 Products\nAerosol Products (556 nm)\nGlobal distributions of total, fine-mode, and coarse-mode AOD and SSA at 556 nm:\n\n\n\nGlobal aerosol products\n\n\n\nOcean Products\nGlobal distributions of \\(R_{rs}\\) (443, 556, 667 nm) and chlorophyll-a:\n\n\n\nGlobal ocean products\n\n\nThe retrieved \\(R_{rs}\\) contains spectral and angular dimensions. The results shown here represent the BRDF-corrected angular mean.\nKey result:\nThe global distributions show realistic spatial and seasonal patterns, indicating effective separation of atmospheric and oceanic retrieval components.\n\n\n\n\nGao, Meng, Kamal Aryal, Peng-Wang Zhai, Kirk Knobelspiesse, Bryan Franz, Brian Cairns, Ivona Cetinić, et al. 2026. “Where Sky Meets Sea: Integrated Aerosol and Ocean Color Retrieval from PACE SPEXone Multi-Angle Polarimetry.” Remote Sensing of Environment 345: 115603. https://doi.org/https://doi.org/10.1016/j.rse.2026.115603.",
+    "title": "4  SPEXone Aerosol and Ocean Product Validation (V3)",
+    "section": "4.4 Global Level-3 Products",
+    "text": "4.4 Global Level-3 Products\nAerosol Products (556 nm)\nGlobal distributions of total, fine-mode, and coarse-mode AOD and SSA at 556 nm:\n\n\n\nGlobal aerosol products\n\n\n\nOcean Products\nGlobal distributions of \\(R_{rs}\\) (443, 556, 667 nm) and chlorophyll-a:\n\n\n\nGlobal ocean products\n\n\nThe retrieved \\(R_{rs}\\) contains spectral and angular dimensions. The results shown here represent the BRDF-corrected angular mean.\nKey result:\nThe global distributions show realistic spatial and seasonal patterns, indicating effective separation of atmospheric and oceanic retrieval components.\n\n\n\n\nGao, Meng, Kamal Aryal, Peng-Wang Zhai, Kirk Knobelspiesse, Bryan Franz, Brian Cairns, Ivona Cetinić, et al. 2026. “Where Sky Meets Sea: Integrated Aerosol and Ocean Color Retrieval from PACE SPEXone Multi-Angle Polarimetry.” Remote Sensing of Environment 345: 115603. https://doi.org/https://doi.org/10.1016/j.rse.2026.115603.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>SPEXone Aerosol and Ocean Product Validation (V3)</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>SPEXone Aerosol and Ocean Product Validation (V3)</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_harp2_ditl.html",
     "href": "chapters/fastmapol_validation_harp2_ditl.html",
-    "title": "6  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
+    "title": "5  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
     "section": "",
-    "text": "6.1 Overview\nPre-launch Day-in-the-Life (DITL) simulations provide an end-to-end benchmark of HARP2 measurement realism, L2 retrieval performance, and uncertainty characterization. The results below highlight three key aspects: synthetic observations, pixel-wise retrieval performance, and uncertainty analysis. Details are provided in M. Gao et al. (2023).\nValidation of the production data (V3 and V4) is ongoing, following the methodologies reported in Meng Gao et al. (2026). The validation results should be compared with the DITL uncertainty analysis to assess retrieval performance using real observations relative to theoretical expectations.",
+    "text": "5.1 Overview\nPre-launch Day-in-the-Life (DITL) simulations provide an end-to-end benchmark of HARP2 measurement realism, L2 retrieval performance, and uncertainty characterization. The results below highlight three key aspects: synthetic observations, pixel-wise retrieval performance, and uncertainty analysis. Details are provided in M. Gao et al. (2023).\nValidation of the production data (V3 and V4) is ongoing, following the methodologies reported in Meng Gao et al. (2026). The validation results should be compared with the DITL uncertainty analysis to assess retrieval performance using real observations relative to theoretical expectations.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_harp2_ditl.html#summary-information",
     "href": "chapters/fastmapol_validation_harp2_ditl.html#summary-information",
-    "title": "6  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
-    "section": "6.2 Summary Information",
-    "text": "6.2 Summary Information\n\nFastMAPOL version: Prelaunch Test\n\nData period: March 21, 2022 (spring equinox)\n\nReference: Synthetic HARP2\n\nPublished: Dec 07, 2023 (https://doi.org/10.5194/amt-16-5863-2023)",
+    "title": "5  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
+    "section": "5.2 Summary Information",
+    "text": "5.2 Summary Information\n\nFastMAPOL version: Prelaunch Test\n\nData period: March 21, 2022 (spring equinox)\n\nReference: Synthetic HARP2\n\nPublished: Dec 07, 2023 (https://doi.org/10.5194/amt-16-5863-2023)",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_harp2_ditl.html#synthetic-harp2-observations",
     "href": "chapters/fastmapol_validation_harp2_ditl.html#synthetic-harp2-observations",
-    "title": "6  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
-    "section": "6.3 Synthetic HARP2 observations",
-    "text": "6.3 Synthetic HARP2 observations\nAs shown in Figure 6.1, A full day of synthetic HARP2 observations is generated using a neural network forward model for both reflectance and DoLP. Aerosol and surface properties are prescribed from reanalysis (MERRA-2). The simulated observations provide a realistic testbed for retrieval evaluation:\n\nGlobal multi-angle measurements are generated for both reflectance and polarization.\n\nDoLP shows enhanced sensitivity to aerosol and surface properties.\n\nReflectance and DoLP provide complementary information content.\n\n\n\n\n\n\n\nFigure 6.1: Global HARP2 simulation (550 nm): reflectance (a–c) and DoLP (d–f) from 15 orbits on 21 March 2022, showing three along-track viewing angles. Figure is adopted from M. Gao et al. (2023)",
+    "title": "5  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
+    "section": "5.3 Synthetic HARP2 observations",
+    "text": "5.3 Synthetic HARP2 observations\nAs shown in Figure 5.1, A full day of synthetic HARP2 observations is generated using a neural network forward model for both reflectance and DoLP. Aerosol and surface properties are prescribed from reanalysis (MERRA-2). The simulated observations provide a realistic testbed for retrieval evaluation:\n\nGlobal multi-angle measurements are generated for both reflectance and polarization.\n\nDoLP shows enhanced sensitivity to aerosol and surface properties.\n\nReflectance and DoLP provide complementary information content.\n\n\n\n\n\n\n\nFigure 5.1: Global HARP2 simulation (550 nm): reflectance (a–c) and DoLP (d–f) from 15 orbits on 21 March 2022, showing three along-track viewing angles. Figure is adopted from M. Gao et al. (2023)",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_harp2_ditl.html#geophysical-retrievals-with-pixel-wise-uncertainty",
     "href": "chapters/fastmapol_validation_harp2_ditl.html#geophysical-retrievals-with-pixel-wise-uncertainty",
-    "title": "6  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
-    "section": "6.4 Geophysical retrievals with pixel-wise uncertainty",
-    "text": "6.4 Geophysical retrievals with pixel-wise uncertainty\nBased on the synthetic data, retrieval results as shown in Figure 6.2 demonstrate strong agreement with truth and meaningful uncertainty estimates:\n\nAOD (550 nm) is retrieved with high accuracy and low spatial error.\n\nMultiple geophysical variables are retrieved simultaneously, with ALH shown as an example.\n\nPixel-wise uncertainty reflects scene dependence, with larger values at low AOD and limited angular sampling.\n\n\n\n\n\n\n\nFigure 6.2: Retrieval performance: AOD (550 nm) and ALH showing retrieval, truth, and uncertainty (a–c, d–f). Figure is adopted from M. Gao et al. (2023)",
+    "title": "5  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
+    "section": "5.4 Geophysical retrievals with pixel-wise uncertainty",
+    "text": "5.4 Geophysical retrievals with pixel-wise uncertainty\nBased on the synthetic data, retrieval results as shown in Figure 5.2 demonstrate strong agreement with truth and meaningful uncertainty estimates:\n\nAOD (550 nm) is retrieved with high accuracy and low spatial error.\n\nMultiple geophysical variables are retrieved simultaneously, with ALH shown as an example.\n\nPixel-wise uncertainty reflects scene dependence, with larger values at low AOD and limited angular sampling.\n\n\n\n\n\n\n\nFigure 5.2: Retrieval performance: AOD (550 nm) and ALH showing retrieval, truth, and uncertainty (a–c, d–f). Figure is adopted from M. Gao et al. (2023)",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_harp2_ditl.html#uncertainty-closure-analysis",
     "href": "chapters/fastmapol_validation_harp2_ditl.html#uncertainty-closure-analysis",
-    "title": "6  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
-    "section": "6.5 Uncertainty closure analysis",
-    "text": "6.5 Uncertainty closure analysis\nTheoretical uncertainties are derived from error propagation, while realized uncertainties are computed from retrieval–truth differences. Their comparisons are shown in Figure 6.3,\n\nGood agreement for aerosol optical and microphysical properties, especially at moderate to high AOD.\n\nDecreasing uncertainty with increasing aerosol loading.\n\nUnderestimation of uncertainty in low-AOD conditions and for weakly constrained parameters.\n\n\n\n\n\n\n\nFigure 6.3: Theoretical (red) vs. retrieved (blue) uncertainties as a function of AOD for AOD, SSA, mr, reff, veff, wind speed, and Chl a. AOD ranges from 0.01–0.45 (Δ=0.01). Figure is adopted from M. Gao et al. (2023)",
+    "title": "5  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
+    "section": "5.5 Uncertainty closure analysis",
+    "text": "5.5 Uncertainty closure analysis\nTheoretical uncertainties are derived from error propagation, while realized uncertainties are computed from retrieval–truth differences. Their comparisons are shown in Figure 5.3,\n\nGood agreement for aerosol optical and microphysical properties, especially at moderate to high AOD.\n\nDecreasing uncertainty with increasing aerosol loading.\n\nUnderestimation of uncertainty in low-AOD conditions and for weakly constrained parameters.\n\n\n\n\n\n\n\nFigure 5.3: Theoretical (red) vs. retrieved (blue) uncertainties as a function of AOD for AOD, SSA, mr, reff, veff, wind speed, and Chl a. AOD ranges from 0.01–0.45 (Δ=0.01). Figure is adopted from M. Gao et al. (2023)",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_harp2_ditl.html#summary",
     "href": "chapters/fastmapol_validation_harp2_ditl.html#summary",
-    "title": "6  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
-    "section": "6.6 Summary",
-    "text": "6.6 Summary\n\nSynthetic data provide realistic multi-angle polarimetric observations.\n\nL2 retrievals achieve high accuracy for key variables (especially AOD).\n\nPixel-level uncertainties are physically meaningful and scene dependent.\n\nUncertainty estimates are generally consistent with actual errors, with known limitations.\n\nThese results define a pre-launch benchmark for HARP2 L2 validation using DITL data.\n\n\n\n\nGao, Meng, Kamal Aryal, Peng-Wang Zhai, Kirk Knobelspiesse, Bryan Franz, Brian Cairns, Ivona Cetinić, et al. 2026. “Where Sky Meets Sea: Integrated Aerosol and Ocean Color Retrieval from PACE SPEXone Multi-Angle Polarimetry.” Remote Sensing of Environment 345: 115603. https://doi.org/https://doi.org/10.1016/j.rse.2026.115603.\n\n\nGao, M., B. A. Franz, P.-W. Zhai, K. Knobelspiesse, A. M. Sayer, X. Xu, J. V. Martins, et al. 2023. “Simultaneous Retrieval of Aerosol and Ocean Properties from PACE HARP2 with Uncertainty Assessment Using Cascading Neural Network Radiative Transfer Models.” Atmospheric Measurement Techniques 16 (23): 5863–81. https://doi.org/10.5194/amt-16-5863-2023.",
+    "title": "5  HARP2 L2 Aerosol and Ocean Product Validation with DITL data",
+    "section": "5.6 Summary",
+    "text": "5.6 Summary\n\nSynthetic data provide realistic multi-angle polarimetric observations.\n\nL2 retrievals achieve high accuracy for key variables (especially AOD).\n\nPixel-level uncertainties are physically meaningful and scene dependent.\n\nUncertainty estimates are generally consistent with actual errors, with known limitations.\n\nThese results define a pre-launch benchmark for HARP2 L2 validation using DITL data.\n\n\n\n\nGao, Meng, Kamal Aryal, Peng-Wang Zhai, Kirk Knobelspiesse, Bryan Franz, Brian Cairns, Ivona Cetinić, et al. 2026. “Where Sky Meets Sea: Integrated Aerosol and Ocean Color Retrieval from PACE SPEXone Multi-Angle Polarimetry.” Remote Sensing of Environment 345: 115603. https://doi.org/https://doi.org/10.1016/j.rse.2026.115603.\n\n\nGao, M., B. A. Franz, P.-W. Zhai, K. Knobelspiesse, A. M. Sayer, X. Xu, J. V. Martins, et al. 2023. “Simultaneous Retrieval of Aerosol and Ocean Properties from PACE HARP2 with Uncertainty Assessment Using Cascading Neural Network Radiative Transfer Models.” Atmospheric Measurement Techniques 16 (23): 5863–81. https://doi.org/10.5194/amt-16-5863-2023.",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_harp2_v4.html",
     "href": "chapters/fastmapol_validation_harp2_v4.html",
-    "title": "7  HARP2 Aerosol, OCEAN and LAND Product Validation (V4)",
+    "title": "6  HARP2 Aerosol, OCEAN and LAND Product Validation (V4)",
     "section": "",
-    "text": "7.1 Summary Information\nThis page summarizes validation results for aerosol and surface products retrieved from the PACE multi-angle polarimeters using the FastMAPOL algorithm, with emphasis on HARP2 aerosol optical properties, ocean remote-sensing reflectance (\\(R_{rs}\\)) and land surface reflectance (\\(\\rho_s\\)).\nFastMAPOL performs coupled aerosol–surface retrievals using an optimal-estimation framework accelerated by deep neural network forward models. The validation efforts on HARP2 is ongoing, this page provide the validation plan following the work by Gao et al. (2026). More results will be updated on the PACE FastMAPOL validation page.",
+    "text": "6.1 Summary Information\nThis page summarizes validation results for aerosol and surface products retrieved from the PACE multi-angle polarimeters using the FastMAPOL algorithm, with emphasis on HARP2 aerosol optical properties, ocean remote-sensing reflectance (\\(R_{rs}\\)) and land surface reflectance (\\(\\rho_s\\)).\nFastMAPOL performs coupled aerosol–surface retrievals using an optimal-estimation framework accelerated by deep neural network forward models. The validation efforts on HARP2 is ongoing, this page provide the validation plan following the work by Gao et al. (2026). More results will be updated on the PACE FastMAPOL validation page.",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_harp2_v4.html#summary-information",
     "href": "chapters/fastmapol_validation_harp2_v4.html#summary-information",
-    "title": "7  HARP2 Aerosol, OCEAN and LAND Product Validation (V4)",
+    "title": "6  HARP2 Aerosol, OCEAN and LAND Product Validation (V4)",
     "section": "",
     "text": "FastMAPOL version: v4.0\n\nData period: 2024/03–2025/12\n\nReference: AERONET v3, Level 1.5",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_harp2_v4.html#retrieval-products-to-be-evaluated-ongoing",
     "href": "chapters/fastmapol_validation_harp2_v4.html#retrieval-products-to-be-evaluated-ongoing",
-    "title": "7  HARP2 Aerosol, OCEAN and LAND Product Validation (V4)",
-    "section": "7.2 Retrieval Products to be evaluated (ongoing)",
-    "text": "7.2 Retrieval Products to be evaluated (ongoing)\nAerosol - Total, fine-mode, and coarse-mode aerosol optical depth (AOD) - Total, fine-mode, and coarse-mode single-scattering albedo (SSA)\nOcean - Ocean remote-sensing reflectance (\\(R_{rs}\\))\nLAND - Land surface reflectance (\\(R_{rs}\\)) - ## Validation Strategy\nValidation is organized into three levels similar to SPEXone (Gao et al. (2026)):\n\nGlobal Level-3 assessment\nEvaluate large-scale spatial and seasonal patterns as shown below.\nGlobal aerosol validation\nCompare retrievals with AERONET observations\nJoint aerosol–ocean validation\nEvaluate aerosol and \\(R_{rs}\\) simultaneously using AERONET-OC matchups, study the mutual dependencies on the retrieval uncertainties.\n\nThe objective is to assess both the physical realism of the retrieved fields and the consistency of aerosol and ocean products.",
+    "title": "6  HARP2 Aerosol, OCEAN and LAND Product Validation (V4)",
+    "section": "6.2 Retrieval Products to be evaluated (ongoing)",
+    "text": "6.2 Retrieval Products to be evaluated (ongoing)\nAerosol - Total, fine-mode, and coarse-mode aerosol optical depth (AOD) - Total, fine-mode, and coarse-mode single-scattering albedo (SSA)\nOcean - Ocean remote-sensing reflectance (\\(R_{rs}\\))\nLAND - Land surface reflectance (\\(R_{rs}\\)) - ## Validation Strategy\nValidation is organized into three levels similar to SPEXone (Gao et al. (2026)):\n\nGlobal Level-3 assessment\nEvaluate large-scale spatial and seasonal patterns as shown below.\nGlobal aerosol validation\nCompare retrievals with AERONET observations\nJoint aerosol–ocean validation\nEvaluate aerosol and \\(R_{rs}\\) simultaneously using AERONET-OC matchups, study the mutual dependencies on the retrieval uncertainties.\n\nThe objective is to assess both the physical realism of the retrieved fields and the consistency of aerosol and ocean products.",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span>"
     ]
   },
   {
     "objectID": "chapters/fastmapol_validation_harp2_v4.html#global-level-3-products",
     "href": "chapters/fastmapol_validation_harp2_v4.html#global-level-3-products",
-    "title": "7  HARP2 Aerosol, OCEAN and LAND Product Validation (V4)",
-    "section": "7.3 Global Level-3 Products",
-    "text": "7.3 Global Level-3 Products\nAerosol Products (556 nm)\nGlobal distributions of total, fine-mode, and coarse-mode AOD and SSA at 556 nm:\n\n\n\nGlobal aerosol products\n\n\n\nLAND Products\nGlobal distributions of \\(\\rho_{s}\\) in RGB (667, 556, 443 nm):\n\n\n\nGlobal ocean products\n\n\nThe retrieved \\(\\rho_s\\) contains both spectral and angular dimensions. The results shown here represent the angular mean after BRDF correction (rhos_nadir_mean).\nKey result:\nThe global distributions show realistic spatial and seasonal patterns, indicating effective separation of atmospheric and surface retrieval components. Over ocean, AOD shows good consistency with AERONET when using the best-quality retrievals (quality flags 0 and 1). Over land, however, retrieved AOD is generally higher than AERONET observations. For more details, please refer to the Version 4 release notes.\n\n\n\n\nGao, Meng, Kamal Aryal, Peng-Wang Zhai, Kirk Knobelspiesse, Bryan Franz, Brian Cairns, Ivona Cetinić, et al. 2026. “Where Sky Meets Sea: Integrated Aerosol and Ocean Color Retrieval from PACE SPEXone Multi-Angle Polarimetry.” Remote Sensing of Environment 345: 115603. https://doi.org/https://doi.org/10.1016/j.rse.2026.115603.",
+    "title": "6  HARP2 Aerosol, OCEAN and LAND Product Validation (V4)",
+    "section": "6.3 Global Level-3 Products",
+    "text": "6.3 Global Level-3 Products\nAerosol Products (556 nm)\nGlobal distributions of total, fine-mode, and coarse-mode AOD and SSA at 556 nm:\n\n\n\nGlobal aerosol products\n\n\n\nLAND Products\nGlobal distributions of \\(\\rho_{s}\\) in RGB (667, 556, 443 nm):\n\n\n\nGlobal ocean products\n\n\nThe retrieved \\(\\rho_s\\) contains both spectral and angular dimensions. The results shown here represent the angular mean after BRDF correction (rhos_nadir_mean).\nKey result:\nThe global distributions show realistic spatial and seasonal patterns, indicating effective separation of atmospheric and surface retrieval components. Over ocean, AOD shows good consistency with AERONET when using the best-quality retrievals (quality flags 0 and 1). Over land, however, retrieved AOD is generally higher than AERONET observations. For more details, please refer to the Version 4 release notes.\n\n\n\n\nGao, Meng, Kamal Aryal, Peng-Wang Zhai, Kirk Knobelspiesse, Bryan Franz, Brian Cairns, Ivona Cetinić, et al. 2026. “Where Sky Meets Sea: Integrated Aerosol and Ocean Color Retrieval from PACE SPEXone Multi-Angle Polarimetry.” Remote Sensing of Environment 345: 115603. https://doi.org/https://doi.org/10.1016/j.rse.2026.115603.",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span>"
     ]
   },
   {

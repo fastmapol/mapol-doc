@@ -295,6 +295,8 @@ Meng Gao \;(\href{mailto:meng.gao@nasa.gov}{meng.gao@nasa.gov}) \\
 \textbf{Keywords} &
 PACE \textperiodcentered\ Polarization \textperiodcentered\ Multi-angle \textperiodcentered\ Aerosol \textperiodcentered\ Ocean
 Color \textperiodcentered\ Deep Learning \\
+\textbf{Website} &
+\href{https://kiwiriver.github.io/mapol-doc/}{FastMAPOL ATBD} \\
 \end{tabular}%
 }%
 }
@@ -337,6 +339,12 @@ validation results are then summarized in the subsequent chapters. More
 detailed technical descriptions of the algorithm and its underlying
 methodology are provided in the second part of this document.
 
+A web version of this document is available at
+\href{https://kiwiriver.github.io/mapol-doc/}{FastMAPOL ATBD} and may
+provide more timely updates. Both the web content and the link location
+are subject to change. Please contact the authors for the latest
+information.
+
 \section*{Document Information}\label{document-information}
 
 \markright{Document Information}
@@ -353,7 +361,26 @@ methodology are provided in the second part of this document.
 (\href{mailto:meng.gao@nasa.gov}{\nolinkurl{meng.gao@nasa.gov}}) \\
 \textbf{Keywords} & PACE · Polarimeter · FastMAPOL · Aerosol · Ocean ·
 Land \\
+\textbf{Website} &
+\href{https://kiwiriver.github.io/mapol-doc/}{FastMAPOL ATBD} \\
 \end{longtable}
+
+\section*{How to Cite}\label{how-to-cite}
+
+\markright{How to Cite}
+
+When using or referring to FastMAPOL, please cite this document as:
+
+\begin{quote}
+Gao, M., P. Zhai, K. Aryal, K. Knobelspiesse, and B. Franz.
+\emph{FastMAPOL Algorithm Theoretical Basis Document: Coupled Aerosol,
+Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry}. NASA
+Goddard Space Flight Center, Version v1.0, 2026.
+\href{https://kiwiriver.github.io/mapol-doc/}{FastMAPOL ATBD}.
+\end{quote}
+
+Please also cite the relevant peer-reviewed publications when using the
+algorithm or data products.
 
 \bookmarksetup{startatroot}
 
@@ -748,6 +775,36 @@ available list of mapped product types now include:
 \item
   MAPOL\_OCEAN: aerosol and ocean properties over ocean from FastMAPOL
   algorithm
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\chapter*{Jupyter Notebook Tutorials from PACE
+HelpHub}\label{jupyter-notebook-tutorials-from-pace-helphub}
+\addcontentsline{toc}{chapter}{Jupyter Notebook Tutorials from PACE
+HelpHub}
+
+\markboth{Jupyter Notebook Tutorials from PACE HelpHub}{Jupyter Notebook
+Tutorials from PACE HelpHub}
+
+Notebook tutorials are available through the
+\href{https://nasa.github.io/oceandata-notebooks/sections/cloud-atmosphere.html}{PACE
+Help Hub}.
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://nasa.github.io/oceandata-notebooks/notebooks/harp2/harp2_l2_fastmapol_aerosol_ocean_product.html}{HARP2
+  Ocean Aerosols (FastMAPOL)} - Working with aerosol data over ocean
+  from the HARP2 polarimeter with the FastMAPOL algorithm
+\item
+  \href{https://nasa.github.io/oceandata-notebooks/notebooks/harp2/harp2_l2_fastmapol_aerosol_land_product.html}{HARP2
+  Land Aerosols (FastMAPOL)} - Working with aerosol data over land from
+  the HARP2 polarimeter with the FastMAPOL algorithm
+\item
+  \href{https://nasa.github.io/oceandata-notebooks/notebooks/spexone/spexone_l2_fastmapol_aerosol_product.html}{SPEXone
+  Aerosols (FastMAPOL)} - Analyzing aerosol retrievals over ocean from
+  SPEXone measurements with the FastMAPOL algorithm
 \end{itemize}
 
 \bookmarksetup{startatroot}
@@ -1732,33 +1789,6 @@ Variable & Dimensions & Description \\
 wavelength & (wavelength) & Retrieval wavelengths \\
 sensor\_view\_angle & (number\_of\_views) & Viewing angle geometry \\
 \end{longtable}
-
-\bookmarksetup{startatroot}
-
-\chapter{Jupyter Notebook Tutorials}\label{jupyter-notebook-tutorials}
-
-Notebook tutorials are available through the
-\href{https://nasa.github.io/oceandata-notebooks/sections/cloud-atmosphere.html}{PACE
-Help Hub}.
-
-\begin{itemize}
-\tightlist
-\item
-  \href{https://nasa.github.io/oceandata-notebooks/notebooks/harp2/harp2_l2_fastmapol_aerosol_ocean_product.html}{HARP2
-  Ocean Aerosols (FastMAPOL)} - Working with aerosol data over ocean
-  from the HARP2 polarimeter with the FastMAPOL algorithm
-\item
-  \href{https://nasa.github.io/oceandata-notebooks/notebooks/harp2/harp2_l2_fastmapol_aerosol_land_product.html}{HARP2
-  Land Aerosols (FastMAPOL)} - Working with aerosol data over land from
-  the HARP2 polarimeter with the FastMAPOL algorithm
-\item
-  \href{https://nasa.github.io/oceandata-notebooks/notebooks/spexone/spexone_l2_fastmapol_aerosol_product.html}{SPEXone
-  Aerosols (FastMAPOL)} - Analyzing aerosol retrievals over ocean from
-  SPEXone measurements with the FastMAPOL algorithm
-\end{itemize}
-
-Please contact Meng Gao (meng.gao@nasa.gov) for additional information
-or tutorial content on FastMAPOL products.
 
 \bookmarksetup{startatroot}
 

@@ -6,6 +6,8 @@ FastMAPOL retrieves aerosol, ocean, and land surface properties from multi-angle
 
 The following chapters provide information on data access through NASA Earthdata and product release notes. These are followed by **FastMAPOL at a Glance**, which provides a high-level overview of the algorithm. The algorithm overview, data product format, and validation results are then summarized in the subsequent chapters. More detailed technical descriptions of the algorithm and its underlying methodology are provided in the second part of this document.
 
+A web version of this document is available at [{{< meta atbd-website.name >}}]({{< meta atbd-website.url >}}) and may provide more timely updates. Both the web content and the link location are subject to change. Please contact the authors for the latest information.
+
 ## Document Information {.unnumbered .unlisted}
 
 | | |
@@ -13,6 +15,15 @@ The following chapters provide information on data access through NASA Earthdata
 | **Mission** | PACE |
 | **Point of Contact** | Meng Gao ([meng.gao@nasa.gov](mailto:meng.gao@nasa.gov)) |
 | **Keywords** | PACE · Polarimeter · FastMAPOL · Aerosol · Ocean · Land |
+| **Website** | [{{< meta atbd-website.name >}}]({{< meta atbd-website.url >}}) |
+
+## How to Cite {.unnumbered .unlisted}
+
+When using or referring to FastMAPOL, please cite this document as:
+
+> Gao, M., P. Zhai, K. Aryal, K. Knobelspiesse, and B. Franz. *FastMAPOL Algorithm Theoretical Basis Document: Coupled Aerosol, Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry*. NASA Goddard Space Flight Center, Version v1.0, 2026.  [{{< meta atbd-website.name >}}]({{< meta atbd-website.url >}}).
+
+Please also cite the relevant peer-reviewed publications when using the algorithm or data products.
 
 # Earthdata Access {.unnumbered} 
 

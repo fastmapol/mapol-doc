@@ -40,6 +40,10 @@ $if(keywords)$
 \textbf{Keywords} &
 $for(keywords)$$keywords$$sep$ \textperiodcentered\ $endfor$ \\
 $endif$
+$if(atbd-website)$
+\textbf{Website} &
+\href{$atbd-website.url$}{$atbd-website.name$} \\
+$endif$
 \end{tabular}%
 }%
 }

@@ -37,7 +37,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./chapters/fastmapol_summary.html" rel="next">
+<link href="./chapters/fastmapol_tutorial.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -135,8 +135,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="./index.html" class="sidebar-logo-link">
-      <img src="./logo/fastmapol3.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
-      <img src="./logo/fastmapol3.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      <img src="./logo/fastmapol4.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./logo/fastmapol4.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">FastMAPOL Algorithm Theoretical Basis Document</a> 
@@ -153,6 +153,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">About This Document</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/fastmapol_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jupyter Notebook Tutorials from PACE HelpHub</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -175,26 +181,20 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/fastmapol_tutorial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Jupyter Notebook Tutorials</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./chapters/fastmapol_validation_spexone_v3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">SPEXone Aerosol and Ocean Product Validation (V3)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">SPEXone Aerosol and Ocean Product Validation (V3)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapters/fastmapol_validation_harp2_ditl.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapters/fastmapol_validation_harp2_v4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -389,6 +389,7 @@ window.Quarto = {
 <p>This Algorithm Theoretical Basis Document (ATBD) describes the theoretical basis, implementation, data products, and validation of the Fast Multi-Angle Polarimetric Ocean and Land (FastMAPOL) retrieval algorithm developed for the NASA Plankton, Aerosol, Cloud, ocean Ecosystem (PACE) mission.</p>
 <p>FastMAPOL retrieves aerosol, ocean, and land surface properties from multi-angle polarimetric observations acquired by the PACE polarimeters, HARP2 and SPEXone. The algorithm is currently run in production and produce operational aerosol, ocean color and land surface products with public available data through NASA Earth Data Cloud.</p>
 <p>The following chapters provide information on data access through NASA Earthdata and product release notes. These are followed by <strong>FastMAPOL at a Glance</strong>, which provides a high-level overview of the algorithm. The algorithm overview, data product format, and validation results are then summarized in the subsequent chapters. More detailed technical descriptions of the algorithm and its underlying methodology are provided in the second part of this document.</p>
+<p>A web version of this document is available at <a href="https://kiwiriver.github.io/mapol-doc/">FastMAPOL ATBD</a> and may provide more timely updates. Both the web content and the link location are subject to change. Please contact the authors for the latest information.</p>
 <section id="document-information" class="level2 unnumbered unlisted">
 <h2 class="unnumbered unlisted anchored" data-anchor-id="document-information">Document Information</h2>
 <table class="caption-top table">
@@ -405,8 +406,20 @@ window.Quarto = {
 <td><strong>Keywords</strong></td>
 <td>PACE · Polarimeter · FastMAPOL · Aerosol · Ocean · Land</td>
 </tr>
+<tr class="even">
+<td><strong>Website</strong></td>
+<td><a href="https://kiwiriver.github.io/mapol-doc/">FastMAPOL ATBD</a></td>
+</tr>
 </tbody>
 </table>
+</section>
+<section id="how-to-cite" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="how-to-cite">How to Cite</h2>
+<p>When using or referring to FastMAPOL, please cite this document as:</p>
+<blockquote class="blockquote">
+<p>Gao, M., P. Zhai, K. Aryal, K. Knobelspiesse, and B. Franz. <em>FastMAPOL Algorithm Theoretical Basis Document: Coupled Aerosol, Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry</em>. NASA Goddard Space Flight Center, Version v1.0, 2026. <a href="https://kiwiriver.github.io/mapol-doc/">FastMAPOL ATBD</a>.</p>
+</blockquote>
+<p>Please also cite the relevant peer-reviewed publications when using the algorithm or data products.</p>
 </section>
 </section>
 <section id="earthdata-access" class="level1 unnumbered">
@@ -995,8 +1008,8 @@ window.Quarto = {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapters/fastmapol_summary.html" class="pagination-link" aria-label="FastMAPOL at a Glance">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">FastMAPOL at a Glance</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./chapters/fastmapol_tutorial.html" class="pagination-link" aria-label="Jupyter Notebook Tutorials from PACE HelpHub">
+        <span class="nav-page-text">Jupyter Notebook Tutorials from PACE HelpHub</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
