@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="keywords" content="PACE, Polarization, Multi-angle, Aerosol, Ocean, Land, FastMAPOL">
 
 <title>2&nbsp; FastMAPOL Retrieval Framework – FastMAPOL Algorithm Theoretical Basis Document</title>
 <style>
@@ -311,6 +312,12 @@ window.Quarto = {
   </div>
   
 
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>PACE, Polarization, Multi-angle, Aerosol, Ocean, Land, FastMAPOL</p>
+  </div>
+</div>
 
 </header>
 
@@ -331,9 +338,14 @@ window.Quarto = {
 <p>The current bio-optical model is best suited for waters optically dominated by phytoplankton and performs well over most global ocean waters <span class="citation" data-cites="Gao:2026aa">(<a href="#ref-Gao:2026aa" role="doc-biblioref">Meng Gao et al. 2026</a>)</span>, but it faces challenges in accurately representing optically complex coastal waters, particularly those influenced by non-algal particles and strong CDOM absorption. Ongoing development of more advanced bio-optical models capable of representing complex water types will enable more realistic retrievals in coastal waters, particularly in regions influenced by both complex aerosol properties and bright ocean constituents <span class="citation" data-cites="Gao:2018aa Aryal:2024aa">Aryal et al. (<a href="#ref-Aryal:2026aa" role="doc-biblioref">2026</a>)</span>.</p>
 <p>More details are provided in <a href="fastmapol_model_ocean.html" class="quarto-xref"><span>Appendix G</span></a>.</p>
 <p><strong>Land Model</strong></p>
-<p>We use the land surface reflectance model implemented in the <strong>PACE simulator</strong>, with key components: - Ross–Li kernel-driven BRDF<br>
-- Polarized bidirectional reflectance distribution function (BPDF)<br>
-- Fresnel reflection physics</p>
+<p>We use the land surface reflectance model implemented in the <strong>PACE simulator</strong>, with key components:</p>
+<ul>
+<li>Ross–Li kernel-driven BRDF<br>
+</li>
+<li>Polarized bidirectional reflectance distribution function (BPDF)<br>
+</li>
+<li>Fresnel reflection physics</li>
+</ul>
 <p>Details are provided in <a href="fastmapol_model_land.html" class="quarto-xref"><span>Appendix I</span></a>.</p>
 <p><strong>Parameter range</strong></p>
 <p>The forward-model parameters and their ranges are summarized in <a href="#tbl-param-ranges" class="quarto-xref">Table&nbsp;<span>2.1</span></a> using coupled atmosphere-ocean system as example. Solar and viewing geometries are specified by the solar zenith angle (<span class="math inline">\(\theta_0\)</span>), viewing zenith angle (<span class="math inline">\(\theta_v\)</span>), and relative azimuth angle (<span class="math inline">\(\phi_v\)</span>), which are obtained from PACE Level-1C data. Surface pressure and ozone are obtained from ancillary data, while the aerosol, ocean, and surface parameters are retrieved by FastMAPOL.</p>

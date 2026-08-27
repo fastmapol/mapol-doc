@@ -2,7 +2,18 @@ project:
   type: book
   output-dir: docs
 
+poc:
+  name: "Meng Gao"
+  email: "meng.gao@nasa.gov"
 
+keywords:
+  - PACE
+  - Polarization
+  - Multi-angle
+  - Aerosol
+  - Ocean
+  - Land
+  - FastMAPOL
 # --------------------------------------------------
 # Book metadata
 # --------------------------------------------------

@@ -252,6 +252,7 @@
 \hypersetup{
   pdftitle={FastMAPOL Algorithm Theoretical Basis Document},
   pdfauthor={Meng Gao; Pengwang Zhai; Kamal Aryal; Kirk Knobelspiesse; Bryan Franz},
+  pdfkeywords={PACE, Polarization, Multi-angle, Aerosol, Ocean, Land, FastMAPOL},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -267,26 +268,33 @@
 \title{%
 \begin{tabular}{c}
 \includegraphics[height=1.15in]{logo/nasa_logo.png}
-\\[0.6cm]
-\LARGE\bfseries FastMAPOL Algorithm Theoretical Basis Document
+\\[0.7cm]
+{\LARGE\bfseries FastMAPOL Algorithm Theoretical Basis Document}
 \\[0.35cm]
-\Large\mdseries Aerosol, Ocean, and Land Retrievals from PACE
-Multi-Angle Polarimetry
+{\large\normalfont Aerosol, Ocean, and Land Retrievals from PACE
+Multi-Angle Polarimetry}
+\\[0.45cm]
+{\normalsize\normalfont NASA PACE Mission}
 \end{tabular}%
 }
 
-\author{%
-\normalsize
-Meng Gao, \quad
-Pengwang Zhai, \quad
-Kamal Aryal, \quad
-Kirk Knobelspiesse, \quad
-Bryan Franz}
+% Authors are included in the metadata table below
+\author{}
 
 \date{%
-NASA PACE Mission
-\\[0.15cm]
-2026-08-27
+{\normalsize\normalfont
+\renewcommand{\arraystretch}{1.45}%
+\begin{tabular}{@{}r@{\hspace{0.45cm}}l@{}}
+\textbf{Authors} &
+Meng Gao, \quad Pengwang Zhai, \quad Kamal Aryal, \quad Kirk
+Knobelspiesse, \quad Bryan Franz \\
+\textbf{POC} &
+Meng Gao \;(\href{mailto:meng.gao@nasa.gov}{meng.gao@nasa.gov}) \\
+\textbf{Date} & 2026-08-27 \\
+\textbf{Keywords} &
+PACE \textperiodcentered\ Polarization \textperiodcentered\ Multi-angle \textperiodcentered\ Aerosol \textperiodcentered\ Ocean \textperiodcentered\ Land \textperiodcentered\ FastMAPOL \\
+\end{tabular}%
+}%
 }
 \begin{document}
 \maketitle
@@ -326,6 +334,24 @@ the algorithm. The algorithm overview, data product format, and
 validation results are then summarized in the subsequent chapters. More
 detailed technical descriptions of the algorithm and its underlying
 methodology are provided in the second part of this document.
+
+\section*{Document Information}\label{document-information}
+
+\markright{Document Information}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Mission} & PACE \\
+\textbf{Point of Contact} & Meng Gao
+(\href{mailto:meng.gao@nasa.gov}{\nolinkurl{meng.gao@nasa.gov}}) \\
+\textbf{Keywords} & PACE · Polarimeter · FastMAPOL · Aerosol · Ocean ·
+Land \\
+\end{longtable}
 
 \bookmarksetup{startatroot}
 
@@ -957,10 +983,17 @@ More details are provided in Appendix~\ref{sec-ocean-model}.
 \textbf{Land Model}
 
 We use the land surface reflectance model implemented in the
-\textbf{PACE simulator}, with key components: - Ross--Li kernel-driven
-BRDF\\
-- Polarized bidirectional reflectance distribution function (BPDF)\\
-- Fresnel reflection physics
+\textbf{PACE simulator}, with key components:
+
+\begin{itemize}
+\tightlist
+\item
+  Ross--Li kernel-driven BRDF\\
+\item
+  Polarized bidirectional reflectance distribution function (BPDF)\\
+\item
+  Fresnel reflection physics
+\end{itemize}
 
 Details are provided in Appendix~\ref{sec-land-model}.
 
@@ -1247,7 +1280,9 @@ The FastMAPOL Level-2 product is designed to support:
 \item
   aerosol science applications
 \item
-  ocean color retrievals
+  ocean color studies
+\item
+  land surface studies
 \item
   atmospheric correction
 \item
@@ -1846,7 +1881,10 @@ uncertainty analysis. Details are provided in M. Gao, Franz, et al.
 
 Validation of the production data (V3 and V4) is ongoing, following the
 methodologies reported in Meng Gao et al.
-(\citeproc{ref-Gao:2026aa}{2026}).
+(\citeproc{ref-Gao:2026aa}{2026}). The validation results should be
+compared with the DITL uncertainty analysis to assess retrieval
+performance using real observations relative to theoretical
+expectations.
 
 \section{Summary Information}\label{summary-information-1}
 

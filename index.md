@@ -6,6 +6,14 @@ FastMAPOL retrieves aerosol, ocean, and land surface properties from multi-angle
 
 The following chapters provide information on data access through NASA Earthdata and product release notes. These are followed by **FastMAPOL at a Glance**, which provides a high-level overview of the algorithm. The algorithm overview, data product format, and validation results are then summarized in the subsequent chapters. More detailed technical descriptions of the algorithm and its underlying methodology are provided in the second part of this document.
 
+## Document Information {.unnumbered .unlisted}
+
+| | |
+|---|---|
+| **Mission** | PACE |
+| **Point of Contact** | Meng Gao ([meng.gao@nasa.gov](mailto:meng.gao@nasa.gov)) |
+| **Keywords** | PACE · Polarimeter · FastMAPOL · Aerosol · Ocean · Land |
+
 # Earthdata Access {.unnumbered} 
 
 FastMAPOL Level-2 (L2) and Level-3 mapped (L3M) products are distributed through NASA Earthdata. The most recent production version is listed first below.

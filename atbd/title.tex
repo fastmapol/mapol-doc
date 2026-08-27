@@ -5,28 +5,41 @@
 \title{%
 \begin{tabular}{c}
 \includegraphics[height=1.15in]{logo/nasa_logo.png}
-\\[0.6cm]
-\LARGE\bfseries $title$
+\\[0.7cm]
+{\LARGE\bfseries $title$}
 $if(subtitle)$
 \\[0.35cm]
-\Large\mdseries $subtitle$
+{\large\normalfont $subtitle$}
+$endif$
+$if(mission)$
+\\[0.45cm]
+{\normalsize\normalfont NASA $mission$ Mission}
 $endif$
 \end{tabular}%
 }
 
-\author{%
-\normalsize
-$for(by-author)$
-$by-author.name.literal$$sep$, \quad
-$endfor$
-}
+% Authors are included in the metadata table below
+\author{}
 
 \date{%
-$if(mission)$
-NASA $mission$ Mission
+{\normalsize\normalfont
+\renewcommand{\arraystretch}{1.45}%
+\begin{tabular}{@{}r@{\hspace{0.45cm}}l@{}}
+$if(by-author)$
+\textbf{Authors} &
+$for(by-author)$$by-author.name.literal$$sep$, \quad $endfor$ \\
+$endif$
+$if(poc)$
+\textbf{POC} &
+$poc.name$ \;(\href{mailto:$poc.email$}{$poc.email$}) \\
 $endif$
 $if(date)$
-\\[0.15cm]
-$date$
+\textbf{Date} & $date$ \\
 $endif$
+$if(keywords)$
+\textbf{Keywords} &
+$for(keywords)$$keywords$$sep$ \textperiodcentered\ $endfor$ \\
+$endif$
+\end{tabular}%
+}%
 }
