@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Appendix C — Neural Network Forward Model and Analytical Jacobian – FastMAPOL Algorithm Theoretical Basis Document</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/fastmapol_aerosol_size.html" rel="next">
+<link href="../chapters/fastmapol_pace_simulator.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-94cf00020a538d7d2680b073287e3c38.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../atbd/styles.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/fastmapol_appendix_intro.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/fastmapol_neural_network.html"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Neural Network Forward Model and Analytical Jacobian</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">FastMAPOL Algorithm Theoretical Basis Document</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About This Document</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">FastMAPOL at a Glance</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_retrieval.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">FastMAPOL Retrieval Framework</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_product.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Products and Format</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Jupyter Notebook Tutorials</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_validation_spexone_v3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">SPEXone Aerosol and Ocean Product Validation (V3)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_validation_harp2_ditl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_validation_harp2_v4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_appendix_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Technical Details</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_pace_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Radiative Transfer Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_neural_network.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Neural Network Forward Model and Analytical Jacobian</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_aerosol_size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Aerosol Characterization : size distribution and representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_aerosol_component.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Aerosol Characterization: Component Approach</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_uncertainty_correlation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Uncertainty Estimation and Angular Correlations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_model_ocean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Ocean Bio-Optical Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_ocean_color.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Multi-angle Ocean Color Product</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_model_land.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Land Surface Reflectance Model (Ross–Li BRDF and Polarized BPDF)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/fastmapol_appendix_intro.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/fastmapol_neural_network.html"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Neural Network Forward Model and Analytical Jacobian</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Appendix C — Neural Network Forward Model and Analytical Jacobian</h1>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Authors</div>
+  <div class="quarto-title-meta-heading">Affiliations</div>
+  
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The MAP retrievals are often computationally expensive due to their high dimensionality and iterative nature, with multiple forward model and Jacobian calculations. The data screening approach developed here further increases the demand for CPU computations because the retrieval must be repeated several times. Therefore, fast forward model and Jacobian matrix calculations are advantageous for efficient processing, which was a motivation for the use of NN forward models for AirHARP in <span class="citation" data-cites="Gao:2021aa">Gao et al. (<a href="#ref-Gao:2021aa" role="doc-biblioref">2021</a>)</span>. In this work, we provide the definition of the NN and the use of automatic differentiation to compute the Jacobian matrix analytically, as opposed to numerically through finite differencing, by exploiting the differentiable properties of the NN models. For details on the NN training strategies, please refer to <span class="citation" data-cites="Gao:2023aa">Gao et al. (<a href="#ref-Gao:2023aa" role="doc-biblioref">2023</a>)</span> and <span class="citation" data-cites="Gao:2021aa">Gao et al. (<a href="#ref-Gao:2021aa" role="doc-biblioref">2021</a>)</span>.</p>
+<p>The NN forward model developed in <span class="citation" data-cites="Gao:2021aa">Gao et al. (<a href="#ref-Gao:2021aa" role="doc-biblioref">2021</a>)</span> is a feed-forward neural network as defined in <a href="#tbl-nn-forward" class="quarto-xref">Table&nbsp;<span>C.1</span></a>, where <span class="math inline">\(\mathbf{h}_0=\mathbf{x}\)</span> is the input layer that contains all 15 forward model parameters. Two sets of weight matrices <span class="math inline">\(\mathbf{W}_{p+1}\)</span> and bias vectors <span class="math inline">\(\mathbf{b}_{p+1}\)</span> have been determined from the NN training process for reflectance and DoLP, respectively <span class="citation" data-cites="Gao:2021aa Gao:2023aa">(<a href="#ref-Gao:2021aa" role="doc-biblioref">Gao et al. 2021</a>, <a href="#ref-Gao:2023aa" role="doc-biblioref">2023</a>)</span>.</p>
+<p>Correspondingly, <span class="math inline">\(\mathbf{y}\)</span> is the output layer for either reflectance or DoLP at the four AirHARP bands.</p>
+<p>For application to multi-angle measurements, the NN needs to be called to simulate <span class="math inline">\(\mathbf{y}\)</span> for each set of viewing and solar geometries for the state vector <span class="math inline">\(\mathbf{x}\)</span>. Elements of the Jacobian matrix are defined as follows:</p>
+<p><span id="eq-jacobian"><span class="math display">\[
+\mathbf{K}_{mij}
+=
+\frac{\partial \mathbf{y}_{mi}}
+{\partial \mathbf{x}_{mj}}
+\tag{C.1}\]</span></span></p>
+<p>Here, index <span class="math inline">\(m\)</span> indicates the viewing and solar angles, index <span class="math inline">\(i\)</span> indicates the wavelength, and index <span class="math inline">\(j\)</span> indicates the state parameter. <a href="#tbl-nn-forward" class="quarto-xref">Table&nbsp;<span>C.1</span></a> illustrates the structure of the NN. The nonlinear activation function <span class="math inline">\(\Phi\)</span> is the LeakyReLU function, which is defined as</p>
+<p><span id="eq-leakyrelu"><span class="math display">\[
+\Phi(\mathbf{Z})_{mi}
+=
+\max(0,\mathbf{Z}_{mi})
++
+\alpha \times \min(0,\mathbf{Z}_{mi}).
+\tag{C.2}\]</span></span></p>
+<p>where <span class="math inline">\(\alpha=0.01\)</span>, and <span class="math inline">\(\mathbf{Z}\)</span> is a matrix with <span class="math inline">\(m\)</span> and <span class="math inline">\(i\)</span> as its indices. The derivative with respect to each element in <span class="math inline">\(\Phi\)</span> is defined as</p>
+<p><span id="eq-D"><span class="math display">\[
+\mathbf{D}_{mi}
+=
+\frac{\Phi(\mathbf{Z})_{mi}}
+{\mathbf{Z}_{mi}}
+=
+\begin{cases}
+1, &amp; \mathbf{Z}_{mi}&gt;0, \\
+\alpha, &amp; \mathbf{Z}_{mi}&lt;0.
+\end{cases}
+\tag{C.3}\]</span></span></p>
+<div id="tbl-nn-forward" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nn-forward-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;C.1: NN forward model.
+</figcaption>
+<div aria-describedby="tbl-nn-forward-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Layers</strong></th>
+<th><strong>NN forward model</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Input</td>
+<td><span class="math inline">\(\mathbf{h}_0=\mathbf{x}\)</span></td>
+</tr>
+<tr class="even">
+<td>Layer 1</td>
+<td><span class="math inline">\(\mathbf{h}_1=\Phi(\mathbf{W}_1^T\mathbf{h}_0+\mathbf{b}_1)\)</span></td>
+</tr>
+<tr class="odd">
+<td>Layer <span class="math inline">\(p+1\)</span></td>
+<td><span class="math inline">\(\mathbf{h}_{p+1}=\Phi(\mathbf{W}_{p+1}^T\mathbf{h}_p+\mathbf{b}_{p+1})\)</span></td>
+</tr>
+<tr class="even">
+<td>Output</td>
+<td><span class="math inline">\(\mathbf{y}=\mathbf{W}_{k+1}^T\mathbf{h}_k+\mathbf{b}_{k+1}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-ad-forward" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ad-forward-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;C.2: Jacobian matrix computed using forward-mode automatic differentiation (AD).
+</figcaption>
+<div aria-describedby="tbl-ad-forward-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Layers</strong></th>
+<th><strong>AD: Forward mode</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Input</td>
+<td><span class="math inline">\(\dot{\mathbf{h}}_{0,mij}=\delta_{ij}\)</span></td>
+</tr>
+<tr class="even">
+<td>Layer 1</td>
+<td><span class="math inline">\(\dot{\mathbf{h}}_{1,mij}=\mathbf{D}_{1,mi}\mathbf{W}_{1,ij}^T\)</span></td>
+</tr>
+<tr class="odd">
+<td>Layer <span class="math inline">\(p+1\)</span></td>
+<td><span class="math inline">\(\dot{\mathbf{h}}_{p+1,mij}=\mathbf{D}_{p+1,mi}\mathbf{W}_{p+1,il}^T\dot{\mathbf{h}}_{p,mlj}\)</span></td>
+</tr>
+<tr class="even">
+<td>Output</td>
+<td><span class="math inline">\(\mathbf{K}_{mij}=\dot{\mathbf{y}}_{mij}=\mathbf{W}_{k+1,il}^T\dot{\mathbf{h}}_{k,mlj}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-ad-reverse" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ad-reverse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;C.3: Jacobian matrix computed using reverse-mode automatic differentiation (AD).
+</figcaption>
+<div aria-describedby="tbl-ad-reverse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Layers</strong></th>
+<th><strong>AD: Reverse mode</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Output</td>
+<td><span class="math inline">\(\bar{\mathbf{y}}_{mij}=\mathbf{W}_{k+1,ij}^T\)</span></td>
+</tr>
+<tr class="even">
+<td>Layer <span class="math inline">\(p+1\)</span></td>
+<td><span class="math inline">\(\bar{\mathbf{h}}_{p,mij}=\bar{\mathbf{h}}_{p+1,mil}\mathbf{D}_{p+1,ml}\mathbf{W}_{p+1,lj}^T\)</span></td>
+</tr>
+<tr class="odd">
+<td>Layer 1</td>
+<td><span class="math inline">\(\bar{\mathbf{h}}_{1,mij}=\bar{\mathbf{h}}_{2,mil}\mathbf{D}_{2,ml}\mathbf{W}_{2,lj}^T\)</span></td>
+</tr>
+<tr class="even">
+<td>Input</td>
+<td><span class="math inline">\(\mathbf{K}_{mij}=\bar{\mathbf{h}}_{0,mij}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><em>For brevity, summation over index <span class="math inline">\(l\)</span> is implied following Einstein notation.</em></p>
+<p>The finite difference (FD) method was used to compute the Jacobian matrix in FastMAPOL in <span class="citation" data-cites="Gao:2021aa">Gao et al. (<a href="#ref-Gao:2021aa" role="doc-biblioref">2021</a>)</span>, where the NN forward model was called twice per input parameter under the central difference approximation of derivatives. To reduce the computational cost, the Jacobian matrix can be derived analytically from the NN forward model using AD based on the chain rule of differentiation <span class="citation" data-cites="Baydin:2018aa">(<a href="#ref-Baydin:2018aa" role="doc-biblioref">Baydin et al. 2018</a>)</span>. Two recursive relations are obtained to compute the Jacobian matrix, as summarized in <a href="#tbl-ad-forward" class="quarto-xref">Table&nbsp;<span>C.2</span></a> and <a href="#tbl-ad-reverse" class="quarto-xref">Table&nbsp;<span>C.3</span></a>. The forward mode indicates the evaluation sequence from the first layer to the last layer, whereas the reverse mode indicates the evaluation sequence from the last layer to the first layer.</p>
+<p>To represent the recursive relations, we define <span class="math inline">\(\dot{\mathbf{h}}_p\)</span> (tangent) and <span class="math inline">\(\bar{\mathbf{h}}_p\)</span> (adjoint) as follows:</p>
+<p><span class="math display">\[
+\dot{\mathbf{h}}_{p,mij}
+=
+\frac{\partial \mathbf{h}_{p,mi}}
+{\partial \mathbf{x}_{mj}},
+\]</span></p>
+<p><span class="math display">\[
+\bar{\mathbf{h}}_{p,mij}
+=
+\frac{\partial \mathbf{y}_{mi}}
+{\partial \mathbf{h}_{p,mj}}.
+\]</span></p>
+<p>Note that <span class="math inline">\(\mathbf{h}\)</span> is defined in <a href="#tbl-nn-forward" class="quarto-xref">Table&nbsp;<span>C.1</span></a> as the output from each hidden layer of the NN. The Jacobian matrix can be represented by AD with either the tangent or the adjoint form, corresponding to the final steps in <a href="#tbl-ad-forward" class="quarto-xref">Table&nbsp;<span>C.2</span></a> and <a href="#tbl-ad-reverse" class="quarto-xref">Table&nbsp;<span>C.3</span></a>, respectively:</p>
+<p><span id="eq-forward"><span class="math display">\[
+\mathbf{K}_{mij}
+=
+\dot{\mathbf{y}}_{mij}
+\tag{C.4}\]</span></span></p>
+<p><span id="eq-reverse"><span class="math display">\[
+\mathbf{K}_{mij}
+=
+\bar{\mathbf{h}}_{0,mij}
+\tag{C.5}\]</span></span></p>
+<p>where <a href="#eq-forward" class="quarto-xref">Equation&nbsp;<span>C.4</span></a> and <a href="#eq-reverse" class="quarto-xref">Equation&nbsp;<span>C.5</span></a> are computed from forward- and reverse-mode AD, respectively. Forward and reverse AD produce identical results, but differ in computational efficiency because of the different sequence of matrix operations and the NN architecture.</p>
+<p>For optimal efficiency, we implemented AD directly based on the formalism summarized in <a href="#tbl-ad-forward" class="quarto-xref">Table&nbsp;<span>C.2</span></a> and <a href="#tbl-ad-reverse" class="quarto-xref">Table&nbsp;<span>C.3</span></a> using the PyTorch library <span class="citation" data-cites="Paszke:2019aa">(<a href="#ref-Paszke:2019aa" role="doc-biblioref">Paszke et al. 2019</a>)</span>. The NN forward model is computed layer by layer, with the output from the previous layer serving as the input to the next layer, as summarized in <a href="#tbl-nn-forward" class="quarto-xref">Table&nbsp;<span>C.1</span></a>. Forward-mode AD follows the same sequence as the NN forward model, from the first layer to the last layer (<a href="#tbl-ad-forward" class="quarto-xref">Table&nbsp;<span>C.2</span></a>), whereas reverse-mode AD proceeds from the last layer backward to the first layer (<a href="#tbl-ad-reverse" class="quarto-xref">Table&nbsp;<span>C.3</span></a>). Note that AD in both modes requires the values of matrix <span class="math inline">\(\mathbf{D}\)</span> as defined in <a href="#eq-D" class="quarto-xref">Equation&nbsp;<span>C.3</span></a>, which are determined by the output of the NN forward model at each layer.</p>
+<p>For the NN used in this study, reverse-mode AD provides the highest computational efficiency, as investigated further in the next section.</p>
+<p>The AD methods provide an efficient and accurate way to compute the Jacobian matrix, enabling substantial acceleration of retrieval algorithms such as FastMAPOL that involve a large number of state parameters and making them more suitable for practical applications.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Baydin:2018aa" class="csl-entry" role="listitem">
+Baydin, Atilim Gunes, Barak A. Pearlmutter, Alexey Andreyevich Radul, and Jeffrey Mark Siskind. 2018. <span>“Automatic Differentiation in Machine Learning: A Survey.”</span> <em>Journal of Machine Learning Research</em> 18: 1–43. <a href="https://arxiv.org/abs/1502.05767">https://arxiv.org/abs/1502.05767</a>.
+</div>
+<div id="ref-Gao:2021aa" class="csl-entry" role="listitem">
+Gao, M., B. A. Franz, K. Knobelspiesse, P.-W. Zhai, V. Martins, S. Burton, B. Cairns, et al. 2021. <span>“Efficient Multi-Angle Polarimetric Inversion of Aerosols and Ocean Color Powered by a Deep Neural Network Forward Model.”</span> <em>Atmospheric Measurement Techniques</em> 14 (6): 4083–4110. <a href="https://doi.org/10.5194/amt-14-4083-2021">https://doi.org/10.5194/amt-14-4083-2021</a>.
+</div>
+<div id="ref-Gao:2023aa" class="csl-entry" role="listitem">
+Gao, M., B. A. Franz, P.-W. Zhai, K. Knobelspiesse, A. M. Sayer, X. Xu, J. V. Martins, et al. 2023. <span>“Simultaneous Retrieval of Aerosol and Ocean Properties from PACE HARP2 with Uncertainty Assessment Using Cascading Neural Network Radiative Transfer Models.”</span> <em>Atmospheric Measurement Techniques</em> 16 (23): 5863–81. <a href="https://doi.org/10.5194/amt-16-5863-2023">https://doi.org/10.5194/amt-16-5863-2023</a>.
+</div>
+<div id="ref-Paszke:2019aa" class="csl-entry" role="listitem">
+Paszke, Adam, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, et al. 2019. <span>“PyTorch: An Imperative Style, High-Performance Deep Learning Library.”</span> Edited by H. Wallach, H. Larochelle, A. Beygelzimer, F. dAlché-Buc, E. Fox, and R. Garnett. <em>Advances in Neural Information Processing Systems 32</em>, 8024–35. <a href="http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf">http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf</a>.
+</div>
+</div>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/fastmapol_pace_simulator.html" class="pagination-link" aria-label="Radiative Transfer Model">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Radiative Transfer Model</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/fastmapol_aerosol_size.html" class="pagination-link" aria-label="Aerosol Characterization : size distribution and representation">
+        <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Aerosol Characterization : size distribution and representation</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

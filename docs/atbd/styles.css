@@ -1,0 +1,65 @@
+/* --------------------------------------------------
+   FastMAPOL documentation style
+   -------------------------------------------------- */
+
+/* Main document font */
+body {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Slightly narrower readable article area */
+main.content {
+  max-width: 900px;
+}
+
+/* Sidebar */
+.sidebar {
+  font-size: 0.94rem;
+}
+
+.sidebar-title {
+  font-weight: 600;
+}
+
+/* Main chapter title */
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+}
+
+/* Section titles */
+h2 {
+  font-size: 1.55rem;
+  margin-top: 2rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin-top: 1.6rem;
+}
+
+/* Tables */
+table {
+  font-size: 0.92rem;
+}
+
+/* Code */
+pre code {
+  font-size: 0.9rem;
+}
+
+/* Right-side table of contents */
+#TOC {
+  font-size: 0.9rem;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

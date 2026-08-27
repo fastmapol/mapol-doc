@@ -1,12 +1,24 @@
-# Ignore Jupyter checkpoint dirs anywhere
+# Jupyter
 .ipynb_checkpoints/
 **/.ipynb_checkpoints/
-*.html
-**/site_libs
-**/tmp/
-site_libs
-*.pdf
-docs/
-
-/.quarto/
 **/*.quarto_ipynb
+**/*.tar
+
+# Quarto temporary files
+.quarto/
+**/tmp/
+
+# Generated HTML outside published site
+*.html
+**/site_libs/
+
+# Keep GitHub Pages website
+!docs/
+!docs/**
+!docs/**/*.html
+!docs/**/site_libs/
+
+# Never track generated PDFs
+*.pdf
+**/*.pdf
+docs/**/*.pdf

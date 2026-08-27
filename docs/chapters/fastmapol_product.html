@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Data Products and Format – FastMAPOL Algorithm Theoretical Basis Document</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/fastmapol_tutorial.html" rel="next">
+<link href="../chapters/fastmapol_retrieval.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-94cf00020a538d7d2680b073287e3c38.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../atbd/styles.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/fastmapol_product.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Products and Format</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">FastMAPOL Algorithm Theoretical Basis Document</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About This Document</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">FastMAPOL at a Glance</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_retrieval.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">FastMAPOL Retrieval Framework</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_product.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Products and Format</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Jupyter Notebook Tutorials</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_validation_spexone_v3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">SPEXone Aerosol and Ocean Product Validation (V3)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_validation_harp2_ditl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_validation_harp2_v4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_appendix_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Technical Details</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_pace_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Radiative Transfer Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_neural_network.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Neural Network Forward Model and Analytical Jacobian</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_aerosol_size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Aerosol Characterization : size distribution and representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_aerosol_component.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Aerosol Characterization: Component Approach</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_uncertainty_correlation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Uncertainty Estimation and Angular Correlations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_model_ocean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Ocean Bio-Optical Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_ocean_color.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Multi-angle Ocean Color Product</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_model_land.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Land Surface Reflectance Model (Ross–Li BRDF and Polarized BPDF)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">3.1</span> Overview</a></li>
+  <li><a href="#file-organization" id="toc-file-organization" class="nav-link" data-scroll-target="#file-organization"><span class="header-section-number">3.2</span> File Organization</a>
+  <ul class="collapse">
+  <li><a href="#dimensions" id="toc-dimensions" class="nav-link" data-scroll-target="#dimensions"><span class="header-section-number">3.2.1</span> Dimensions</a></li>
+  <li><a href="#instrument-differences" id="toc-instrument-differences" class="nav-link" data-scroll-target="#instrument-differences"><span class="header-section-number">3.2.2</span> Instrument Differences</a></li>
+  </ul></li>
+  <li><a href="#geolocation-data" id="toc-geolocation-data" class="nav-link" data-scroll-target="#geolocation-data"><span class="header-section-number">3.3</span> Geolocation Data</a></li>
+  <li><a href="#geophysical-retrieval-products" id="toc-geophysical-retrieval-products" class="nav-link" data-scroll-target="#geophysical-retrieval-products"><span class="header-section-number">3.4</span> Geophysical Retrieval Products</a>
+  <ul class="collapse">
+  <li><a href="#aerosol-optical-properties-mapol_ocean-and-mapol_land" id="toc-aerosol-optical-properties-mapol_ocean-and-mapol_land" class="nav-link" data-scroll-target="#aerosol-optical-properties-mapol_ocean-and-mapol_land"><span class="header-section-number">3.4.1</span> Aerosol Optical Properties (MAPOL_OCEAN and MAPOL_LAND)</a></li>
+  <li><a href="#aerosol-microphysical-properties-mapol_ocean-and-mapol_land" id="toc-aerosol-microphysical-properties-mapol_ocean-and-mapol_land" class="nav-link" data-scroll-target="#aerosol-microphysical-properties-mapol_ocean-and-mapol_land"><span class="header-section-number">3.4.2</span> Aerosol Microphysical Properties (MAPOL_OCEAN and MAPOL_LAND)</a></li>
+  <li><a href="#ocean-products-mapol_ocean" id="toc-ocean-products-mapol_ocean" class="nav-link" data-scroll-target="#ocean-products-mapol_ocean"><span class="header-section-number">3.4.3</span> Ocean Products (MAPOL_OCEAN)</a></li>
+  <li><a href="#land-surface-product-mapol_land" id="toc-land-surface-product-mapol_land" class="nav-link" data-scroll-target="#land-surface-product-mapol_land"><span class="header-section-number">3.4.4</span> Land surface product (MAPOL_LAND)</a></li>
+  </ul></li>
+  <li><a href="#diagnostic-data" id="toc-diagnostic-data" class="nav-link" data-scroll-target="#diagnostic-data"><span class="header-section-number">3.5</span> Diagnostic Data</a>
+  <ul class="collapse">
+  <li><a href="#retrieval-quality-metrics" id="toc-retrieval-quality-metrics" class="nav-link" data-scroll-target="#retrieval-quality-metrics"><span class="header-section-number">3.5.1</span> Retrieval Quality Metrics</a></li>
+  <li><a href="#retrieval-quality-flag" id="toc-retrieval-quality-flag" class="nav-link" data-scroll-target="#retrieval-quality-flag"><span class="header-section-number">3.5.2</span> Retrieval Quality Flag</a></li>
+  <li><a href="#measurement-screening-masks" id="toc-measurement-screening-masks" class="nav-link" data-scroll-target="#measurement-screening-masks"><span class="header-section-number">3.5.3</span> Measurement Screening Masks</a></li>
+  </ul></li>
+  <li><a href="#sensor-band-parameters" id="toc-sensor-band-parameters" class="nav-link" data-scroll-target="#sensor-band-parameters"><span class="header-section-number">3.6</span> Sensor Band Parameters</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Products and Format</span></h1>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Authors</div>
+  <div class="quarto-title-meta-heading">Affiliations</div>
+  
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">3.1</span> Overview</h2>
+<p>FastMAPOL (Fast Multi-Angle Polarimetric Ocean and Land algorithm) produces Level-2 (L2) geophysical retrievals of aerosol and surface properties from the multi-angle polarimetric measurements of the <strong>PACE polarimeters</strong>, including <strong>HARP2</strong> and <strong>SPEXone</strong>.</p>
+<p>The Level-2 product provides pixel-level estimates of aerosol optical properties, aerosol microphysical parameters, and ocean color quantities derived through atmospheric correction. In addition to the primary geophysical retrievals, the product includes diagnostic quantities describing retrieval performance and quality indicators for downstream processing.</p>
+<p>The Level-2 product is distributed in <strong>NetCDF format</strong> and organized into hierarchical data groups to separate geolocation, geophysical variables, diagnostics, and sensor parameters.</p>
+<p>The FastMAPOL Level-2 product is designed to support:</p>
+<ul>
+<li>aerosol science applications</li>
+<li>ocean color retrievals</li>
+<li>atmospheric correction</li>
+<li>algorithm validation</li>
+<li>Level-3 gridded product generation</li>
+</ul>
+<hr>
+</section>
+<section id="file-organization" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="file-organization"><span class="header-section-number">3.2</span> File Organization</h2>
+<p>The FastMAPOL Level-2 file is organized into several top-level groups. Each group contains variables associated with a specific component of the retrieval system.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>geolocation_data</td>
+<td>Pixel geolocation information</td>
+</tr>
+<tr class="even">
+<td>geophysical_data</td>
+<td>Primary aerosol and ocean retrieval products</td>
+</tr>
+<tr class="odd">
+<td>diagnostic_data</td>
+<td>Retrieval diagnostics and performance metrics</td>
+</tr>
+<tr class="even">
+<td>sensor_band_parameters</td>
+<td>Instrument spectral and angular parameters</td>
+</tr>
+<tr class="odd">
+<td>processing_control</td>
+<td>Metadata and algorithm configuration</td>
+</tr>
+</tbody>
+</table>
+<section id="dimensions" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="dimensions"><span class="header-section-number">3.2.1</span> Dimensions</h3>
+<p>The FastMAPOL Level-2 product uses a set of core dimensions describing spatial, spectral, and angular sampling.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number_of_lines</td>
+<td>Number of along-track scan lines</td>
+</tr>
+<tr class="even">
+<td>pixels_per_line</td>
+<td>Number of cross-track pixels</td>
+</tr>
+<tr class="odd">
+<td>wavelength</td>
+<td>Spectral bands used in retrieval</td>
+</tr>
+<tr class="even">
+<td>number_of_views</td>
+<td>Viewing angles used in the retrieval</td>
+</tr>
+<tr class="odd">
+<td>intensity_bands_per_view</td>
+<td>Intensity channels per view</td>
+</tr>
+<tr class="even">
+<td>polarization_bands_per_view</td>
+<td>Polarization channels per view</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="instrument-differences" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="instrument-differences"><span class="header-section-number">3.2.2</span> Instrument Differences</h3>
+<p><strong>HARP2</strong></p>
+<ul>
+<li>~90 viewing angles<br>
+</li>
+<li>4 spectral bands : 440, 550, 670, 870nm</li>
+<li>wide swath (~2000km)</li>
+</ul>
+<p><strong>SPEXone</strong></p>
+<ul>
+<li>5 viewing angles<br>
+</li>
+<li>hyperspectral polarimetric measurements 50</li>
+<li>narrow swath (~100km)</li>
+</ul>
+<p>A total of 34 specific wavelengths from the hyperspectral measurements for aerosol and surface retrieval.</p>
+</section>
+</section>
+<section id="geolocation-data" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="geolocation-data"><span class="header-section-number">3.3</span> Geolocation Data</h2>
+<p>Group: <code>/geolocation_data</code></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Dimensions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>latitude</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Pixel latitude</td>
+</tr>
+<tr class="even">
+<td>longitude</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Pixel longitude</td>
+</tr>
+</tbody>
+</table>
+<p>These variables define the geographic location of each retrieval pixel.</p>
+</section>
+<section id="geophysical-retrieval-products" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="geophysical-retrieval-products"><span class="header-section-number">3.4</span> Geophysical Retrieval Products</h2>
+<p>Group: <code>/geophysical_data</code></p>
+<p>The geophysical group contains aerosol optical properties, aerosol microphysical parameters, and ocean color products retrieved by FastMAPOL. Two data suites, MAPOL_OCEAN and MAPOL_LAND, are available for aerosol over ocean and land, respectively.</p>
+<section id="aerosol-optical-properties-mapol_ocean-and-mapol_land" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="aerosol-optical-properties-mapol_ocean-and-mapol_land"><span class="header-section-number">3.4.1</span> Aerosol Optical Properties (MAPOL_OCEAN and MAPOL_LAND)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Dimensions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>aot</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Aerosol optical depth</td>
+</tr>
+<tr class="even">
+<td>aot_fine</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Fine-mode optical depth</td>
+</tr>
+<tr class="odd">
+<td>aot_coarse</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Coarse-mode optical depth</td>
+</tr>
+<tr class="even">
+<td>ssa</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Aerosol single scattering albedo</td>
+</tr>
+<tr class="odd">
+<td>ssa_fine</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Fine-mode SSA</td>
+</tr>
+<tr class="even">
+<td>ssa_coarse</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Coarse-mode SSA</td>
+</tr>
+<tr class="odd">
+<td>angstrom_440_870</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Ångström exponent (440-870 nm)</td>
+</tr>
+<tr class="even">
+<td>angstrom_440_670</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Ångström exponent (440-670 nm)</td>
+</tr>
+<tr class="odd">
+<td>fmf</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Fine-mode optical depth fraction</td>
+</tr>
+</tbody>
+</table>
+<p>These parameters describe aerosol optical loading and spectral behavior. Note that Ångström exponent (440-870 nm) is only available for HARP2 data since SPEXone do not have 870nm band.</p>
+</section>
+<section id="aerosol-microphysical-properties-mapol_ocean-and-mapol_land" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="aerosol-microphysical-properties-mapol_ocean-and-mapol_land"><span class="header-section-number">3.4.2</span> Aerosol Microphysical Properties (MAPOL_OCEAN and MAPOL_LAND)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Dimensions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>reff_fine</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Fine-mode effective radius</td>
+</tr>
+<tr class="even">
+<td>reff_coarse</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Coarse-mode effective radius</td>
+</tr>
+<tr class="odd">
+<td>veff_fine</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Fine-mode effective variance</td>
+</tr>
+<tr class="even">
+<td>veff_coarse</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Coarse-mode effective variance</td>
+</tr>
+<tr class="odd">
+<td>mr_fine</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Fine-mode Real refractive index</td>
+</tr>
+<tr class="even">
+<td>mr_coarse</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Coarse-mode Real refractive index</td>
+</tr>
+<tr class="odd">
+<td>mr</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Mode-average Real refractive index</td>
+</tr>
+<tr class="even">
+<td>mi_fine</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Fine-mode Imaginary refractive index</td>
+</tr>
+<tr class="odd">
+<td>mi_coarse</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Coarse-mode Imaginary refractive index</td>
+</tr>
+<tr class="even">
+<td>mi</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Mode-average Imaginary refractive index</td>
+</tr>
+<tr class="odd">
+<td>sph_fine</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Fine-mode Spherical particle fraction</td>
+</tr>
+<tr class="even">
+<td>sph_coarse</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Coarse-mode Spherical particle fraction</td>
+</tr>
+<tr class="odd">
+<td>sph</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Volum-average Spherical particle fraction</td>
+</tr>
+<tr class="even">
+<td>vd_fine</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Fine-mode volume density</td>
+</tr>
+<tr class="odd">
+<td>vd_coarse</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Coarse-mode volume density</td>
+</tr>
+<tr class="even">
+<td>fvf</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Fine-mode volume fraction</td>
+</tr>
+<tr class="odd">
+<td>alh</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Aerosol layer height</td>
+</tr>
+</tbody>
+</table>
+<p>These variables constrain aerosol particle size distribution, composition, and shape.</p>
+</section>
+<section id="ocean-products-mapol_ocean" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="ocean-products-mapol_ocean"><span class="header-section-number">3.4.3</span> Ocean Products (MAPOL_OCEAN)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Dimensions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rrs_angular</td>
+<td>(number_of_lines, pixels_per_line, wavelength, number_of_views)</td>
+<td>Angular remote sensing reflectance before BRDF correction</td>
+</tr>
+<tr class="even">
+<td>Rrs_nadir</td>
+<td>(number_of_lines, pixels_per_line, wavelength, number_of_views)</td>
+<td>Nadir adjusted remote sensing reflectance after BRDF correction</td>
+</tr>
+<tr class="odd">
+<td>Rrs_angular_mean</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Angular mean of Rrs_angular</td>
+</tr>
+<tr class="even">
+<td>Rrs_angular_std</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Angular standard deviation of Rrs_angular</td>
+</tr>
+<tr class="odd">
+<td>Rrs_nadir_mean</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Angular mean of Rrs_nadir</td>
+</tr>
+<tr class="even">
+<td>Rrs_nadir_std</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Angular standard deviation of Rrs_nadir</td>
+</tr>
+<tr class="odd">
+<td>wind_speed</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Surface wind speed</td>
+</tr>
+<tr class="even">
+<td>chla</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Chlorophyll-a concentration</td>
+</tr>
+</tbody>
+</table>
+<p>The remote sensing reflectance represents ocean-leaving reflectance after atmospheric correction. To compare with AERONET OC or other dataset for validation purpose after BRDF correction, variable Rrs_nadir_mean is suggested to use.</p>
+<p>Note that V3 data contains <strong>Rrs1</strong> and <strong>Rrs2</strong>, which are renmaed as <strong>Rrs_angular</strong> and <strong>Rrs_nadir</strong> in current V4 data.</p>
+</section>
+<section id="land-surface-product-mapol_land" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="land-surface-product-mapol_land"><span class="header-section-number">3.4.4</span> Land surface product (MAPOL_LAND)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Dimensions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rhos_angular</td>
+<td>(number_of_lines, pixels_per_line, wavelength, number_of_views)</td>
+<td>Angular land surface reflectance before BRDF correction</td>
+</tr>
+<tr class="even">
+<td>rhos_nadir</td>
+<td>(number_of_lines, pixels_per_line, wavelength, number_of_views)</td>
+<td>Nadir adjusted land surface reflectance after BRDF correction</td>
+</tr>
+<tr class="odd">
+<td>rhos_angular_mean</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Angular mean of rhos_angular</td>
+</tr>
+<tr class="even">
+<td>rhos_angular_std</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Angular standard deviation of rhos_angular</td>
+</tr>
+<tr class="odd">
+<td>rhos_nadir_mean</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Angular mean of rhos_nadir</td>
+</tr>
+<tr class="even">
+<td>rhos_nadir_std</td>
+<td>(number_of_lines, pixels_per_line, wavelength)</td>
+<td>Angular standard deviation of rhos_nadir</td>
+</tr>
+</tbody>
+</table>
+<p>The land surface reflectance represents reflectance after atmospheric correction. To compare with validation dataset after BRDF correction, variable rhos_nadir_mean is suggested to use.</p>
+</section>
+</section>
+<section id="diagnostic-data" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="diagnostic-data"><span class="header-section-number">3.5</span> Diagnostic Data</h2>
+<p>Group: <code>/diagnostic_data</code></p>
+<p>These variables describe retrieval convergence and performance.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Dimensions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>chi2</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Retrieval cost function</td>
+</tr>
+<tr class="even">
+<td>chi2_first_guess</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Cost function at first guess</td>
+</tr>
+<tr class="odd">
+<td>nv_ref</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Number of reflectance measurements used</td>
+</tr>
+<tr class="even">
+<td>nv_dolp</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Number of polarization measurements used</td>
+</tr>
+<tr class="odd">
+<td>nfev</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Number of forward model evaluations</td>
+</tr>
+<tr class="even">
+<td>njev</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Number of Jacobian evaluations</td>
+</tr>
+<tr class="odd">
+<td>timing</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Retrieval runtime</td>
+</tr>
+<tr class="even">
+<td>quality_flag</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Retrieval quality indicator</td>
+</tr>
+<tr class="odd">
+<td>ozone</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Total column ozone</td>
+</tr>
+<tr class="even">
+<td>surface_pressure</td>
+<td>(number_of_lines, pixels_per_line)</td>
+<td>Surface pressure</td>
+</tr>
+</tbody>
+</table>
+<section id="retrieval-quality-metrics" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="retrieval-quality-metrics"><span class="header-section-number">3.5.1</span> Retrieval Quality Metrics</h3>
+<p>FastMAPOL retrievals are performed using an optimal estimation framework that minimizes the cost function</p>
+<p><span class="math display">\[
+\chi^2 = \frac{1}{N}\sum \frac{(f-m)^2}{\sigma^2}
+\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(m\)</span> is the measurement<br>
+</li>
+<li><span class="math inline">\(f\)</span> is the forward model simulation</li>
+<li><span class="math inline">\(\sigma\)</span> is measurement uncertainty<br>
+</li>
+<li><span class="math inline">\(N\)</span> is the number of measurements used in the retrieval.</li>
+</ul>
+<p>Lower values of <span class="math inline">\(\chi^2\)</span> indicate better agreement between measurements and forward model simulations.</p>
+</section>
+<section id="retrieval-quality-flag" class="level3" data-number="3.5.2">
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="retrieval-quality-flag"><span class="header-section-number">3.5.2</span> Retrieval Quality Flag</h3>
+<p>A quality flag is provided to facilitate filtering and Level-3 processing.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>quality_flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>highest retrieval quality</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>good retrieval quality</td>
+</tr>
+<tr class="odd">
+<td>&gt;1</td>
+<td>reduced quality</td>
+</tr>
+</tbody>
+</table>
+<p>The quality flag is determined from combinations of:</p>
+<ul>
+<li>cost function value</li>
+<li>number of reflectance measurements</li>
+<li>number of polarization measurements.</li>
+</ul>
+</section>
+<section id="measurement-screening-masks" class="level3" data-number="3.5.3">
+<h3 data-number="3.5.3" class="anchored" data-anchor-id="measurement-screening-masks"><span class="header-section-number">3.5.3</span> Measurement Screening Masks</h3>
+<p>FastMAPOL performs adaptive measurement screening during the inversion.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Dimensions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mask_ref</td>
+<td>(number_of_lines, pixels_per_line, number_of_views, intensity_bands_per_view)</td>
+<td>Reflectance measurement mask</td>
+</tr>
+<tr class="even">
+<td>mask_dolp</td>
+<td>(number_of_lines, pixels_per_line, number_of_views, polarization_bands_per_view)</td>
+<td>Polarization measurement mask</td>
+</tr>
+</tbody>
+</table>
+<p>Mask interpretation:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>measurement used in retrieval</td>
+</tr>
+<tr class="even">
+<td>1 or NaN</td>
+<td>measurement excluded from retrieval</td>
+</tr>
+</tbody>
+</table>
+<p>These masks allow users to evaluate measurement quality at each viewing angle.</p>
+</section>
+</section>
+<section id="sensor-band-parameters" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="sensor-band-parameters"><span class="header-section-number">3.6</span> Sensor Band Parameters</h2>
+<p>Group: <code>/sensor_band_parameters</code></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Dimensions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wavelength</td>
+<td>(wavelength)</td>
+<td>Retrieval wavelengths</td>
+</tr>
+<tr class="even">
+<td>sensor_view_angle</td>
+<td>(number_of_views)</td>
+<td>Viewing angle geometry</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/fastmapol_retrieval.html" class="pagination-link" aria-label="FastMAPOL Retrieval Framework">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">FastMAPOL Retrieval Framework</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/fastmapol_tutorial.html" class="pagination-link" aria-label="Jupyter Notebook Tutorials">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Jupyter Notebook Tutorials</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Appendix F — Uncertainty Estimation and Angular Correlations – FastMAPOL Algorithm Theoretical Basis Document</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/fastmapol_model_ocean.html" rel="next">
+<link href="../chapters/fastmapol_aerosol_component.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-94cf00020a538d7d2680b073287e3c38.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../atbd/styles.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/fastmapol_appendix_intro.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/fastmapol_uncertainty_correlation.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Uncertainty Estimation and Angular Correlations</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">FastMAPOL Algorithm Theoretical Basis Document</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About This Document</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">FastMAPOL at a Glance</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_retrieval.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">FastMAPOL Retrieval Framework</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_product.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Products and Format</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Jupyter Notebook Tutorials</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_validation_spexone_v3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">SPEXone Aerosol and Ocean Product Validation (V3)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_validation_harp2_ditl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">HARP2 L2 Aerosol and Ocean Product Validation with DITL data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_validation_harp2_v4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">HARP2 Aerosol, OCEAN and LAND Product Validation (V4)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_appendix_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Technical Details</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_pace_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Radiative Transfer Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_neural_network.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Neural Network Forward Model and Analytical Jacobian</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_aerosol_size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Aerosol Characterization : size distribution and representation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_aerosol_component.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Aerosol Characterization: Component Approach</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_uncertainty_correlation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Uncertainty Estimation and Angular Correlations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_model_ocean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Ocean Bio-Optical Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_ocean_color.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Multi-angle Ocean Color Product</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/fastmapol_model_land.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Land Surface Reflectance Model (Ross–Li BRDF and Polarized BPDF)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#uncertainty-quantifization" id="toc-uncertainty-quantifization" class="nav-link active" data-scroll-target="#uncertainty-quantifization"><span class="header-section-number">F.1</span> Uncertainty Quantifization</a></li>
+  <li><a href="#sec-transform" id="toc-sec-transform" class="nav-link" data-scroll-target="#sec-transform"><span class="header-section-number">F.2</span> Eigenvector decomposition of the error covariance matrix</a></li>
+  <li><a href="#sec-ac" id="toc-sec-ac" class="nav-link" data-scroll-target="#sec-ac"><span class="header-section-number">F.3</span> Correlation strength estimation using autocorrelation</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/fastmapol_appendix_intro.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/fastmapol_uncertainty_correlation.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Uncertainty Estimation and Angular Correlations</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Appendix F — Uncertainty Estimation and Angular Correlations</h1>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Authors</div>
+  <div class="quarto-title-meta-heading">Affiliations</div>
+  
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this section, we discuss the general retrieval approach considering correlation between angles following <span class="citation" data-cites="Gao:2023bb">(<a href="#ref-Gao:2023bb" role="doc-biblioref">M. Gao et al. 2023</a>)</span>. The same maximum-likelihood approach is used to retrieve the state parameters in FastMAPOL by minimizing a cost function that represents the difference between the measurements and forward-model calculations <span class="citation" data-cites="Rodgers:2000aa">(<a href="#ref-Rodgers:2000aa" role="doc-biblioref">Rodgers 2000</a>)</span> but in a matrix form:</p>
+<p><span id="eq-chi2"><span class="math display">\[
+\chi^2
+=
+\frac{1}{N}
+\mathbf{y}^{T}
+\mathbf{S}_{\epsilon}^{-1}
+\mathbf{y},
+\tag{F.1}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+\mathbf{y}
+=
+\mathbf{m}
+-
+\mathbf{f}(\mathbf{x})
+\]</span></p>
+<p>is the residual vector between the measurement vector <span class="math inline">\(\mathbf{m}\)</span> and forward model <span class="math inline">\(\mathbf{f}\)</span> for the state vector <span class="math inline">\(\mathbf{x}\)</span>. The measurement vector <span class="math inline">\(\mathbf{m}\)</span> includes both reflectance (<span class="math inline">\(\rho_t\)</span>) and DoLP (<span class="math inline">\(P_t\)</span>), where the subscript <span class="math inline">\(t\)</span> indicates the total signal measured by the instrument. The total number of measurements, <span class="math inline">\(N\)</span>, at each pixel includes contributions from both reflectance and DoLP <span class="citation" data-cites="Gao:2021aa Gao:2021bb">(<a href="#ref-Gao:2021aa" role="doc-biblioref">M. Gao et al. 2021</a>; <a href="#ref-Gao:2021bb" role="doc-biblioref">Meng Gao et al. 2021</a>)</span>.</p>
+<p>The error covariance matrix <span class="math inline">\(\mathbf{S}_{\epsilon}\)</span> in <a href="#eq-chi2" class="quarto-xref">Equation&nbsp;<span>F.1</span></a> specifies both the uncertainty of each measurement and correlations among measurements at the same pixel. It is a symmetric matrix defined as</p>
+<p><span id="eq-covariance-definition"><span class="math display">\[
+S_{\epsilon;i,j}
+=
+\mathbb{E}
+\left[
+(y_i-\mathbb{E}[y_i])
+(y_j-\mathbb{E}[y_j])
+\right],
+\tag{F.2}\]</span></span></p>
+<p>where <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> indicate measurements at different viewing angles and spectral bands, and <span class="math inline">\(\mathbb{E}\)</span> denotes the expectation value.</p>
+<p>To represent angular uncertainty correlations, an autoregressive model of order 1, denoted AR(1), is used. This approach was previously applied to RSP data <span class="citation" data-cites="Knobelspiesse:2012aa">(<a href="#ref-Knobelspiesse:2012aa" role="doc-biblioref">Knobelspiesse et al. 2012</a>)</span> and is adopted here for HARP data. AR(1) represents a linear Markov process with the error covariance matrix specified as</p>
+<p><span id="eq-covariance"><span class="math display">\[
+S_{\epsilon;i,j}
+=
+\begin{cases}
+\sigma_{t,i}^2,
+&amp; i=j, \\[4pt]
+\sigma_{c,i}\sigma_{c,j}
+r^{\Delta_\theta |i-j|},
+&amp; i\ne j \text{ and at the same band and polarization state}, \\[4pt]
+0,
+&amp; \text{otherwise}.
+\end{cases}
+\tag{F.3}\]</span></span></p>
+<p>where <span class="math inline">\(\sigma_t\)</span> is the total uncertainty, including both random noise and calibration uncertainty (<span class="math inline">\(\sigma_c\)</span>). Only <span class="math inline">\(\sigma_c\)</span> is assumed to be correlated among measurements at different viewing angles.</p>
+<p>The relative contributions of random and calibration uncertainties may differ between reflectance and polarized signals <span class="citation" data-cites="Knobelspiesse:2019aa">(<a href="#ref-Knobelspiesse:2019aa" role="doc-biblioref">Knobelspiesse et al. 2019</a>)</span>. For synthetic data generated directly using the forward model, the contribution of forward-model uncertainty is not considered. <span class="math inline">\(\Delta_\theta\)</span> is the average angular grid spacing and depends on the spectral channel. We model the correlation properties using <span class="math inline">\(\Delta_\theta\)</span> estimated from the viewing angles in the along-track direction to better represent the stripe-filter characteristics used for HARP angular measurements.</p>
+<p>The average <span class="math inline">\(\Delta_\theta\)</span> is approximately <span class="math inline">\(6.0^\circ\)</span> for AirHARP and <span class="math inline">\(12^\circ\)</span> for HARP2 at 440, 550, and 870 nm, and approximately <span class="math inline">\(2.0^\circ\)</span> at 670 nm for both HARP instruments. The parameter <span class="math inline">\(r\)</span> in <a href="#eq-covariance" class="quarto-xref">Equation&nbsp;<span>F.3</span></a> is the correlation parameter, with a value between 0 and 1. For uncertainties with more complex structures, a general autoregressive moving-average (ARMA) model can be used <span class="citation" data-cites="Priestley:1983aa">(<a href="#ref-Priestley:1983aa" role="doc-biblioref">Priestley 1983</a>)</span>. However, analysis of retrieval results from real AirHARP measurements indicates that the AR(1) model provides a useful representation for most cases.</p>
+<p>To provide a more intuitive representation of strong correlations as <span class="math inline">\(r\)</span> approaches 1, we define a correlation angle <span class="math inline">\(\theta_c\)</span> according to</p>
+<p><span id="eq-correlation-angle"><span class="math display">\[
+r^{\Delta_\theta |i-j|}
+=
+e^{-\Delta_\theta |i-j|/\theta_c}.
+\tag{F.4}\]</span></span></p>
+<p>Therefore, <span class="math inline">\(\theta_c\)</span> represents the angular separation over which the magnitude of the correlation is reduced by a factor of <span class="math inline">\(e\)</span>. The correlation angle can be derived from <span class="math inline">\(r\)</span> as</p>
+<p><span id="eq-thetac2r"><span class="math display">\[
+\theta_c
+=
+-\frac{1}{\ln r}.
+\tag{F.5}\]</span></span></p>
+<section id="uncertainty-quantifization" class="level2" data-number="F.1">
+<h2 data-number="F.1" class="anchored" data-anchor-id="uncertainty-quantifization"><span class="header-section-number">F.1</span> Uncertainty Quantifization</h2>
+<p>Pixel-wise retrieval uncertainty can be quantified by propagating measurement and forward-model uncertainties into the retrieval parameter space <span class="citation" data-cites="Rodgers:2000aa">(<a href="#ref-Rodgers:2000aa" role="doc-biblioref">Rodgers 2000</a>)</span>:</p>
+<p><span id="eq-S"><span class="math display">\[
+\mathbf{S}^{-1}
+=
+\mathbf{K}^{T}
+\mathbf{S}_{\epsilon}^{-1}
+\mathbf{K}
++
+\mathbf{S}_{a}^{-1},
+\tag{F.6}\]</span></span></p>
+<p>where the Jacobian matrix <span class="math inline">\(\mathbf{K}\)</span> contains the partial derivatives of the modeled measurements with respect to the retrieval parameters.</p>
+<p>Each retrieval parameter is constrained to a finite permitted range, which imposes an implicit a priori constraint on the retrieval. To represent its influence on retrieval uncertainties, the a priori error covariance matrix <span class="math inline">\(\mathbf{S}_a\)</span> in <a href="#eq-S" class="quarto-xref">Equation&nbsp;<span>F.6</span></a> is assumed to be diagonal, with the a priori uncertainty for each state parameter approximated by its permitted retrieval range <span class="citation" data-cites="Gao:2022aa">(<a href="#ref-Gao:2022aa" role="doc-biblioref">M. Gao et al. 2022</a>)</span>.</p>
+<p>The uncertainties are defined as the standard deviation (<span class="math inline">\(1\sigma\)</span>) around the retrieval solution and are estimated from the square roots of the diagonal elements of <span class="math inline">\(\mathbf{S}\)</span>. Uncertainties for variables that are functions of the retrieved state parameters can similarly be derived from <span class="math inline">\(\mathbf{S}\)</span> and the corresponding derivatives.</p>
+<p>Because FastMAPOL retrieves a relatively large number of state parameters, direct evaluation of retrieval uncertainties can be computationally expensive. The uncertainty calculation is accelerated using automatic differentiation applied to the neural network forward models <span class="citation" data-cites="Gao:2022aa">(<a href="#ref-Gao:2022aa" role="doc-biblioref">M. Gao et al. 2022</a>)</span>. For example, the uncertainty in remote sensing reflectance (<span class="math inline">\(R_{rs}\)</span>) can be propagated using automatic differentiation through the neural networks used for atmospheric and BRDF corrections.</p>
+<p>The retrieval uncertainties estimated through error propagation in <a href="#eq-S" class="quarto-xref">Equation&nbsp;<span>F.6</span></a>, hereafter referred to as <strong>theoretical retrieval uncertainties</strong>, represent an optimalized local estimate and rely on assumptions such as successful convergence of the retrieval parameters to the appropriate solution <span class="citation" data-cites="Sayer:2020aa Gao:2022aa">(<a href="#ref-Sayer:2020aa" role="doc-biblioref">Sayer et al. 2020</a>; <a href="#ref-Gao:2022aa" role="doc-biblioref">M. Gao et al. 2022</a>)</span>. If the retrieval solution differs substantially from the true state, both the retrieved state and its associated Jacobian may be less representative of the true conditions, potentially leading to inaccurate uncertainty estimates.</p>
+<p>For synthetic retrieval experiments, the retrieval error can be calculated directly as the difference between the retrieved and true values. The statistical distribution of these retrieval errors is referred to here as the <strong>real retrieval uncertainty</strong>. Comparing theoretical and real retrieval uncertainties provides a means of evaluating the optimal and actual performance of the retrieval algorithm.</p>
+<p>The Monte Carlo error propagation (MCEP) method is used for this comparison <span class="citation" data-cites="Gao:2022aa">(<a href="#ref-Gao:2022aa" role="doc-biblioref">M. Gao et al. 2022</a>)</span>. MCEP samples retrieval errors from the theoretical retrieval uncertainty distributions and directly compares these sampled error distributions with errors obtained from the actual retrievals. Multiple sets of random samples can be generated to evaluate the influence of sample size on the estimated uncertainty statistics <span class="citation" data-cites="Gao:2022aa">(<a href="#ref-Gao:2022aa" role="doc-biblioref">M. Gao et al. 2022</a>)</span>.</p>
+</section>
+<section id="sec-transform" class="level2" data-number="F.2">
+<h2 data-number="F.2" class="anchored" data-anchor-id="sec-transform"><span class="header-section-number">F.2</span> Eigenvector decomposition of the error covariance matrix</h2>
+<p>An error covariance matrix with non-diagonal terms can be challenging to implement efficiently in optimization algorithms, which often operate most conveniently in a space with uncorrelated measurement errors. Correlated measurement uncertainties can also be difficult to interpret because individual uncertainty components are associated with multiple measurements. To address these issues, the measurements can be transformed into a new space in which the error covariance matrix is diagonal.</p>
+<p>Eigenvector decomposition is applied to the error covariance matrix <span class="citation" data-cites="Rodgers:2000aa">(<a href="#ref-Rodgers:2000aa" role="doc-biblioref">Rodgers 2000</a>)</span>:</p>
+<p><span id="eq-svd"><span class="math display">\[
+\mathbf{S}_{\epsilon}
+=
+\mathbf{U}^{T}
+\mathbf{D}_{\epsilon}
+\mathbf{U},
+\tag{F.7}\]</span></span></p>
+<p>where <span class="math inline">\(\mathbf{D}_{\epsilon}\)</span> is a positive diagonal matrix containing the eigenvalues of <span class="math inline">\(\mathbf{S}_{\epsilon}\)</span> and <span class="math inline">\(\mathbf{U}\)</span> is a unitary matrix.</p>
+<p>Based on <a href="#eq-svd" class="quarto-xref">Equation&nbsp;<span>F.7</span></a>, the cost function in <a href="#eq-chi2" class="quarto-xref">Equation&nbsp;<span>F.1</span></a> and the error propagation in <a href="#eq-S" class="quarto-xref">Equation&nbsp;<span>F.6</span></a> can be written as</p>
+<p><span id="eq-chi2-new"><span class="math display">\[
+\chi^2
+=
+\frac{1}{N}
+\mathbf{y}'^{T}
+\mathbf{D}_{\epsilon}^{-1}
+\mathbf{y}',
+\tag{F.8}\]</span></span></p>
+<p>and</p>
+<p><span id="eq-S-new"><span class="math display">\[
+\mathbf{S}^{-1}
+=
+\mathbf{K}'^{T}
+\mathbf{D}_{\epsilon}^{-1}
+\mathbf{K}'
++
+\mathbf{S}_{a}^{-1},
+\tag{F.9}\]</span></span></p>
+<p>where the original residual vector <span class="math inline">\(\mathbf{y}\)</span> is transformed to a new residual vector <span class="math inline">\(\mathbf{y}'\)</span> with uncorrelated uncertainties, together with the corresponding Jacobian matrix:</p>
+<p><span id="eq-y-transform"><span class="math display">\[
+\mathbf{y}'
+=
+\mathbf{U}\mathbf{y},
+\tag{F.10}\]</span></span></p>
+<p><span id="eq-K-transform"><span class="math display">\[
+\mathbf{K}'
+=
+\mathbf{U}\mathbf{K}.
+\tag{F.11}\]</span></span></p>
+<p>The transformations in <a href="#eq-chi2-new" class="quarto-xref">Equation&nbsp;<span>F.8</span></a> and <a href="#eq-S-new" class="quarto-xref">Equation&nbsp;<span>F.9</span></a> allow the retrieval to operate with diagonal uncertainty matrices and provide several advantages:</p>
+<ol type="1">
+<li><p><strong>Clear representation of measurement uncertainty.</strong><br>
+The diagonal elements of <span class="math inline">\(\mathbf{D}_{\epsilon}\)</span> represent the uncertainties of the transformed measurements <span class="math inline">\(\mathbf{y}'\)</span>, providing insight into how measurement accuracy is affected by correlations.</p></li>
+<li><p><strong>Efficient minimization of the retrieval cost function.</strong><br>
+<a href="#eq-chi2-new" class="quarto-xref">Equation&nbsp;<span>F.8</span></a> represents the cost function for the uncorrelated transformed measurements <span class="math inline">\(\mathbf{y}'\)</span> and can therefore be used directly with conventional optimization algorithms, such as the subspace trust-region interior-reflective (STIR) algorithm <span class="citation" data-cites="Branch:1999aa">(<a href="#ref-Branch:1999aa" role="doc-biblioref">Branch, Coleman, and Li 1999</a>)</span>, as implemented in FastMAPOL <span class="citation" data-cites="Gao:2021aa Gao:2021bb Gao:2022aa">(<a href="#ref-Gao:2021aa" role="doc-biblioref">M. Gao et al. 2021</a>, <a href="#ref-Gao:2022aa" role="doc-biblioref">2022</a>; <a href="#ref-Gao:2021bb" role="doc-biblioref">Meng Gao et al. 2021</a>)</span>.</p></li>
+<li><p><strong>Generation of correlated errors.</strong><br>
+To investigate and visualize angular uncertainty correlations, errors can first be generated in the transformed <span class="math inline">\(\mathbf{y}'\)</span> space by drawing random samples from normal distributions whose variances are defined by the eigenvalues in <span class="math inline">\(\mathbf{D}_{\epsilon}\)</span>. These errors are then transformed back into the original measurement space according to</p>
+<p><span id="eq-y-inverse-transform"><span class="math display">\[
+\mathbf{y}
+=
+\mathbf{U}^{T}\mathbf{y}'.
+\tag{F.12}\]</span></span></p>
+<p>This procedure enables synthetic measurement errors with prescribed angular correlation structures to be generated and added to simulated measurements.</p></li>
+</ol>
+</section>
+<section id="sec-ac" class="level2" data-number="F.3">
+<h2 data-number="F.3" class="anchored" data-anchor-id="sec-ac"><span class="header-section-number">F.3</span> Correlation strength estimation using autocorrelation</h2>
+<p>Autocorrelation provides a useful measure of correlation in a discrete data sequence and is defined as <span class="citation" data-cites="Priestley:1983aa">(<a href="#ref-Priestley:1983aa" role="doc-biblioref">Priestley 1983</a>)</span></p>
+<p><span id="eq-autocorrelation"><span class="math display">\[
+R_{i,j}
+=
+\mathbb{E}[y_i y_j],
+\tag{F.13}\]</span></span></p>
+<p>where <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are two indices of the dataset. Comparing <a href="#eq-autocorrelation" class="quarto-xref">Equation&nbsp;<span>F.13</span></a> with <a href="#eq-covariance-definition" class="quarto-xref">Equation&nbsp;<span>F.2</span></a>, the autocorrelation is equivalent to the autocovariance when <span class="math inline">\(\mathbb{E}[y_i]=0\)</span>.</p>
+<p>This method can be applied to simulated noise and to retrieval fitting residuals. However, the mean and variance of the fitting residuals can vary with viewing angle. Such signals are non-stationary and are difficult to represent directly using AR models <span class="citation" data-cites="Priestley:1983aa">(<a href="#ref-Priestley:1983aa" role="doc-biblioref">Priestley 1983</a>)</span>. To reduce this effect, the original residual vector <span class="math inline">\(\mathbf{y}\)</span> is processed by removing its mean and normalizing by its standard deviation. The resulting normalized residual is denoted by <span class="math inline">\(\tilde{\mathbf{y}}\)</span>.</p>
+<p>For measurements within the same spectral band and polarization state, the autocorrelation function of the normalized residuals is equivalent to the covariance defined in <a href="#eq-covariance" class="quarto-xref">Equation&nbsp;<span>F.3</span></a>:</p>
+<p><span id="eq-rk"><span class="math display">\[
+\tilde{R}_k
+=
+\mathbb{E}
+\left[
+\tilde{y}_i
+\tilde{y}_{i+k}
+\right]
+=
+r^{\Delta_\theta k}.
+\tag{F.14}\]</span></span></p>
+<p>The correlation strength can therefore be estimated by analyzing the residuals between the measurements and forward-model calculations. The autocorrelation function is averaged over multiple pixels to reduce statistical uncertainty. The correlation parameter can then be estimated as</p>
+<p><span id="eq-r-from-ac"><span class="math display">\[
+r
+=
+\left(\tilde{R}_1\right)^{1/\Delta_\theta}.
+\tag{F.15}\]</span></span></p>
+<p>The corresponding correlation angle <span class="math inline">\(\theta_c\)</span> is calculated from <span class="math inline">\(r\)</span> using <a href="#eq-thetac2r" class="quarto-xref">Equation&nbsp;<span>F.5</span></a>.</p>
+<p>A partial autocorrelation function can also be calculated from the data sequence. Partial autocorrelation removes correlations associated with intermediate lags and can therefore be used to evaluate whether an AR(1) model adequately represents the uncertainty structure <span class="citation" data-cites="Priestley:1983aa">(<a href="#ref-Priestley:1983aa" role="doc-biblioref">Priestley 1983</a>)</span>. If AR(1) is sufficient, only the first-order lag should remain prominent beyond the zero-order term. The Python packages StatsModels <span class="citation" data-cites="Seabold:2010aa">(<a href="#ref-Seabold:2010aa" role="doc-biblioref">Seabold and Perktold 2010</a>)</span> and SciPy <span class="citation" data-cites="Virtanen:2018aa">(<a href="#ref-Virtanen:2018aa" role="doc-biblioref">Virtanen et al. 2018</a>)</span> are used to conduct the autocorrelation analyses.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Branch:1999aa" class="csl-entry" role="listitem">
+Branch, Mary Ann, Thomas F. Coleman, and Yuying Li. 1999. <span>“A Subspace, Interior, and Conjugate Gradient Method for Large-Scale Bound-Constrained Minimization Problems.”</span> <em>SIAM Journal on Scientific Computing</em> 21 (1): 1–23. <a href="https://doi.org/10.1137/S1064827595289108">https://doi.org/10.1137/S1064827595289108</a>.
+</div>
+<div id="ref-Gao:2021bb" class="csl-entry" role="listitem">
+Gao, Meng, Kirk Knobelspiesse, Bryan A. Franz, Peng-Wang Zhai, Vanderlei Martins, Sharon P. Burton, Brian Cairns, et al. 2021. <span>“Adaptive Data Screening for Multi-Angle Polarimetric Aerosol and Ocean Color Remote Sensing Accelerated by Deep Learning.”</span> <em>Frontiers in Remote Sensing</em> 2: 46. <a href="https://doi.org/10.3389/frsen.2021.757832">https://doi.org/10.3389/frsen.2021.757832</a>.
+</div>
+<div id="ref-Gao:2021aa" class="csl-entry" role="listitem">
+Gao, M., B. A. Franz, K. Knobelspiesse, P.-W. Zhai, V. Martins, S. Burton, B. Cairns, et al. 2021. <span>“Efficient Multi-Angle Polarimetric Inversion of Aerosols and Ocean Color Powered by a Deep Neural Network Forward Model.”</span> <em>Atmospheric Measurement Techniques</em> 14 (6): 4083–4110. <a href="https://doi.org/10.5194/amt-14-4083-2021">https://doi.org/10.5194/amt-14-4083-2021</a>.
+</div>
+<div id="ref-Gao:2023bb" class="csl-entry" role="listitem">
+Gao, M., K. Knobelspiesse, B. A. Franz, P.-W. Zhai, B. Cairns, X. Xu, and J. V. Martins. 2023. <span>“The Impact and Estimation of Uncertainty Correlation for Multi-Angle Polarimetric Remote Sensing of Aerosols and Ocean Color.”</span> <em>Atmospheric Measurement Techniques</em> 16 (8): 2067–87. <a href="https://doi.org/10.5194/amt-16-2067-2023">https://doi.org/10.5194/amt-16-2067-2023</a>.
+</div>
+<div id="ref-Gao:2022aa" class="csl-entry" role="listitem">
+Gao, M., K. Knobelspiesse, B. A. Franz, P.-W. Zhai, A. M. Sayer, A. Ibrahim, B. Cairns, et al. 2022. <span>“Effective Uncertainty Quantification for Multi-Angle Polarimetric Aerosol Remote Sensing over Ocean.”</span> <em>Atmospheric Measurement Techniques</em> 15 (16): 4859–79. <a href="https://doi.org/10.5194/amt-15-4859-2022">https://doi.org/10.5194/amt-15-4859-2022</a>.
+</div>
+<div id="ref-Knobelspiesse:2012aa" class="csl-entry" role="listitem">
+Knobelspiesse, Kirk, Brian Cairns, Michael Mishchenko, Jacek Chowdhary, Kostas Tsigaridis, Bastiaan van Diedenhoven, William Martin, Matteo Ottaviani, and Mikhail Alexandrov. 2012. <span>“Analysis of Fine-Mode Aerosol Retrieval Capabilities by Different Passive Remote Sensing Instrument Designs.”</span> <em>Optics Express</em> 20 (19): 21457–84. <a href="https://doi.org/10.1364/OE.20.021457">https://doi.org/10.1364/OE.20.021457</a>.
+</div>
+<div id="ref-Knobelspiesse:2019aa" class="csl-entry" role="listitem">
+Knobelspiesse, Kirk, Qian Tan, Carol Bruegge, Brian Cairns, Jacek Chowdhary, Bastiaan van Diedenhoven, David Diner, et al. 2019. <span>“Intercomparison of Airborne Multi-Angle Polarimeter Observations from the Polarimeter Definition Experiment.”</span> <em>Appl. Opt.</em> 58 (3): 650–69. <a href="https://doi.org/10.1364/AO.58.000650">https://doi.org/10.1364/AO.58.000650</a>.
+</div>
+<div id="ref-Priestley:1983aa" class="csl-entry" role="listitem">
+Priestley, M. B. 1983. <em>Spectral Analysis and Time Series</em>. Academic Press.
+</div>
+<div id="ref-Rodgers:2000aa" class="csl-entry" role="listitem">
+Rodgers, C. D. 2000. <em>Inverse Methods for Atmospheric Sounding:theory and Practice</em>. World Scientific World Scientific Publishing, Singapore. https://doi.org/<a href="https://doi.org/10.1142/3171">https://doi.org/10.1142/3171</a>.
+</div>
+<div id="ref-Sayer:2020aa" class="csl-entry" role="listitem">
+Sayer, A. M., Y. Govaerts, P. Kolmonen, A. Lipponen, M. Luffarelli, T. Mielonen, F. Patadia, et al. 2020. <span>“A Review and Framework for the Evaluation of Pixel-Level Uncertainty Estimates in Satellite Aerosol Remote Sensing.”</span> <em>Atmospheric Measurement Techniques</em> 13 (2): 373–404. <a href="https://doi.org/10.5194/amt-13-373-2020">https://doi.org/10.5194/amt-13-373-2020</a>.
+</div>
+<div id="ref-Seabold:2010aa" class="csl-entry" role="listitem">
+Seabold, Skipper, and Josef Perktold. 2010. <span>“Statsmodels: Econometric and Statistical Modeling with Python.”</span> In <em>Proceedings of the 9th Python in Science Conference</em>.
+</div>
+<div id="ref-Virtanen:2018aa" class="csl-entry" role="listitem">
+Virtanen, T. H., P. Kolmonen, L. Sogacheva, E. Rodrı́guez, G. Saponaro, and G. de Leeuw. 2018. <span>“Collocation Mismatch Uncertainties in Satellite Aerosol Retrieval Validation.”</span> <em>Atmospheric Measurement Techniques</em> 11 (2): 925–38. <a href="https://doi.org/10.5194/amt-11-925-2018">https://doi.org/10.5194/amt-11-925-2018</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/fastmapol_aerosol_component.html" class="pagination-link" aria-label="Aerosol Characterization: Component Approach">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Aerosol Characterization: Component Approach</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/fastmapol_model_ocean.html" class="pagination-link" aria-label="Ocean Bio-Optical Model">
+        <span class="nav-page-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Ocean Bio-Optical Model</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
