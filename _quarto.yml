@@ -11,16 +11,15 @@ keywords:
   - Polarization
   - Multi-angle
   - Aerosol
-  - Ocean
-  - Land
-  - FastMAPOL
+  - Ocean Color
+  - Deep Learning
 # --------------------------------------------------
 # Book metadata
 # --------------------------------------------------
 
 book:
   title: "FastMAPOL Algorithm Theoretical Basis Document"
-  subtitle: "Aerosol, Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry"
+  subtitle: "Coupled Aerosol, Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry"
 
   author:
     - name: Meng Gao
@@ -56,7 +55,8 @@ book:
     style: docked
     background: light
     collapse-level: 2
-
+    logo: logo/fastmapol1.png
+    
   chapters:
     - index.md
     - chapters/fastmapol_summary.md
@@ -135,7 +135,7 @@ format:
 
   html:
     theme: cosmo
-
+    css: atbd/styles.css
     toc: true
     toc-depth: 3
     toc-location: right
@@ -151,8 +151,6 @@ format:
       body-width: 900px
       margin-width: 260px
       gutter-width: 1.5rem
-
-    css: atbd/styles.css
 
   pdf:
     keep-tex: true
