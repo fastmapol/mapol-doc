@@ -11,7 +11,8 @@ The Level-2 product is distributed in **NetCDF format** and organized into hiera
 The FastMAPOL Level-2 product is designed to support:
 
 - aerosol science applications
-- ocean color retrievals
+- ocean color studies
+- land surface studies
 - atmospheric correction
 - algorithm validation
 - Level-3 gridded product generation

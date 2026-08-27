@@ -31,6 +31,7 @@ More details are provided in @sec-ocean-model.
 **Land Model**
 
 We use the land surface reflectance model implemented in the **PACE simulator**, with key components:
+
 - Ross–Li kernel-driven BRDF  
 - Polarized bidirectional reflectance distribution function (BPDF)  
 - Fresnel reflection physics

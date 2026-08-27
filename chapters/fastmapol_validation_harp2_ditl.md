@@ -4,7 +4,7 @@
 
 Pre-launch Day-in-the-Life (DITL) simulations provide an end-to-end benchmark of HARP2 measurement realism, L2 retrieval performance, and uncertainty characterization. The results below highlight three key aspects: synthetic observations, pixel-wise retrieval performance, and uncertainty analysis. Details are provided in @Gao:2023aa.
 
-Validation of the production data (V3 and V4) is ongoing, following the methodologies reported in @Gao:2026aa. 
+Validation of the production data (V3 and V4) is ongoing, following the methodologies reported in @Gao:2026aa. The validation results should be compared with the DITL uncertainty analysis to assess retrieval performance using real observations relative to theoretical expectations.
 
 ## Summary Information
 
