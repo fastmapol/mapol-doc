@@ -22,3 +22,4 @@
 *.pdf
 **/*.pdf
 docs/**/*.pdf
+/.quarto/

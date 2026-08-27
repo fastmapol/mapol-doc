@@ -541,18 +541,7 @@ available list of mapped product types now include:
 \begin{itemize}
 \tightlist
 \item
-  AER\_RTAP: aerosol optical and microphysical properties over land and
-  ocean from RemoTAP algorithm
-\item
-  AER\_RTAPLAND: retrieved land surface parameters (Ross-Li) from
-  RemoTAP
-\item
-  AER\_RTAPOCEAN: retrieved ocean surface parameters (phytoplankton
-  chlorophyll) from RemoTAP
-\item
   MAPOL\_OCEAN: aerosol and ocean properties from FastMAPOL algorithm
-\item
-  MAPOL\_LAND: aerosol and land properties from FastMAPOL algorithm
 \end{itemize}
 
 \section*{FastMAPOL Product Release Notes
@@ -790,10 +779,10 @@ At a high level, FastMAPOL operates through the following steps:
 \item
   \textbf{Surface reflectance retrieval:} Following aerosol retrieval
   and atmospheric correction, FastMAPOL derives surface reflectance
-  products, including angular remote sensing reflectance (\(R_{rs}\))
-  over ocean and angular surface reflectance over land. Bidirectional
-  reflectance corrections can further be applied to provide standardized
-  surface reflectance products.
+  products, including angular remote sensing reflectance over ocean
+  (\(R_{rs}\)) and angular surface reflectance over land (\(\rho_s\)).
+  Bidirectional reflectance corrections can further be applied to
+  provide standardized surface reflectance products.
 \end{enumerate}
 
 The resulting framework exploits the information contained in
@@ -873,14 +862,14 @@ Framework}\label{fastmapol-retrieval-framework}
 
 FastMAPOL is an efficient coupled aerosol and ocean color retrieval
 algorithm that combines neural network (NN) forward models with
-iterative optimization (\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021};
-\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}). The NN forward
-models emulate vector radiative transfer calculations for a coupled
-atmosphere-ocean system based on the PACE simulator
-(\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009},
-\citeproc{ref-Zhai:2010aa}{2010}; \citeproc{ref-Zhai:2022aa}{Zhai and Hu
-2022}). Please find more details in the NN, automatic differentiaton and
-aerosol and surface model details in the technical section.
+iterative optimization M. Gao, Franz, et al.
+(\citeproc{ref-Gao:2023aa}{2023}). The NN forward models emulate vector
+radiative transfer calculations for a coupled atmosphere-ocean system
+based on the PACE simulator (\citeproc{ref-Zhai:2009aa}{Zhai et al.
+2009}, \citeproc{ref-Zhai:2010aa}{2010}; \citeproc{ref-Zhai:2022aa}{Zhai
+and Hu 2022}). Please find more details in the NN, automatic
+differentiaton and aerosol and surface model details in the technical
+section.
 
 \section{Radiative transfer
 parameterization}\label{radiative-transfer-parameterization}
@@ -906,6 +895,10 @@ and ozone column density \(n_{\mathrm{O}_3}\) are considered as input
 parameters, with values obtained from the MERRA-2 reanalysis
 (\citeproc{ref-Gelaro:2017aa}{Gelaro et al. 2017}).
 
+More details are provided in Appendix~\ref{sec-rt-model}.
+
+\textbf{Aerosol model}
+
 Aerosols are represented by a multi-modal framework that allows
 independent characterization of fine- and coarse-mode size
 distributions, each with its own complex refractive index defined by
@@ -926,6 +919,10 @@ corresponding spherical fractions are represented by \(\mathrm{sph}_f\)
 and \(\mathrm{sph}_c\). The aerosol vertical distribution is
 parameterized by the aerosol layer height (\(z_c\)), defined as the
 center of a Gaussian vertical profile describing aerosol number density.
+
+More details are provided in Appendix~\ref{sec-aerosol-model}.
+
+\textbf{Ocean model}
 
 Ocean bio-optical properties, including contributions from pure
 seawater, phytoplankton, and colored dissolved organic matter (CDOM),
@@ -955,13 +952,27 @@ retrievals in coastal waters, particularly in regions influenced by both
 complex aerosol properties and bright ocean constituents Aryal et al.
 (\citeproc{ref-Aryal:2026aa}{2026}).
 
-All forward-model parameters and their ranges are summarized in
-Table~\ref{tbl-param-ranges}. Solar and viewing geometries are specified
-by the solar zenith angle (\(\theta_0\)), viewing zenith angle
-(\(\theta_v\)), and relative azimuth angle (\(\phi_v\)), which are
-obtained from PACE Level-1C data. Surface pressure and ozone are
-obtained from ancillary data, while the aerosol, ocean, and surface
-parameters are retrieved by FastMAPOL.
+More details are provided in Appendix~\ref{sec-ocean-model}.
+
+\textbf{Land Model}
+
+We use the land surface reflectance model implemented in the
+\textbf{PACE simulator}, with key components: - Ross--Li kernel-driven
+BRDF\\
+- Polarized bidirectional reflectance distribution function (BPDF)\\
+- Fresnel reflection physics
+
+Details are provided in Appendix~\ref{sec-land-model}.
+
+\textbf{Parameter range}
+
+The forward-model parameters and their ranges are summarized in
+Table~\ref{tbl-param-ranges} using coupled atmosphere-ocean system as
+example. Solar and viewing geometries are specified by the solar zenith
+angle (\(\theta_0\)), viewing zenith angle (\(\theta_v\)), and relative
+azimuth angle (\(\phi_v\)), which are obtained from PACE Level-1C data.
+Surface pressure and ozone are obtained from ancillary data, while the
+aerosol, ocean, and surface parameters are retrieved by FastMAPOL.
 
 \begin{longtable}[]{@{}lrrr@{}}
 \caption{Parameters and ranges used in the neural network forward model.
@@ -1076,6 +1087,8 @@ AOD (coarse) & \(5\times64\times64\times34\) & 0.001 \\
 SSA (fine) & \(6\times64\times64\times34\) & 0.003 \\
 SSA (coarse) & \(5\times64\times64\times34\) & 0.01 \\
 \end{longtable}
+
+More details are provided in Appendix~\ref{sec-nn-model}.
 
 \section{Retrieval and optimization}\label{retrieval-and-optimization}
 
@@ -1196,13 +1209,13 @@ f(\chi^2,k)
 
 Here, \(\chi^2\) is the cost function defined in Equation~\ref{eq-cost},
 \(k\) is the number of degrees of freedom (DOF), and \(\Gamma(k/2)\)
-denotes the gamma function (\citeproc{ref-Frederick:2006aa}{James
-2006}). Neglecting potential correlations among measurement
+denotes the gamma function (\citeproc{ref-Gao:2021bb}{Meng Gao et al.
+2021}). Neglecting potential correlations among measurement
 uncertainties, the DOF can be approximated by the total number of
 measurements, \(N\). More rigorously, the effective DOF depends on the
 number and information content of the retrieved parameters and can be
-evaluated using the Jacobian and error covariance matrices
-(\citeproc{ref-Rodgers:2000aa}{Rodgers 2000}).
+evaluated using the Jacobian and error covariance matrices M. Gao,
+Knobelspiesse, et al. (\citeproc{ref-Gao:2023bb}{2023}).
 
 \bookmarksetup{startatroot}
 
@@ -2109,7 +2122,7 @@ development, validation, and advanced scientific analysis.
 All equations and formulations follow the conventions introduced in the
 main text unless otherwise noted.
 
-\chapter{Radiative Transfer Model}\label{radiative-transfer-model}
+\chapter{Radiative Transfer Model}\label{sec-rt-model}
 
 The Radiative Transfer model is based on the Successive Order of
 Scattering (RTSOS) method Zhai et al.
@@ -2134,7 +2147,7 @@ the radiative transfer system.
 in github.
 
 \chapter{Neural Network Forward Model and Analytical
-Jacobian}\label{neural-network-forward-model-and-analytical-jacobian}
+Jacobian}\label{sec-nn-model}
 
 The MAP retrievals are often computationally expensive due to their high
 dimensionality and iterative nature, with multiple forward model and
@@ -2380,7 +2393,7 @@ algorithms such as FastMAPOL that involve a large number of state
 parameters and making them more suitable for practical applications.
 
 \chapter{Aerosol Characterization : size distribution and
-representation}\label{aerosol-characterization-size-distribution-and-representation}
+representation}\label{sec-aerosol-model}
 
 FastMAPOL supports several aerosol representations with increasing
 complexity:
@@ -3353,7 +3366,7 @@ zero-order term. The Python packages StatsModels
 (\citeproc{ref-Virtanen:2018aa}{Virtanen et al. 2018}) are used to
 conduct the autocorrelation analyses.
 
-\chapter{Ocean Bio-Optical Model}\label{ocean-bio-optical-model}
+\chapter{Ocean Bio-Optical Model}\label{sec-ocean-model}
 
 \section{Overview}\label{overview-3}
 
@@ -3752,7 +3765,7 @@ and validation results, please refer to Meng Gao et al.
 (\citeproc{ref-Gao:2026aa}{2026}).
 
 \chapter{Land Surface Reflectance Model (Ross--Li BRDF and Polarized
-BPDF)}\label{land-surface-reflectance-model-rossli-brdf-and-polarized-bpdf}
+BPDF)}\label{sec-land-model}
 
 This document describes the mathematical formulation of the land surface
 reflectance model implemented in the \textbf{PACE simulator}.
@@ -4316,10 +4329,6 @@ Huot, Y, A Morel, M S Twardowski, D Stramski, and R A Reynolds. 2008.
 {``{Particle optical backscattering along a chlorophyll gradient in the
 upper layer of the eastern South Pacific Ocean}.''}
 \emph{Biogeosciences} 5 (2): 495--507.
-
-\bibitem[\citeproctext]{ref-Frederick:2006aa}
-James, Frederick. 2006. \emph{Statistical Methods in Experimental
-Physics}. World Scientific, Singapore.
 
 \bibitem[\citeproctext]{ref-Knobelspiesse:2012aa}
 Knobelspiesse, Kirk, Brian Cairns, Michael Mishchenko, Jacek Chowdhary,
