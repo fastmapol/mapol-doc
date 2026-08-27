@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: book
+  output-dir: docs
 
 
 # --------------------------------------------------
@@ -9,23 +9,23 @@ project:
 
 book:
   title: "FastMAPOL Algorithm Theoretical Basis Document"
-  subtitle: "PACE Multi-Angle Polarimetric Aerosol, Ocean, and Land Retrieval"
+  subtitle: "Aerosol, Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry"
 
   author:
     - name: Meng Gao
       affiliations:
-        - ref: ssai
         - ref: nasa
-
+        - ref: ssai
+        
     - name: Pengwang Zhai
       affiliations:
         - ref: umbc
 
     - name: Kamal Aryal
       affiliations:
-        - ref: umbc
         - ref: nasa
-
+        - ref: umbc
+        
     - name: Kirk Knobelspiesse
       affiliations:
         - ref: nasa
@@ -34,26 +34,38 @@ book:
       affiliations:
         - ref: nasa
 
-  date: "2026-08-26"
+  date: today
+  date-format: "YYYY-MM-DD"
+
+  # Documentation-style navigation
+  search: true
+  page-navigation: true
+
+  sidebar:
+    style: docked
+    background: light
+    collapse-level: 2
 
   chapters:
     - index.md
-    - ../chapters/fastmapol_summary.md
-    - ../chapters/fastmapol_retrieval.md
-    - ../chapters/fastmapol_product.md
-    - ../chapters/fastmapol_tutorial.md
-    - ../chapters/fastmapol_validation_spexone.md
-    - ../chapters/fastmapol_validation_harp2.md
+    - chapters/fastmapol_summary.md
+    - chapters/fastmapol_retrieval.md
+    - chapters/fastmapol_product.md
+    - chapters/fastmapol_tutorial.md
+    - chapters/fastmapol_validation_spexone_v3.md
+    - chapters/fastmapol_validation_harp2_ditl.md
+    - chapters/fastmapol_validation_harp2_v4.md
 
   appendices:
-    - ../chapters/fastmapol_appendix_intro.md
-    - ../chapters/fastmapol_pace_simulator.md
-    - ../chapters/fastmapol_neural_network.md
-    - ../chapters/fastmapol_aerosol_size.md
-    - ../chapters/fastmapol_uncertainty_correlation.md
-    - ../chapters/fastmapol_model_ocean.md
-    - ../chapters/fastmapol_ocean_color.md
-    - ../chapters/fastmapol_model_land.md
+    - chapters/fastmapol_appendix_intro.md
+    - chapters/fastmapol_pace_simulator.md
+    - chapters/fastmapol_neural_network.md
+    - chapters/fastmapol_aerosol_size.md
+    - chapters/fastmapol_aerosol_component.md
+    - chapters/fastmapol_uncertainty_correlation.md
+    - chapters/fastmapol_model_ocean.md
+    - chapters/fastmapol_ocean_color.md
+    - chapters/fastmapol_model_land.md
 
 
 # --------------------------------------------------
@@ -85,7 +97,7 @@ affiliations:
 # Document metadata
 # --------------------------------------------------
 
-version: "v2026.8.26"
+version: "v1.0"
 institution: "NASA Goddard Space Flight Center (GSFC)"
 mission: "PACE"
 
@@ -94,7 +106,7 @@ mission: "PACE"
 # Bibliography and numbering
 # --------------------------------------------------
 
-bibliography: ../bib/lmfit5.bib
+bibliography: bib/lmfit5.bib
 link-citations: true
 
 number-sections: true
@@ -111,12 +123,25 @@ crossref:
 format:
 
   html:
+    theme: cosmo
+
     toc: true
     toc-depth: 3
-    theme: cosmo
+    toc-location: right
+
     code-fold: false
     smooth-scroll: true
     link-external-newwindow: true
+
+    page-layout: article
+
+    grid:
+      sidebar-width: 300px
+      body-width: 900px
+      margin-width: 260px
+      gutter-width: 1.5rem
+
+    css: atbd/styles.css
 
   pdf:
     keep-tex: true
@@ -142,8 +167,8 @@ format:
       - left=1in
       - right=1in
 
-    include-in-header: header.tex
+    include-in-header: atbd/header.tex
 
     # Custom PDF title page
     template-partials:
-      - title.tex
+      - atbd/title.tex

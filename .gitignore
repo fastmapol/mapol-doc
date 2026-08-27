@@ -3,5 +3,10 @@
 **/.ipynb_checkpoints/
 *.html
 **/site_libs
+**/tmp/
+site_libs
 *.pdf
+docs/
 
+/.quarto/
+**/*.quarto_ipynb

@@ -266,12 +266,12 @@
 
 \title{%
 \begin{tabular}{c}
-\includegraphics[height=1.15in]{../logo/nasa_logo.png}
+\includegraphics[height=1.15in]{logo/nasa_logo.png}
 \\[0.6cm]
 \LARGE\bfseries FastMAPOL Algorithm Theoretical Basis Document
 \\[0.35cm]
-\Large\mdseries PACE Multi-Angle Polarimetric Aerosol, Ocean, and Land
-Retrieval
+\Large\mdseries Aerosol, Ocean, and Land Retrievals from PACE
+Multi-Angle Polarimetry
 \end{tabular}%
 }
 
@@ -286,7 +286,7 @@ Bryan Franz}
 \date{%
 NASA PACE Mission
 \\[0.15cm]
-2026-08-26
+2026-08-27
 }
 \begin{document}
 \maketitle
@@ -843,7 +843,7 @@ basis, radiative transfer models, neural network forward models,
 inversion methodology, uncertainty characterization, data products, and
 validation of FastMAPOL for PACE HARP2 and SPEXone observations.
 
-The subsequent technical sections provide detailed descriptions of:
+Appendix provide detailed technical descriptions of:
 
 \begin{itemize}
 \tightlist
@@ -1712,8 +1712,8 @@ or tutorial content on FastMAPOL products.
 
 \bookmarksetup{startatroot}
 
-\chapter{SPEXone Aerosol and Ocean Product
-Validation}\label{spexone-aerosol-and-ocean-product-validation}
+\chapter{SPEXone Aerosol and Ocean Product Validation
+(V3)}\label{spexone-aerosol-and-ocean-product-validation-v3}
 
 This page summarizes validation results for aerosol and ocean products
 retrieved from the PACE multi-angle polarimeters using the
@@ -1722,11 +1722,13 @@ optical properties and ocean remote-sensing reflectance (\(R_{rs}\)).
 
 FastMAPOL performs coupled aerosol--surface retrievals using an
 optimal-estimation framework accelerated by deep neural network forward
-models. This page focuses only on the validation results and their
-interpretation.
+models. This page focuses on the validation results and their
+interpretation for Version 3 (V3) data. Version 4 (V4) data show
+generally similar performance, as summarized in the V4 data release
+notes. More detailed V4 validation is ongoing.
 
-\textbf{Additional validation results are available in Meng Gao et al.
-(\citeproc{ref-Gao:2026aa}{2026}) and will be updated on the
+\textbf{Additional quantified validation results are available in Meng
+Gao et al. (\citeproc{ref-Gao:2026aa}{2026}) and will be updated on the
 \href{https://pace.oceansciences.org/pace_fastmapol.htm}{PACE FastMAPOL
 validation page}.}
 
@@ -1782,7 +1784,7 @@ Global distributions of total, fine-mode, and coarse-mode AOD and SSA at
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{../chapters/../figure/validation_spexone_fig_15_0.04/fig_l3_aerosol_556.png}}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{chapters/../figure/validation_spexone_fig_15_0.04/fig_l3_aerosol_556.png}}
 
 }
 
@@ -1799,7 +1801,7 @@ chlorophyll-\emph{a}:
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{../chapters/../figure/validation_spexone_fig_15_0.04/fig_l3_rrs.png}}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{chapters/../figure/validation_spexone_fig_15_0.04/fig_l3_rrs.png}}
 
 }
 
@@ -1817,8 +1819,8 @@ components.
 
 \bookmarksetup{startatroot}
 
-\chapter{HARP2 L2 Aerosol and Ocean Product
-Validation}\label{harp2-l2-aerosol-and-ocean-product-validation}
+\chapter{HARP2 L2 Aerosol and Ocean Product Validation with DITL
+data}\label{harp2-l2-aerosol-and-ocean-product-validation-with-ditl-data}
 
 \section{Overview}\label{overview-1}
 
@@ -1831,10 +1833,7 @@ uncertainty analysis. Details are provided in M. Gao, Franz, et al.
 
 Validation of the production data (V3 and V4) is ongoing, following the
 methodologies reported in Meng Gao et al.
-(\citeproc{ref-Gao:2026aa}{2026}). Updated validation results will be
-provided on the
-\href{https://pace.oceansciences.org/pace_fastmapol.htm}{PACE FastMAPOL
-validation page}.
+(\citeproc{ref-Gao:2026aa}{2026}).
 
 \section{Summary Information}\label{summary-information-1}
 
@@ -1875,7 +1874,7 @@ a realistic testbed for retrieval evaluation:
 
 \centering{
 
-\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{../chapters/../figure/validation_harp2_l1c.png}
+\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{chapters/../figure/validation_harp2_l1c.png}
 
 }
 
@@ -1909,7 +1908,7 @@ truth and meaningful uncertainty estimates:
 
 \centering{
 
-\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{../chapters/../figure/validation_harp2_l2.png}
+\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{chapters/../figure/validation_harp2_l2.png}
 
 }
 
@@ -1943,7 +1942,7 @@ Their comparisons are shown in Figure~\ref{fig-validation_harp2_unc},
 
 \centering{
 
-\includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio]{../chapters/../figure/validation_harp2_unc.png}
+\includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio]{chapters/../figure/validation_harp2_unc.png}
 
 }
 
@@ -1974,6 +1973,115 @@ adopted from M. Gao, Franz, et al. (\citeproc{ref-Gao:2023aa}{2023})}
 
 These results define a pre-launch benchmark for HARP2 L2 validation
 using DITL data.
+
+\bookmarksetup{startatroot}
+
+\chapter{HARP2 Aerosol, OCEAN and LAND Product Validation
+(V4)}\label{harp2-aerosol-ocean-and-land-product-validation-v4}
+
+This page summarizes validation results for aerosol and surface products
+retrieved from the PACE multi-angle polarimeters using the
+\textbf{FastMAPOL} algorithm, with emphasis on \textbf{HARP2} aerosol
+optical properties, ocean remote-sensing reflectance (\(R_{rs}\)) and
+land surface reflectance (\(\rho_s\)).
+
+FastMAPOL performs coupled aerosol--surface retrievals using an
+optimal-estimation framework accelerated by deep neural network forward
+models. The validation efforts on HARP2 is ongoing, this page provide
+the validation plan following the work by Meng Gao et al.
+(\citeproc{ref-Gao:2026aa}{2026}). More results will be updated on the
+\href{https://pace.oceansciences.org/pace_fastmapol.htm}{PACE FastMAPOL
+validation page}.
+
+\section{Summary Information}\label{summary-information-2}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{FastMAPOL version:} v4.0\\
+\item
+  \textbf{Data period:} 2024/03--2025/12\\
+\item
+  \textbf{Reference:} AERONET v3, Level 1.5
+\end{itemize}
+
+\section{Retrieval Products to be evaluated
+(ongoing)}\label{retrieval-products-to-be-evaluated-ongoing}
+
+\textbf{Aerosol} - Total, fine-mode, and coarse-mode aerosol optical
+depth (AOD) - Total, fine-mode, and coarse-mode single-scattering albedo
+(SSA)
+
+\textbf{Ocean} - Ocean remote-sensing reflectance (\(R_{rs}\))
+
+\textbf{LAND} - Land surface reflectance (\(R_{rs}\)) - \#\# Validation
+Strategy
+
+Validation is organized into three levels similar to SPEXone (Meng Gao
+et al. (\citeproc{ref-Gao:2026aa}{2026})):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Global Level-3 assessment}\\
+  Evaluate large-scale spatial and seasonal patterns as shown below.
+\item
+  \textbf{Global aerosol validation}\\
+  Compare retrievals with AERONET observations
+\item
+  \textbf{Joint aerosol--ocean validation}\\
+  Evaluate aerosol and \(R_{rs}\) simultaneously using AERONET-OC
+  matchups, study the mutual dependencies on the retrieval
+  uncertainties.
+\end{enumerate}
+
+The objective is to assess both the physical realism of the retrieved
+fields and the consistency of aerosol and ocean products.
+
+\section{Global Level-3 Products}\label{global-level-3-products-1}
+
+\textbf{Aerosol Products (556 nm)}
+
+Global distributions of total, fine-mode, and coarse-mode AOD and SSA at
+556 nm:
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{chapters/../figure/fig_harp2_l3_aod.png}}
+
+}
+
+\caption{Global aerosol products}
+
+\end{figure}%
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{LAND Products}
+
+Global distributions of \(\rho_{s}\) in RGB (667, 556, 443 nm):
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{chapters/../figure/fig_harp2_l3_rhos.png}}
+
+}
+
+\caption{Global ocean products}
+
+\end{figure}%
+
+The retrieved \(\rho_s\) contains both spectral and angular dimensions.
+The results shown here represent the angular mean after BRDF correction
+(\texttt{rhos\_nadir\_mean}).
+
+\textbf{Key result:}\\
+The global distributions show realistic spatial and seasonal patterns,
+indicating effective separation of atmospheric and surface retrieval
+components. Over ocean, AOD shows good consistency with AERONET when
+using the best-quality retrievals (quality flags 0 and 1). Over land,
+however, retrieved AOD is generally higher than AERONET observations.
+For more details, please refer to the Version 4 release notes.
 
 \cleardoublepage
 \phantomsection
@@ -2280,14 +2388,11 @@ complexity:
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Aer-1:} five predefined log-normal modes Meng Gao et al.
-  (\citeproc{ref-Gao:2026aa}{2026})
+  \textbf{Aer-1:} five predefined log-normal modes
 \item
   \textbf{Aer-2:} six predefined log-normal modes
-  (\citeproc{ref-Gao:2018aa}{Meng Gao et al. 2018})
 \item
   \textbf{Aer-3:} aerosol components represented by chemical composition
-  (\citeproc{ref-Aryal:2026aa}{Aryal et al. 2026})
 \end{itemize}
 
 These aerosol models share a common mathematical framework for size
@@ -2296,7 +2401,15 @@ products. This chapter summarizes the formulation used to connect the
 retrieved state variables to physically meaningful aerosol quantities,
 including optical depth, effective radius, effective variance, fine-mode
 fraction, and volume fraction. In this chapter, we focused on the first
-two models. \textbf{Aer-1:} is used in currently released data product.
+two models. \textbf{Aer-1:} is used in the currently released HARP2 and
+SPEXone data products (V1-V4)Meng Gao et al.
+(\citeproc{ref-Gao:2026aa}{2026}). \textbf{Aer-2:} was used in the study
+of RSP data (\citeproc{ref-Gao:2018aa}{Meng Gao et al. 2018}), where
+SWIR bands are available. \textbf{Aer-3:} corresponds to the
+FastMAPOL/component approach (\citeproc{ref-Aryal:2026aa}{Aryal et al.
+2026}), which has been applied to HARP2 and SPEXone for advanced studies
+of complex aerosol and ocean properties. More details are provided in
+the next chapter.
 
 \section{Overview}\label{overview-2}
 
@@ -2859,6 +2972,14 @@ representation remains useful for interpreting extinction and other
 radiatively weighted quantities. The relationships summarized here
 provide the basis for size integration, mode summation, and the
 calculation of operational aerosol products in FastMAPOL.
+
+\chapter{Aerosol Characterization: Component
+Approach}\label{aerosol-characterization-component-approach}
+
+Aerosol components are represented by their chemical composition, with
+each component characterized by a prescribed size distribution and
+spectrally dependent refractive index. More details are in Aryal et al.
+(\citeproc{ref-Aryal:2026aa}{2026}).
 
 \chapter{Uncertainty Estimation and Angular
 Correlations}\label{uncertainty-estimation-and-angular-correlations}
@@ -3635,7 +3756,6 @@ BPDF)}\label{land-surface-reflectance-model-rossli-brdf-and-polarized-bpdf}
 
 This document describes the mathematical formulation of the land surface
 reflectance model implemented in the \textbf{PACE simulator}.
-\textbf{Need proof read to be consistent with the code and formulation}
 
 The model combines: - Ross--Li kernel-driven BRDF\\
 - Polarized bidirectional reflectance distribution function (BPDF)\\

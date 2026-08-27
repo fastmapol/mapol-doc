@@ -1,6 +1,6 @@
 # FastMAPOL Retrieval Framework
 
-FastMAPOL is an efficient coupled aerosol and ocean color retrieval algorithm that combines neural network (NN) forward models with iterative optimization [@Gao:2021aa; @Gao:2023aa]. The NN forward models emulate vector radiative transfer calculations for a coupled atmosphere-ocean system based on the PACE simulator [@Zhai:2009aa; @Zhai:2010aa; @Zhai:2022aa]. Please find more details in the NN, automatic differentiaton and aerosol and surface model details in the technical section. 
+FastMAPOL is an efficient coupled aerosol and ocean color retrieval algorithm that combines neural network (NN) forward models with iterative optimization [@Gao:2021aa; @Gao:2021bb, @Gao:2023aa]. The NN forward models emulate vector radiative transfer calculations for a coupled atmosphere-ocean system based on the PACE simulator [@Zhai:2009aa; @Zhai:2010aa; @Zhai:2022aa]. Please find more details in the NN, automatic differentiaton and aerosol and surface model details in the technical section. 
 
 ## Radiative transfer parameterization
 
@@ -153,4 +153,4 @@ f(\chi^2,k)
 {2^{k/2}\Gamma(k/2)}.
 $$ {#eq-chi2-pdf}
 
-Here, $\chi^2$ is the cost function defined in @eq-cost, $k$ is the number of degrees of freedom (DOF), and $\Gamma(k/2)$ denotes the gamma function [@Frederick:2006aa]. Neglecting potential correlations among measurement uncertainties, the DOF can be approximated by the total number of measurements, $N$. More rigorously, the effective DOF depends on the number and information content of the retrieved parameters and can be evaluated using the Jacobian and error covariance matrices [@Rodgers:2000aa].
+Here, $\chi^2$ is the cost function defined in @eq-cost, $k$ is the number of degrees of freedom (DOF), and $\Gamma(k/2)$ denotes the gamma function [@Gao:2021bb]. Neglecting potential correlations among measurement uncertainties, the DOF can be approximated by the total number of measurements, $N$. More rigorously, the effective DOF depends on the number and information content of the retrieved parameters and can be evaluated using the Jacobian and error covariance matrices [@Gao:2021bb, @Gao:2023bb].

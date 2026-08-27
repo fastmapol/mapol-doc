@@ -1,10 +1,10 @@
-# SPEXone Aerosol and Ocean Product Validation
+# SPEXone Aerosol and Ocean Product Validation (V3)
 
 This page summarizes validation results for aerosol and ocean products retrieved from the PACE multi-angle polarimeters using the **FastMAPOL** algorithm, with emphasis on **SPEXone** aerosol optical properties and ocean remote-sensing reflectance ($R_{rs}$).
 
-FastMAPOL performs coupled aerosol–surface retrievals using an optimal-estimation framework accelerated by deep neural network forward models. This page focuses only on the validation results and their interpretation.
+FastMAPOL performs coupled aerosol–surface retrievals using an optimal-estimation framework accelerated by deep neural network forward models. This page focuses on the validation results and their interpretation for Version 3 (V3) data. Version 4 (V4) data show generally similar performance, as summarized in the V4 data release notes. More detailed V4 validation is ongoing. 
 
-**Additional validation results are available in @Gao:2026aa and will be updated on the [PACE FastMAPOL validation page](https://pace.oceansciences.org/pace_fastmapol.htm).**
+**Additional quantified validation results are available in @Gao:2026aa and will be updated on the [PACE FastMAPOL validation page](https://pace.oceansciences.org/pace_fastmapol.htm).**
 
 ## Summary Information
 

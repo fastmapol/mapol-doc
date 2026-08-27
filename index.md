@@ -102,12 +102,7 @@ HARP2 Level-2 products are composited into global Level-3 binned and mapped prod
 
 SPEXone Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:
 
-- AER_RTAP: aerosol optical and microphysical properties over land and ocean from RemoTAP algorithm
-- AER_RTAPLAND: retrieved land surface parameters (Ross-Li) from RemoTAP
-- AER_RTAPOCEAN: retrieved ocean surface parameters (phytoplankton chlorophyll) from RemoTAP
 - MAPOL_OCEAN: aerosol and ocean properties from FastMAPOL algorithm
-- MAPOL_LAND: aerosol and land properties from FastMAPOL algorithm
-
 
 ## FastMAPOL Product Release Notes (V3)
 
