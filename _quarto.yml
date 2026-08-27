@@ -64,7 +64,6 @@ book:
     
   chapters:
     - index.md
-    - chapters/fastmapol_tutorial.md
     - chapters/fastmapol_summary.md
     - chapters/fastmapol_retrieval.md
     - chapters/fastmapol_product.md

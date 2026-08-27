@@ -203,3 +203,12 @@ This is the first release of Level-2 and Level-3 products from the FastMAPOL alg
 HARP2 Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:
 
 - MAPOL_OCEAN: aerosol and ocean properties over ocean from FastMAPOL algorithm
+
+# Jupyter Notebook Tutorials from PACE HelpHub {.unnumbered} 
+
+Notebook tutorials are available through the [PACE Help Hub](https://nasa.github.io/oceandata-notebooks/sections/cloud-atmosphere.html).
+
+- [HARP2 Ocean Aerosols (FastMAPOL)](https://nasa.github.io/oceandata-notebooks/notebooks/harp2/harp2_l2_fastmapol_aerosol_ocean_product.html) - Working with aerosol data over ocean from the HARP2 polarimeter with the FastMAPOL algorithm
+- [HARP2 Land Aerosols (FastMAPOL)](https://nasa.github.io/oceandata-notebooks/notebooks/harp2/harp2_l2_fastmapol_aerosol_land_product.html) - Working with aerosol data over land from the HARP2 polarimeter with the FastMAPOL algorithm
+- [SPEXone Aerosols (FastMAPOL)](https://nasa.github.io/oceandata-notebooks/notebooks/spexone/spexone_l2_fastmapol_aerosol_product.html) - Analyzing aerosol retrievals over ocean from SPEXone measurements with the FastMAPOL algorithm
+
