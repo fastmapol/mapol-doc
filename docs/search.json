@@ -70,16 +70,6 @@
     ]
   },
   {
-    "objectID": "chapters/fastmapol_tutorial.html",
-    "href": "chapters/fastmapol_tutorial.html",
-    "title": "Jupyter Notebook Tutorials from PACE HelpHub",
-    "section": "",
-    "text": "Notebook tutorials are available through the PACE Help Hub.\n\nHARP2 Ocean Aerosols (FastMAPOL) - Working with aerosol data over ocean from the HARP2 polarimeter with the FastMAPOL algorithm\nHARP2 Land Aerosols (FastMAPOL) - Working with aerosol data over land from the HARP2 polarimeter with the FastMAPOL algorithm\nSPEXone Aerosols (FastMAPOL) - Analyzing aerosol retrievals over ocean from SPEXone measurements with the FastMAPOL algorithm",
-    "crumbs": [
-      "Jupyter Notebook Tutorials from PACE HelpHub"
-    ]
-  },
-  {
     "objectID": "chapters/fastmapol_summary.html",
     "href": "chapters/fastmapol_summary.html",
     "title": "1  FastMAPOL at a Glance",
