@@ -19,15 +19,17 @@ main.content {
 }
 
 .sidebar-title {
-  font-weight: 600;
+  /*font-weight: 600;*/
+  display: none;
 }
 
 /* Sidebar logo */
 .sidebar-logo {
-  max-width: 85px;
+  width: 95%;
+  max-width: none;
   height: auto;
-  margin-top: 0.5rem;
-  margin-bottom: 0.8rem;
+  display: block;
+  margin: 0.5rem auto 1rem auto;
 }
 
 /* Main chapter title */

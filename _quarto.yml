@@ -55,7 +55,7 @@ book:
     style: docked
     background: light
     collapse-level: 2
-    logo: logo/fastmapol1.png
+    logo: logo/fastmapol3.png
     
   chapters:
     - index.md
