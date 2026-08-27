@@ -20,7 +20,7 @@ At a high level, FastMAPOL operates through the following steps:
 
 5. **Uncertainty estimation:** Pixel-level retrieval uncertainties are estimated using measurement and forward-model uncertainties together with the Jacobian matrix. Spectral and angular uncertainty correlations can also be incorporated into the retrieval framework.
 
-6. **Surface reflectance retrieval:** Following aerosol retrieval and atmospheric correction, FastMAPOL derives surface reflectance products, including angular remote sensing reflectance ($R_{rs}$) over ocean and angular surface reflectance over land. Bidirectional reflectance corrections can further be applied to provide standardized surface reflectance products.
+6. **Surface reflectance retrieval:** Following aerosol retrieval and atmospheric correction, FastMAPOL derives surface reflectance products, including angular remote sensing reflectance over ocean ($R_{rs}$) and angular surface reflectance over land ($\rho_s$). Bidirectional reflectance corrections can further be applied to provide standardized surface reflectance products.
 
 The resulting framework exploits the information contained in multi-angle polarimetric measurements to jointly constrain atmospheric and surface properties while maintaining consistency among aerosol retrieval, atmospheric correction, and surface reflectance retrieval.
 

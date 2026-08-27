@@ -8,9 +8,17 @@ The radiative transfer (RT) model used in this work is the PACE simulator [@Zhai
 
 The forward radiative transfer simulations use atmospheric molecular vertical distributions from the U.S. Standard Atmosphere profile [@Anderson:1986aa], scaled by surface pressure. Absorption by oxygen, water vapor, methane, carbon dioxide, ozone, and nitrogen dioxide is accounted for using line-by-line calculations and the double-k distribution method [@Duan:2005aa; @Zhai:2022aa]. Surface pressure $P_s$ and ozone column density $n_{\mathrm{O}_3}$ are considered as input parameters, with values obtained from the MERRA-2 reanalysis [@Gelaro:2017aa].
 
+More details are provided in @sec-rt-model.
+
+**Aerosol model**
+
 Aerosols are represented by a multi-modal framework that allows independent characterization of fine- and coarse-mode size distributions, each with its own complex refractive index defined by real ($m_r$) and imaginary ($m_i$) components, assuming flat spectral dependence. The fine mode is represented by three submodes, while the coarse mode is represented by two submodes. Each submode is described by a log-normal size distribution with mean radii of 0.1, 0.1732, 0.3, 1.0, and 2.9 $\mu\mathrm{m}$ and geometric standard deviations of 0.35, 0.35, 0.35, 0.5, and 0.5, respectively, consistent with @Dubovik:2006aa and @Xu:2016aa. The volume density of each submode is denoted by $V_i$.
 
 Both fine and coarse modes allow mixtures of spherical and spheroidal particles to account for particle non-sphericity [@Dubovik:2006aa]. The corresponding spherical fractions are represented by $\mathrm{sph}_f$ and $\mathrm{sph}_c$. The aerosol vertical distribution is parameterized by the aerosol layer height ($z_c$), defined as the center of a Gaussian vertical profile describing aerosol number density.
+
+More details are provided in @sec-aerosol-model.
+
+**Ocean model**
 
 Ocean bio-optical properties, including contributions from pure seawater, phytoplankton, and colored dissolved organic matter (CDOM), are parameterized using chlorophyll-a concentration (Chl-a). The scattering phase functions of phytoplankton are represented by the Fournier-Forand (FF) phase function [@Fournier:1994aa], which is mixed with the pure seawater phase function to describe total scattering in seawater. The Mueller matrix is represented by the product of the mixed phase function and the average normalized Mueller matrix measured by @Voss:1984aa and parameterized by @Kokhanovsky:2003aa.
 
@@ -18,7 +26,20 @@ Ocean surface roughness is described using the Cox-Munk model, parameterized by 
 
 The current bio-optical model is best suited for waters optically dominated by phytoplankton and performs well over most global ocean waters [@Gao:2026aa], but it faces challenges in accurately representing optically complex coastal waters, particularly those influenced by non-algal particles and strong CDOM absorption. Ongoing development of more advanced bio-optical models capable of representing complex water types will enable more realistic retrievals in coastal waters, particularly in regions influenced by both complex aerosol properties and bright ocean constituents [@Gao:2018aa; @Aryal:2024aa, @Aryal:2026aa].
 
-All forward-model parameters and their ranges are summarized in @tbl-param-ranges. Solar and viewing geometries are specified by the solar zenith angle ($\theta_0$), viewing zenith angle ($\theta_v$), and relative azimuth angle ($\phi_v$), which are obtained from PACE Level-1C data. Surface pressure and ozone are obtained from ancillary data, while the aerosol, ocean, and surface parameters are retrieved by FastMAPOL.
+More details are provided in @sec-ocean-model.
+
+**Land Model**
+
+We use the land surface reflectance model implemented in the **PACE simulator**, with key components:
+- Ross–Li kernel-driven BRDF  
+- Polarized bidirectional reflectance distribution function (BPDF)  
+- Fresnel reflection physics
+
+Details are provided in @sec-land-model.
+
+**Parameter range**
+
+The forward-model parameters and their ranges are summarized in @tbl-param-ranges using coupled atmosphere-ocean system as example. Solar and viewing geometries are specified by the solar zenith angle ($\theta_0$), viewing zenith angle ($\theta_v$), and relative azimuth angle ($\phi_v$), which are obtained from PACE Level-1C data. Surface pressure and ozone are obtained from ancillary data, while the aerosol, ocean, and surface parameters are retrieved by FastMAPOL.
 
 | **Parameter** | **Unit** | **Min** | **Max** |
 |---|---:|---:|---:|
@@ -70,6 +91,7 @@ Additional neural network models are trained to compute AOD and SSA for both fin
 
 : Neural network architectures and associated uncertainties used in FastMAPOL for SPEXone (34 spectral bands). For HARP2 the output bands are 4 with similar structures [@Gao:2023aa]. {#tbl-nn-arch}
 
+More details are provided in @sec-nn-model.
 
 ## Retrieval and optimization
 

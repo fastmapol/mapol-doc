@@ -1,4 +1,4 @@
-# Aerosol Characterization : size distribution and representation
+# Aerosol Characterization : size distribution and representation {#sec-aerosol-model}
 
 FastMAPOL supports several aerosol representations with increasing complexity:
 

@@ -1,4 +1,4 @@
-# Neural Network Forward Model and Analytical Jacobian
+# Neural Network Forward Model and Analytical Jacobian {#sec-nn-model}
 
 The MAP retrievals are often computationally expensive due to their high dimensionality and iterative nature, with multiple forward model and Jacobian calculations. The data screening approach developed here further increases the demand for CPU computations because the retrieval must be repeated several times. Therefore, fast forward model and Jacobian matrix calculations are advantageous for efficient processing, which was a motivation for the use of NN forward models for AirHARP in @Gao:2021aa. In this work, we provide the definition of the NN and the use of automatic differentiation to compute the Jacobian matrix analytically, as opposed to numerically through finite differencing, by exploiting the differentiable properties of the NN models. For details on the NN training strategies, please refer to @Gao:2023aa and @Gao:2021aa.
 

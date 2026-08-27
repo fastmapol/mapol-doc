@@ -1,4 +1,4 @@
-# Land Surface Reflectance Model (Ross–Li BRDF and Polarized BPDF)
+# Land Surface Reflectance Model (Ross–Li BRDF and Polarized BPDF) {#sec-land-model}
 
 This document describes the mathematical formulation of the land surface reflectance model implemented in the **PACE simulator**. 
 
