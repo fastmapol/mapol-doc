@@ -216,22 +216,21 @@ HARP2 Level-2 products are composited into global Level-3 binned and mapped prod
 
 - MAPOL_OCEAN: aerosol and ocean properties over ocean from FastMAPOL algorithm
 
-# Jupyter Notebook Tutorials from PACE HelpHub {.unnumbered} 
+# Jupyter Notebook Tutorials {.unnumbered} 
 
-FastMAPOL products (`MAPOL_OCEAN` and `MAPOL_LAND`) can be accessed and explored using NASA's `earthaccess` Python package, which provides tools for discovering and accessing data through NASA Earthdata. The following tutorials demonstrate how to search for, download, analyze, and visualize FastMAPOL products using Jupyter notebooks.
+FastMAPOL products (`MAPOL_OCEAN` and `MAPOL_LAND`) can be accessed and explored using NASA's `earthaccess` Python package, which provides tools for discovering and accessing data through NASA Earthdata. The following tutorials from PACE Help Hub demonstrate how to search for, download, analyze, and visualize the data products using Jupyter notebooks.
 
-
-Notebook tutorials are available through the [PACE Help Hub](https://nasa.github.io/oceandata-notebooks/sections/cloud-atmosphere.html).
+These notebook tutorials are available through the [PACE Help Hub](https://nasa.github.io/oceandata-notebooks/sections/cloud-atmosphere.html).
 
 - [HARP2 Ocean Aerosols (FastMAPOL)](https://nasa.github.io/oceandata-notebooks/notebooks/harp2/harp2_l2_fastmapol_aerosol_ocean_product.html) - Working with aerosol data over ocean from the HARP2 polarimeter with the FastMAPOL algorithm
 - [HARP2 Land Aerosols (FastMAPOL)](https://nasa.github.io/oceandata-notebooks/notebooks/harp2/harp2_l2_fastmapol_aerosol_land_product.html) - Working with aerosol data over land from the HARP2 polarimeter with the FastMAPOL algorithm
 - [SPEXone Aerosols (FastMAPOL)](https://nasa.github.io/oceandata-notebooks/notebooks/spexone/spexone_l2_fastmapol_aerosol_product.html) - Analyzing aerosol retrievals over ocean from SPEXone measurements with the FastMAPOL algorithm
 
-# SeaDAS Support for HARP2/SPEXone L2/L3 Data
+# Data Visualization with SeaDAS {.unnumbered} 
 
 ::: {layout-ncol=2}
 
-::: {.column width="50%"}
+::: {.column width="60%"}
 
 FastMAPOL products can also be accessed, explored, and visualized using NASA's Sea, Earth, Atmosphere Data Analysis System ([SeaDAS](https://www.earthdata.nasa.gov/data/tools/seadas)). SeaDAS provides a comprehensive graphical environment for discovering, processing, displaying, analyzing, and performing quality control of satellite-based Earth science data. The software provides several tools for working with HARP2 and SPEXone FastMAPOL L2 and L3 products:
 
@@ -242,7 +241,7 @@ FastMAPOL products can also be accessed, explored, and visualized using NASA's S
 
 :::
 
-::: {.column width="50%"}
+::: {.column width="40%"}
 
 ![SeaDAS tools for browsing and subsetting L2 data](figure/seadas_cloud_search.png){width=100%}
 
