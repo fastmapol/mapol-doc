@@ -1,51 +1,133 @@
-# Aerosol vertical profile and height {#sec-aerosol-height}
+# Aerosol Vertical Profile and Layer Height
 
-This chapter provide the vertical aerosol model, definition of aerosol layer height as discussed in @Gao:2023aa. More discussion on the retrieval uncertainties of the aerosol layer height can be found at @Gao:2023aa with dependencies on aerosol loading. 
+This chapter describes the aerosol vertical distribution assumed in FastMAPOL and defines the aerosol layer height (ALH) used in the retrieval. The ALH retrieval and its uncertainty, including the dependence on aerosol loading, are discussed in detail in @Gao:2023aa.
 
-As discussed in previous chapters, the forward radiative transfer simulations are conducted assuming a coupled atmosphere and ocean system. The atmospheric molecule distributions follow the US standard atmospheric constituent profile [@Anderson:1986aa]. An aerosol layer is considered with a vertical number density distribution assumed as a Gaussian function [@Wu:2015], as discussed in :
+As described in previous chapters, the FastMAPOL forward radiative transfer simulations are performed for a coupled atmosphere–surface system, including coupled atmosphere–ocean simulations for ocean retrievals. The vertical distribution of atmospheric molecules follows the U.S. Standard Atmosphere [@Anderson:1986aa]. Aerosols are represented by a single layer with a Gaussian vertical number-density distribution.
+
+## Gaussian Aerosol Vertical Profile
+
+Using the conventional Gaussian notation, the aerosol vertical profile can be written as
 
 $$
-f(z) = A
-\exp\left[
+f(z) =
+A\exp\left[
 -\frac{(z-z_{\mathrm{c}})^2}{2\sigma^2}
 \right],
 $$
 
-where $A= N_t/(\sigma \sqrt{2 \pi})$, $N_t$ is the total aerosol column number density. $z_{\mathrm{c}}$ is the peak height and $\sigma$ is the standard deviation. For FastMAPOL V3 and V4 processing, a FWHM of 2 km is used, which corresponds to
+where $f(z)$ is the aerosol number-density profile, $z_{\mathrm{c}}$ is the center or peak height of the aerosol layer, and $\sigma$ is the standard deviation of the Gaussian distribution. For an unbounded Gaussian profile, the normalization factor is
+
+$$
+A = \frac{N_t}{\sigma\sqrt{2\pi}},
+$$
+
+where $N_t$ is the total aerosol column number density.
+
+The relationship between the Gaussian standard deviation and the full width at half maximum (FWHM) is
+
+$$
+\mathrm{FWHM}
+=
+2\sqrt{2\ln 2}\,\sigma.
+$$
+
+FastMAPOL V3 and V4 processing assumes an aerosol-layer FWHM of 2 km. Therefore,
 
 $$
 \sigma =
-\frac{\mathrm{FWHM}}{2\sqrt{2\ln 2}}
+\frac{\mathrm{FWHM}}
+{2\sqrt{2\ln 2}}
 =
-\frac{2}{2\sqrt{2\ln 2}}
+\frac{2}
+{2\sqrt{2\ln 2}}
 \approx 0.849~\mathrm{km}.
 $$
 
-Note that ALH can be different in different ways. A common definition is defined the height as extinction or backscattering weighted height. For our case, where the vertical profile is uniform, a simple profile-weighted mean height can be calculated as
+Thus, the Gaussian aerosol profile used in FastMAPOL has a fixed width, while the layer center height $z_{\mathrm{c}}$ is varied in the forward model and retrieved as the aerosol layer height parameter.
+
+## Definition of Aerosol Layer Height
+
+Aerosol layer height can be defined in different ways depending on the measurement and retrieval methodology. For example, lidar-based quantities are often expressed as extinction- or backscatter-weighted mean heights.
+
+For the FastMAPOL aerosol model, the aerosol microphysical and optical properties are assumed to be vertically homogeneous within the prescribed Gaussian distribution. A corresponding profile-weighted mean height can therefore be defined as
 
 $$
 \bar{z} =
-\frac{\displaystyle\int_{0}^{50} z\,f(z)\,dz}
-{\displaystyle\int_{0}^{50} f(z)\,dz},
+\frac{\displaystyle\int_{z_1}^{z_2} z\,f(z)\,dz}
+{\displaystyle\int_{z_1}^{z_2} f(z)\,dz},
 $$
 
-where $f(z)$ represents the aerosol vertical profile and $z$ is the altitude.
+where $z$ is altitude in kilometers and $f(z)$ is the prescribed aerosol vertical profile, here we choose $z_1$ and $z_2$ as 0, and 50km.
+
+For a Gaussian profile sufficiently far from the lower and upper atmospheric boundaries, $\bar{z}$ is approximately equal to the Gaussian center height $z_{\mathrm{c}}$. However, differences can occur when the Gaussian distribution is truncated by the surface, particularly for aerosol layers close to the ground. For example, $z_{\mathrm{c}}$ values of 0, 0.5, 1.0, and 2.0 km correspond to profile-weighted mean heights $\bar{z}$ of approximately 0.68, 0.89, 1.19, and 2.02 km, respectively.
+
+This distinction is important when comparing FastMAPOL-retrieved ALH with validation datasets, such as HSRL-2 or ATLID aboard EarthCARE, particularly for cases with substantial aerosol loading near the surface. In such cases, the retrieved Gaussian center height $z_{\mathrm{c}}$ and the profile-weighted mean height $\bar{z}$ may differ appreciably and should therefore be interpreted consistently when performing validation.
 
 
-Note that there is a caveat here: we follow the methodology from Wu et al 2015 (https://agupubs.onlinelibrary.wiley.com/doi/10.1002/2016GL069848), where he define the Gaussian profile as $$
-f(z) = A \exp\left[
--4\ln(2)\frac{(z-z_c)^2}{\sigma'^2}
+
+
+## Relationship to the Wu et al. Parameterization
+
+We follow the definition of aerosol vertical profile from @Wu:2015aa, however, an important notation difference exists between the Gaussian profile used in the FastMAPOL formulation and that introduced by @Wu:2015aa.
+
+Wu et al. expressed the aerosol vertical distribution as
+
+$$
+f(z) =
+A\exp\left[
+-4\ln(2)
+\frac{(z-z_{\mathrm{c}})^2}{\sigma'^2}
 \right],
 $$
 
-where $A$ is the normalization factor, $z_c$ is the center (peak) height of the aerosol layer, and $\sigma'$ is the width of the aerosol height distribution, which is actually FWHM, not standard deviation. Wu et al. (2016) then recommend the use of $\sigma' = 2$ km. We use symbol $\sigma'$ rather than $\sigma$ here to indicate the difference from previous equation.
+where $A$ is a normalization factor, $z_{\mathrm{c}}$ is the center height of the aerosol layer, and $\sigma'$ describes the width of the aerosol height distribution.
 
-But in Gao et al 2023, paper, we rewrite the vertical profile following the regular Gaussian profile,
+Although $\sigma'$ was used as the width parameter, it is **not the standard deviation of a conventional Gaussian distribution**. From the form of the exponent, $\sigma'$ corresponds directly to the FWHM:
+
 $$
-f(z) = A
-\exp\left[
+\sigma' = \mathrm{FWHM}.
+$$
+
+Wu et al. adopted
+
+$$
+\sigma' = 2~\mathrm{km},
+$$
+
+corresponding to an aerosol-layer FWHM of 2 km.
+
+In @Gao:2023aa, the same aerosol vertical distribution was expressed using the conventional Gaussian form,
+
+$$
+f(z) =
+A\exp\left[
 -\frac{(z-z_{\mathrm{c}})^2}{2\sigma^2}
-\right],
+\right].
 $$
-where sigma should be regular standard deviation. That means for FWHM=2km, the actual value of sigma should be $\sigma =
-\frac{\mathrm{FWHM}}{2\sqrt{2\ln 2}}=0.85km$ as discussed above.
+
+Under this notation, $\sigma$ represents the standard deviation rather than the FWHM. Equating the two Gaussian formulations gives
+
+$$
+\frac{1}{2\sigma^2}
+=
+\frac{4\ln 2}{\sigma'^2},
+$$
+
+and therefore
+
+$$
+\sigma
+=
+\frac{\sigma'}
+{2\sqrt{2\ln 2}}.
+$$
+
+Consequently, the $\sigma'=2$ km width adopted by Wu et al. corresponds to
+
+$$
+\sigma \approx 0.849~\mathrm{km}
+$$
+
+in the conventional Gaussian notation.
+
+This distinction is a caveat regarding the notation used for the Gaussian width; the two mathematical formulations are equivalent when the width parameters are interpreted consistently. **FastMAPOL V3 and V4 use an aerosol-layer FWHM of 2 km, equivalent to a Gaussian standard deviation of approximately 0.85 km.** Thus, the two formulations describe the same aerosol vertical profile despite the different definitions of the width parameter.
