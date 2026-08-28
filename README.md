@@ -7,6 +7,7 @@ This repository contains the source files for the **FastMAPOL Algorithm Theoreti
 
 The document is written in **Markdown** and compiled into a structured report (HTML/PDF) using **Quarto**.
 
+For questions, please contact: Meng Gao (meng.gao@nasa.gov)
 
 ## Rendered pdf and web preview:
 
@@ -80,7 +81,7 @@ Guidelines:
 
 ---
 
-## Building the ATBD
+## Building the ATBD through terminal line
 
 Generate the document using Quarto:
 
@@ -89,6 +90,13 @@ Generate the document using Quarto:
 Output will be located in:
 
     docs/
+
+---
+
+## Building the ATBD web through github page action
+
+The action is setup in .github/workflows/pages.yml
+This is only done for: quarto render --to html
 
 ---
 
