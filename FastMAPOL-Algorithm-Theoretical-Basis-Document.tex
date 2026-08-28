@@ -474,9 +474,10 @@ earlier FastMAPOL production release.
 
 \markright{FastMAPOL Product Release Notes (V4)}
 
-The FastMAPOL Version 4 release notes are available through the
-\href{https://pace.oceansciences.org/access_pace_data.htm}{NASA PACE
-Data Access page}.
+The FastMAPOL Version 4 release notes are available in the
+\href{https://oceandata.sci.gsfc.nasa.gov/files/reprocessing/PACE_SPEXone_V4_Release_Notes.pdf}{PACE
+Version 4 Release Notes} or under \textbf{Documents} on the Earthdata
+product pages linked above.
 
 \subsection*{HARP2 Level-2 Products}\label{harp2-level-2-products}
 \addcontentsline{toc}{subsection}{HARP2 Level-2 Products}
@@ -605,9 +606,10 @@ available list of mapped product types now include:
 
 \markright{FastMAPOL Product Release Notes (V3)}
 
-The FastMAPOL Version 3 release notes are available through the
-\href{https://pace.oceansciences.org/access_pace_data.htm}{NASA PACE
-Data Access page}.
+The FastMAPOL Version 3 release notes are available in the
+\href{https://oceandata.sci.gsfc.nasa.gov/files/reprocessing/PACE_SPEXone_V3_Release_Notes.pdf}{PACE
+Version 3 Release Notes} or under \textbf{Documents} on the Earthdata
+product pages linked above.
 
 \subsection*{SPEXone Level-2 Products}\label{spexone-level-2-products-1}
 \addcontentsline{toc}{subsection}{SPEXone Level-2 Products}
@@ -2493,10 +2495,10 @@ SPEXone data products (V1-V4)(\citeproc{ref-Gao:2021aa}{M. Gao et al.
 \citeproc{ref-Gao:2026aa}{Meng Gao et al. 2026}). \textbf{Aer-2:} was
 used in the study of RSP data (\citeproc{ref-Gao:2018aa}{Meng Gao et al.
 2018}), where SWIR bands are available. \textbf{Aer-3:} corresponds to
-the FastMAPOL/component approach (\citeproc{ref-Aryal:2026aa}{Aryal et
-al. 2026}), which has been applied to HARP2 and SPEXone for advanced
-studies of complex aerosol and ocean properties. More details are
-provided in the next chapter.
+the aerosol component approach (\citeproc{ref-Aryal:2026aa}{Aryal et al.
+2026}), which has been applied to HARP2 and SPEXone for advanced studies
+of complex aerosol and ocean properties. More details are provided in
+Appendix~\ref{sec-aerosol-component}.
 
 \section{Overview}\label{overview-2}
 
@@ -3061,13 +3063,72 @@ provide the basis for size integration, mode summation, and the
 calculation of operational aerosol products in FastMAPOL.
 
 \chapter{Aerosol Characterization: Component
-Approach}\label{aerosol-characterization-component-approach}
+Approach}\label{sec-aerosol-component}
 
-Aerosol components are represented by their chemical composition, with
-each component characterized by a prescribed size distribution and
-spectrally dependent refractive index. More details are in Aryal et al.
-(\citeproc{ref-Aryal:2024aa}{2024}) and Aryal et al.
-(\citeproc{ref-Aryal:2026aa}{2026}).
+In the aerosol component approach, aerosols are represented by an
+external mixture of different components with assumed size distribution
+and refractive index spectra. The components are resolved in two size
+modes: fine mode and coarse mode. The fine mode aerosols consist of fine
+mode non-absorbing insoluble (FNAI), brown carbon (BrC), black carbon
+(BC) and fine mode non absorbing soluble (FNAS), whereas the coarse mode
+consists of sea salt (SS) and non-spherical dust (Dust). These
+components represent the most abundant marine aerosols found in the
+coastal environment and align with the aerosol components in chemical
+transport models such as Global Ozone Chemistry Aerosol Radiation and
+Transport (GOCART) model (\citeproc{ref-Chin:2000aa}{Chin et al. 2000}).
+
+Each aerosol component follows the lognormal size distribution:
+
+\[
+\frac{dV_i(r)}{d\ln r} = \frac{V_i}{\sigma_i\sqrt{2\pi}} \exp \left( - \frac{(\ln r - \ln r_i)^2}{2\sigma_i^2} \right)
+\]
+
+Where, \(r_i\) and \(\sigma_i\) represent the respective dry radius by
+volume and the standard deviation of a component with total volume
+column density \(V_i\).
+
+The components FNAI, BC and Dust are hydrophobic whereas SS and FNAS are
+hygroscopic and their growth factors are taken from Optical Properties
+of Aerosol and Clouds (OPAC) package (\citeproc{ref-Hess:1998aa}{Hess,
+Koepke, and Schult 1998}). 50\% of BrC are assumed to be hygroscopic,
+the rest being hydrophobic similar to organic carbon component of
+GOCART. The growth factors at different relative humidities are used in
+the single parameter growth equation from
+(\citeproc{ref-Gasso:2000aa}{Gassó et al. 2000}) to obtain the parameter
+(\(\gamma\)) as:
+
+\[
+\frac{r_{RH}}{r_\circ} = \left(\frac{1}{1-RH}\right)^\frac{\gamma}{3}
+\]
+
+The parameter \(\gamma\) solved from \(r_{RH}/r_\circ\) at known RH
+values can be used to obtain the radius at any relative humidity
+(\(r_{RH}\)) from dry radius (\(r_\circ\)).
+
+Polarimetric single scattering properties of spherical components are
+modeled using the Lorenz-Mie code developed by Mishchenko, Travis, and
+Lacis (\citeproc{ref-Mishchenko:2002aa}{2002}). The non-spherical dust
+properties are adopted from Meng et al.
+(\citeproc{ref-Meng:2010aa}{2010}). The aerosol number density \(N\) as
+a function of height \(z\) is assumed to be gaussian with peak
+represented by aerosol layer height (ALH) (\citeproc{ref-Wu:2016aa}{Wu
+et al. 2016}), following the discussion in
+\textbf{?@sec-aerosol-height}, assuming FWHM is fixed at 2 km.
+
+The aerosol retrieval parameters include total aerosol optical depth
+(AOD), aerosol layer height (ALH), fine mode fraction (FVF) and the
+volume fractions of four aerosol components (FNAI, BrC, BC, SS). The
+volume fractions of fine and coarse modes are normalized to one so that
+the volume fractions of FNAS and Dust are determined by FNAS = 1 - FNAI
+- BrC - BC and Dust = 1 - SS. The total volume fractions of each
+component are determined by multiplying them with FVF (fine mode) and 1
+- FVF (coarse mode), respectively. The overall aerosol phase matrix is a
+sum of the fine and coarse modes weighted by FVF. The retrieved
+fractions along with RH is used in the single scattering calculation to
+obtain other aerosol optical propertis single scattering albedo (SSA)
+and Angstrom exponents (AE). For more details, readers are referred to
+the published papers (\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024},
+\citeproc{ref-Aryal:2026aa}{2026}).
 
 \chapter{Uncertainty Estimation and Angular
 Correlations}\label{uncertainty-estimation-and-angular-correlations}
@@ -4299,6 +4360,13 @@ Bound-Constrained Minimization Problems.''} \emph{SIAM Journal on
 Scientific Computing} 21 (1): 1--23.
 \url{https://doi.org/10.1137/S1064827595289108}.
 
+\bibitem[\citeproctext]{ref-Chin:2000aa}
+Chin, Mian, Richard B. Rood, Shian-Jiann Lin, Jean-Francois Müller, and
+Anne M. Thompson. 2000. {``Atmospheric Sulfur Cycle Simulated in the
+Global Model GOCART: Model Description and Global Properties.''}
+\emph{Journal of Geophysical Research: Atmospheres} 105 (D20):
+24671--87. https://doi.org/\url{https://doi.org/10.1029/2000JD900384}.
+
 \bibitem[\citeproctext]{ref-DAlimonte:2025aa}
 D'Alimonte, Davide, Tamito Kajiyama, Jaime Pitarch, Vittorio Ernesto
 Brando, Marco Talone, Constant Mazeran, Michael Twardowski, et al. 2025.
@@ -4391,6 +4459,13 @@ Waters: A Joint Retrieval Algorithm for Aerosol and Water-Leaving
 Radiance Properties.''} \emph{Atmospheric Measurement Techniques} 12
 (7): 3921--41. \url{https://doi.org/10.5194/amt-12-3921-2019}.
 
+\bibitem[\citeproctext]{ref-Gasso:2000aa}
+Gassó, S., D. A. Hegg, D. S. Covert, D. Collins, K. J. Noone, E. Öström,
+B. Schmid, et al. 2000. {``Influence of Humidity on the Aerosol
+Scattering Coefficient and Its Effect on the Upwelling Radiance During
+ACE-2.''} \emph{Tellus B: Chemical and Physical Meteorology} 52 (2):
+546--67. \url{https://doi.org/10.3402/tellusb.v52i2.16657}.
+
 \bibitem[\citeproctext]{ref-Gelaro:2017aa}
 Gelaro, Ronald, Will McCarty, Max J. Suárez, Ricardo Todling, Andrea
 Molod, Lawrence Takacs, Cynthia A. Randles, et al. 2017. {``The
@@ -4418,6 +4493,12 @@ He, Shuangyan, Xiaodong Zhang, Yuanheng Xiong, and Deric Gray. 2017.
 Explicitly Accounting for Particle Backscattering Shapes.''}
 \emph{Journal of Geophysical Research: Oceans} 122 (11): 8614--26.
 https://doi.org/\url{https://doi.org/10.1002/2017JC013313}.
+
+\bibitem[\citeproctext]{ref-Hess:1998aa}
+Hess, M., P. Koepke, and I. Schult. 1998. {``Optical Properties of
+Aerosols and Clouds: The Software Package OPAC.''} \emph{Bulletin of the
+American Meteorological Society} 79 (5): 831--44.
+\url{https://doi.org/10.1175/1520-0477(1998)079\%3C0831:OPOAAC\%3E2.0.CO;2}.
 
 \bibitem[\citeproctext]{ref-Huot:2008aa}
 Huot, Y, A Morel, M S Twardowski, D Stramski, and R A Reynolds. 2008.
@@ -4457,6 +4538,19 @@ Lubac, Robert Arnone, and Alan Weidemann. 2011. {``An
 Inherent-Optical-Property-Centered Approach to Correct the Angular
 Effects in Water-Leaving Radiance.''} \emph{Appl. Opt.} 50 (19):
 3155--67. \url{https://doi.org/10.1364/AO.50.003155}.
+
+\bibitem[\citeproctext]{ref-Meng:2010aa}
+Meng, Zhaokai, Ping Yang, George W. Kattawar, Lei Bi, K. N. Liou, and
+Istvan Laszlo. 2010. {``Single-Scattering Properties of Tri-Axial
+Ellipsoidal Mineral Dust Aerosols: A Database for Application to
+Radiative Transfer Calculations.''} \emph{Journal of Aerosol Science} 41
+(5): 501--12.
+https://doi.org/\url{https://doi.org/10.1016/j.jaerosci.2010.02.008}.
+
+\bibitem[\citeproctext]{ref-Mishchenko:2002aa}
+Mishchenko, M. I., L. D. Travis, and A. A. Lacis. 2002.
+\emph{Scattering, Absorption, and Emission of Light by Small Particles}.
+Cambridge University Press, Cambridge, England.
 
 \bibitem[\citeproctext]{ref-Mobley:2016aa}
 Mobley, Curtis D., Jeremy Werdell, Bryan Franz, Ziauddin Ahmad, and Sean
@@ -4538,6 +4632,13 @@ Techniques} 11 (2): 925--38.
 \bibitem[\citeproctext]{ref-Voss:1984aa}
 Voss, Kenneth J, and Edward S Fry. 1984. {``{Measurement of the Mueller
 matrix for ocean water}.''} \emph{Applied Optics} 23 (23): 4427--39.
+
+\bibitem[\citeproctext]{ref-Wu:2016aa}
+Wu, Lianghai, Otto Hasekamp, Bastiaan van Diedenhoven, Brian Cairns,
+John E. Yorks, and Jacek Chowdhary. 2016. {``Passive Remote Sensing of
+Aerosol Layer Height Using Near-UV Multiangle Polarization
+Measurements.''} \emph{Geophysical Research Letters} 43 (16): 8783--90.
+https://doi.org/\url{https://doi.org/10.1002/2016GL069848}.
 
 \bibitem[\citeproctext]{ref-Xu:2016aa}
 Xu, F, O Dubovik, P W Zhai, D J Diner, O V Kalashnikova, F C Seidel, P

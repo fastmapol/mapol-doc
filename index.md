@@ -63,9 +63,13 @@ Version 3.0 products remain available for users who need access to the earlier F
 # Release Notes {.unnumbered}
 
 ## FastMAPOL Product Release Notes (V4)
+The FastMAPOL Version 4 release notes are available through the 
+[PACE Release Notes](https://pace.oceansciences.org/access_pace_data.htm) 
+or under **Documents** on the Earthdata product pages linked above. Note that these links are subject to change; the relevant release information is also provided below for reference. 
 
-The FastMAPOL Version 4 release notes are available in the 
-[PACE Version 4 Release Notes](https://oceandata.sci.gsfc.nasa.gov/files/reprocessing/PACE_SPEXone_V4_Release_Notes.pdf) or under **Documents** on the Earthdata product pages linked above.
+
+<!--The FastMAPOL Version 4 release notes are available in the 
+[PACE Version 4 Release Notes](https://oceandata.sci.gsfc.nasa.gov/files/reprocessing/PACE_SPEXone_V4_Release_Notes.pdf) or under **Documents** on the Earthdata product pages linked above.-->
 
 <!--[NASA PACE Data Access page](https://pace.oceansciences.org/access_pace_data.htm).-->
 
@@ -128,8 +132,12 @@ SPEXone Level-2 products are composited into global Level-3 binned and mapped pr
 
 ## FastMAPOL Product Release Notes (V3)
 
-The FastMAPOL Version 3 release notes are available in the 
-[PACE Version 3 Release Notes](https://oceandata.sci.gsfc.nasa.gov/files/reprocessing/PACE_SPEXone_V3_Release_Notes.pdf) or under **Documents** on the Earthdata product pages linked above.
+The FastMAPOL Version 3 release notes are available through the 
+[PACE Release Notes](https://pace.oceansciences.org/access_pace_data.htm) 
+or under **Documents** on the Earthdata product pages linked above. Note that these links are subject to change; the relevant release information is also provided below for reference.
+
+<!--The FastMAPOL Version 3 release notes are available in the 
+[PACE Version 3 Release Notes](https://oceandata.sci.gsfc.nasa.gov/files/reprocessing/PACE_SPEXone_V3_Release_Notes.pdf) or under **Documents** on the Earthdata product pages linked above.-->
 
 ### SPEXone Level-2 Products
 
