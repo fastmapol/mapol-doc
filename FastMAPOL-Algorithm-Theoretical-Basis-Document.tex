@@ -3065,7 +3065,7 @@ provide the basis for size integration, mode summation, and the
 calculation of operational aerosol products in FastMAPOL.
 
 \chapter{Aerosol Vertical Profile and Layer
-Height}\label{aerosol-vertical-profile-and-layer-height}
+Height}\label{sec-aerosol-height}
 
 This chapter describes the aerosol vertical distribution assumed in
 FastMAPOL and defines the aerosol layer height (ALH) used in the
@@ -3124,7 +3124,7 @@ Therefore,
 =
 \frac{2}
 {2\sqrt{2\ln 2}}
-\approx 0.849~\mathrm{km}.
+\approx 0.85~\mathrm{km}.
 \]
 
 Thus, the Gaussian aerosol profile used in FastMAPOL has a fixed width,
@@ -3210,44 +3210,6 @@ Wu et al.~adopted
 
 corresponding to an aerosol-layer FWHM of 2 km.
 
-In M. Gao, Franz, et al. (\citeproc{ref-Gao:2023aa}{2023}), the same
-aerosol vertical distribution was expressed using the conventional
-Gaussian form,
-
-\[
-f(z) =
-A\exp\left[
--\frac{(z-z_{\mathrm{c}})^2}{2\sigma^2}
-\right].
-\]
-
-Under this notation, \(\sigma\) represents the standard deviation rather
-than the FWHM. Equating the two Gaussian formulations gives
-
-\[
-\frac{1}{2\sigma^2}
-=
-\frac{4\ln 2}{\sigma'^2},
-\]
-
-and therefore
-
-\[
-\sigma
-=
-\frac{\sigma'}
-{2\sqrt{2\ln 2}}.
-\]
-
-Consequently, the \(\sigma'=2\) km width adopted by Wu et
-al.~corresponds to
-
-\[
-\sigma \approx 0.849~\mathrm{km}
-\]
-
-in the conventional Gaussian notation.
-
 This distinction is a caveat regarding the notation used for the
 Gaussian width; the two mathematical formulations are equivalent when
 the width parameters are interpreted consistently. \textbf{FastMAPOL V3
@@ -3307,8 +3269,8 @@ properties are adopted from Meng et al.
 a function of height \(z\) is assumed to be gaussian with peak
 represented by aerosol layer height (ALH)
 (\citeproc{ref-Wu:2016aa}{Lianghai Wu et al. 2016}), following the
-discussion in \textbf{?@sec-aerosol-height}, assuming FWHM is fixed at 2
-km.
+discussion in Appendix~\ref{sec-aerosol-height}, assuming FWHM is fixed
+at 2 km.
 
 The aerosol retrieval parameters include total aerosol optical depth
 (AOD), aerosol layer height (ALH), fine mode fraction (FVF) and the
