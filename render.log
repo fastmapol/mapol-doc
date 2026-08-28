@@ -1,0 +1,1366 @@
+Quarto version: 1.8.27
+Render: Using current directory (/mnt/mfs/mgao1/analysis/github/mapol-doc) as implicit input
+projectContext: Found Quarto project in /mnt/mfs/mgao1/analysis/github/mapol-doc
+[1m[34m[ 1/16] index.md[39m[22m
+[1m[34m[ 2/16] chapters/fastmapol_summary.md[39m[22m
+[1m[34m[ 3/16] chapters/fastmapol_retrieval.md[39m[22m
+[1m[34m[ 4/16] chapters/fastmapol_product.md[39m[22m
+[1m[34m[ 5/16] chapters/fastmapol_validation_spexone_v3.md[39m[22m
+[1m[34m[ 6/16] chapters/fastmapol_validation_harp2_ditl.md[39m[22m
+[1m[34m[ 7/16] chapters/fastmapol_validation_harp2_v4.md[39m[22m
+[1m[34m[ 8/16] chapters/fastmapol_appendix_intro.md[39m[22m
+[1m[34m[ 9/16] chapters/fastmapol_pace_simulator.md[39m[22m
+[1m[34m[10/16] chapters/fastmapol_neural_network.md[39m[22m
+[1m[34m[11/16] chapters/fastmapol_aerosol_size.md[39m[22m
+[1m[34m[12/16] chapters/fastmapol_aerosol_component.md[39m[22m
+[1m[34m[13/16] chapters/fastmapol_uncertainty_correlation.md[39m[22m
+[1m[34m[14/16] chapters/fastmapol_model_ocean.md[39m[22m
+[1m[34m[15/16] chapters/fastmapol_ocean_color.md[39m[22m
+[1m[34m[16/16] chapters/fastmapol_model_land.md[39m[22m
+
+[execProcess] /accounts/mgao1/miniforge3/envs/py3.12_new/bin/pandoc -f markdown -t markdown -L /accounts/mgao1/miniforge3/envs/py3.12_new/share/quarto/filters/quarto-internals/leveloneanalysis.lua
+[execProcess] Success: true, code: 0
+[NotebookContext]: Writing all notebooks to /mnt/mfs/mgao1/analysis/github/mapol-doc/.quarto/quarto-session-temp8307b7ad51362029/912c456ac8e91e3e.json
+-- Searching for R binary --
+Looking for 'Rscript' in QUARTO_R: undefined
+Looking for 'Rscript' in R_HOME: undefined
+Looking for 'Rscript' in PATH.
+[execProcess] which Rscript
+[execProcess] Success: false, code: 1
+Quarto did not find Rscript and will try to use it directly from the path.
+[1mpandoc --verbose --trace[22m
+  to: latex
+  output-file: index.tex
+  standalone: true
+  toc: true
+  number-sections: true
+  top-level-division: chapter
+  pdf-engine: lualatex
+  variables:
+    graphics: true
+    tables: true
+    secnumdepth: 3
+  default-image-extension: pdf
+  toc-depth: 3
+  
+[1mmetadata[22m
+  crossref:
+    chapters: true
+  documentclass: scrreprt
+  papersize: letter
+  block-headings: true
+  poc:
+    name: Meng Gao
+    email: meng.gao@nasa.gov
+  keywords:
+    - PACE
+    - Polarization
+    - Multi-angle
+    - Aerosol
+    - Ocean Color
+    - Deep Learning
+  atbd-website:
+    name: FastMAPOL ATBD
+    url: https://fastmapol.github.io/mapol-doc/
+  version: '1.0'
+  institution: NASA Goddard Space Flight Center (GSFC)
+  mission: PACE
+  affiliations:
+    - id: nasa
+      name: NASA Goddard Space Flight Center
+      department: Ocean Ecology Laboratory
+      city: Greenbelt
+      state: MD
+      country: USA
+    - id: ssai
+      name: Science Systems and Applications, Inc.
+      city: Lanham
+      state: MD
+      country: USA
+    - id: umbc
+      name: University of Maryland, Baltimore County
+      city: Baltimore
+      state: MD
+      country: USA
+  bibliography:
+    - bib/lmfit5.bib
+  link-citations: true
+  number-depth: 3
+  fontsize: 11pt
+  lof: true
+  lot: true
+  colorlinks: true
+  linkcolor: blue
+  citecolor: blue
+  urlcolor: blue
+  geometry:
+    - top=1in
+    - bottom=1in
+    - left=1in
+    - right=1in
+  title: FastMAPOL Algorithm Theoretical Basis Document
+  subtitle: Coupled Aerosol, Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry
+  author:
+    - name: Meng Gao
+      affiliations:
+        - ref: nasa
+        - ref: ssai
+    - name: Pengwang Zhai
+      affiliations:
+        - ref: umbc
+    - name: Kamal Aryal
+      affiliations:
+        - ref: nasa
+        - ref: umbc
+    - name: Kirk Knobelspiesse
+      affiliations:
+        - ref: nasa
+    - name: Bryan Franz
+      affiliations:
+        - ref: nasa
+  date: '2026-08-28T00:00:00+00:00'
+  date-format: YYYY-MM-DD
+  
+[execProcess] /accounts/mgao1/miniforge3/envs/py3.12_new/bin/pandoc +RTS -K512m -RTS --defaults /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/quarto-defaults419a5c4cbda20984.yml /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/quarto-input1c992ac923c6a249.md --metadata-file /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/quarto-metadata3bb171b411f1c148.yml --verbose --trace --data-dir /accounts/mgao1/miniforge3/envs/py3.12_new/share/quarto/pandoc/datadir
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/template.patched from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/template.patched
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/passoptions.latex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/passoptions.latex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/doc-class.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/doc-class.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/fonts.latex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/fonts.latex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/font-settings.latex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/font-settings.latex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/common.latex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/common.latex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/pandoc.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/pandoc.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/tables.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/tables.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/graphics.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/graphics.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/citations.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/citations.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/babel-lang.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/babel-lang.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/tightlist.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/tightlist.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/biblio-config.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/biblio-config.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/after-header-includes.latex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/after-header-includes.latex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/hypersetup.latex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/hypersetup.latex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/before-title.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/before-title.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/title.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/title.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/before-body.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/before-body.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/toc.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/toc.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/before-bib.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/before-bib.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/biblio.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/biblio.tex
+[INFO] Loaded /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/after-body.tex from /tmp/quarto-session5ecb9493eea2c9d/8bf73081f7bf6125/29fa0979602aaccf/after-body.tex
+[trace] Parsed [Plain [Str "Greenbelt"]] at line 1
+[trace] Parsed [Plain [Str "USA"]] at line 1
+[trace] Parsed [Plain [Str "Ocean",Space,Str "Ecology",Space,Str "Laborator at line 1
+[trace] Parsed [Plain [Str "nasa"]] at line 1
+[trace] Parsed [Plain [Str "NASA",Space,Str "Goddard",Space,Str "Space",Spa at line 1
+[trace] Parsed [Plain [Str "MD"]] at line 1
+[trace] Parsed [Plain [Str "Lanham"]] at line 1
+[trace] Parsed [Plain [Str "USA"]] at line 1
+[trace] Parsed [Plain [Str "ssai"]] at line 1
+[trace] Parsed [Plain [Str "Science",Space,Str "Systems",Space,Str "and",Sp at line 1
+[trace] Parsed [Plain [Str "MD"]] at line 1
+[trace] Parsed [Plain [Str "Baltimore"]] at line 1
+[trace] Parsed [Plain [Str "USA"]] at line 1
+[trace] Parsed [Plain [Str "umbc"]] at line 1
+[trace] Parsed [Plain [Str "University",Space,Str "of",Space,Str "Maryland, at line 1
+[trace] Parsed [Plain [Str "MD"]] at line 1
+[trace] Parsed [Plain [Str "FastMAPOL",Space,Str "ATBD"]] at line 1
+[trace] Parsed [Plain [Str "https://fastmapol.github.io/mapol-doc/"]] at line 1
+[trace] Parsed [Plain [Str "Meng",Space,Str "Gao"]] at line 1
+[trace] Parsed [Plain [Str "Pengwang",Space,Str "Zhai"]] at line 1
+[trace] Parsed [Plain [Str "Kamal",Space,Str "Aryal"]] at line 1
+[trace] Parsed [Plain [Str "Kirk",Space,Str "Knobelspiesse"]] at line 1
+[trace] Parsed [Plain [Str "Bryan",Space,Str "Franz"]] at line 1
+[trace] Parsed [Plain [Str "nasa"]] at line 1
+[trace] Parsed [Plain [Str "ssai"]] at line 1
+[trace] Parsed [Plain [Str "Meng",Space,Str "Gao"]] at line 1
+[trace] Parsed [Plain [Str "umbc"]] at line 1
+[trace] Parsed [Plain [Str "Pengwang",Space,Str "Zhai"]] at line 1
+[trace] Parsed [Plain [Str "nasa"]] at line 1
+[trace] Parsed [Plain [Str "umbc"]] at line 1
+[trace] Parsed [Plain [Str "Kamal",Space,Str "Aryal"]] at line 1
+[trace] Parsed [Plain [Str "nasa"]] at line 1
+[trace] Parsed [Plain [Str "Kirk",Space,Str "Knobelspiesse"]] at line 1
+[trace] Parsed [Plain [Str "nasa"]] at line 1
+[trace] Parsed [Plain [Str "Bryan",Space,Str "Franz"]] at line 1
+[trace] Parsed [Plain [Str "bib/lmfit5.bib"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_appendix_intro.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_pace_simulator.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_neural_network.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_aerosol_size.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_aerosol_component.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_uncertainty_correlation.md"] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_model_ocean.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_ocean_color.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_model_land.md"]] at line 1
+[trace] Parsed [Plain [Str "nasa"]] at line 1
+[trace] Parsed [Plain [Str "ssai"]] at line 1
+[trace] Parsed [Plain [Str "Meng",Space,Str "Gao"]] at line 1
+[trace] Parsed [Plain [Str "umbc"]] at line 1
+[trace] Parsed [Plain [Str "Pengwang",Space,Str "Zhai"]] at line 1
+[trace] Parsed [Plain [Str "nasa"]] at line 1
+[trace] Parsed [Plain [Str "umbc"]] at line 1
+[trace] Parsed [Plain [Str "Kamal",Space,Str "Aryal"]] at line 1
+[trace] Parsed [Plain [Str "nasa"]] at line 1
+[trace] Parsed [Plain [Str "Kirk",Space,Str "Knobelspiesse"]] at line 1
+[trace] Parsed [Plain [Str "nasa"]] at line 1
+[trace] Parsed [Plain [Str "Bryan",Space,Str "Franz"]] at line 1
+[trace] Parsed [Plain [Str "index.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_summary.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_retrieval.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_product.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_validation_spexone_v3.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_validation_harp2_ditl.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_validation_harp2_v4.md"]] at line 1
+[trace] Parsed [Plain [Str "2026-08-28T00:00:00+00:00"]] at line 1
+[trace] Parsed [Plain [Str "YYYY-MM-DD"]] at line 1
+[trace] Parsed [Plain [Str "0"]] at line 1
+[trace] Parsed [Plain [Str "index.md"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "0"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_summary.md"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "0"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_retrieval.md"]] at line 1
+[trace] Parsed [Plain [Str "2"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "0"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_product.md"]] at line 1
+[trace] Parsed [Plain [Str "3"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "0"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_validation_spexone_v3.md"]] at line 1
+[trace] Parsed [Plain [Str "4"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "0"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_validation_harp2_ditl.md"]] at line 1
+[trace] Parsed [Plain [Str "5"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "0"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_validation_harp2_v4.md"]] at line 1
+[trace] Parsed [Plain [Str "6"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "0"]] at line 1
+[trace] Parsed [Plain [Str "Appendices",Space,Str "{.unnumbered}"]] at line 1
+[trace] Parsed [Plain [Str "appendix"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_appendix_intro.md"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_pace_simulator.md"]] at line 1
+[trace] Parsed [Plain [Str "2"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_neural_network.md"]] at line 1
+[trace] Parsed [Plain [Str "3"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_aerosol_size.md"]] at line 1
+[trace] Parsed [Plain [Str "4"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_aerosol_component.md"]] at line 1
+[trace] Parsed [Plain [Str "5"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_uncertainty_correlation.md"] at line 1
+[trace] Parsed [Plain [Str "6"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_model_ocean.md"]] at line 1
+[trace] Parsed [Plain [Str "7"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_ocean_color.md"]] at line 1
+[trace] Parsed [Plain [Str "8"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "1"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_model_land.md"]] at line 1
+[trace] Parsed [Plain [Str "9"]] at line 1
+[trace] Parsed [Plain [Str "chapter"]] at line 1
+[trace] Parsed [Plain [Str "light"]] at line 1
+[trace] Parsed [Plain [Str "2"]] at line 1
+[trace] Parsed [Plain [Str "index.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_summary.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_retrieval.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_product.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_validation_spexone_v3.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_validation_harp2_ditl.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_validation_harp2_v4.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_appendix_intro.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_pace_simulator.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_neural_network.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_aerosol_size.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_aerosol_component.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_uncertainty_correlation.md"] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_model_ocean.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_ocean_color.md"]] at line 1
+[trace] Parsed [Plain [Str "chapters/fastmapol_model_land.md"]] at line 1
+[trace] Parsed [Plain [Str "Appendices"]] at line 1
+[trace] Parsed [Plain [Str "/logo/fastmapol4.png"]] at line 1
+[trace] Parsed [Plain [Str "/logo/fastmapol4.png"]] at line 1
+[trace] Parsed [Plain [Str "docked"]] at line 1
+[trace] Parsed [Plain [Str "FastMAPOL",Space,Str "Algorithm",Space,Str "The at line 1
+[trace] Parsed [Plain [Str "Coupled",Space,Str "Aerosol,",Space,Str "Ocean, at line 1
+[trace] Parsed [Plain [Str "FastMAPOL",Space,Str "Algorithm",Space,Str "The at line 1
+[trace] Parsed [Plain [Str "blue"]] at line 1
+[trace] Parsed [Plain [Str "2026-08-28"]] at line 1
+[trace] Parsed [Plain [Str "YYYY-MM-DD"]] at line 1
+[trace] Parsed [Plain [Str "scrreprt"]] at line 1
+[trace] Parsed [Plain [Str "11pt"]] at line 1
+[trace] Parsed [Plain [Str "top=1in"]] at line 1
+[trace] Parsed [Plain [Str "bottom=1in"]] at line 1
+[trace] Parsed [Plain [Str "left=1in"]] at line 1
+[trace] Parsed [Plain [Str "right=1in"]] at line 1
+[trace] Parsed [Plain [Str "NASA",Space,Str "Goddard",Space,Str "Space",Spa at line 1
+[trace] Parsed [Plain [Str "PACE"]] at line 1
+[trace] Parsed [Plain [Str "Polarization"]] at line 1
+[trace] Parsed [Plain [Str "Multi-angle"]] at line 1
+[trace] Parsed [Plain [Str "Aerosol"]] at line 1
+[trace] Parsed [Plain [Str "Ocean",Space,Str "Color"]] at line 1
+[trace] Parsed [Plain [Str "Deep",Space,Str "Learning"]] at line 1
+[trace] Parsed [Plain [Str "blue"]] at line 1
+[trace] Parsed [Plain [Str "PACE"]] at line 1
+[trace] Parsed [Plain [Str "3"]] at line 1
+[trace] Parsed [Plain [Str "letter"]] at line 1
+[trace] Parsed [Plain [Str "meng.gao@nasa.gov"]] at line 1
+[trace] Parsed [Plain [Str "Meng",Space,Str "Gao"]] at line 1
+[trace] Parsed [Plain [Str "Coupled",Space,Str "Aerosol,",Space,Str "Ocean, at line 1
+[trace] Parsed [Plain [Str "FastMAPOL",Space,Str "Algorithm",Space,Str "The at line 1
+[trace] Parsed [Plain [Str "Table",Space,Str "of",Space,Str "contents"]] at line 1
+[trace] Parsed [Plain [Str "blue"]] at line 1
+[trace] Parsed [Plain [Str "1.0"]] at line 1
+[trace] Parsed [] at line 3
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 5
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 9
+[trace] Parsed [Header 1 ("about-this-document",["unnumbered"],[]) [Str "Ab at line 12
+[trace] Parsed [Para [Str "This",Space,Str "Algorithm",Space,Str "Theoretic at line 14
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "retrieves",Space,Str "aero at line 16
+[trace] Parsed [Para [Str "The",Space,Str "following",Space,Str "chapters", at line 18
+[trace] Parsed [Para [Str "A",Space,Str "web",Space,Str "version",Space,Str at line 20
+[trace] Parsed [Header 2 ("document-information",["unnumbered","unlisted"], at line 22
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 29
+[trace] Parsed [Header 2 ("how-to-cite",["unnumbered","unlisted"],[]) [Str  at line 31
+[trace] Parsed [Para [Str "When",Space,Str "using",Space,Str "or",Space,Str at line 33
+[trace] Parsed [Para [Str "Gao,",Space,Str "M.,",Space,Str "P.",Space,Str " at line 3
+[trace] Parsed [BlockQuote [Para [Str "Gao,",Space,Str "M.,",Space,Str "P." at line 35
+[trace] Parsed [Para [Str "Please",Space,Str "also",Space,Str "cite",Space, at line 37
+[trace] Parsed [Header 1 ("earthdata-access",["unnumbered"],[]) [Str "Earth at line 39
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "Level-2",Space,Str "(L2)", at line 41
+[trace] Parsed [Header 2 ("version-4.0",[],[]) [Str "Version",Space,Str "4. at line 43
+[trace] Parsed [Para [Strong [Str "SPEXone",Space,Str "MAPOL_OCEAN"]]] at line 45
+[trace] Parsed [Plain [Strong [Str "L2:"],Space,Link ("",[],[]) [Str "https at line 2
+[trace] Parsed [Para [Strong [Str "L3M:"],Space,Str "Replace",Space,Code (" at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "L2:"],Space,Link ("",[],[] at line 48
+[trace] Parsed [Para [Strong [Str "HARP2",Space,Str "MAPOL_OCEAN"]]] at line 50
+[trace] Parsed [Plain [Strong [Str "L2:"],Space,Link ("",[],[]) [Str "https at line 2
+[trace] Parsed [Para [Strong [Str "L3M:"],Space,Str "Replace",Space,Code (" at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "L2:"],Space,Link ("",[],[] at line 53
+[trace] Parsed [Para [Strong [Str "HARP2",Space,Str "MAPOL_LAND"]]] at line 55
+[trace] Parsed [Plain [Strong [Str "L2:"],Space,Link ("",[],[]) [Str "https at line 2
+[trace] Parsed [Para [Strong [Str "L3M:"],Space,Str "Replace",Space,Code (" at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "L2:"],Space,Link ("",[],[] at line 58
+[trace] Parsed [Header 2 ("version-3.0",[],[]) [Str "Version",Space,Str "3. at line 60
+[trace] Parsed [Para [Str "Version",Space,Str "3.0",Space,Str "products",Sp at line 62
+[trace] Parsed [Para [Strong [Str "SPEXone",Space,Str "MAPOL_OCEAN"]]] at line 64
+[trace] Parsed [Plain [Strong [Str "L2:"],Space,Link ("",[],[]) [Str "https at line 2
+[trace] Parsed [Para [Strong [Str "L3M:"],Space,Str "Replace",Space,Code (" at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "L2:"],Space,Link ("",[],[] at line 67
+[trace] Parsed [Para [Strong [Str "HARP2",Space,Str "MAPOL_OCEAN"]]] at line 69
+[trace] Parsed [Plain [Strong [Str "L2:"],Space,Link ("",[],[]) [Str "https at line 2
+[trace] Parsed [Para [Strong [Str "L3M:"],Space,Str "Replace",Space,Code (" at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "L2:"],Space,Link ("",[],[] at line 72
+[trace] Parsed [Header 1 ("release-notes",["unnumbered"],[]) [Str "Release" at line 74
+[trace] Parsed [Header 2 ("fastmapol-product-release-notes-v4",[],[]) [Str  at line 76
+[trace] Parsed [Para [Str "The",Space,Str "FastMAPOL",Space,Str "Version",S at line 78
+[trace] Parsed [Header 3 ("harp2-level-2-products",[],[]) [Str "HARP2",Spac at line 80
+[trace] Parsed [Para [Str "MAPOL_LAND",Space,Str "(Aerosol",Space,Str "and" at line 3
+[trace] Parsed [Para [Str "MAPOL_OCEAN",Space,Str "(Aerosol",Space,Str "and at line 3
+[trace] Parsed [BulletList [[Para [Str "MAPOL_LAND",Space,Str "(Aerosol",Sp at line 84
+[trace] Parsed [Para [Strong [Str "Changes",Space,Str "from",Space,Str "Ver at line 86
+[trace] Parsed [Para [Str "Uses",Space,Str "Version",Space,Str "4",Space,St at line 3
+[trace] Parsed [Para [Str "Aerosol",Space,Str "retrieval",Space,Str "qualit at line 3
+[trace] Parsed [Para [Str "Quality",Space,Str "flag",Space,Str "definitions at line 3
+[trace] Parsed [Para [Link ("",[],[]) [Str "https://nasa.github.io/oceandat at line 5
+[trace] Parsed [Para [Str "Ocean",Space,Str "surface",Space,Str "reflectanc at line 3
+[trace] Parsed [Para [Str "New",Space,Str "MAPOL_LAND",Space,Str "data",Spa at line 3
+[trace] Parsed [BulletList [[Para [Str "Uses",Space,Str "Version",Space,Str at line 98
+[trace] Parsed [Para [Strong [Str "Known",Space,Str "issues"]]] at line 100
+[trace] Parsed [Para [Str "A",Space,Str "substantial",Space,Str "fraction", at line 3
+[trace] Parsed [Para [Str "MAPOL_LAND",Space,Str "is",Space,Str "undergoing at line 4
+[trace] Parsed [BulletList [[Para [Str "A",Space,Str "substantial",Space,St at line 105
+[trace] Parsed [Header 3 ("harp2-level-3-products",[],[]) [Str "HARP2",Spac at line 107
+[trace] Parsed [Para [Str "HARP2",Space,Str "Level-2",Space,Str "products", at line 109
+[trace] Parsed [Plain [Str "MAPOL_OCEAN:",Space,Str "aerosol",Space,Str "an at line 2
+[trace] Parsed [Para [Str "MAPOL_LAND:",Space,Str "aerosol",Space,Str "and" at line 3
+[trace] Parsed [BulletList [[Plain [Str "MAPOL_OCEAN:",Space,Str "aerosol", at line 112
+[trace] Parsed [Header 3 ("spexone-level-2-products",[],[]) [Str "SPEXone", at line 114
+[trace] Parsed [Para [Strong [Str "Changes",Space,Str "from",Space,Str "Ver at line 116
+[trace] Parsed [Para [Str "Uses",Space,Str "Version",Space,Str "4",Space,St at line 3
+[trace] Parsed [Para [Str "Retrieval",Space,Str "performance",Space,Str "is at line 3
+[trace] Parsed [Para [Str "Rrs1",Space,Str "and",Space,Str "Rrs2",Space,Str at line 3
+[trace] Parsed [BulletList [[Para [Str "Uses",Space,Str "Version",Space,Str at line 122
+[trace] Parsed [Para [Strong [Str "Known",Space,Str "issues"]]] at line 124
+[trace] Parsed [Para [Str "Ocean",Space,Str "Rrs",Space,Str "bias",Space,St at line 3
+[trace] Parsed [Para [Str "Over",Space,Str "coastal",Space,Str "waters,",Sp at line 4
+[trace] Parsed [BulletList [[Para [Str "Ocean",Space,Str "Rrs",Space,Str "b at line 129
+[trace] Parsed [Header 3 ("spexone-level-3-products",[],[]) [Str "SPEXone", at line 131
+[trace] Parsed [Para [Str "SPEXone",Space,Str "Level-2",Space,Str "products at line 133
+[trace] Parsed [Para [Str "MAPOL_OCEAN:",Space,Str "aerosol",Space,Str "and at line 3
+[trace] Parsed [BulletList [[Plain [Str "MAPOL_OCEAN:",Space,Str "aerosol", at line 135
+[trace] Parsed [Header 2 ("fastmapol-product-release-notes-v3",[],[]) [Str  at line 137
+[trace] Parsed [Para [Str "The",Space,Str "FastMAPOL",Space,Str "Version",S at line 139
+[trace] Parsed [Header 3 ("spexone-level-2-products-1",[],[]) [Str "SPEXone at line 141
+[trace] Parsed [Para [Str "MAPOL_OCEAN",Space,Str "(Aerosol",Space,Str "and at line 3
+[trace] Parsed [BulletList [[Plain [Str "MAPOL_OCEAN",Space,Str "(Aerosol", at line 143
+[trace] Parsed [Para [Str "This",Space,Str "is",Space,Str "the",Space,Str " at line 145
+[trace] Parsed [Para [Strong [Str "Provisional",Space,Str "Products"]]] at line 147
+[trace] Parsed [Plain [Str "Aerosol",Space,Str "Optical",Space,Str "Thickne at line 2
+[trace] Parsed [Plain [Str "Single",Space,Str "Scattering",Space,Str "Albed at line 2
+[trace] Parsed [Plain [Str "Effective",Space,Str "Radius",Space,Str "of",Sp at line 2
+[trace] Parsed [Plain [Str "Effective",Space,Str "Radius",Space,Str "of",Sp at line 2
+[trace] Parsed [Plain [Str "Fine",Space,Str "Mode",Space,Str "Fraction",Spa at line 2
+[trace] Parsed [Plain [Str "Fine",Space,Str "Mode",Space,Str "Fraction",Spa at line 2
+[trace] Parsed [Plain [Str "Real",Space,Str "Index",Space,Str "of",Space,St at line 2
+[trace] Parsed [Plain [Str "Imaginary",Space,Str "Index",Space,Str "of",Spa at line 2
+[trace] Parsed [Plain [Str "Wind",Space,Str "speed",Space,Str "(wind_speed) at line 2
+[trace] Parsed [Plain [Str "Chlorophyll",Space,Str "a",Space,Str "concentra at line 2
+[trace] Parsed [Plain [Str "Angular",Space,Str "Mean",Space,Str "Water-Leav at line 2
+[trace] Parsed [Plain [Str "Standard",Space,Str "Deviation",Space,Str "of", at line 2
+[trace] Parsed [Plain [Str "Angular",Space,Str "Mean",Space,Str "Water-Leav at line 2
+[trace] Parsed [Para [Str "Standard",Space,Str "Deviation",Space,Str "of",S at line 3
+[trace] Parsed [BulletList [[Plain [Str "Aerosol",Space,Str "Optical",Space at line 162
+[trace] Parsed [Para [Strong [Str "Known",Space,Str "issues"]]] at line 164
+[trace] Parsed [Plain [Str "Small",Space,Str "negative",Space,Str "Rrs",Spa at line 2
+[trace] Parsed [Plain [Str "BRDF",Space,Str "correction",Space,Str "does",S at line 2
+[trace] Parsed [Para [Str "High",Space,Str "Rrs",Space,Str "bias",Space,Str at line 4
+[trace] Parsed [BulletList [[Plain [Str "Small",Space,Str "negative",Space, at line 169
+[trace] Parsed [Header 3 ("spexone-level-3-products-1",[],[]) [Str "SPEXone at line 171
+[trace] Parsed [Para [Str "SPEXone",Space,Str "Level-2",Space,Str "products at line 173
+[trace] Parsed [Plain [Str "AER_RTAP:",Space,Str "aerosol",Space,Str "optic at line 2
+[trace] Parsed [Plain [Str "AER_RTAPLAND:",Space,Str "retrieved",Space,Str  at line 2
+[trace] Parsed [Plain [Str "AER_RTAP_OCEAN:",Space,Str "retrieved",Space,St at line 2
+[trace] Parsed [Para [Str "MAPOL_OCEAN:",Space,Str "aerosol",Space,Str "and at line 4
+[trace] Parsed [BulletList [[Plain [Str "AER_RTAP:",Space,Str "aerosol",Spa at line 179
+[trace] Parsed [Header 3 ("harp2-level-2-products-1",[],[]) [Str "HARP2",Sp at line 181
+[trace] Parsed [Para [Strong [Str "MAPOL_OCEAN",Space,Str "(Aerosol",Space, at line 183
+[trace] Parsed [Para [Str "This",Space,Str "is",Space,Str "the",Space,Str " at line 185
+[trace] Parsed [Para [Strong [Str "Provisional",Space,Str "Products"]]] at line 187
+[trace] Parsed [Plain [Str "Aerosol",Space,Str "Optical",Space,Str "Thickne at line 2
+[trace] Parsed [Plain [Str "Single",Space,Str "Scattering",Space,Str "Albed at line 2
+[trace] Parsed [Plain [Str "Effective",Space,Str "Radius",Space,Str "of",Sp at line 2
+[trace] Parsed [Plain [Str "Effective",Space,Str "Radius",Space,Str "of",Sp at line 2
+[trace] Parsed [Plain [Str "Fine",Space,Str "Mode",Space,Str "Fraction",Spa at line 2
+[trace] Parsed [Plain [Str "Fine",Space,Str "Mode",Space,Str "Fraction",Spa at line 2
+[trace] Parsed [Plain [Str "Real",Space,Str "Index",Space,Str "of",Space,St at line 2
+[trace] Parsed [Plain [Str "Imaginary",Space,Str "Index",Space,Str "of",Spa at line 2
+[trace] Parsed [Plain [Str "Wind",Space,Str "speed",Space,Str "(wind_speed) at line 2
+[trace] Parsed [Plain [Str "Chlorophyll",Space,Str "a",Space,Str "concentra at line 2
+[trace] Parsed [Plain [Str "Angular",Space,Str "Mean",Space,Str "Water-Leav at line 2
+[trace] Parsed [Plain [Str "Standard",Space,Str "Deviation",Space,Str "of", at line 2
+[trace] Parsed [Plain [Str "Angular",Space,Str "Mean",Space,Str "Water-Leav at line 2
+[trace] Parsed [Para [Str "Standard",Space,Str "Deviation",Space,Str "of",S at line 3
+[trace] Parsed [BulletList [[Plain [Str "Aerosol",Space,Str "Optical",Space at line 202
+[trace] Parsed [Para [Strong [Str "Known",Space,Str "issues"]]] at line 204
+[trace] Parsed [Plain [Str "Aerosol",Space,Str "optical",Space,Str "depth", at line 2
+[trace] Parsed [Plain [Str "Remote-sensing",Space,Str "reflectance",Space,S at line 2
+[trace] Parsed [Plain [Str "High",Space,Str "uncertainty",Space,Str "in",Sp at line 2
+[trace] Parsed [Para [Str "Fewer",Space,Str "polarization",Space,Str "measu at line 4
+[trace] Parsed [BulletList [[Plain [Str "Aerosol",Space,Str "optical",Space at line 210
+[trace] Parsed [Header 3 ("harp2-level-3-products-1",[],[]) [Str "HARP2",Sp at line 212
+[trace] Parsed [Para [Str "HARP2",Space,Str "Level-2",Space,Str "products", at line 214
+[trace] Parsed [Para [Str "MAPOL_OCEAN:",Space,Str "aerosol",Space,Str "and at line 3
+[trace] Parsed [BulletList [[Plain [Str "MAPOL_OCEAN:",Space,Str "aerosol", at line 216
+[trace] Parsed [Header 1 ("jupyter-notebook-tutorials-from-pace-helphub",[" at line 218
+[trace] Parsed [Para [Str "Notebook",Space,Str "tutorials",Space,Str "are", at line 220
+[trace] Parsed [Plain [Link ("",[],[]) [Str "HARP2",Space,Str "Ocean",Space at line 2
+[trace] Parsed [Plain [Link ("",[],[]) [Str "HARP2",Space,Str "Land",Space, at line 2
+[trace] Parsed [Para [Link ("",[],[]) [Str "SPEXone",Space,Str "Aerosols",S at line 5
+[trace] Parsed [BulletList [[Plain [Link ("",[],[]) [Str "HARP2",Space,Str  at line 226
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 228
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 232
+[trace] Parsed [Header 1 ("fastmapol-at-a-glance",[],[]) [Str "FastMAPOL",S at line 235
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "(Fast",Space,Str "Multi-An at line 237
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "combines",Space,Str "physi at line 239
+[trace] Parsed [Para [Str "This",Space,Str "chapter",Space,Str "provides",S at line 241
+[trace] Parsed [Header 2 ("algorithm-overview",[],[]) [Str "Algorithm",Spac at line 243
+[trace] Parsed [Para [Str "At",Space,Str "a",Space,Str "high",Space,Str "le at line 245
+[trace] Parsed [Para [Strong [Str "Forward",Space,Str "modeling:"],Space,St at line 3
+[trace] Parsed [Para [Strong [Str "Neural",Space,Str "network",Space,Str "a at line 3
+[trace] Parsed [Para [Strong [Str "Joint",Space,Str "optimization:"],Space, at line 3
+[trace] Parsed [Para [Strong [Str "Adaptive",Space,Str "data",Space,Str "sc at line 3
+[trace] Parsed [Para [Strong [Str "Uncertainty",Space,Str "estimation:"],Sp at line 3
+[trace] Parsed [Para [Strong [Str "Surface",Space,Str "reflectance",Space,S at line 3
+[trace] Parsed [OrderedList (1,Decimal,Period) [[Para [Strong [Str "Forward at line 257
+[trace] Parsed [Para [Str "The",Space,Str "resulting",Space,Str "framework" at line 259
+[trace] Parsed [Header 2 ("major-algorithm-features",[],[]) [Str "Major",Sp at line 261
+[trace] Parsed [Para [Str "The",Space,Str "major",Space,Str "features",Spac at line 263
+[trace] Parsed [Plain [Str "Coupled",Space,Str "atmosphere-surface",Space,S at line 2
+[trace] Parsed [Plain [Str "Cascaded",Space,Str "neural",Space,Str "network at line 2
+[trace] Parsed [Plain [Str "Analytical",Space,Str "Jacobian",Space,Str "cal at line 2
+[trace] Parsed [Plain [Str "Nonlinear",Space,Str "least-squares",Space,Str  at line 2
+[trace] Parsed [Plain [Str "Adaptive",Space,Str "multi-angle",Space,Str "da at line 2
+[trace] Parsed [Plain [Str "Pixel-level",Space,Str "retrieval",Space,Str "u at line 2
+[trace] Parsed [Plain [Str "Treatment",Space,Str "of",Space,Str "spectral", at line 2
+[trace] Parsed [Para [Str "Atmospheric",Space,Str "and",Space,Str "bidirect at line 3
+[trace] Parsed [BulletList [[Plain [Str "Coupled",Space,Str "atmosphere-sur at line 272
+[trace] Parsed [Header 2 ("retrieval-products",[],[]) [Str "Retrieval",Spac at line 274
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "retrieval",Space,Str "prod at line 276
+[trace] Parsed [Header 2 ("technical-details",[],[]) [Str "Technical",Space at line 278
+[trace] Parsed [Para [Str "This",Space,Str "Algorithm",Space,Str "Theoretic at line 280
+[trace] Parsed [Para [Str "Appendix",Space,Str "provide",Space,Str "detaile at line 282
+[trace] Parsed [Plain [Str "Vector",Space,Str "radiative",Space,Str "transf at line 2
+[trace] Parsed [Plain [Str "Neural",Space,Str "network",Space,Str "forward- at line 2
+[trace] Parsed [Plain [Str "Analytical",Space,Str "NN",Space,Str "Jacobian" at line 2
+[trace] Parsed [Plain [Str "Multi-angle",Space,Str "adaptive",Space,Str "da at line 2
+[trace] Parsed [Plain [Str "Pixel-level",Space,Str "uncertainty",Space,Str  at line 2
+[trace] Parsed [Plain [Str "Treatment",Space,Str "of",Space,Str "uncertaint at line 2
+[trace] Parsed [Plain [Str "Atmospheric",Space,Str "and",Space,Str "bidirec at line 2
+[trace] Parsed [Para [Str "Angular",Space,Str "surface",Space,Str "reflecta at line 3
+[trace] Parsed [BulletList [[Plain [Str "Vector",Space,Str "radiative",Spac at line 291
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 293
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 297
+[trace] Parsed [Header 1 ("fastmapol-retrieval-framework",[],[]) [Str "Fast at line 300
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "is",Space,Str "an",Space,S at line 302
+[trace] Parsed [Header 2 ("radiative-transfer-parameterization",[],[]) [Str at line 304
+[trace] Parsed [Para [Str "The",Space,Str "radiative",Space,Str "transfer", at line 306
+[trace] Parsed [Para [Str "The",Space,Str "forward",Space,Str "radiative",S at line 308
+[trace] Parsed [Para [Str "More",Space,Str "details",Space,Str "are",Space, at line 310
+[trace] Parsed [Para [Strong [Str "Aerosol",Space,Str "model"]]] at line 312
+[trace] Parsed [Para [Str "Aerosols",Space,Str "are",Space,Str "represented at line 314
+[trace] Parsed [Para [Str "Both",Space,Str "fine",Space,Str "and",Space,Str at line 316
+[trace] Parsed [Para [Str "More",Space,Str "details",Space,Str "are",Space, at line 318
+[trace] Parsed [Para [Strong [Str "Ocean",Space,Str "model"]]] at line 320
+[trace] Parsed [Para [Str "Ocean",Space,Str "bio-optical",Space,Str "proper at line 322
+[trace] Parsed [Para [Str "Ocean",Space,Str "surface",Space,Str "roughness" at line 324
+[trace] Parsed [Para [Str "The",Space,Str "current",Space,Str "bio-optical" at line 326
+[trace] Parsed [Para [Str "More",Space,Str "details",Space,Str "are",Space, at line 328
+[trace] Parsed [Para [Strong [Str "Land",Space,Str "Model"]]] at line 330
+[trace] Parsed [Para [Str "We",Space,Str "use",Space,Str "the",Space,Str "l at line 332
+[trace] Parsed [Plain [Str "Ross\8211Li",Space,Str "kernel-driven",Space,St at line 2
+[trace] Parsed [Plain [Str "Polarized",Space,Str "bidirectional",Space,Str  at line 2
+[trace] Parsed [Para [Str "Fresnel",Space,Str "reflection",Space,Str "physi at line 3
+[trace] Parsed [BulletList [[Plain [Str "Ross\8211Li",Space,Str "kernel-dri at line 336
+[trace] Parsed [Para [Str "Details",Space,Str "are",Space,Str "provided",Sp at line 338
+[trace] Parsed [Para [Strong [Str "Parameter",Space,Str "range"]]] at line 340
+[trace] Parsed [Para [Str "The",Space,Str "forward-model",Space,Str "parame at line 342
+[trace] Parsed [Table ("",[],[]) (Caption Nothing [Plain [Str "Parameters", at line 366
+[trace] Parsed [Para [Str "Note",Space,Str "that",Space,Str "aerosol",Space at line 368
+[trace] Parsed [Header 2 ("neural-network-forward-models",[],[]) [Str "Neur at line 370
+[trace] Parsed [Para [Str "Neural",Space,Str "network",Space,Str "models",S at line 372
+[trace] Parsed [Para [Str "In",Space,Str "addition",Space,Str "to",Space,St at line 374
+[trace] Parsed [Para [Str "Additional",Space,Str "neural",Space,Str "networ at line 376
+[trace] Parsed [Table ("",[],[]) (Caption Nothing [Plain [Str "Neural",Spac at line 392
+[trace] Parsed [Para [Str "More",Space,Str "details",Space,Str "are",Space, at line 394
+[trace] Parsed [Header 2 ("retrieval-and-optimization",[],[]) [Str "Retriev at line 396
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "determines",Space,Str "the at line 398
+[trace] Parsed [Para [Math DisplayMath "\n\\rho_t\n=\n\\frac{\\pi L_t}{\\mu at line 404
+[trace] Parsed [Para [Str "and"]] at line 406
+[trace] Parsed [Para [Math DisplayMath "\nP_t\n=\n\\frac{\\sqrt{Q_t^2+U_t^2 at line 412
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "L_t",Str ",",Space at line 414
+[trace] Parsed [Para [Str "The",Space,Str "differences",Space,Str "between" at line 416
+[trace] Parsed [Para [Math DisplayMath "\n\\chi^2({\\mathbf x})\n=\n\\frac{ at line 428
+[trace] Parsed [Para [Str "Here,",Space,Math InlineMath "\\rho_t^f",Space,S at line 430
+[trace] Parsed [Para [Str "The",Space,Str "total",Space,Str "uncertainties" at line 432
+[trace] Parsed [Para [Math DisplayMath "\n\\sigma_\\rho^2\n=\n\\sigma_{\\rh at line 442
+[trace] Parsed [Para [Math DisplayMath "\n\\sigma_P^2\n=\n\\sigma_{P,\\math at line 452
+[trace] Parsed [Para [Str "The",Space,Str "NN",Space,Str "forward-model",Sp at line 454
+[trace] Parsed [Para [Str "During",Space,Str "FastMAPOL",Space,Str "retriev at line 456
+[trace] Parsed [Para [Str "This",Space,Str "iterative",Space,Str "process", at line 458
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{|\\chi_i^2-\\chi_{i-1}^2|} at line 465
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "i",Space,Str "is", at line 467
+[trace] Parsed [Para [Str "The",Space,Str "convergence",Space,Str "and",Spa at line 469
+[trace] Parsed [Para [Math DisplayMath "\nf(\\chi^2,k)\n=\n\\frac{(\\chi^2) at line 476
+[trace] Parsed [Para [Str "Here,",Space,Math InlineMath "\\chi^2",Space,Str at line 479
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 481
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 485
+[trace] Parsed [Header 1 ("data-products-and-format",[],[]) [Str "Data",Spa at line 488
+[trace] Parsed [Header 2 ("overview",[],[]) [Str "Overview"]] at line 490
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "(Fast",Space,Str "Multi-An at line 492
+[trace] Parsed [Para [Str "The",Space,Str "Level-2",Space,Str "product",Spa at line 494
+[trace] Parsed [Para [Str "The",Space,Str "Level-2",Space,Str "product",Spa at line 496
+[trace] Parsed [Para [Str "The",Space,Str "FastMAPOL",Space,Str "Level-2",S at line 498
+[trace] Parsed [Plain [Str "aerosol",Space,Str "science",Space,Str "applica at line 2
+[trace] Parsed [Plain [Str "ocean",Space,Str "color",Space,Str "studies"]] at line 2
+[trace] Parsed [Plain [Str "land",Space,Str "surface",Space,Str "studies"]] at line 2
+[trace] Parsed [Plain [Str "atmospheric",Space,Str "correction"]] at line 2
+[trace] Parsed [Plain [Str "algorithm",Space,Str "validation"]] at line 2
+[trace] Parsed [Para [Str "Level-3",Space,Str "gridded",Space,Str "product" at line 3
+[trace] Parsed [BulletList [[Plain [Str "aerosol",Space,Str "science",Space at line 505
+[trace] Parsed [HorizontalRule] at line 507
+[trace] Parsed [Header 2 ("file-organization",[],[]) [Str "File",Space,Str  at line 509
+[trace] Parsed [Para [Str "The",Space,Str "FastMAPOL",Space,Str "Level-2",S at line 512
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 520
+[trace] Parsed [Header 3 ("dimensions",[],[]) [Str "Dimensions"]] at line 522
+[trace] Parsed [Para [Str "The",Space,Str "FastMAPOL",Space,Str "Level-2",S at line 524
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 533
+[trace] Parsed [Header 3 ("instrument-differences",[],[]) [Str "Instrument" at line 535
+[trace] Parsed [Para [Strong [Str "HARP2"]]] at line 537
+[trace] Parsed [Plain [Str "~90",Space,Str "viewing",Space,Str "angles",Lin at line 2
+[trace] Parsed [Plain [Str "4",Space,Str "spectral",Space,Str "bands",Space at line 2
+[trace] Parsed [Para [Str "wide",Space,Str "swath",Space,Str "(~2000km)"]] at line 3
+[trace] Parsed [BulletList [[Plain [Str "~90",Space,Str "viewing",Space,Str at line 541
+[trace] Parsed [Para [Strong [Str "SPEXone"]]] at line 543
+[trace] Parsed [Plain [Str "5",Space,Str "viewing",Space,Str "angles",LineB at line 2
+[trace] Parsed [Plain [Str "hyperspectral",Space,Str "polarimetric",Space,S at line 2
+[trace] Parsed [Para [Str "narrow",Space,Str "swath",Space,Str "(~100km)"]] at line 3
+[trace] Parsed [BulletList [[Plain [Str "5",Space,Str "viewing",Space,Str " at line 547
+[trace] Parsed [Para [Str "A",Space,Str "total",Space,Str "of",Space,Str "3 at line 549
+[trace] Parsed [Header 2 ("geolocation-data",[],[]) [Str "Geolocation",Spac at line 551
+[trace] Parsed [Para [Str "Group:",Space,Code ("",[],[]) "/geolocation_data at line 553
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 558
+[trace] Parsed [Para [Str "These",Space,Str "variables",Space,Str "define", at line 560
+[trace] Parsed [Header 2 ("geophysical-retrieval-products",[],[]) [Str "Geo at line 562
+[trace] Parsed [Para [Str "Group:",Space,Code ("",[],[]) "/geophysical_data at line 564
+[trace] Parsed [Para [Str "The",Space,Str "geophysical",Space,Str "group",S at line 566
+[trace] Parsed [Header 3 ("aerosol-optical-properties-mapol_ocean-and-mapol at line 568
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 580
+[trace] Parsed [Para [Str "These",Space,Str "parameters",Space,Str "describ at line 582
+[trace] Parsed [Header 3 ("aerosol-microphysical-properties-mapol_ocean-and at line 584
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 604
+[trace] Parsed [Para [Str "These",Space,Str "variables",Space,Str "constrai at line 606
+[trace] Parsed [Header 3 ("ocean-products-mapol_ocean",[],[]) [Str "Ocean", at line 608
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 619
+[trace] Parsed [Para [Str "The",Space,Str "remote",Space,Str "sensing",Spac at line 621
+[trace] Parsed [Para [Str "Note",Space,Str "that",Space,Str "V3",Space,Str  at line 623
+[trace] Parsed [Header 3 ("land-surface-product-mapol_land",[],[]) [Str "La at line 625
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 634
+[trace] Parsed [Para [Str "The",Space,Str "land",Space,Str "surface",Space, at line 636
+[trace] Parsed [Header 2 ("diagnostic-data",[],[]) [Str "Diagnostic",Space, at line 638
+[trace] Parsed [Para [Str "Group:",Space,Code ("",[],[]) "/diagnostic_data" at line 640
+[trace] Parsed [Para [Str "These",Space,Str "variables",Space,Str "describe at line 642
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 655
+[trace] Parsed [Header 3 ("retrieval-quality-metrics",[],[]) [Str "Retrieva at line 657
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "retrievals",Space,Str "are at line 659
+[trace] Parsed [Para [Math DisplayMath "\n\\chi^2 = \\frac{1}{N}\\sum \\fra at line 663
+[trace] Parsed [Para [Str "where"]] at line 665
+[trace] Parsed [Plain [Math InlineMath "m",Space,Str "is",Space,Str "the",S at line 2
+[trace] Parsed [Plain [Math InlineMath "f",Space,Str "is",Space,Str "the",S at line 2
+[trace] Parsed [Plain [Math InlineMath "\\sigma",Space,Str "is",Space,Str " at line 2
+[trace] Parsed [Para [Math InlineMath "N",Space,Str "is",Space,Str "the",Sp at line 3
+[trace] Parsed [BulletList [[Plain [Math InlineMath "m",Space,Str "is",Spac at line 670
+[trace] Parsed [Para [Str "Lower",Space,Str "values",Space,Str "of",Space,M at line 672
+[trace] Parsed [Header 3 ("retrieval-quality-flag",[],[]) [Str "Retrieval", at line 674
+[trace] Parsed [Para [Str "A",Space,Str "quality",Space,Str "flag",Space,St at line 676
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 682
+[trace] Parsed [Para [Str "The",Space,Str "quality",Space,Str "flag",Space, at line 684
+[trace] Parsed [Plain [Str "cost",Space,Str "function",Space,Str "value"]] at line 2
+[trace] Parsed [Plain [Str "number",Space,Str "of",Space,Str "reflectance", at line 2
+[trace] Parsed [Para [Str "number",Space,Str "of",Space,Str "polarization", at line 3
+[trace] Parsed [BulletList [[Plain [Str "cost",Space,Str "function",Space,S at line 688
+[trace] Parsed [Header 3 ("measurement-screening-masks",[],[]) [Str "Measur at line 690
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "performs",Space,Str "adapt at line 692
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 697
+[trace] Parsed [Para [Str "Mask",Space,Str "interpretation:"]] at line 699
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 704
+[trace] Parsed [Para [Str "These",Space,Str "masks",Space,Str "allow",Space at line 706
+[trace] Parsed [Header 2 ("sensor-band-parameters",[],[]) [Str "Sensor",Spa at line 708
+[trace] Parsed [Para [Str "Group:",Space,Code ("",[],[]) "/sensor_band_para at line 710
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 716
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 718
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 722
+[trace] Parsed [Header 1 ("spexone-aerosol-and-ocean-product-validation-v3" at line 725
+[trace] Parsed [Para [Str "This",Space,Str "page",Space,Str "summarizes",Sp at line 727
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "performs",Space,Str "coupl at line 729
+[trace] Parsed [Para [Strong [Str "Additional",Space,Str "quantified",Space at line 731
+[trace] Parsed [Header 2 ("summary-information",[],[]) [Str "Summary",Space at line 733
+[trace] Parsed [Plain [Strong [Str "FastMAPOL",Space,Str "version:"],Space, at line 2
+[trace] Parsed [Plain [Strong [Str "Data",Space,Str "period:"],Space,Str "2 at line 2
+[trace] Parsed [Para [Strong [Str "Reference:"],Space,Str "AERONET",Space,S at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "FastMAPOL",Space,Str "vers at line 737
+[trace] Parsed [Header 2 ("retrieval-products-evaluated",[],[]) [Str "Retri at line 739
+[trace] Parsed [Para [Strong [Str "Aerosol"],SoftBreak,Str "-",Space,Str "T at line 743
+[trace] Parsed [Para [Strong [Str "Ocean"],SoftBreak,Str "-",Space,Str "Oce at line 746
+[trace] Parsed [Header 2 ("validation-strategy",[],[]) [Str "Validation",Sp at line 748
+[trace] Parsed [Para [Str "Validation",Space,Str "is",Space,Str "organized" at line 750
+[trace] Parsed [Para [Strong [Str "Global",Space,Str "Level-3",Space,Str "a at line 4
+[trace] Parsed [Para [Strong [Str "Global",Space,Str "aerosol",Space,Str "v at line 4
+[trace] Parsed [Para [Strong [Str "Joint",Space,Str "aerosol\8211ocean",Spa at line 4
+[trace] Parsed [OrderedList (1,Decimal,Period) [[Para [Strong [Str "Global" at line 759
+[trace] Parsed [Para [Str "The",Space,Str "objective",Space,Str "is",Space, at line 762
+[trace] Parsed [Header 2 ("global-level-3-products",[],[]) [Str "Global",Sp at line 764
+[trace] Parsed [Para [Strong [Str "Aerosol",Space,Str "Products",Space,Str  at line 766
+[trace] Parsed [Para [Str "Global",Space,Str "distributions",Space,Str "of" at line 768
+[trace] Parsed [Figure ("",[],[]) (Caption Nothing [Plain [Str "Global",Spa at line 770
+[trace] Parsed [HorizontalRule] at line 772
+[trace] Parsed [Para [Strong [Str "Ocean",Space,Str "Products"]]] at line 774
+[trace] Parsed [Para [Str "Global",Space,Str "distributions",Space,Str "of" at line 776
+[trace] Parsed [Figure ("",[],[]) (Caption Nothing [Plain [Str "Global",Spa at line 778
+[trace] Parsed [Para [Str "The",Space,Str "retrieved",Space,Math InlineMath at line 780
+[trace] Parsed [Para [Strong [Str "Key",Space,Str "result:"],LineBreak,Str  at line 783
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 785
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 789
+[trace] Parsed [Header 1 ("harp2-l2-aerosol-and-ocean-product-validation-wi at line 792
+[trace] Parsed [Header 2 ("overview-1",[],[]) [Str "Overview"]] at line 794
+[trace] Parsed [Para [Str "Pre-launch",Space,Str "Day-in-the-Life",Space,St at line 796
+[trace] Parsed [Para [Str "Validation",Space,Str "of",Space,Str "the",Space at line 798
+[trace] Parsed [Header 2 ("summary-information-1",[],[]) [Str "Summary",Spa at line 800
+[trace] Parsed [Plain [Strong [Str "FastMAPOL",Space,Str "version:"],Space, at line 2
+[trace] Parsed [Plain [Strong [Str "Data",Space,Str "period:"],Space,Str "M at line 2
+[trace] Parsed [Plain [Strong [Str "Reference:"],Space,Str "Synthetic",Spac at line 2
+[trace] Parsed [Para [Strong [Str "Published:"],Space,Str "Dec",Space,Str " at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "FastMAPOL",Space,Str "vers at line 805
+[trace] Parsed [Header 2 ("synthetic-harp2-observations",[],[]) [Str "Synth at line 806
+[trace] Parsed [Para [Str "As",Space,Str "shown",Space,Str "in",Space,Cite  at line 808
+[trace] Parsed [Plain [Str "Global",Space,Str "multi-angle",Space,Str "meas at line 2
+[trace] Parsed [Plain [Str "DoLP",Space,Str "shows",Space,Str "enhanced",Sp at line 2
+[trace] Parsed [Para [Str "Reflectance",Space,Str "and",Space,Str "DoLP",Sp at line 3
+[trace] Parsed [BulletList [[Plain [Str "Global",Space,Str "multi-angle",Sp at line 812
+[trace] Parsed [Figure ("fig-validation_harp2_l1c",[],[]) (Caption Nothing  at line 814
+[trace] Parsed [Header 2 ("geophysical-retrievals-with-pixel-wise-uncertain at line 815
+[trace] Parsed [Para [Str "Based",Space,Str "on",Space,Str "the",Space,Str  at line 817
+[trace] Parsed [Plain [Str "AOD",Space,Str "(550",Space,Str "nm)",Space,Str at line 2
+[trace] Parsed [Plain [Str "Multiple",Space,Str "geophysical",Space,Str "va at line 2
+[trace] Parsed [Para [Str "Pixel-wise",Space,Str "uncertainty",Space,Str "r at line 3
+[trace] Parsed [BulletList [[Plain [Str "AOD",Space,Str "(550",Space,Str "n at line 821
+[trace] Parsed [Figure ("fig-validation_harp2_l2",[],[]) (Caption Nothing [ at line 823
+[trace] Parsed [Header 2 ("uncertainty-closure-analysis",[],[]) [Str "Uncer at line 824
+[trace] Parsed [Para [Str "Theoretical",Space,Str "uncertainties",Space,Str at line 826
+[trace] Parsed [Plain [Str "Good",Space,Str "agreement",Space,Str "for",Spa at line 2
+[trace] Parsed [Plain [Str "Decreasing",Space,Str "uncertainty",Space,Str " at line 2
+[trace] Parsed [Para [Str "Underestimation",Space,Str "of",Space,Str "uncer at line 3
+[trace] Parsed [BulletList [[Plain [Str "Good",Space,Str "agreement",Space, at line 830
+[trace] Parsed [Figure ("fig-validation_harp2_unc",[],[]) (Caption Nothing  at line 832
+[trace] Parsed [Header 2 ("summary",[],[]) [Str "Summary"]] at line 834
+[trace] Parsed [Plain [Str "Synthetic",Space,Str "data",Space,Str "provide" at line 2
+[trace] Parsed [Plain [Str "L2",Space,Str "retrievals",Space,Str "achieve", at line 2
+[trace] Parsed [Plain [Str "Pixel-level",Space,Str "uncertainties",Space,St at line 2
+[trace] Parsed [Para [Str "Uncertainty",Space,Str "estimates",Space,Str "ar at line 3
+[trace] Parsed [BulletList [[Plain [Str "Synthetic",Space,Str "data",Space, at line 839
+[trace] Parsed [Para [Str "These",Space,Str "results",Space,Str "define",Sp at line 841
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 843
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 847
+[trace] Parsed [Header 1 ("harp2-aerosol-ocean-and-land-product-validation- at line 850
+[trace] Parsed [Para [Str "This",Space,Str "page",Space,Str "summarizes",Sp at line 852
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "performs",Space,Str "coupl at line 854
+[trace] Parsed [Header 2 ("summary-information-2",[],[]) [Str "Summary",Spa at line 856
+[trace] Parsed [Plain [Strong [Str "FastMAPOL",Space,Str "version:"],Space, at line 2
+[trace] Parsed [Plain [Strong [Str "Data",Space,Str "period:"],Space,Str "2 at line 2
+[trace] Parsed [Para [Strong [Str "Reference:"],Space,Str "AERONET",Space,S at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "FastMAPOL",Space,Str "vers at line 860
+[trace] Parsed [Header 2 ("retrieval-products-to-be-evaluated-ongoing",[],[ at line 862
+[trace] Parsed [Para [Strong [Str "Aerosol"],SoftBreak,Str "-",Space,Str "T at line 866
+[trace] Parsed [Para [Strong [Str "Ocean"],SoftBreak,Str "-",Space,Str "Oce at line 869
+[trace] Parsed [Para [Strong [Str "LAND"],SoftBreak,Str "-",Space,Str "Land at line 874
+[trace] Parsed [Para [Str "Validation",Space,Str "is",Space,Str "organized" at line 876
+[trace] Parsed [Para [Strong [Str "Global",Space,Str "Level-3",Space,Str "a at line 4
+[trace] Parsed [Para [Strong [Str "Global",Space,Str "aerosol",Space,Str "v at line 4
+[trace] Parsed [Para [Strong [Str "Joint",Space,Str "aerosol\8211ocean",Spa at line 4
+[trace] Parsed [OrderedList (1,Decimal,Period) [[Para [Strong [Str "Global" at line 885
+[trace] Parsed [Para [Str "The",Space,Str "objective",Space,Str "is",Space, at line 888
+[trace] Parsed [Header 2 ("global-level-3-products-1",[],[]) [Str "Global", at line 890
+[trace] Parsed [Para [Strong [Str "Aerosol",Space,Str "Products",Space,Str  at line 892
+[trace] Parsed [Para [Str "Global",Space,Str "distributions",Space,Str "of" at line 894
+[trace] Parsed [Figure ("",[],[]) (Caption Nothing [Plain [Str "Global",Spa at line 896
+[trace] Parsed [HorizontalRule] at line 898
+[trace] Parsed [Para [Strong [Str "LAND",Space,Str "Products"]]] at line 900
+[trace] Parsed [Para [Str "Global",Space,Str "distributions",Space,Str "of" at line 902
+[trace] Parsed [Figure ("",[],[]) (Caption Nothing [Plain [Str "Global",Spa at line 904
+[trace] Parsed [Para [Str "The",Space,Str "retrieved",Space,Math InlineMath at line 906
+[trace] Parsed [Para [Strong [Str "Key",Space,Str "result:"],LineBreak,Str  at line 909
+[trace] Parsed [] at line 912
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 914
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 918
+[trace] Parsed [Header 1 ("appendices",["unnumbered"],[]) [Str "Appendices" at line 921
+[trace] Parsed [Div ("",["quarto-book-part"],[]) [Para [RawInline (Format " at line 925
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 927
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 931
+[trace] Parsed [Header 1 ("technical-details-1",[],[]) [Str "Technical",Spa at line 934
+[trace] Parsed [Para [Str "This",Space,Str "section",Space,Str "provides",S at line 936
+[trace] Parsed [Para [Str "The",Space,Str "appendices",Space,Str "include:" at line 947
+[trace] Parsed [Para [Str "These",Space,Str "technical",Space,Str "details" at line 949
+[trace] Parsed [Para [Str "All",Space,Str "equations",Space,Str "and",Space at line 951
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 953
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 957
+[trace] Parsed [Header 1 ("sec-rt-model",[],[]) [Str "Radiative",Space,Str  at line 960
+[trace] Parsed [Para [Str "The",Space,Str "Radiative",Space,Str "Transfer", at line 962
+[trace] Parsed [Para [Str "Key",Space,Str "features:",SoftBreak,Str "-",Spa at line 967
+[trace] Parsed [Para [Str "For",Space,Str "this",Space,Str "work,",Space,St at line 969
+[trace] Parsed [Para [Strong [Str "Code",Space,Str "repository"],SoftBreak, at line 973
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 975
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 979
+[trace] Parsed [Header 1 ("sec-nn-model",[],[]) [Str "Neural",Space,Str "Ne at line 982
+[trace] Parsed [Para [Str "The",Space,Str "MAP",Space,Str "retrievals",Spac at line 984
+[trace] Parsed [Para [Str "The",Space,Str "NN",Space,Str "forward",Space,St at line 986
+[trace] Parsed [Para [Str "Correspondingly,",Space,Math InlineMath "\\mathb at line 988
+[trace] Parsed [Para [Str "For",Space,Str "application",Space,Str "to",Spac at line 990
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{K}_{mij}\n=\n\\frac{\\pa at line 997
+[trace] Parsed [Para [Str "Here,",Space,Str "index",Space,Math InlineMath " at line 999
+[trace] Parsed [Para [Math DisplayMath "\n\\Phi(\\mathbf{Z})_{mi}\n=\n\\max at line 1007
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "\\alpha=0.01",Str  at line 1009
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{D}_{mi}\n=\n\\frac{\\Phi at line 1022
+[trace] Parsed [Table ("",[],[]) (Caption Nothing [Plain [Str "NN",Space,St at line 1032
+[trace] Parsed [Table ("",[],[]) (Caption Nothing [Plain [Str "Jacobian",Sp at line 1042
+[trace] Parsed [Table ("",[],[]) (Caption Nothing [Plain [Str "Jacobian",Sp at line 1051
+[trace] Parsed [Para [Emph [Str "For",Space,Str "brevity,",Space,Str "summa at line 1053
+[trace] Parsed [Para [Str "The",Space,Str "finite",Space,Str "difference",S at line 1055
+[trace] Parsed [Para [Str "To",Space,Str "represent",Space,Str "the",Space, at line 1057
+[trace] Parsed [Para [Math DisplayMath "\n\\dot{\\mathbf{h}}_{p,mij}\n=\n\\ at line 1064
+[trace] Parsed [Para [Math DisplayMath "\n\\bar{\\mathbf{h}}_{p,mij}\n=\n\\ at line 1071
+[trace] Parsed [Para [Str "Note",Space,Str "that",Space,Math InlineMath "\\ at line 1073
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{K}_{mij}\n=\n\\dot{\\mat at line 1079
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{K}_{mij}\n=\n\\bar{\\mat at line 1085
+[trace] Parsed [Para [Str "where",Space,Cite [Citation {citationId = "eq-fo at line 1087
+[trace] Parsed [Para [Str "For",Space,Str "optimal",Space,Str "efficiency," at line 1089
+[trace] Parsed [Para [Str "For",Space,Str "the",Space,Str "NN",Space,Str "u at line 1091
+[trace] Parsed [Para [Str "The",Space,Str "AD",Space,Str "methods",Space,St at line 1093
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 1095
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 1099
+[trace] Parsed [Header 1 ("sec-aerosol-model",[],[]) [Str "Aerosol",Space,S at line 1102
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "supports",Space,Str "sever at line 1104
+[trace] Parsed [Plain [Strong [Str "Aer-1:"],Space,Str "five",Space,Str "pr at line 2
+[trace] Parsed [Plain [Strong [Str "Aer-2:"],Space,Str "six",Space,Str "pre at line 2
+[trace] Parsed [Para [Strong [Str "Aer-3:"],Space,Str "aerosol",Space,Str " at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "Aer-1:"],Space,Str "five", at line 1108
+[trace] Parsed [Para [Str "These",Space,Str "aerosol",Space,Str "models",Sp at line 1110
+[trace] Parsed [Header 2 ("overview-2",[],[]) [Str "Overview"]] at line 1112
+[trace] Parsed [Para [Str "The",Space,Str "aerosol",Space,Str "model",Space at line 1114
+[trace] Parsed [Plain [Str "size",Space,Str "integration",Space,Str "over", at line 2
+[trace] Parsed [Plain [Str "calculation",Space,Str "of",Space,Str "effectiv at line 2
+[trace] Parsed [Plain [Str "multi-mode",Space,Str "considerations"]] at line 2
+[trace] Parsed [Para [Str "derivation",Space,Str "of",Space,Str "aerosol",S at line 3
+[trace] Parsed [BulletList [[Plain [Str "size",Space,Str "integration",Spac at line 1119
+[trace] Parsed [Header 2 ("aerosol-density-distributions",[],[]) [Str "Aero at line 1121
+[trace] Parsed [Header 3 ("conversion-between-volume-and-number-density-log at line 1123
+[trace] Parsed [Para [Str "Both",Space,Str "the",Space,Str "number",Space,S at line 1125
+[trace] Parsed [Para [Str "For",Space,Str "a",Space,Str "monomodal",Space,S at line 1127
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{d V(r)}{d \\ln r}= \\frac{ at line 1131
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{d N(r)}{d \\ln r}= \\frac{ at line 1135
+[trace] Parsed [Para [Str "Here,",Space,Math InlineMath "r_v",Space,Str "an at line 1137
+[trace] Parsed [Para [Str "Since",Space,Str "particle",Space,Str "volume",S at line 1139
+[trace] Parsed [Para [Math DisplayMath "\nV=\\frac{4\\pi}{3}Nr^3,\n"]] at line 1143
+[trace] Parsed [Para [Str "the",Space,Str "corresponding",Space,Str "differ at line 1145
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{d V(r)}{d \\ln r}=\\frac{4 at line 1149
+[trace] Parsed [Para [Str "Using",Space,Str "this",Space,Str "relation,",Sp at line 1151
+[trace] Parsed [Para [Math DisplayMath "\n\\sigma_{n}=\\sigma_{v}=\\sigma,\ at line 1155
+[trace] Parsed [Para [Math DisplayMath "\nr_{n}=r_{v} \\exp(-3 \\sigma^2),\ at line 1159
+[trace] Parsed [Para [Math DisplayMath "\nN_{0}=V_{0} \\frac{3}{4 \\pi r_{v at line 1163
+[trace] Parsed [Para [Math DisplayMath "\nN_{0}=V_{0} \\frac{3}{4 \\pi r_{n at line 1167
+[trace] Parsed [Para [Str "These",Space,Str "results",Space,Str "are",Space at line 1169
+[trace] Parsed [Header 2 ("optical-depth",[],[]) [Str "Optical",Space,Str " at line 1171
+[trace] Parsed [Para [Str "Using",Space,Str "the",Space,Str "conversion",Sp at line 1173
+[trace] Parsed [Para [Math DisplayMath "\nN_{0}=V_{0} \\frac{3}{4 \\pi r_{v at line 1177
+[trace] Parsed [Para [Str "The",Space,Str "aerosol",Space,Str "optical",Spa at line 1179
+[trace] Parsed [Para [Math DisplayMath "\n\\tau_a=\\sum_{i=1}^{N_c} C_{ext, at line 1183
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "C_{ext,i}",Space,S at line 1185
+[trace] Parsed [Para [Str "Here,",Space,Str "column",Space,Str "number",Spa at line 1187
+[trace] Parsed [Para [Math DisplayMath "\nN = n z.\n"]] at line 1191
+[trace] Parsed [Para [Str "Using",Space,Str "column",Space,Str "volume",Spa at line 1193
+[trace] Parsed [Para [Math DisplayMath "\n\\tau_a = \\sum_{i=1}^{N_c} C_{ex at line 1197
+[trace] Parsed [Para [Math DisplayMath "\n\\tau_a = \\sum_{i=1}^{N_c} C_{ex at line 1201
+[trace] Parsed [Para [Math DisplayMath "\n\\tau_a = \\sum_{i=1}^{N_c} \\lef at line 1205
+[trace] Parsed [Para [Str "The",Space,Str "unit",Space,Str "of",Space,Str " at line 1207
+[trace] Parsed [Para [Str "If",Space,Str "a",Space,Str "maximum",Space,Str  at line 1209
+[trace] Parsed [Para [Math DisplayMath "\nV_i=\\tau_{max}\\left[C_{ext,i} \ at line 1213
+[trace] Parsed [Para [Str "or",Space,Str "equivalently"]] at line 1215
+[trace] Parsed [Para [Math DisplayMath "\nV_i=\\tau_{max} \\exp(4.5 \\sigma at line 1219
+[trace] Parsed [Para [Str "A",Space,Str "practical",Space,Str "bound",Space at line 1221
+[trace] Parsed [Para [Str "In",Space,Str "general,",Space,Str "increasing", at line 1223
+[trace] Parsed [Header 2 ("convention-for-size-distributions",[],[]) [Str " at line 1225
+[trace] Parsed [Para [Str "The",Space,Str "size",Space,Str "distributions", at line 1227
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{d N(r)}{d r}=\\frac{1}{r}\ at line 1231
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{d V(r)}{d r}=\\frac{1}{r}\ at line 1235
+[trace] Parsed [Para [Str "This",Space,Str "distinction",Space,Str "is",Spa at line 1237
+[trace] Parsed [Header 2 ("moments-of-the-particle-size-distribution",[],[] at line 1239
+[trace] Parsed [Para [Str "For",Space,Str "later",Space,Str "use,",Space,St at line 1241
+[trace] Parsed [Para [Math DisplayMath "\nm_k=\\int_{0}^{\\infty} r^k \\fra at line 1245
+[trace] Parsed [Para [Str "which",Space,Str "is",Space,Str "equivalently"]] at line 1247
+[trace] Parsed [Para [Math DisplayMath "\nm_k=\\int_{-\\infty}^{\\infty} r^ at line 1251
+[trace] Parsed [Para [Str "For",Space,Str "a",Space,Str "log-normal",Space, at line 1253
+[trace] Parsed [Para [Math DisplayMath "\nm_k=N_0 r_n^k \\exp\\left(\\frac{ at line 1257
+[trace] Parsed [Para [Str "The",Space,Str "dimension",Space,Str "is",Space, at line 1259
+[trace] Parsed [Para [Str "Substituting",Space,Str "the",Space,Str "number- at line 1261
+[trace] Parsed [Para [Math DisplayMath "\nm_k=N_0 r_n^k \\exp\\left(\\frac{ at line 1265
+[trace] Parsed [Para [Math DisplayMath "\nm_k=V_{0} \\frac{3}{4 \\pi r_{v}^ at line 1269
+[trace] Parsed [Para [Str "and",Space,Str "therefore"]] at line 1271
+[trace] Parsed [Para [Math DisplayMath "\nm_k=V_{0} \\frac{3}{4 \\pi} r^{k- at line 1275
+[trace] Parsed [Para [Str "This",Space,Str "result",Space,Str "preserves",S at line 1277
+[trace] Parsed [Para [Str "A",Space,Str "useful",Space,Str "special",Space, at line 1279
+[trace] Parsed [Para [Math DisplayMath "\nm_3=\\frac{3V_0}{4\\pi}.\n"]] at line 1283
+[trace] Parsed [Para [Str "Thus,",Space,Str "the",Space,Str "third",Space,S at line 1285
+[trace] Parsed [Header 2 ("effective-radius-and-effective-variance-in-terms at line 1287
+[trace] Parsed [Para [Str "The",Space,Str "effective",Space,Str "radius,",S at line 1289
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}=\\frac{\\int_{r_1}^{r_2}  at line 1294
+[trace] Parsed [Para [Str "The",Space,Str "weighting",Space,Str "by",Space, at line 1296
+[trace] Parsed [Para [Str "The",Space,Str "effective",Space,Str "variance", at line 1298
+[trace] Parsed [Para [Math DisplayMath "\n\\nu_{eff}=\\frac{\\int_{r_1}^{r_ at line 1303
+[trace] Parsed [Para [Str "which",Space,Str "can",Space,Str "be",Space,Str  at line 1305
+[trace] Parsed [Para [Math DisplayMath "\n\\nu_{eff}= \\frac{m_4 m_2}{m_3^2 at line 1309
+[trace] Parsed [Para [Str "This",Space,Str "expression",Space,Str "is",Spac at line 1311
+[trace] Parsed [Para [Str "For",Space,Str "a",Space,Str "log-normal",Space, at line 1313
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{d N(r)}{d \\ln r}=\\frac{N at line 1317
+[trace] Parsed [Para [Str "the",Space,Str "effective",Space,Str "radius",Sp at line 1319
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}=r_n \\exp\\left(\\frac{5} at line 1323
+[trace] Parsed [Para [Math DisplayMath "\n\\nu_{eff}=\\exp (\\sigma^2)-1.\n at line 1327
+[trace] Parsed [Para [Str "Using",Space,Str "the",Space,Str "relation",Spac at line 1329
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}=r_n \\exp(2.5 \\sigma^2), at line 1333
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}=r_v \\exp(-3 \\sigma^2) \ at line 1337
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}=r_v \\exp(-0.5 \\sigma^2) at line 1341
+[trace] Parsed [Para [Str "Thus,",Space,Str "the",Space,Str "effective",Spa at line 1343
+[trace] Parsed [Para [Str "For",Space,Str "small",Space,Math InlineMath "\\ at line 1345
+[trace] Parsed [Para [Math DisplayMath "\n\\nu_{eff}=\\exp (\\sigma^2)-1 \\ at line 1349
+[trace] Parsed [Para [Str "and"]] at line 1351
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}= r_v \\exp(-0.5 \\sigma^2 at line 1355
+[trace] Parsed [Para [Str "show",Space,Str "that",Space,Str "the",Space,Str at line 1357
+[trace] Parsed [Header 2 ("effective-radius-and-variance-in-terms-of-dvdln- at line 1359
+[trace] Parsed [Para [Str "Because",Space,Str "the",Space,Str "retrieval",S at line 1361
+[trace] Parsed [Para [Str "Starting",Space,Str "from"]] at line 1363
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{d V(r)}{d \\ln r}=\\frac{4 at line 1367
+[trace] Parsed [Para [Str "the",Space,Str "effective",Space,Str "radius",Sp at line 1369
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}=\\frac{\\int_{\\ln r_1}^{ at line 1374
+[trace] Parsed [Para [Str "Define",Space,Str "the",Space,Str "moments",Spac at line 1376
+[trace] Parsed [Para [Math DisplayMath "\nm'_k = \\int_{\\ln r_1}^{\\ln r_2 at line 1380
+[trace] Parsed [Para [Str "Then"]] at line 1382
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}= \\frac{m'_0}{m'_{-1}}.\n at line 1386
+[trace] Parsed [Para [Str "Similarly,",Space,Str "the",Space,Str "effective at line 1388
+[trace] Parsed [Para [Math DisplayMath "\n\\nu_{eff}=\\frac{\\int_{\\ln r_1 at line 1393
+[trace] Parsed [Para [Str "which",Space,Str "simplifies",Space,Str "to"]] at line 1395
+[trace] Parsed [Para [Math DisplayMath "\n\\nu_{eff}= \\frac{m'_{-1} m'_1}{ at line 1399
+[trace] Parsed [Para [Str "For",Space,Str "discrete",Space,Str "numerical", at line 1401
+[trace] Parsed [Para [Math DisplayMath "\nm'_k \\approx \\sum_i r(i)^k v(i, at line 1405
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "i",Space,Str "inde at line 1407
+[trace] Parsed [Para [Str "For",Space,Str "a",Space,Str "log-normal",Space, at line 1409
+[trace] Parsed [Para [Math DisplayMath "\nm'_k =V_{0} \\frac{3}{4 \\pi} r^{ at line 1413
+[trace] Parsed [Para [Str "For",Space,Str "a",Space,Str "multimode",Space,S at line 1415
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}=\\frac{\\sum_i m_{3,i}}{\ at line 1419
+[trace] Parsed [Para [Str "and"]] at line 1421
+[trace] Parsed [Para [Math DisplayMath "\n\\nu_{eff}=\\frac{\\sum_i m_{4,i} at line 1425
+[trace] Parsed [Para [Str "when",Space,Str "expressed",Space,Str "through", at line 1427
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}=\\frac{\\sum_i m'_{0,i}}{ at line 1431
+[trace] Parsed [Para [Math DisplayMath "\n\\nu_{eff}=\\frac{\\sum_i m'_{1,i at line 1435
+[trace] Parsed [Para [Str "when",Space,Str "expressed",Space,Str "through", at line 1437
+[trace] Parsed [Header 2 ("multi-mode-distributions",[],[]) [Str "Multi-mod at line 1439
+[trace] Parsed [Para [Str "When",Space,Str "the",Space,Str "aerosol",Space, at line 1441
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{d V(r)}{d \\ln r}= \\sum_i at line 1445
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{d N(r)}{d \\ln r}= \\sum_i at line 1449
+[trace] Parsed [Para [Str "For",Space,Str "each",Space,Str "mode,",Space,St at line 1451
+[trace] Parsed [Para [Math DisplayMath "\n\\sigma_{n,i}=\\sigma_{v,i}=\\sig at line 1455
+[trace] Parsed [Para [Math DisplayMath "\nr_{n,i}=r_{v,i} \\exp(-3 \\sigma_ at line 1459
+[trace] Parsed [Para [Math DisplayMath "\nN_{0,i}=V_{0,i} \\frac{3}{4 \\pi  at line 1463
+[trace] Parsed [Para [Math DisplayMath "\nN_{0,i}=V_{0,i} \\frac{3}{4 \\pi  at line 1467
+[trace] Parsed [Para [Str "The",Space,Str "distinction",Space,Str "between" at line 1469
+[trace] Parsed [Para [Str "For",Space,Str "the",Space,Str "volume-mode",Spa at line 1471
+[trace] Parsed [Para [Math DisplayMath "\n0.1,\\ 0.1732,\\ 0.3,\\ 1.0,\\ 2. at line 1475
+[trace] Parsed [Para [Str "with",Space,Str "logarithmic",Space,Str "standar at line 1477
+[trace] Parsed [Para [Math DisplayMath "\n0.35,\\ 0.35,\\ 0.35,\\ 0.5,\\ 0. at line 1481
+[trace] Parsed [Para [Str "The",Space,Str "impact",Space,Str "of",Space,Str at line 1483
+[trace] Parsed [Header 2 ("averaged-extinction-cross-section",[],[]) [Str " at line 1485
+[trace] Parsed [Para [Str "When",Space,Str "extinction",Space,Str "is",Spac at line 1487
+[trace] Parsed [Para [Str "For",Space,Str "the",Space,Str "same",Space,Str  at line 1489
+[trace] Parsed [Para [Str "For",Space,Str "two",Space,Str "modes,",Space,St at line 1491
+[trace] Parsed [Para [Math DisplayMath "\nC_{ext,t}=C_{ext,f} n_f+C_{ext,c} at line 1495
+[trace] Parsed [Para [Str "or",Space,Str "in",Space,Str "terms",Space,Str " at line 1497
+[trace] Parsed [Para [Math DisplayMath "\nC_{ext,t}= C_{ext,f} \\frac{3 V_f at line 1502
+[trace] Parsed [Para [Str "To",Space,Str "compare",Space,Str "fine-",Space, at line 1504
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{C_{ext,f} \\frac{3 V_f}{4\ at line 1509
+[trace] Parsed [Para [Str "If",Space,Str "the",Space,Str "logarithmic",Spac at line 1511
+[trace] Parsed [Para [Math DisplayMath "\n\\frac{V_f}{V_c}\\frac{Q_{ext,f}  at line 1515
+[trace] Parsed [Para [Str "showing",Space,Str "explicitly",Space,Str "how", at line 1517
+[trace] Parsed [Header 2 ("effective-radius-and-variance-for-multimode-aero at line 1519
+[trace] Parsed [Para [Str "The",Space,Str "total",Space,Str "number",Space, at line 1521
+[trace] Parsed [Para [Math DisplayMath "\nN_0=\\sum_i N_{0,i},\n"]] at line 1525
+[trace] Parsed [Para [Math DisplayMath "\nV_0=\\sum_i V_{0,i}.\n"]] at line 1529
+[trace] Parsed [Para [Str "The",Space,Str "effective",Space,Str "radius",Sp at line 1531
+[trace] Parsed [Para [Math DisplayMath "\nr_{eff}=\\frac{\\sum_i m_{3,i}}{\ at line 1535
+[trace] Parsed [Para [Math DisplayMath "\n\\nu_{eff}=\\frac{\\sum_i m_{4,i} at line 1539
+[trace] Parsed [Header 2 ("fine-and-coarse-mode-partitions",[],[]) [Str "Fi at line 1541
+[trace] Parsed [Para [Str "To",Space,Str "discuss",Space,Str "fine-mode",Sp at line 1543
+[trace] Parsed [Para [Str "For",Space,Str "the",Space,Str "Aer-1",Space,Str at line 1545
+[trace] Parsed [Plain [Strong [Str "fine",Space,Str "mode:"],Space,Str "mod at line 2
+[trace] Parsed [Para [Strong [Str "coarse",Space,Str "mode:"],Space,Str "mo at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "fine",Space,Str "mode:"],S at line 1548
+[trace] Parsed [Para [Str "Although",Space,Str "the",Space,Str "first",Spac at line 1551
+[trace] Parsed [Header 2 ("aerosol-products",[],[]) [Str "Aerosol",Space,St at line 1553
+[trace] Parsed [Para [Str "The",Space,Str "aerosol",Space,Str "model",Space at line 1555
+[trace] Parsed [Plain [Strong [Str "FMF:"],Space,Str "fine-mode",Space,Str  at line 2
+[trace] Parsed [Plain [Strong [Str "FVF:"],Space,Str "fine-volume",Space,St at line 2
+[trace] Parsed [Plain [Str "effective",Space,Str "radius",Space,Str "and",S at line 2
+[trace] Parsed [Para [Str "spectrally",Space,Str "resolved",Space,Str "opti at line 3
+[trace] Parsed [BulletList [[Plain [Strong [Str "FMF:"],Space,Str "fine-mod at line 1560
+[trace] Parsed [Para [Str "The",Space,Str "exact",Space,Str "definition",Sp at line 1562
+[trace] Parsed [Header 2 ("summary-1",[],[]) [Str "Summary"]] at line 1564
+[trace] Parsed [Para [Str "The",Space,Str "aerosol",Space,Str "model",Space at line 1566
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 1568
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 1572
+[trace] Parsed [Header 1 ("aerosol-characterization-component-approach",[], at line 1575
+[trace] Parsed [Para [Str "Aerosol",Space,Str "components",Space,Str "are", at line 1579
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 1581
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 1585
+[trace] Parsed [Header 1 ("uncertainty-estimation-and-angular-correlations" at line 1588
+[trace] Parsed [Para [Str "In",Space,Str "this",Space,Str "section,",Space, at line 1590
+[trace] Parsed [Para [Math DisplayMath "\n\\chi^2\n=\n\\frac{1}{N}\n\\mathb at line 1599
+[trace] Parsed [Para [Str "where"]] at line 1601
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{y}\n=\n\\mathbf{m}\n-\n\ at line 1609
+[trace] Parsed [Para [Str "is",Space,Str "the",Space,Str "residual",Space,S at line 1611
+[trace] Parsed [Para [Str "The",Space,Str "error",Space,Str "covariance",Sp at line 1613
+[trace] Parsed [Para [Math DisplayMath "\nS_{\\epsilon;i,j}\n=\n\\mathbb{E} at line 1623
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "i",Space,Str "and" at line 1625
+[trace] Parsed [Para [Str "To",Space,Str "represent",Space,Str "angular",Sp at line 1627
+[trace] Parsed [Para [Math DisplayMath "\nS_{\\epsilon;i,j}\n=\n\\begin{cas at line 1641
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "\\sigma_t",Space,S at line 1643
+[trace] Parsed [Para [Str "The",Space,Str "relative",Space,Str "contributio at line 1645
+[trace] Parsed [Para [Str "The",Space,Str "average",Space,Math InlineMath " at line 1647
+[trace] Parsed [Para [Str "To",Space,Str "provide",Space,Str "a",Space,Str  at line 1649
+[trace] Parsed [Para [Math DisplayMath "\nr^{\\Delta_\\theta |i-j|}\n=\ne^{ at line 1655
+[trace] Parsed [Para [Str "Therefore,",Space,Math InlineMath "\\theta_c",Sp at line 1657
+[trace] Parsed [Para [Math DisplayMath "\n\\theta_c\n=\n-\\frac{1}{\\ln r}. at line 1663
+[trace] Parsed [Header 2 ("uncertainty-quantifization",[],[]) [Str "Uncerta at line 1664
+[trace] Parsed [Para [Str "Pixel-wise",Space,Str "retrieval",Space,Str "unc at line 1666
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{S}^{-1}\n=\n\\mathbf{K}^ at line 1676
+[trace] Parsed [Para [Str "where",Space,Str "the",Space,Str "Jacobian",Spac at line 1678
+[trace] Parsed [Para [Str "Each",Space,Str "retrieval",Space,Str "parameter at line 1680
+[trace] Parsed [Para [Str "The",Space,Str "uncertainties",Space,Str "are",S at line 1682
+[trace] Parsed [Para [Str "Because",Space,Str "FastMAPOL",Space,Str "retrie at line 1684
+[trace] Parsed [Para [Str "The",Space,Str "retrieval",Space,Str "uncertaint at line 1686
+[trace] Parsed [Para [Str "For",Space,Str "synthetic",Space,Str "retrieval" at line 1688
+[trace] Parsed [Para [Str "The",Space,Str "Monte",Space,Str "Carlo",Space,S at line 1690
+[trace] Parsed [Header 2 ("sec-transform",[],[]) [Str "Eigenvector",Space,S at line 1692
+[trace] Parsed [Para [Str "An",Space,Str "error",Space,Str "covariance",Spa at line 1694
+[trace] Parsed [Para [Str "Eigenvector",Space,Str "decomposition",Space,Str at line 1696
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{S}_{\\epsilon}\n=\n\\mat at line 1704
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "\\mathbf{D}_{\\eps at line 1706
+[trace] Parsed [Para [Str "Based",Space,Str "on",Space,Cite [Citation {cita at line 1708
+[trace] Parsed [Para [Math DisplayMath "\n\\chi^2\n=\n\\frac{1}{N}\n\\mathb at line 1717
+[trace] Parsed [Para [Str "and"]] at line 1719
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{S}^{-1}\n=\n\\mathbf{K}' at line 1729
+[trace] Parsed [Para [Str "where",Space,Str "the",Space,Str "original",Spac at line 1731
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{y}'\n=\n\\mathbf{U}\\mat at line 1737
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{K}'\n=\n\\mathbf{U}\\mat at line 1743
+[trace] Parsed [Para [Str "The",Space,Str "transformations",Space,Str "in", at line 1745
+[trace] Parsed [Para [Strong [Str "Clear",Space,Str "representation",Space, at line 4
+[trace] Parsed [Para [Strong [Str "Efficient",Space,Str "minimization",Spac at line 4
+[trace] Parsed [Para [Strong [Str "Generation",Space,Str "of",Space,Str "co at line 4
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{y}\n=\n\\mathbf{U}^{T}\\ at line 10
+[trace] Parsed [Para [Str "This",Space,Str "procedure",Space,Str "enables", at line 13
+[trace] Parsed [OrderedList (1,Decimal,Period) [[Para [Strong [Str "Clear", at line 1763
+[trace] Parsed [Header 2 ("sec-ac",[],[]) [Str "Correlation",Space,Str "str at line 1765
+[trace] Parsed [Para [Str "Autocorrelation",Space,Str "provides",Space,Str  at line 1767
+[trace] Parsed [Para [Math DisplayMath "\nR_{i,j}\n=\n\\mathbb{E}[y_i y_j], at line 1773
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "i",Space,Str "and" at line 1775
+[trace] Parsed [Para [Str "This",Space,Str "method",Space,Str "can",Space,S at line 1777
+[trace] Parsed [Para [Str "For",Space,Str "measurements",Space,Str "within" at line 1779
+[trace] Parsed [Para [Math DisplayMath "\n\\tilde{R}_k\n=\n\\mathbb{E}\n\\l at line 1791
+[trace] Parsed [Para [Str "The",Space,Str "correlation",Space,Str "strength at line 1793
+[trace] Parsed [Para [Math DisplayMath "\nr\n=\n\\left(\\tilde{R}_1\\right) at line 1799
+[trace] Parsed [Para [Str "The",Space,Str "corresponding",Space,Str "correl at line 1801
+[trace] Parsed [Para [Str "A",Space,Str "partial",Space,Str "autocorrelatio at line 1803
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 1805
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 1809
+[trace] Parsed [Header 1 ("sec-ocean-model",[],[]) [Str "Ocean",Space,Str " at line 1812
+[trace] Parsed [Header 2 ("overview-3",[],[]) [Str "Overview"]] at line 1814
+[trace] Parsed [Para [Str "FastMAPOL",Space,Str "retrieves",Space,Str "ocea at line 1816
+[trace] Parsed [Para [Str "Three",Space,Str "parameterizations",Space,Str " at line 1818
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 1824
+[trace] Parsed [Para [Str "These",Space,Str "models",Space,Str "describe",S at line 1826
+[trace] Parsed [Plain [Str "pure",Space,Str "seawater"]] at line 2
+[trace] Parsed [Plain [Str "phytoplankton"]] at line 2
+[trace] Parsed [Plain [Str "non-algal",Space,Str "particles",Space,Str "(NA at line 2
+[trace] Parsed [Para [Str "colored",Space,Str "dissolved",Space,Str "organi at line 3
+[trace] Parsed [BulletList [[Plain [Str "pure",Space,Str "seawater"]],[Plai at line 1831
+[trace] Parsed [Para [Str "The",Space,Str "total",Space,Str "inherent",Spac at line 1833
+[trace] Parsed [Header 2 ("bio-1-optical-model-open-ocean",[],[]) [Str "Bio at line 1835
+[trace] Parsed [Para [Str "The",Space,Strong [Str "Bio-1",Space,Str "model" at line 1837
+[trace] Parsed [Para [Str "In",Space,Str "this",Space,Str "model,",Space,St at line 1839
+[trace] Parsed [Header 3 ("phytoplankton-absorption",[],[]) [Str "Phytoplan at line 1841
+[trace] Parsed [Para [Str "The",Space,Str "phytoplankton",Space,Str "absorp at line 1843
+[trace] Parsed [Header 3 ("particulate-absorption",[],[]) [Str "Particulate at line 1845
+[trace] Parsed [Para [Str "For",Space,Str "open",Space,Str "ocean",Space,St at line 1847
+[trace] Parsed [Para [Str "The",Space,Str "value",Space,Str "at",Space,Str  at line 1849
+[trace] Parsed [Para [Math DisplayMath "\na_{dg}(440) = p_2\\, a_p(440,[Chl at line 1853
+[trace] Parsed [Para [Str "where"]] at line 1855
+[trace] Parsed [Para [Math DisplayMath "\np_2 = 0.3 + \\frac{5.7\\,R_2\\,a_ at line 1859
+[trace] Parsed [Para [Str "The",Space,Str "parameter",Space,Math InlineMath at line 1861
+[trace] Parsed [Para [Math DisplayMath "\nR_2 = 0.5.\n"]] at line 1865
+[trace] Parsed [Para [Str "The",Space,Str "exponential",Space,Str "spectral at line 1867
+[trace] Parsed [Para [Math DisplayMath "\nS_{dg} = 0.018.\n"]] at line 1871
+[trace] Parsed [Header 3 ("particulate-backscattering",[],[]) [Str "Particu at line 1873
+[trace] Parsed [Para [Str "The",Space,Str "particulate",Space,Str "backscat at line 1875
+[trace] Parsed [Para [Str "The",Space,Str "magnitude",Space,Str "at",Space, at line 1877
+[trace] Parsed [Para [Math DisplayMath "\nb_{bp}(660) = 0.347\\,[Chl\\,a]^{ at line 1881
+[trace] Parsed [Para [Str "The",Space,Str "spectral",Space,Str "slope",Spac at line 1883
+[trace] Parsed [Para [Math DisplayMath "\nS_{bp} = -0.5\\left(\\log_{10}[Ch at line 1887
+[trace] Parsed [Para [Str "valid",Space,Str "for"]] at line 1889
+[trace] Parsed [Para [Math DisplayMath "\n0.02 < [Chl\\,a] < 2 \\; \\text{m at line 1893
+[trace] Parsed [Para [Str "Outside",Space,Str "this",Space,Str "range,",Spa at line 1895
+[trace] Parsed [Header 3 ("backscattering-fraction",[],[]) [Str "Backscatte at line 1897
+[trace] Parsed [Para [Str "The",Space,Str "particulate",Space,Str "backscat at line 1899
+[trace] Parsed [Para [Math DisplayMath "\nB_p = 0.002 + 0.01\\left(0.5 - 0. at line 1903
+[trace] Parsed [Para [Str "The",Space,Str "parameter",Space,Math InlineMath at line 1905
+[trace] Parsed [Header 3 ("phase-matrix-tbd",[],[]) [Str "Phase",Space,Str  at line 1906
+[trace] Parsed [Plain [Str "water"]] at line 2
+[trace] Parsed [Plain [Str "NAP"]] at line 2
+[trace] Parsed [Para [Str "Phytoplankton",Space,Str "(FF)"]] at line 4
+[trace] Parsed [BulletList [[Plain [Str "water"]],[Plain [Str "NAP"]],[Plai at line 1911
+[trace] Parsed [Header 2 ("bio-2-optical-model-five-parameter-model",[],[]) at line 1913
+[trace] Parsed [Para [Str "The",Space,Strong [Str "Bio-2",Space,Str "model" at line 1915
+[trace] Parsed [Para [Str "The",Space,Str "ocean",Space,Str "is",Space,Str  at line 1917
+[trace] Parsed [Plain [Str "pure",Space,Str "seawater"]] at line 2
+[trace] Parsed [Plain [Str "phytoplankton",Space,Str "covariant",Space,Str  at line 2
+[trace] Parsed [Plain [Str "non-algal",Space,Str "particles",Space,Str "(NA at line 2
+[trace] Parsed [Para [Str "colored",Space,Str "dissolved",Space,Str "organi at line 3
+[trace] Parsed [OrderedList (1,Decimal,Period) [[Plain [Str "pure",Space,St at line 1922
+[trace] Parsed [Para [Str "CDOM",Space,Str "contributes",Space,Str "only",S at line 1924
+[trace] Parsed [Para [Str "The",Space,Str "absorption",Space,Str "and",Spac at line 1926
+[trace] Parsed [Para [Math DisplayMath "\nB_w = 0.5.\n"]] at line 1930
+[trace] Parsed [Header 3 ("phytoplankton-absorption-1",[],[]) [Str "Phytopl at line 1932
+[trace] Parsed [Para [Str "Phytoplankton",Space,Str "absorption",Space,Str  at line 1934
+[trace] Parsed [Para [Math DisplayMath "\na_{ph}(\\lambda) = A_{ph}(\\lambd at line 1938
+[trace] Parsed [Para [Str "Here"]] at line 1940
+[trace] Parsed [Plain [Math InlineMath "A_{ph}(\\lambda)",Space,Str "and",S at line 2
+[trace] Parsed [Para [Math InlineMath "[Chl\\,a]",Space,Str "is",Space,Str  at line 3
+[trace] Parsed [BulletList [[Plain [Math InlineMath "A_{ph}(\\lambda)",Spac at line 1943
+[trace] Parsed [Header 3 ("cdom-and-detrital-absorption",[],[]) [Str "CDOM" at line 1945
+[trace] Parsed [Para [Str "The",Space,Str "combined",Space,Str "absorption" at line 1947
+[trace] Parsed [Para [Math DisplayMath "\na_{dg}(\\lambda) =\na_{dg}(440)\\ at line 1952
+[trace] Parsed [Para [Str "The",Space,Str "parameter",Space,Math InlineMath at line 1954
+[trace] Parsed [Header 3 ("particulate-backscattering-1",[],[]) [Str "Parti at line 1956
+[trace] Parsed [Para [Str "The",Space,Str "particulate",Space,Str "backscat at line 1958
+[trace] Parsed [Para [Math DisplayMath "\nb_{bp}(\\lambda) =\nb_{bp}(660)\\ at line 1963
+[trace] Parsed [Para [Str "The",Space,Str "spectral",Space,Str "slope",Spac at line 1965
+[trace] Parsed [Header 3 ("backscattering-fraction-1",[],[]) [Str "Backscat at line 1967
+[trace] Parsed [Para [Str "The",Space,Str "particulate",Space,Str "backscat at line 1969
+[trace] Parsed [Para [Math DisplayMath "\nB_p(\\lambda) =\nB_p(660)\\left(\ at line 1974
+[trace] Parsed [Para [Str "The",Space,Str "parameter",Space,Math InlineMath at line 1976
+[trace] Parsed [Header 3 ("total-inherent-optical-properties",[],[]) [Str " at line 1978
+[trace] Parsed [Para [Str "The",Space,Str "total",Space,Str "absorption",Sp at line 1980
+[trace] Parsed [Para [Math DisplayMath "\na(\\lambda) =\na_w(\\lambda) + a_ at line 1985
+[trace] Parsed [Para [Str "The",Space,Str "total",Space,Str "backscattering at line 1987
+[trace] Parsed [Para [Math DisplayMath "\nb_b(\\lambda) =\n0.5\\,b_w(\\lamb at line 1992
+[trace] Parsed [Para [Str "These",Space,Str "inherent",Space,Str "optical", at line 1994
+[trace] Parsed [Header 2 ("bio-3-optical-model-three-parameter-model",[],[] at line 1996
+[trace] Parsed [Para [Str "The",Space,Strong [Str "Bio-3",Space,Str "model" at line 1998
+[trace] Parsed [Para [Str "In",Space,Str "this",Space,Str "model,",Space,St at line 2000
+[trace] Parsed [Para [Emph [Str "(Details",Space,Str "of",Space,Str "the",S at line 2002
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 2004
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 2008
+[trace] Parsed [Header 1 ("multi-angle-ocean-color-product",[],[]) [Str "Mu at line 2011
+[trace] Parsed [Para [Str "Ocean",Space,Str "color",Space,Str "signals",Spa at line 2013
+[trace] Parsed [Para [Math DisplayMath "\n\\rho_w(\\theta_0,\\theta_v,\\phi at line 2021
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "\\rho_t",Space,Str at line 2023
+[trace] Parsed [Para [Str "The",Space,Str "remote",Space,Str "sensing",Spac at line 2025
+[trace] Parsed [Para [Math DisplayMath "\nR_{rs}(\\theta_0,\\theta_v,\\phi_ at line 2038
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "T_d",Space,Str "re at line 2040
+[trace] Parsed [Para [Str "Furthermore,",Space,Str "a",Space,Str "BRDF",Spa at line 2042
+[trace] Parsed [Para [Math DisplayMath "\nC_{\\mathrm{BRDF}}(\\theta_0,\\th at line 2049
+[trace] Parsed [Para [Str "The",Space,Str "angular",Space,Str "distribution at line 2051
+[trace] Parsed [Para [Math DisplayMath "\nR_{rs}(0,0)\n=\nR_{rs}(\\theta_0, at line 2059
+[trace] Parsed [Para [Str "To",Space,Str "expedite",Space,Str "this",Space, at line 2061
+[trace] Parsed [Para [Str "Since",Space,Str "HARP2",Space,Str "and",Space,S at line 2063
+[trace] Parsed [Para [Str "Moreover,",Space,Str "if",Space,Str "the",Space, at line 2065
+[trace] Parsed [Para [Str "Multiple",Space,Str "BRDF",Space,Str "correction at line 2068
+[trace] Parsed [Para [RawInline (Format "html") "<!-- quarto-file-metadata: at line 2070
+[trace] Parsed [RawBlock (Format "html") "<!-- quarto-file-metadata: eyJyZX at line 2074
+[trace] Parsed [Header 1 ("sec-land-model",[],[]) [Str "Land",Space,Str "Su at line 2077
+[trace] Parsed [Para [Str "This",Space,Str "document",Space,Str "describes" at line 2079
+[trace] Parsed [Para [Str "The",Space,Str "model",Space,Str "combines:",Sof at line 2084
+[trace] Parsed [Para [Str "The",Space,Str "output",Space,Str "is",Space,Str at line 2086
+[trace] Parsed [Header 2 ("surface-reflectance-model",[],[]) [Str "Surface" at line 2088
+[trace] Parsed [Para [Str "The",Space,Str "bidirectional",Space,Str "reflec at line 2090
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{I}(\\theta_v,\\phi_v)= \ at line 2094
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "\\theta",Space,Str at line 2096
+[trace] Parsed [Para [Str "In",Space,Str "the",Space,Str "FastMAPOL",Space, at line 2098
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{R}(\\theta_s,\\theta_v,\ at line 2111
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "\\mathbf{E}",Space at line 2113
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{E} =\n\\begin{bmatrix}\n at line 2123
+[trace] Parsed [Para [Math InlineMath "\\mathbf{K}_{pol}",Space,Str "is",Sp at line 2125
+[trace] Parsed [RawBlock (Format "html") "<!-- **Questions: why $|\\cos\\th at line 2129
+[trace] Parsed [Header 3 ("scaled-parameter-formulation-training-representa at line 2131
+[trace] Parsed [Para [Str "For",Space,Str "parameter",Space,Str "sampling", at line 2133
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{R}(\\theta_s,\\theta_v,\ at line 2149
+[trace] Parsed [Para [Str "where",SoftBreak,Str "-",Space,Math InlineMath " at line 2153
+[trace] Parsed [Para [Str "The",Space,Str "relationship",Space,Str "to",Spa at line 2155
+[trace] Parsed [Para [Math DisplayMath "\nf_{vol}(\\lambda) = f_{iso}(\\lam at line 2159
+[trace] Parsed [Para [Math DisplayMath "\nf_{geo}(\\lambda) = f_{iso}(\\lam at line 2163
+[trace] Parsed [Header 3 ("parameter-definitions",[],[]) [Str "Parameter",S at line 2165
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 2181
+[trace] Parsed [Header 3 ("geometry-definition",[],[]) [Str "Geometry",Spac at line 2183
+[trace] Parsed [Para [Str "Define",Space,Str "cosine",Space,Str "terms:"]] at line 2185
+[trace] Parsed [Para [Math DisplayMath "\n\\mu_s = \\cos\\theta_s\n"]] at line 2189
+[trace] Parsed [Para [Math DisplayMath "\n\\mu_v = \\cos\\theta_v\n"]] at line 2193
+[trace] Parsed [Para [Str "Sine",Space,Str "terms:"]] at line 2195
+[trace] Parsed [Para [Math DisplayMath "\n\\sin\\theta_s = \\sqrt{1-\\mu_s^ at line 2199
+[trace] Parsed [Para [Math DisplayMath "\n\\sin\\theta_v = \\sqrt{1-\\mu_v^ at line 2203
+[trace] Parsed [Para [Str "Relative",Space,Str "azimuth:"]] at line 2205
+[trace] Parsed [Para [Math DisplayMath "\n\\phi_r = \\phi_v - \\phi_s\n"]] at line 2209
+[trace] Parsed [Header 3 ("rtsos-geometry-convention",[],[]) [Str "RTSOS",S at line 2211
+[trace] Parsed [Para [Str "The",Space,Str "model",Space,Str "follows",Space at line 2213
+[trace] Parsed [Header 4 ("geometry-definitions",[],[]) [Str "Geometry",Spa at line 2215
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 2222
+[trace] Parsed [Header 4 ("scattering-planes",[],[]) [Str "Scattering",Spac at line 2224
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 2229
+[trace] Parsed [Header 4 ("scattering-angle",[],[]) [Str "Scattering",Space at line 2231
+[trace] Parsed [Para [Str "The",Space,Str "scattering",Space,Str "angle",Sp at line 2233
+[trace] Parsed [Para [Math DisplayMath "\n\\cos\\Theta =\n\\mu_s\\mu_v +\n\ at line 2239
+[trace] Parsed [Para [Str "The",Space,Str "phase",Space,Str "angle",Space,S at line 2241
+[trace] Parsed [Para [Math DisplayMath "\n\\Theta_{phase} = \\pi - \\Theta\ at line 2245
+[trace] Parsed [Header 2 ("ross-volumetric-kernel",[],[]) [Str "Ross",Space at line 2247
+[trace] Parsed [Para [Str "The",Space,Str "volumetric",Space,Str "kernel",S at line 2249
+[trace] Parsed [Para [Math DisplayMath "\nK_{vol} =\n\\frac{\\left(\\frac{\ at line 2255
+[trace] Parsed [Para [Str "Reference:",Space,Str "Roujean",Space,Str "et",S at line 2257
+[trace] Parsed [Header 2 ("li-geometric-kernel-li-sparse-r",[],[]) [Str "Li at line 2259
+[trace] Parsed [Para [Str "Define",Space,Str "tangent",Space,Str "terms:"]] at line 2261
+[trace] Parsed [Para [Math DisplayMath "\n|\\tan\\theta_s| = \\frac{\\sqrt{ at line 2265
+[trace] Parsed [Para [Math DisplayMath "\n|\\tan\\theta_v| = \\frac{\\sqrt{ at line 2269
+[trace] Parsed [Para [Str "Projected",Space,Str "angles:"]] at line 2271
+[trace] Parsed [Para [Math DisplayMath "\n\\theta'_s = \\tan^{-1}(B/R \\cdo at line 2275
+[trace] Parsed [Para [Math DisplayMath "\n\\theta'_v = \\tan^{-1}(B/R \\cdo at line 2279
+[trace] Parsed [Table ("",[],[]) (Caption Nothing []) [(AlignDefault,ColWid at line 2283
+[trace] Parsed [Header 3 ("projected-phase-angle",[],[]) [Str "Projected",S at line 2285
+[trace] Parsed [Para [Math DisplayMath "\n\\cos\\xi =\n\\cos\\theta'_s\\cos at line 2291
+[trace] Parsed [Header 3 ("projected-distance",[],[]) [Str "Projected",Spac at line 2293
+[trace] Parsed [Para [Math DisplayMath "\nD =\n\\sqrt{\n\\tan^2\\theta'_s + at line 2302
+[trace] Parsed [Para [Str "Define:"]] at line 2304
+[trace] Parsed [Para [Math DisplayMath "\n\\sec\\theta'_s = \\frac{1}{\\cos at line 2308
+[trace] Parsed [Para [Math DisplayMath "\n\\sec\\theta'_v = \\frac{1}{\\cos at line 2312
+[trace] Parsed [Header 3 ("ancillary-function",[],[]) [Str "Ancillary",Spac at line 2314
+[trace] Parsed [Para [Math DisplayMath "\n\\cos t =\n\\frac{H}{B}\\frac{\n\ at line 2323
+[trace] Parsed [Para [Str "If"]] at line 2325
+[trace] Parsed [Para [Math DisplayMath "\n|\\cos t| > 1\n"]] at line 2329
+[trace] Parsed [Para [Str "then"]] at line 2331
+[trace] Parsed [Para [Math DisplayMath "\nO = 0\n"]] at line 2335
+[trace] Parsed [Para [Str "Otherwise"]] at line 2337
+[trace] Parsed [Para [Math DisplayMath "\nO =\n\\frac{1}{\\pi}(t - \\sin t  at line 2343
+[trace] Parsed [Header 2 ("final-geometric-kernel",[],[]) [Str "Final",Spac at line 2345
+[trace] Parsed [Para [Math DisplayMath "\nK_{geo} = O - \\sec\\theta'_s - \ at line 2349
+[trace] Parsed [Header 2 ("polarized-surface-reflectance-bpdf",[],[]) [Str  at line 2351
+[trace] Parsed [Para [Str "Scattering",Space,Str "angle",Space,Str "have",S at line 2353
+[trace] Parsed [Para [Math DisplayMath "\n\\theta_1 =\\frac{\\pi - \\Theta} at line 2357
+[trace] Parsed [Para [Str "which",Space,Str "also",Space,Str "equivalent",S at line 2359
+[trace] Parsed [Header 3 ("fresnel-reflection",[],[]) [Str "Fresnel",Space, at line 2361
+[trace] Parsed [Para [Str "Let",Space,Str "the",Space,Str "refractive",Spac at line 2363
+[trace] Parsed [Para [Math DisplayMath "\nn = n_r + i n_i\n"]] at line 2367
+[trace] Parsed [Para [Str "Parallel",Space,Str "polarization:"]] at line 2369
+[trace] Parsed [Para [Math DisplayMath "\nr_p =\n\\frac{n^2\\cos\\theta_1 - at line 2375
+[trace] Parsed [Para [Str "Perpendicular",Space,Str "polarization:"]] at line 2377
+[trace] Parsed [Para [Math DisplayMath "\nr_s =\n\\frac{\\cos\\theta_1 - \\ at line 2383
+[trace] Parsed [Para [Strong [Str "Assumption:",Space,Math InlineMath "n =  at line 2385
+[trace] Parsed [Header 3 ("fresnel-mueller-matrix",[],[]) [Str "Fresnel",Sp at line 2387
+[trace] Parsed [Para [Math DisplayMath "\nA = \\frac{1}{2}|r_p|^2\n"]] at line 2391
+[trace] Parsed [Para [Math DisplayMath "\nB = \\frac{1}{2}|r_s|^2\n"]] at line 2395
+[trace] Parsed [Para [Math DisplayMath "\n\\gamma = r_p^* r_s\n"]] at line 2399
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{F} =\n\\begin{bmatrix}\n at line 2409
+[trace] Parsed [Para [Str "Nadir",Space,Str "reflectance",Space,Str "(A+B)" at line 2412
+[trace] Parsed [Header 3 ("polarization-kernel",[],[]) [Str "Polarization", at line 2414
+[trace] Parsed [Para [Str "In",Space,Str "the",Space,Str "current",Space,St at line 2416
+[trace] Parsed [Para [Math DisplayMath "\n\\mathbf{K}_{pol} =\n\\frac{\ne^{ at line 2424
+[trace] Parsed [Para [Str "where",Space,Math InlineMath "\\mathbf{L(i_1)}", at line 2426
+[trace] Parsed [Para [Math DisplayMath "\nv_{fac} = 0.1\n"]] at line 2431
+[trace] Parsed [RawBlock (Format "html") "<!-- This expression is redundant at line 2452
+[trace] Parsed [Para [Str "For",Space,Str "scalar",Space,Str "radiative",Sp at line 2454
+[trace] Parsed [HorizontalRule] at line 2456
+[trace] Parsed [Header 2 ("references",[],[]) [Str "References"]] at line 2458
+[trace] Parsed [Para [Str "Maignan,",Space,Str "F.,",Space,Str "et",Space,S at line 2463
+[trace] Parsed [Para [Str "MODIS",Space,Str "Surface",Space,Str "Reflectanc at line 2466
+[trace] Parsed [Para [Str "Roujean,",Space,Str "J.-L.,",Space,Str "M.Leroy, at line 2468
+[trace] Parsed [Para [Str "Wanner,",Space,Str "W.,",Space,Str "Li,",Space,S at line 2473
+[INFO] Running filter /accounts/mgao1/miniforge3/envs/py3.12_new/share/quarto/filters/main.lua
+[trace] Parsed [Header 2 ("tbl-param-ranges",[],[]) []] at line 4
+[trace] Parsed [Header 2 ("tbl-nn-arch",[],[]) []] at line 4
+[trace] Parsed [Header 2 ("tbl-nn-forward",[],[]) []] at line 4
+[trace] Parsed [Header 2 ("tbl-ad-forward",[],[]) []] at line 4
+[trace] Parsed [Header 2 ("tbl-ad-reverse",[],[]) []] at line 4
+(I) combineFilters: expected Header got Div
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+(I) combineFilters: expected Header got Div
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+(I) combineFilters: expected Header got Div
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+(I) combineFilters: expected Header got Div
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+(I) combineFilters: expected Header got Div
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+(I) combineFilters: expected Header got Div
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+(I) combineFilters: expected Header got Div
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+(I) combineFilters: expected Header got Div
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+(I) combineFilters: expected Header got Div
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+(I) combineFilters: expected Header got Div
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+(I) combineFilters: expected Header got Para
+(I) Exiting filter early. (This is a potential bug in Quarto.)
+[INFO] Completed filter /accounts/mgao1/miniforge3/envs/py3.12_new/share/quarto/filters/main.lua in 2126 ms
+[INFO] Running filter citeproc
+[INFO] Loaded bib/lmfit5.bib from bib/lmfit5.bib
+[INFO] Completed filter citeproc in 340 ms
+[INFO] Not rendering RawInline (Format "html") "<!-- - Derivations of lidar-related quantities, including lidar ratio and depolarization  -->"
+[INFO] Not rendering RawInline (Format "html") "<!-- - Inversion methods connecting bulk aerosol properties to submode representations  -->"
+[INFO] Not rendering RawInline (Format "html") "<!-- - Treatment of aerosol mixing and component partitioning  \n- Pixel-level and correlated uncertainty analysis   -->"
+[INFO] Not rendering RawBlock (Format "html") "<!-- **Questions: why $|\\cos\\theta_s|$ is used here, how $\\mathbf{R}$ is defined?**\n## **I inserted a definition of R to explain the factor $|\\cos\\theta_s|$. pwzhai 03/26/2026 **\n-->"
+[INFO] Not rendering RawInline (Format "html") "<!-- (meaning?) -->"
+[INFO] Not rendering RawInline (Format "html") "<!-- (meaning?) -->"
+[INFO] Not rendering RawBlock (Format "html") "<!-- This expression is redundant with R above. I suggest to delete it\n### Final Surface Mueller Matrix\n  \n$$\n\\mathbf{M} =\n\\left[\nf_{iso}\n+\nf_{vol}K_{vol}\n+\nf_{geo}K_{geo}\n\\right]\n\\mathbf{E}\n+\nB_{pol}\\mathbf{K}_{pol}\n$$\n\n\nNote: The original formulation includes an NDVI factor in $\\mathbf{K}_{pol}$ , which is absorbed into $B_{pol}$ .\n-->"
+[execProcess] Success: true, code: 0
+[1m[34m
+Rendering PDF[39m[22m
+[1m[34mrunning lualatex - 1[39m[22m
+[execProcess] tlmgr --version
+[execProcess] Success: true, code: 0
+[execProcess] tlmgr --version
+[execProcess] Success: true, code: 0
+[execProcess] tlmgr --version
+[execProcess] Success: true, code: 0
+[execProcess] lualatex -interaction=batchmode -halt-on-error index.tex
+[execProcess] Success: true, code: 0
+  This is LuaHBTeX, Version 1.22.0 (TeX Live 2025) 
+   restricted system commands enabled.
+  
+[1m[34mrunning lualatex - 2[39m[22m
+[execProcess] lualatex -interaction=batchmode -halt-on-error index.tex
+[execProcess] Success: true, code: 0
+  This is LuaHBTeX, Version 1.22.0 (TeX Live 2025) 
+   restricted system commands enabled.
+  
+[1m[34mrunning lualatex - 3[39m[22m
+[execProcess] lualatex -interaction=batchmode -halt-on-error index.tex
+[execProcess] Success: true, code: 0
+  This is LuaHBTeX, Version 1.22.0 (TeX Live 2025) 
+   restricted system commands enabled.
+  
+[1m[34mrunning lualatex - 4[39m[22m
+[execProcess] lualatex -interaction=batchmode -halt-on-error index.tex
+[execProcess] Success: true, code: 0
+  This is LuaHBTeX, Version 1.22.0 (TeX Live 2025) 
+   restricted system commands enabled.
+  
+[1m[34mrunning lualatex - 5[39m[22m
+[execProcess] lualatex -interaction=batchmode -halt-on-error index.tex
+[execProcess] Success: true, code: 0
+  This is LuaHBTeX, Version 1.22.0 (TeX Live 2025) 
+   restricted system commands enabled.
+  
+[1m[34mrunning lualatex - 6[39m[22m
+[execProcess] lualatex -interaction=batchmode -halt-on-error index.tex
+[execProcess] Success: true, code: 0
+  This is LuaHBTeX, Version 1.22.0 (TeX Live 2025) 
+   restricted system commands enabled.
+  
+[1m[34mrunning lualatex - 7[39m[22m
+[execProcess] lualatex -interaction=batchmode -halt-on-error index.tex
+[execProcess] Success: true, code: 0
+  This is LuaHBTeX, Version 1.22.0 (TeX Live 2025) 
+   restricted system commands enabled.
+  
+[1m[34mrunning lualatex - 8[39m[22m
+[execProcess] lualatex -interaction=batchmode -halt-on-error index.tex
+[execProcess] Success: true, code: 0
+  This is LuaHBTeX, Version 1.22.0 (TeX Live 2025) 
+   restricted system commands enabled.
+  
+[1m[34mrunning lualatex - 9[39m[22m
+[execProcess] lualatex -interaction=batchmode -halt-on-error index.tex
+[execProcess] Success: true, code: 0
+  This is LuaHBTeX, Version 1.22.0 (TeX Live 2025) 
+   restricted system commands enabled.
+  
+[1m[34mrunning lualatex - 10[39m[22m
+[execProcess] lualatex -interaction=batchmode -halt-on-error index.tex
+[execProcess] Success: true, code: 0
+  This is LuaHBTeX, Version 1.22.0 (TeX Live 2025) 
+   restricted system commands enabled.
+  
+[33mWARN: maximum number of runs (9) reached[39m
+
+[NotebookContext]: Starting Cleanup
+Output created: docs/FastMAPOL-Algorithm-Theoretical-Basis-Document.pdf
+
