@@ -8,9 +8,10 @@ This repository contains the source files for the **FastMAPOL Algorithm Theoreti
 The document is written in **Markdown** and compiled into a structured report (HTML/PDF) using **Quarto**.
 
 
-## Rendered pdf preview:
-pdf: https://oceancolor.gsfc.nasa.gov/fileshare/meng_gao/pace/atbd/_book/FastMAPOL-Algorithm-Theoretical-Basis-Document.pdf
-html (for only internal user): http://localhost:8200/fileshare/meng_gao/pace/atbd/_book/
+## Rendered pdf and web preview:
+
+- **PDF:** [FastMAPOL ATBD (PDF)](https://oceandata.sci.gsfc.nasa.gov/fileshare/meng_gao/pace/atbd/FastMAPOL-Algorithm-Theoretical-Basis-Document.pdf)
+- **Web:** [FastMAPOL ATBD (Web)](https://fastmapol.github.io/mapol-doc/)
 
 ---
 
@@ -28,13 +29,13 @@ The ATBD provides a complete description of these components and their implement
 ---
 
 ## Repository Structure
-
     mapoldoc/
-    ├── atbd/        # build atbd directory with Quarto 
+    ├── atbd/           # atbd setup 
     ├── chapters/       # Chapter files (Markdown)
     ├── figure/         # Figures
-    ├── bib/            # Bibliography files (optional)
+    ├── bib/            # Bibliography file
     ├── logo/           # Logo
+    ├── docs/           # build doc with Quarto
     └── README.md
 
 ---
@@ -83,12 +84,11 @@ Guidelines:
 
 Generate the document using Quarto:
 
-    cd atbd
     quarto render
 
 Output will be located in:
 
-    atbd/_site/
+    docs/
 
 ---
 
@@ -97,7 +97,7 @@ Output will be located in:
 Contributions are welcome.
 
 ### Workflow
-
+0. Clone the repo and create a branch
 1. Edit or add files in `chapters/`
 2. Follow formatting rules (headings, citations, figures)
 3. Keep content clear and scientifically accurate
@@ -105,7 +105,7 @@ Contributions are welcome.
 
         quarto render
 
-5. Submit a pull request
+5. Push the changes, and submit a pull request
 
 ---
 
@@ -132,3 +132,4 @@ Contributions are welcome.
 - Additional chapters (uncertainty, NN model, validation)
 - Expanded bibliography support
 - Automated figure generation and validation tools
+- Automated quarto render with github action (remove /docs in .gitignore)

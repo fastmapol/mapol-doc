@@ -23,7 +23,7 @@ The total inherent optical properties are constructed from the contributions of 
 
 ## Bio-1 Optical Model (Open Ocean)
 
-The **Bio-1 model** is a simplified bio-optical parameterization designed for **open ocean waters (Case-1 waters)**. The model is derived from the generalized Bio-2 model by imposing constraints on its parameters (@Zhai:2015aa, @Zhai:2017aa).
+The **Bio-1 model** is a bio-optical parameterization designed for **open ocean waters (Case-1 waters)** [@Zhai:2015aa; @Zhai:2017aa]. The model can be also derived from the generalized Bio-2 model [@Gao:2018aa] by imposing constraints on its parameters [@Gao:2019bb]
 
 In this model, the optical properties are parameterized primarily as a function of chlorophyll concentration $[Chl\,a]$.
 
@@ -101,7 +101,7 @@ The parameter $B_p$ is assumed to be **spectrally independent** (@Huot:2008aa).
 
 ## Bio-2 Optical Model (Five-Parameter Model)
 
-The **Bio-2 model** describes optically complex coastal waters using a five-parameter parameterization.
+The **Bio-2 model** describes optically complex coastal waters using a five-parameter parameterization [@Gao:2018aa].
 
 The ocean is assumed to be homogeneous with a depth of **200 m** and composed of four optical components:
 
@@ -186,6 +186,6 @@ These inherent optical properties are widely used to describe the ocean color sp
 
 The **Bio-3 model** is a reduced-parameter version of the Bio-2 formulation designed to balance physical realism with retrieval stability.
 
-In this model, a subset of the Bio-2 parameters is retrieved while the remaining parameters are constrained using empirical relationships derived from observations.
+In this model, a subset of the Bio-2 parameters is retrieved while the remaining parameters are constrained using empirical relationships derived from observations [@Hannadige:2023aa; @Aryal:2024aa; @Aryal:2026aa].
 
 *(Details of the Bio-3 parameterization will be described soon.)*
