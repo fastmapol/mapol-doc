@@ -230,7 +230,7 @@ These notebook tutorials are available through the [PACE Help Hub](https://nasa.
 
 ::: {layout-ncol=2}
 
-::: {.column width="60%"}
+::: {.column width="55%"}
 
 FastMAPOL products can also be accessed, explored, and visualized using NASA's Sea, Earth, Atmosphere Data Analysis System ([SeaDAS](https://www.earthdata.nasa.gov/data/tools/seadas)). SeaDAS provides a comprehensive graphical environment for discovering, processing, displaying, analyzing, and performing quality control of satellite-based Earth science data. The software provides several tools for working with HARP2 and SPEXone FastMAPOL L2 and L3 products:
 
@@ -239,17 +239,6 @@ FastMAPOL products can also be accessed, explored, and visualized using NASA's S
 - **OB_CLOUD Data Browser:** Search for data in NASA Earthdata Cloud
 - **OB_CLOUD Subset Tool:** Perform spatial and/or variable subsetting
 
-:::
-
-::: {.column width="40%"}
-
-![SeaDAS tools for browsing and subsetting L2 data](figure/seadas_cloud_search.png){width=100%}
-
-:::
-
-:::
-
-
 **Visualization and Analysis**
 
 - **Band Display:** Display individual geophysical variables and spectral bands
@@ -257,5 +246,15 @@ FastMAPOL products can also be accessed, explored, and visualized using NASA's S
 - **Angular View & Animation:** Examine and animate multi-angle observations and retrieved quantities
 
 Support for PACE polarimeter products in SeaDAS has been provided by Bing Yang and the SeaDAS team.
+
+:::
+
+::: {.column width="45%"}
+
+![SeaDAS tools for browsing and subsetting L2 data](figure/seadas_cloud_search.png){width=100%}
+
+:::
+
+:::
 
 
