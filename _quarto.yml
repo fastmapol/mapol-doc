@@ -17,7 +17,15 @@ keywords:
 atbd-website:
   name: FastMAPOL ATBD
   url: https://fastmapol.github.io/mapol-doc/
-  
+
+# --------------------------------------------------
+# Document metadata
+# --------------------------------------------------
+
+version: "v1.0"
+institution: "NASA Goddard Space Flight Center (GSFC)"
+mission: "PACE"
+
 # --------------------------------------------------
 # Book metadata
 # --------------------------------------------------
@@ -108,13 +116,7 @@ affiliations:
     country: USA
 
 
-# --------------------------------------------------
-# Document metadata
-# --------------------------------------------------
 
-version: "v1.0"
-institution: "NASA Goddard Space Flight Center (GSFC)"
-mission: "PACE"
 
 
 # --------------------------------------------------

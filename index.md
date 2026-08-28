@@ -19,9 +19,9 @@ A web version of this document is available at [{{< meta atbd-website.name >}}](
 
 ## How to Cite {.unnumbered .unlisted}
 
-When using or referring to FastMAPOL, please cite this document as:
+When using or referring to FastMAPOL ATBD, please cite this document as:
 
-> Gao, M., P. Zhai, K. Aryal, K. Knobelspiesse, and B. Franz. *FastMAPOL Algorithm Theoretical Basis Document: Coupled Aerosol, Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry*. NASA Goddard Space Flight Center, Version v1.0, 2026.  [{{< meta atbd-website.name >}}]({{< meta atbd-website.url >}}).
+> Gao, M., P. Zhai, K. Aryal, K. Knobelspiesse, and B. Franz. *FastMAPOL Algorithm Theoretical Basis Document: Coupled Aerosol, Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry*. NASA Goddard Space Flight Center, Version {{< meta version >}}, 2026. <{{< meta atbd-website.url >}}>
 
 Please also cite the relevant peer-reviewed publications when using the algorithm or data products.
 
