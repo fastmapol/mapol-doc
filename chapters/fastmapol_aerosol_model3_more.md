@@ -1,6 +1,5 @@
-# Aerosol Characterization : size distribution and representation
-## More discussions
-### Sensitivity to component volume
+# Aerosol Characterization : More discussions
+## Sensitivity to component volume
 
 To propagate retrieval uncertainty from mode volumes to bulk effective properties, derivatives with respect to $V_j$ are required.
 

@@ -8,7 +8,7 @@ The radiative transfer (RT) model used in this work is the PACE simulator [@Zhai
 
 The forward radiative transfer simulations use atmospheric molecular vertical distributions from the U.S. Standard Atmosphere profile [@Anderson:1986aa], scaled by surface pressure. Absorption by oxygen, water vapor, methane, carbon dioxide, ozone, and nitrogen dioxide is accounted for using line-by-line calculations and the double-k distribution method [@Duan:2005aa; @Zhai:2022aa]. Surface pressure $P_s$ and ozone column density $n_{\mathrm{O}_3}$ are considered as input parameters, with values obtained from the MERRA-2 reanalysis [@Gelaro:2017aa].
 
-More details are provided in @sec-rt-model.
+More details are provided in @sec-rt-model and @sec-rt-shell.
 
 **Aerosol model**
 
@@ -16,7 +16,7 @@ Aerosols are represented by a multi-modal framework that allows independent char
 
 Both fine and coarse modes allow mixtures of spherical and spheroidal particles to account for particle non-sphericity [@Dubovik:2006aa]. The corresponding spherical fractions are represented by $\mathrm{sph}_f$ and $\mathrm{sph}_c$. The aerosol vertical distribution is parameterized by the aerosol layer height ($z_c$), defined as the center of a Gaussian vertical profile describing aerosol number density.
 
-More details are provided in @sec-aerosol-model.
+More details are provided in @sec-aerosol-model, @sec-aerosol-height and @sec-aerosol-component.
 
 **Ocean model**
 
@@ -92,7 +92,7 @@ Additional neural network models are trained to compute AOD and SSA for both fin
 
 : Neural network architectures and associated uncertainties used in FastMAPOL for SPEXone (34 spectral bands). For HARP2 the output bands are 4 with similar structures [@Gao:2023aa]. {#tbl-nn-arch}
 
-More details are provided in @sec-nn-model.
+More details are provided in @sec-nn-model and @sec-nn-ad. 
 
 ## Retrieval and optimization
 
@@ -177,3 +177,9 @@ f(\chi^2,k)
 $$ {#eq-chi2-pdf}
 
 Here, $\chi^2$ is the cost function defined in @eq-cost, $k$ is the number of degrees of freedom (DOF), and $\Gamma(k/2)$ denotes the gamma function [@Gao:2021bb]. Neglecting potential correlations among measurement uncertainties, the DOF can be approximated by the total number of measurements, $N$. More rigorously, the effective DOF depends on the number and information content of the retrieved parameters and can be evaluated using the Jacobian and error covariance matrices [@Gao:2021bb; @Gao:2023bb].
+
+
+## Data screening and uncertainty quantifization
+FastMAPOL incorporates adaptive multi-angle data screening and pixel-level uncertainty quantification to improve retrieval robustness and characterize retrieval confidence. The data-screening approach identifies and removes individual viewing angles that cannot be adequately represented by the forward model, while retaining valid observations from the same pixel whenever sufficient information remains for retrieval. This is particularly important for multi-angle polarimetric observations, where clouds, sunglint, surface heterogeneity, and other scene-dependent effects may affect only a subset of viewing angles. The screening methodology is described in detail in @sec-data-screening.
+
+FastMAPOL also provides a framework for propagating measurement and forward-model uncertainties into the retrieved state parameters and derived geophysical products using the forward-model Jacobian and retrieval covariance matrix. Automatic differentiation enables efficient calculation of the derivatives required for pixel-level uncertainty propagation. The methodology and approaches for evaluating the resulting uncertainty estimates are described in @sec-uq-theory and @sec-uq-correlation when considering data correlations.

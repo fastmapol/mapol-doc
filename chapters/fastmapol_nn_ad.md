@@ -1,10 +1,12 @@
-# Neural Network Forward Model and Analytical Jacobian {#sec-nn-model}
+# Analytical Jacobian through automatic differentiation {#sec-nn-ad}
 
-The MAP retrievals are often computationally expensive due to their high dimensionality and iterative nature, with multiple forward model and Jacobian calculations. The data screening approach developed here further increases the demand for CPU computations because the retrieval must be repeated several times. Therefore, fast forward model and Jacobian matrix calculations are advantageous for efficient processing, which was a motivation for the use of NN forward models for AirHARP in @Gao:2021aa. In this work, we provide the definition of the NN and the use of automatic differentiation to compute the Jacobian matrix analytically, as opposed to numerically through finite differencing, by exploiting the differentiable properties of the NN models. For details on the NN training strategies, please refer to @Gao:2023aa and @Gao:2021aa.
+The MAP retrievals are often computationally expensive due to their high dimensionality and iterative nature, with multiple forward model and Jacobian calculations. The data screening approach developed here further increases the demand for CPU computations because the retrieval must be repeated several times. Therefore, fast forward model and Jacobian matrix calculations are advantageous for efficient processing, which was a motivation for the use of NN forward models for AirHARP in @Gao:2021aa. In this work, we discuss the use of automatic differentiation to compute the Jacobian matrix analytically, as opposed to numerically through finite differencing, by exploiting the differentiable properties of the NN models. For details on the NN and its training strategies, please refer to @sec-nn-model and @Gao:2021aa and @Gao:2023aa.
 
 The NN forward model developed in @Gao:2021aa is a feed-forward neural network as defined in @tbl-nn-forward, where $\mathbf{h}_0=\mathbf{x}$ is the input layer that contains all 15 forward model parameters. Two sets of weight matrices $\mathbf{W}_{p+1}$ and bias vectors $\mathbf{b}_{p+1}$ have been determined from the NN training process for reflectance and DoLP, respectively [@Gao:2021aa; @Gao:2023aa].
 
 Correspondingly, $\mathbf{y}$ is the output layer for either reflectance or DoLP at the four AirHARP bands.
+
+## Mathematical formula of automatic differentiation
 
 For application to multi-angle measurements, the NN needs to be called to simulate $\mathbf{y}$ for each set of viewing and solar geometries for the state vector $\mathbf{x}$. Elements of the Jacobian matrix are defined as follows:
 
@@ -110,3 +112,30 @@ For optimal efficiency, we implemented AD directly based on the formalism summar
 For the NN used in this study, reverse-mode AD provides the highest computational efficiency, as investigated further in the next section.
 
 The AD methods provide an efficient and accurate way to compute the Jacobian matrix, enabling substantial acceleration of retrieval algorithms such as FastMAPOL that involve a large number of state parameters and making them more suitable for practical applications.
+
+
+## Retrieval Efficiency Using Automatic Differentiation
+
+The computational efficiency of FastMAPOL was evaluated using three approaches for calculating the Jacobian matrix: finite differences (FD) with central differencing, forward-mode automatic differentiation (AD), and reverse-mode AD. 
+
+@fig-rt-nn compares the retrieved $\chi^2$ distributions and computational times obtained using the different Jacobian methods in the example for HARP instrument @Gao:2021bb. The three approaches converge to similar $\chi^2$ distributions, indicating that the use of AD does not appreciably affect the retrieval solution. The $\chi^2$ distributions vary with the number of available viewing angles but can be well represented by the theoretical $\chi^2$ distribution with the corresponding degrees of freedom. For reflectance and DoLP observations with the same number of viewing angles $N_v$, the total number of measurements is $N = 2N_v$.
+
+The computational advantage of combining NN forward models with AD is substantial. Retrievals using the conventional radiative transfer model together with FD typically required approximately one hour to converge on a CPU (AMD EPYC processor). Replacing the radiative transfer calculations with NN forward models reduced the average retrieval time to approximately 3 s using the same FD approach .
+
+Using AD further reduced the average CPU retrieval time to approximately 0.6 s with forward-mode AD and 0.3 s with reverse-mode AD, corresponding to an additional speedup of approximately 5--10 relative to the NN-based FD implementation. GPU processing further reduced the retrieval times to approximately 0.08 s and 0.05 s for forward- and reverse-mode AD, respectively.
+
+
+| Forward Model | Jacobian Method | Hardware | Retrieval Time | Approximate Speedup |
+|---|---|---|---:|---:|
+| Radiative transfer | FD (central) | CPU | $\sim$1 h | 1 |
+| Neural network | FD (central) | CPU | $\sim$3 s | $\sim$1,200 |
+| Neural network | AD (forward) | CPU | $\sim$0.6 s | $\sim$6,000 |
+| Neural network | AD (reverse) | CPU | $\sim$0.3 s | $\sim$12,000 |
+| Neural network | AD (forward) | GPU | $\sim$0.08 s | $\sim$45,000 |
+| Neural network | AD (reverse) | GPU | $\sim$0.05 s | $\sim$72,000 |
+
+: Approximate FastMAPOL retrieval times using conventional radiative transfer and NN forward models with finite-difference and automatic-differentiation Jacobians. {#tbl-ad-efficiency}
+
+Among the tested approaches, reverse-mode AD provides the highest computational efficiency. FastMAPOL therefore uses reverse-mode AD as the default method for calculating the Jacobian matrix during retrieval optimization. Further speed up is discussed by the use of cascading NN for first guess and full retrievals @sec-rt-nn.
+
+![Comparison of the retrieved $\chi^2$ distributions and computational times using finite-difference (FD), forward-mode automatic differentiation (AD), and reverse-mode AD methods.](figure/chi2_time.png){#fig-nn-ad width=10cm}
