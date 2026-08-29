@@ -296,7 +296,8 @@ Meng Gao \;(\href{mailto:meng.gao@nasa.gov}{meng.gao@nasa.gov}) \\
 PACE \textperiodcentered\ Polarization \textperiodcentered\ Multi-angle \textperiodcentered\ Aerosol \textperiodcentered\ Ocean
 Color \textperiodcentered\ Deep Learning \\
 \textbf{Website} &
-\href{https://fastmapol.github.io/mapol-doc/}{FastMAPOL ATBD} \\
+%%\href{https://fastmapol.github.io/mapol-doc/}{FastMAPOL ATBD} \\
+\url{https://fastmapol.github.io/mapol-doc/}
 \end{tabular}%
 }%
 }
@@ -868,8 +869,14 @@ FastMAPOL combines physics-based vector radiative transfer with neural
 network (NN) emulators and numerical optimization to achieve both
 physical consistency and computational efficiency, enabling
 operational-scale processing of PACE polarimetric observations. The
-algorithm jointly retrieves aerosol and surface properties and provides
-associated pixel-level uncertainty estimates.
+algorithm jointly retrieves aerosol and surface properties within a
+unified atmosphere-surface framework and supports both ocean
+(\texttt{MAPOL\_OCEAN}) and land (\texttt{MAPOL\_LAND}) retrieval
+product suites.
+
+The same general retrieval framework is applied to HARP2 and SPEXone
+while accounting for their different spectral, angular, and polarimetric
+measurement characteristics.
 
 This chapter provides a high-level overview of the FastMAPOL algorithm,
 retrieval products, product format, and validation. Detailed
@@ -894,18 +901,18 @@ At a high level, FastMAPOL operates through the following steps:
   iterative retrievals.
 \item
   \textbf{Joint optimization:} Aerosol and surface parameters are
-  retrieved simultaneously by minimizing the differences between
-  measured and modeled multi-angle reflectance and degree of linear
-  polarization (DoLP).
+  retrieved simultaneously within prescribed physical bounds by
+  minimizing the differences between measured and modeled multi-angle
+  reflectance and degree of linear polarization (DoLP).
 \item
   \textbf{Adaptive data screening:} Measurements that cannot be
   adequately represented by the forward model, for example because of
   cloud contamination or subpixel heterogeneity, are identified from
   fitting residuals and can be adaptively excluded from subsequent
-  retrieval iterations.
+  retrievals.
 \item
   \textbf{Uncertainty estimation:} Pixel-level retrieval uncertainties
-  are estimated using measurement and forward-model uncertainties
+  can be estimated using measurement and forward-model uncertainties
   together with the Jacobian matrix. Spectral and angular uncertainty
   correlations can also be incorporated into the retrieval framework.
 \item
@@ -915,6 +922,11 @@ At a high level, FastMAPOL operates through the following steps:
   (\(R_{rs}\)) and angular surface reflectance over land (\(\rho_s\)).
   Bidirectional reflectance corrections can further be applied to
   provide standardized surface reflectance products.
+\item
+  \textbf{Quality assessment and product generation:} Retrieval
+  residuals, convergence information, screening results, and other
+  diagnostics are used to characterize retrieval quality and generate
+  quality flags for the final FastMAPOL products.
 \end{enumerate}
 
 The resulting framework exploits the information contained in
@@ -932,12 +944,15 @@ The major features of FastMAPOL include:
   Coupled atmosphere-surface vector radiative transfer using the PACE
   Simulator
 \item
+  Unified ocean and land retrieval framework
+\item
   Cascaded neural network forward-model emulators
 \item
   Analytical Jacobian calculations using automatic differentiation
 \item
-  Nonlinear least-squares optimization for joint aerosol and surface
-  retrieval
+  Bound-constrained nonlinear least-squares optimization
+\item
+  Joint aerosol and surface retrieval
 \item
   Adaptive multi-angle data screening
 \item
@@ -945,8 +960,9 @@ The major features of FastMAPOL include:
 \item
   Treatment of spectral and angular uncertainty correlations
 \item
-  Atmospheric and bidirectional reflectance correction for angular
-  surface reflectance
+  Atmospheric correction and bidirectional reflectance correction
+\item
+  Angular surface reflectance retrieval over ocean and land
 \end{itemize}
 
 \section{Retrieval Products}\label{retrieval-products}
@@ -954,17 +970,24 @@ The major features of FastMAPOL include:
 FastMAPOL retrieval products include aerosol optical and microphysical
 properties, aerosol layer height, ocean bio-optical properties,
 multi-angle remote sensing reflectance over ocean, and surface
-reflectance properties over land. The products also include associated
-retrieval diagnostics and pixel-level uncertainty estimates.
+reflectance properties over land. The products also include retrieval
+diagnostics and quality information.
+
+Pixel-level uncertainty estimation is supported by the FastMAPOL
+retrieval framework and has been demonstrated for PACE test datasets.
+Because of the additional computational cost of uncertainty propagation,
+these uncertainty variables are not included in the current V3 and V4
+operational products and are planned for a future release.
 
 \section{Technical Details}\label{technical-details}
 
 This Algorithm Theoretical Basis Document (ATBD) describes the physical
 basis, radiative transfer models, neural network forward models,
-inversion methodology, uncertainty characterization, data products, and
-validation of FastMAPOL for PACE HARP2 and SPEXone observations.
+inversion methodology, adaptive data screening, uncertainty
+characterization, data products, and validation of FastMAPOL for PACE
+HARP2 and SPEXone observations.
 
-Appendix provide detailed technical descriptions of:
+The appendices provide detailed technical descriptions of:
 
 \begin{itemize}
 \tightlist
@@ -975,8 +998,6 @@ Appendix provide detailed technical descriptions of:
   Neural network forward-model training
 \item
   Analytical NN Jacobian calculation using automatic differentiation
-\item
-  Multi-angle adaptive data screening
 \item
   Pixel-level uncertainty estimation
 \item
@@ -1353,42 +1374,62 @@ The FastMAPOL Level-2 product is designed to support:
 
 \section{File Organization}\label{file-organization}
 
-The FastMAPOL Level-2 file is organized into several top-level groups.
-Each group contains variables associated with a specific component of
-the retrieval system.
+The FastMAPOL Level-2 product is organized into several top-level
+groups. Each group contains variables associated with a specific
+component of the retrieval system.
 
-\begin{longtable}[]{@{}ll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
 \toprule\noalign{}
-Group & Description \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-geolocation\_data & Pixel geolocation information \\
-geophysical\_data & Primary aerosol and ocean retrieval products \\
-diagnostic\_data & Retrieval diagnostics and performance metrics \\
-sensor\_band\_parameters & Instrument spectral and angular parameters \\
-processing\_control & Metadata and algorithm configuration \\
+\texttt{geolocation\_data} & Pixel geolocation information \\
+\texttt{geophysical\_data} & Primary aerosol, ocean, and land retrieval
+products \\
+\texttt{diagnostic\_data} & Retrieval diagnostics and performance
+metrics \\
+\texttt{sensor\_band\_parameters} & Instrument spectral and angular
+parameters \\
+\texttt{processing\_control} & Processing metadata and algorithm
+configuration \\
 \end{longtable}
 
 \subsection{Dimensions}\label{dimensions}
 
 The FastMAPOL Level-2 product uses a set of core dimensions describing
-spatial, spectral, and angular sampling.
+the spatial, spectral, and angular sampling of the observations and
+retrieval products.
 
-\begin{longtable}[]{@{}ll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
 \toprule\noalign{}
-Dimension & Description \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Dimension
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-number\_of\_lines & Number of along-track scan lines \\
-pixels\_per\_line & Number of cross-track pixels \\
-wavelength & Spectral bands used in retrieval \\
-number\_of\_views & Viewing angles used in the retrieval \\
-intensity\_bands\_per\_view & Intensity channels per view \\
-polarization\_bands\_per\_view & Polarization channels per view \\
+\texttt{number\_of\_lines} & Number of along-track scan lines \\
+\texttt{pixels\_per\_line} & Number of cross-track pixels \\
+\texttt{wavelength} & Spectral wavelengths used in the retrieval
+products \\
+\texttt{number\_of\_views} & Number of viewing angles \\
+\texttt{intensity\_bands\_per\_view} & Number of intensity bands per
+viewing angle \\
+\texttt{polarization\_bands\_per\_view} & Number of polarization bands
+per viewing angle \\
 \end{longtable}
 
 \subsection{Instrument Differences}\label{instrument-differences}
@@ -1424,15 +1465,26 @@ for aerosol and surface retrieval.
 
 Group: \texttt{/geolocation\_data}
 
-\begin{longtable}[]{@{}lll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-Variable & Dimensions & Description \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Dimensions
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-latitude & (number\_of\_lines, pixels\_per\_line) & Pixel latitude \\
-longitude & (number\_of\_lines, pixels\_per\_line) & Pixel longitude \\
+\texttt{latitude} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Pixel latitude \\
+\texttt{longitude} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Pixel longitude \\
 \end{longtable}
 
 These variables define the geographic location of each retrieval pixel.
@@ -1447,13 +1499,15 @@ microphysical parameters, and ocean color products retrieved by
 FastMAPOL. Two data suites, MAPOL\_OCEAN and MAPOL\_LAND, are available
 for aerosol over ocean and land, respectively.
 
-\subsection{Aerosol Optical Properties (MAPOL\_OCEAN and
-MAPOL\_LAND)}\label{aerosol-optical-properties-mapol_ocean-and-mapol_land}
+\subsection{Aerosol Optical
+Properties}\label{aerosol-optical-properties}
+
+\textbf{Product suites:} \texttt{MAPOL\_OCEAN} and \texttt{MAPOL\_LAND}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Variable
@@ -1466,37 +1520,43 @@ Description
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-aot & (number\_of\_lines, pixels\_per\_line, wavelength) & Aerosol
+\texttt{aot} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line},
+\texttt{wavelength}) & Aerosol optical depth \\
+\texttt{aot\_fine} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Fine-mode aerosol
 optical depth \\
-aot\_fine & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Fine-mode optical depth \\
-aot\_coarse & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Coarse-mode optical depth \\
-ssa & (number\_of\_lines, pixels\_per\_line, wavelength) & Aerosol
-single scattering albedo \\
-ssa\_fine & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Fine-mode SSA \\
-ssa\_coarse & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Coarse-mode SSA \\
-angstrom\_440\_870 & (number\_of\_lines, pixels\_per\_line) & Ångström
-exponent (440-870 nm) \\
-angstrom\_440\_670 & (number\_of\_lines, pixels\_per\_line) & Ångström
-exponent (440-670 nm) \\
-fmf & (number\_of\_lines, pixels\_per\_line) & Fine-mode optical depth
-fraction \\
+\texttt{aot\_coarse} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Coarse-mode aerosol
+optical depth \\
+\texttt{ssa} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line},
+\texttt{wavelength}) & Aerosol single-scattering albedo \\
+\texttt{ssa\_fine} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Fine-mode
+single-scattering albedo \\
+\texttt{ssa\_coarse} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Coarse-mode
+single-scattering albedo \\
+\texttt{angstrom\_440\_870} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Ångström exponent (440--870 nm) \\
+\texttt{angstrom\_440\_670} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Ångström exponent (440--670 nm) \\
+\texttt{fmf} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Fine-mode aerosol optical depth fraction \\
 \end{longtable}
 
 These parameters describe aerosol optical loading and spectral behavior.
 Note that Ångström exponent (440-870 nm) is only available for HARP2
 data since SPEXone do not have 870nm band.
 
-\subsection{Aerosol Microphysical Properties (MAPOL\_OCEAN and
-MAPOL\_LAND)}\label{aerosol-microphysical-properties-mapol_ocean-and-mapol_land}
+\subsection{Aerosol Microphysical
+Properties}\label{aerosol-microphysical-properties}
+
+\textbf{Product suites:} \texttt{MAPOL\_OCEAN} and \texttt{MAPOL\_LAND}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Variable
@@ -1509,51 +1569,57 @@ Description
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-reff\_fine & (number\_of\_lines, pixels\_per\_line) & Fine-mode
-effective radius \\
-reff\_coarse & (number\_of\_lines, pixels\_per\_line) & Coarse-mode
-effective radius \\
-veff\_fine & (number\_of\_lines, pixels\_per\_line) & Fine-mode
-effective variance \\
-veff\_coarse & (number\_of\_lines, pixels\_per\_line) & Coarse-mode
-effective variance \\
-mr\_fine & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Fine-mode Real refractive index \\
-mr\_coarse & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Coarse-mode Real refractive index \\
-mr & (number\_of\_lines, pixels\_per\_line, wavelength) & Mode-average
-Real refractive index \\
-mi\_fine & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Fine-mode Imaginary refractive index \\
-mi\_coarse & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Coarse-mode Imaginary refractive index \\
-mi & (number\_of\_lines, pixels\_per\_line, wavelength) & Mode-average
-Imaginary refractive index \\
-sph\_fine & (number\_of\_lines, pixels\_per\_line) & Fine-mode Spherical
-particle fraction \\
-sph\_coarse & (number\_of\_lines, pixels\_per\_line) & Coarse-mode
-Spherical particle fraction \\
-sph & (number\_of\_lines, pixels\_per\_line) & Volum-average Spherical
-particle fraction \\
-vd\_fine & (number\_of\_lines, pixels\_per\_line) & Fine-mode volume
-density \\
-vd\_coarse & (number\_of\_lines, pixels\_per\_line) & Coarse-mode volume
-density \\
-fvf & (number\_of\_lines, pixels\_per\_line) & Fine-mode volume
-fraction \\
-alh & (number\_of\_lines, pixels\_per\_line) & Aerosol layer height \\
+\texttt{reff\_fine} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Fine-mode effective radius \\
+\texttt{reff\_coarse} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Coarse-mode effective radius \\
+\texttt{veff\_fine} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Fine-mode effective variance \\
+\texttt{veff\_coarse} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Coarse-mode effective variance \\
+\texttt{mr\_fine} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Fine-mode real
+refractive index \\
+\texttt{mr\_coarse} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Coarse-mode real
+refractive index \\
+\texttt{mr} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line},
+\texttt{wavelength}) & Mode-averaged real refractive index \\
+\texttt{mi\_fine} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Fine-mode imaginary
+refractive index \\
+\texttt{mi\_coarse} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Coarse-mode imaginary
+refractive index \\
+\texttt{mi} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line},
+\texttt{wavelength}) & Mode-averaged imaginary refractive index \\
+\texttt{sph\_fine} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Fine-mode spherical particle fraction \\
+\texttt{sph\_coarse} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Coarse-mode spherical particle fraction \\
+\texttt{sph} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Volume-averaged spherical particle fraction \\
+\texttt{vd\_fine} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Fine-mode aerosol volume density \\
+\texttt{vd\_coarse} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Coarse-mode aerosol volume density \\
+\texttt{fvf} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Fine-mode volume fraction \\
+\texttt{alh} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Aerosol layer height \\
 \end{longtable}
 
 These variables constrain aerosol particle size distribution,
 composition, and shape.
 
-\subsection{Ocean Products
-(MAPOL\_OCEAN)}\label{ocean-products-mapol_ocean}
+\subsection{Ocean Products}\label{ocean-products}
+
+\textbf{Product suites:} \texttt{MAPOL\_OCEAN}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Variable
@@ -1566,25 +1632,46 @@ Description
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Rrs\_angular & (number\_of\_lines, pixels\_per\_line, wavelength,
-number\_of\_views) & Angular remote sensing reflectance before BRDF
-correction \\
-Rrs\_nadir & (number\_of\_lines, pixels\_per\_line, wavelength,
-number\_of\_views) & Nadir adjusted remote sensing reflectance after
-BRDF correction \\
-Rrs\_angular\_mean & (number\_of\_lines, pixels\_per\_line, wavelength)
-& Angular mean of Rrs\_angular \\
-Rrs\_angular\_std & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Angular standard deviation of Rrs\_angular \\
-Rrs\_nadir\_mean & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Angular mean of Rrs\_nadir \\
-Rrs\_nadir\_std & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Angular standard deviation of Rrs\_nadir \\
-wind\_speed & (number\_of\_lines, pixels\_per\_line) & Surface wind
-speed \\
-chla & (number\_of\_lines, pixels\_per\_line) & Chlorophyll-a
-concentration \\
+\texttt{Rrs\_angular} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{number\_of\_views},
+\texttt{intensity\_bands\_per\_view}) & Angular remote sensing
+reflectance before bidirectional reflectance correction \\
+\texttt{Rrs\_nadir} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{number\_of\_views},
+\texttt{intensity\_bands\_per\_view}) & Nadir-adjusted remote sensing
+reflectance after bidirectional reflectance correction \\
+\texttt{Rrs\_angular\_mean} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Mean of
+\texttt{Rrs\_angular} over viewing angles \\
+\texttt{Rrs\_angular\_std} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Standard deviation of
+\texttt{Rrs\_angular} over viewing angles \\
+\texttt{Rrs\_nadir\_mean} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Mean of
+\texttt{Rrs\_nadir} over viewing angles \\
+\texttt{Rrs\_nadir\_std} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Standard deviation of
+\texttt{Rrs\_nadir} over viewing angles \\
+\texttt{wind\_speed} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Retrieved ocean surface wind speed \\
+\texttt{chla} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Retrieved chlorophyll-\emph{a} concentration \\
 \end{longtable}
+
+The dimensions of the angular reflectance products depend on the PACE
+polarimeter. Example dimensions are:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{SPEXone:} \texttt{number\_of\_lines\ =\ 395},
+  \texttt{pixels\_per\_line\ =\ 29}, \texttt{number\_of\_views\ =\ 5},
+  and \texttt{intensity\_bands\_per\_view\ =\ 34}.
+\item
+  \textbf{HARP2:} \texttt{number\_of\_lines\ =\ 395},
+  \texttt{pixels\_per\_line\ =\ 519}, \texttt{number\_of\_views\ =\ 90},
+  and \texttt{intensity\_bands\_per\_view\ =\ 1}.
+\end{itemize}
 
 The remote sensing reflectance represents ocean-leaving reflectance
 after atmospheric correction. To compare with AERONET OC or other
@@ -1595,13 +1682,14 @@ Note that V3 data contains \textbf{Rrs1} and \textbf{Rrs2}, which are
 renmaed as \textbf{Rrs\_angular} and \textbf{Rrs\_nadir} in current V4
 data.
 
-\subsection{Land surface product
-(MAPOL\_LAND)}\label{land-surface-product-mapol_land}
+\subsection{Land surface product}\label{land-surface-product}
+
+\textbf{Product suites:} \texttt{MAPOL\_LAND}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Variable
@@ -1614,20 +1702,26 @@ Description
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-rhos\_angular & (number\_of\_lines, pixels\_per\_line, wavelength,
-number\_of\_views) & Angular land surface reflectance before BRDF
-correction \\
-rhos\_nadir & (number\_of\_lines, pixels\_per\_line, wavelength,
-number\_of\_views) & Nadir adjusted land surface reflectance after BRDF
-correction \\
-rhos\_angular\_mean & (number\_of\_lines, pixels\_per\_line, wavelength)
-& Angular mean of rhos\_angular \\
-rhos\_angular\_std & (number\_of\_lines, pixels\_per\_line, wavelength)
-& Angular standard deviation of rhos\_angular \\
-rhos\_nadir\_mean & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Angular mean of rhos\_nadir \\
-rhos\_nadir\_std & (number\_of\_lines, pixels\_per\_line, wavelength) &
-Angular standard deviation of rhos\_nadir \\
+\texttt{rhos\_angular} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{number\_of\_views},
+\texttt{intensity\_bands\_per\_view}) & Angular land surface reflectance
+before bidirectional reflectance correction \\
+\texttt{rhos\_nadir} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{number\_of\_views},
+\texttt{intensity\_bands\_per\_view}) & Nadir-adjusted land surface
+reflectance after bidirectional reflectance correction \\
+\texttt{rhos\_angular\_mean} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Mean of
+\texttt{rhos\_angular} over viewing angles \\
+\texttt{rhos\_angular\_std} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Standard deviation of
+\texttt{rhos\_angular} over viewing angles \\
+\texttt{rhos\_nadir\_mean} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Mean of
+\texttt{rhos\_nadir} over viewing angles \\
+\texttt{rhos\_nadir\_std} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Standard deviation of
+\texttt{rhos\_nadir} over viewing angles \\
 \end{longtable}
 
 The land surface reflectance represents reflectance after atmospheric
@@ -1636,14 +1730,16 @@ variable rhos\_nadir\_mean is suggested to use.
 
 \section{Diagnostic Data}\label{diagnostic-data}
 
+\textbf{Product suites:} \texttt{MAPOL\_OCEAN} and \texttt{MAPOL\_LAND}
+
 Group: \texttt{/diagnostic\_data}
 
 These variables describe retrieval convergence and performance.
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Variable
@@ -1656,24 +1752,28 @@ Description
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-chi2 & (number\_of\_lines, pixels\_per\_line) & Retrieval cost
-function \\
-chi2\_first\_guess & (number\_of\_lines, pixels\_per\_line) & Cost
-function at first guess \\
-nv\_ref & (number\_of\_lines, pixels\_per\_line) & Number of reflectance
-measurements used \\
-nv\_dolp & (number\_of\_lines, pixels\_per\_line) & Number of
-polarization measurements used \\
-nfev & (number\_of\_lines, pixels\_per\_line) & Number of forward model
-evaluations \\
-njev & (number\_of\_lines, pixels\_per\_line) & Number of Jacobian
-evaluations \\
-timing & (number\_of\_lines, pixels\_per\_line) & Retrieval runtime \\
-quality\_flag & (number\_of\_lines, pixels\_per\_line) & Retrieval
-quality indicator \\
-ozone & (number\_of\_lines, pixels\_per\_line) & Total column ozone \\
-surface\_pressure & (number\_of\_lines, pixels\_per\_line) & Surface
-pressure \\
+\texttt{chi2} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Retrieval cost function \\
+\texttt{chi2\_first\_guess} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Cost function at the initial state \\
+\texttt{nv\_ref} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Number of reflectance measurements used in
+the retrieval \\
+\texttt{nv\_dolp} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Number of DoLP measurements used in the
+retrieval \\
+\texttt{nfev} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Number of forward-model evaluations \\
+\texttt{njev} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Number of Jacobian evaluations \\
+\texttt{timing} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Retrieval runtime \\
+\texttt{quality\_flag} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Retrieval quality indicator \\
+\texttt{ozone} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Total column ozone \\
+\texttt{surface\_pressure} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Surface pressure \\
 \end{longtable}
 
 \subsection{Retrieval Quality Metrics}\label{retrieval-quality-metrics}
@@ -1714,9 +1814,9 @@ quality\_flag & Description \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-0 & highest retrieval quality \\
-1 & good retrieval quality \\
-\textgreater1 & reduced quality \\
+\texttt{0} & highest retrieval quality \\
+\texttt{1} & good retrieval quality \\
+\texttt{\textgreater{}1} & reduced quality \\
 \end{longtable}
 
 The quality flag is determined from combinations of:
@@ -1731,15 +1831,18 @@ The quality flag is determined from combinations of:
   number of polarization measurements.
 \end{itemize}
 
-\subsection{Measurement Screening
-Masks}\label{measurement-screening-masks}
+\subsection{Angular Measurement Screening
+Masks}\label{angular-measurement-screening-masks}
 
-FastMAPOL performs adaptive measurement screening during the inversion.
+\textbf{Product suites:} \texttt{MAPOL\_OCEAN} and \texttt{MAPOL\_LAND}
+
+FastMAPOL performs adaptive measurement screening during the retrieval
+to identify measurements excluded from the inversion.
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2778}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3611}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Variable
@@ -1752,13 +1855,17 @@ Description
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-mask\_ref & (number\_of\_lines, pixels\_per\_line, number\_of\_views,
-intensity\_bands\_per\_view) & Reflectance measurement mask \\
-mask\_dolp & (number\_of\_lines, pixels\_per\_line, number\_of\_views,
-polarization\_bands\_per\_view) & Polarization measurement mask \\
+\texttt{mask\_ref} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{number\_of\_views},
+\texttt{intensity\_bands\_per\_view}) & Reflectance measurement
+screening mask \\
+\texttt{mask\_dolp} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{number\_of\_views},
+\texttt{polarization\_bands\_per\_view}) & DoLP measurement screening
+mask \\
 \end{longtable}
 
-Mask interpretation:
+The screening masks are interpreted as follows:
 
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
@@ -1767,26 +1874,41 @@ Value & Meaning \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-0 & measurement used in retrieval \\
-1 or NaN & measurement excluded from retrieval \\
+\texttt{0} & Measurement used in the retrieval \\
+\texttt{1} or \texttt{NaN} & Measurement excluded from the retrieval \\
 \end{longtable}
 
-These masks allow users to evaluate measurement quality at each viewing
-angle.
+These masks allow users to identify the measurements retained or
+excluded at each viewing angle and wavelength.
 
 \section{Sensor Band Parameters}\label{sensor-band-parameters}
 
-Group: \texttt{/sensor\_band\_parameters}
+\textbf{Product suites:} \texttt{MAPOL\_OCEAN} and \texttt{MAPOL\_LAND}
 
-\begin{longtable}[]{@{}lll@{}}
+\textbf{Group:} \texttt{/sensor\_band\_parameters}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-Variable & Dimensions & Description \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Dimensions
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-wavelength & (wavelength) & Retrieval wavelengths \\
-sensor\_view\_angle & (number\_of\_views) & Viewing angle geometry \\
+\texttt{wavelength} & (\texttt{wavelength}) & Retrieval wavelengths \\
+\texttt{sensor\_view\_angle} & (\texttt{number\_of\_views}) & Sensor
+viewing angles \\
+\texttt{intensity\_wavelength} & (\texttt{number\_of\_views},
+\texttt{intensity\_bands\_per\_view}) & Intensity field center
+wavelengths at each view \\
 \end{longtable}
 
 \bookmarksetup{startatroot}
@@ -3249,8 +3371,7 @@ methods.}
 
 \end{figure}%
 
-\chapter{Uncertainty Quantification: Theory and
-Validation}\label{sec-uq-theory}
+\chapter{Uncertainty Quantification: Theory}\label{sec-uq-theory}
 
 The uncertainty framework propagates uncertainties associated with the
 measurements and forward model through the retrieval based on the
@@ -5919,8 +6040,8 @@ al. 2023}; \citeproc{ref-Aryal:2024aa}{Aryal et al. 2024},
 
 \emph{(Details of the Bio-3 parameterization will be described soon.)}
 
-\chapter{Multi-angle Ocean Color
-Product}\label{multi-angle-ocean-color-product}
+\chapter{Ocean: Multi-angle Atmospheric
+Correction}\label{ocean-multi-angle-atmospheric-correction}
 
 Ocean color signals are often represented by the remote sensing
 reflectance, \(R_{rs}(\lambda;\theta_0, \theta_v, \phi_v)\), which is
@@ -6370,6 +6491,38 @@ O =
 K_{geo} = O - \sec\theta'_s - \sec\theta'_v + \frac{1}{2}(1+\cos\xi) \\, \sec\theta'_s \\,  \sec\theta'_v
 \]
 
+\section{White-Sky Albedo}\label{white-sky-albedo}
+
+The \textbf{white-sky albedo (WSA)}, also referred to as the
+bihemispherical reflectance, represents the surface albedo under
+completely diffuse illumination. For the RossThick--LiSparse-Reciprocal
+BRDF model, WSA can be derived directly from the three BRDF kernel
+coefficients (\citeproc{ref-Strahler:1999aa}{Strahler et al. 1999}). In
+the FastMAPOL MAPOL\_LAND product suite, this quantity is reported as
+\texttt{land\_white\_sky\_albedo}.
+
+\begin{equation}\phantomsection\label{eq-white-sky-albedo}{
+\alpha_{\mathrm{WSA}}
+=
+f_{\mathrm{iso}}
++
+0.189184\,f_{\mathrm{vol}}
+-
+1.377622\,f_{\mathrm{geo}},
+}\end{equation}
+
+where \(f_{\mathrm{iso}}\), \(f_{\mathrm{vol}}\), and
+\(f_{\mathrm{geo}}\) are the isotropic, volumetric-scattering, and
+geometric-optical kernel coefficients, respectively. The numerical
+factors represent the hemispherical integrals of the corresponding
+Ross--Li kernels.
+
+Unlike black-sky albedo, which depends on the solar zenith angle,
+white-sky albedo is integrated over all illumination directions and
+therefore does not depend on a specific solar geometry. In FastMAPOL,
+WSA provides a compact quantity for characterizing the overall surface
+reflectance represented by the retrieved Ross--Li BRDF parameters.
+
 \section{Polarized Surface Reflectance
 (BPDF)}\label{polarized-surface-reflectance-bpdf}
 
@@ -6460,38 +6613,6 @@ v_{fac} = 0.1
 \]
 
 For scalar radiative transfer simulations, only \(R_{11}\) is used.
-
-\section{White-Sky Albedo}\label{white-sky-albedo}
-
-The \textbf{white-sky albedo (WSA)}, also referred to as the
-bihemispherical reflectance, represents the surface albedo under
-completely diffuse illumination. For the RossThick--LiSparse-Reciprocal
-BRDF model, WSA can be derived directly from the three BRDF kernel
-coefficients (\citeproc{ref-Strahler:1999aa}{Strahler et al. 1999}). In
-the FastMAPOL MAPOL\_LAND product suite, this quantity is reported as
-\texttt{land\_white\_sky\_albedo}.
-
-\begin{equation}\phantomsection\label{eq-white-sky-albedo}{
-\alpha_{\mathrm{WSA}}
-=
-f_{\mathrm{iso}}
-+
-0.189184\,f_{\mathrm{vol}}
--
-1.377622\,f_{\mathrm{geo}},
-}\end{equation}
-
-where \(f_{\mathrm{iso}}\), \(f_{\mathrm{vol}}\), and
-\(f_{\mathrm{geo}}\) are the isotropic, volumetric-scattering, and
-geometric-optical kernel coefficients, respectively. The numerical
-factors represent the hemispherical integrals of the corresponding
-Ross--Li kernels.
-
-Unlike black-sky albedo, which depends on the solar zenith angle,
-white-sky albedo is integrated over all illumination directions and
-therefore does not depend on a specific solar geometry. In FastMAPOL,
-WSA provides a compact quantity for characterizing the overall surface
-reflectance represented by the retrieved Ross--Li BRDF parameters.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
