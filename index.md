@@ -15,7 +15,7 @@ A web version of this document is available at [{{< meta atbd-website.name >}}](
 | **Mission** | PACE |
 | **Point of Contact** | Meng Gao ([meng.gao@nasa.gov](mailto:meng.gao@nasa.gov)) |
 | **Keywords** | PACE · Polarimeter · FastMAPOL · Aerosol · Ocean · Land |
-| **Website** | [{{< meta atbd-website.name >}}]({{< meta atbd-website.url >}}) |
+| **Website** | [{{< meta atbd-website.url >}}]({{< meta atbd-website.url >}}) |
 
 ## How to Cite {.unnumbered .unlisted}
 
