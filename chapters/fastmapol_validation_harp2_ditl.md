@@ -1,4 +1,4 @@
-# HARP2 L2 Aerosol and Ocean Product Validation with DITL data
+# HARP2 L2 Validation (DITL)
 
 ## Overview
 

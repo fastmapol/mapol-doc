@@ -1,4 +1,4 @@
-# SPEXone Aerosol and Ocean Product Validation (V3)
+# SPEXone L2 Validation (V3)
 
 This page summarizes validation results for aerosol and ocean products retrieved from the PACE multi-angle polarimeters using the **FastMAPOL** algorithm, with emphasis on **SPEXone** aerosol optical properties and ocean remote-sensing reflectance ($R_{rs}$).
 

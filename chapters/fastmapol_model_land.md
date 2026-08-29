@@ -102,7 +102,7 @@ $$
 | $k_{geo}$ | scaled geometric scattering coefficient |
 | $B_{pol}$ | polarization scaling parameter |
 
-
+Here, the retrieved $f_{\mathrm{iso}}$, $k_{\mathrm{vol}}$, $k_{\mathrm{geo}}$, and $B_{\mathrm{pol}}$ parameters are reported in the product file as `land_fiso`, `land_kvol`, `land_kgeo`, and `land_bp`, respectively.
 
 ### Geometry Definition
 
@@ -170,15 +170,13 @@ $$
 
 ## Ross Volumetric Kernel
 
-The volumetric kernel represents multiple scattering within vegetation canopies.
+The volumetric kernel represents multiple scattering within vegetation canopies [@Roujean:1992aa; Wanner@1995aa; Strahler:1999aa)]. 
 
 $$
 K_{vol} =
 \frac{\left(\frac{\pi}{2}-\Theta_{phase}\right)\cos\Theta_{phase} + \sin\Theta_{phase}}
 {|\mu_s| + |\mu_v|}-\frac{\pi}{4}
 $$
-
-Reference: Roujean et al. (1992), JGR Atmosphere; Wanner et al. (1995), JGR.
 
 ## Li Geometric Kernel (Li-Sparse-R)
 
@@ -337,7 +335,7 @@ Brewster angle can be observed at the maximum of Abs(A-B)/(A+B).
 
 ### Polarization Kernel
 
-In the current framework, we adopt the polarized Kernel based on Maignan et al., (2009):
+In the current framework, we adopt the polarized Kernel based on @Maignan:2009aa :
 
 $$
 \mathbf{K}_{pol} =
@@ -377,20 +375,21 @@ Note: The original formulation includes an NDVI factor in $\mathbf{K}_{pol}$ , w
 
 For scalar radiative transfer simulations, only $R_{11}$ is used.
 
----
 
-## References
+## White-Sky Albedo
 
-Maignan, F., et al., (2009)
-*Polarized reflectances of natural surfaces: Spaceborne measurements and analytical modeling.*
-Remote Sensing of Environment, Volume 113, Issue 12, Pages 2642-2650,
-https://doi.org/10.1016/j.rse.2009.07.022.
+The **white-sky albedo (WSA)**, also referred to as the bihemispherical reflectance, represents the surface albedo under completely diffuse illumination. For the RossThick–LiSparse-Reciprocal BRDF model, WSA can be derived directly from the three BRDF kernel coefficients [@Strahler:1999aa]. In the FastMAPOL MAPOL_LAND product suite, this quantity is reported as `land_white_sky_albedo`.
 
-MODIS Surface Reflectance ATBD  
-https://modis.gsfc.nasa.gov/data/atbd/atbd_mod09.pdf
+$$
+\alpha_{\mathrm{WSA}}
+=
+f_{\mathrm{iso}}
++
+0.189184\,f_{\mathrm{vol}}
+-
+1.377622\,f_{\mathrm{geo}},
+$$ {#eq-white-sky-albedo}
 
-Roujean, J.-L., M.Leroy, and P.-Y.Deschamps (1992), A bidirectional reflectance model of the Earth's surface for the correction of remote sensing data, J. Geophys. Res., 97(D18), 20455–20468, doi:10.1029/92JD01411.
+where $f_{\mathrm{iso}}$, $f_{\mathrm{vol}}$, and $f_{\mathrm{geo}}$ are the isotropic, volumetric-scattering, and geometric-optical kernel coefficients, respectively. The numerical factors represent the hemispherical integrals of the corresponding Ross–Li kernels.
 
-Wanner, W., Li, X., & Strahler, A. (1995)  
-*On the derivation of kernels for kernel-driven BRDF models.*  
-Journal of Geophysical Research.
+Unlike black-sky albedo, which depends on the solar zenith angle, white-sky albedo is integrated over all illumination directions and therefore does not depend on a specific solar geometry. In FastMAPOL, WSA provides a compact quantity for characterizing the overall surface reflectance represented by the retrieved Ross–Li BRDF parameters.

@@ -1,4 +1,4 @@
-# HARP2 Aerosol, OCEAN and LAND Product Validation (V4)
+# HARP2 L2 Validation (V4)
 
 This page summarizes validation results for aerosol and surface products retrieved from the PACE multi-angle polarimeters using the **FastMAPOL** algorithm, with emphasis on **HARP2** aerosol optical properties, ocean remote-sensing reflectance ($R_{rs}$) and land surface reflectance ($\rho_s$).
 

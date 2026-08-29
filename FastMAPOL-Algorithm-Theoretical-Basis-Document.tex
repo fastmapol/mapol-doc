@@ -2257,8 +2257,8 @@ reference frame but are not shown.}
 
 \chapter{Retrieval Algorithm: Inversion}\label{sec-retrieval-inversion}
 
-FastMAPOL solves the retrieval as a constrained nonlinear least-squares
-optimization problem. The cost function is defined in
+FastMAPOL formulates the retrieval as a constrained nonlinear
+least-squares optimization problem. The cost function is defined in
 Chapter~\ref{sec-retrieval} and is restated here for completeness:
 
 \[
@@ -2273,17 +2273,41 @@ Chapter~\ref{sec-retrieval} and is restated here for completeness:
 \right].
 \]
 
-The state vector \({\mathbf x}\) contains the aerosol and surface
-parameters appropriate for the selected FastMAPOL retrieval
-configuration. Each parameter is constrained to a physically meaningful
-range during the inversion.
+Here, \(\rho_t^f\) and \(P_t^f\) are the NN forward-model predictions of
+reflectance and DoLP, respectively. The state vector \(\mathbf{x}\)
+contains the aerosol and surface parameters for the selected FastMAPOL
+retrieval configuration, with each parameter constrained to a physically
+meaningful range.
+
+The cost function can equivalently be written in matrix form as
+
+\begin{equation}\phantomsection\label{eq-uq-cost}{
+\chi^2
+=
+\frac{1}{N}
+\left[
+\mathbf{F}(\mathbf{x})-\mathbf{m}
+\right]^T
+\mathbf{S}_{\epsilon}^{-1}
+\left[
+\mathbf{F}(\mathbf{x})-\mathbf{m}
+\right],
+}\end{equation}
+
+where \(\mathbf{m}\) is the measurement vector containing reflectance
+and DoLP observations from the available wavelengths and viewing angles,
+\(\mathbf{F}(\mathbf{x})\) is the corresponding forward-model
+calculation, \(N\) is the total number of measurements, and
+\(\mathbf{S}_{\epsilon}\) is the measurement and forward-model error
+covariance matrix.
 
 \section{Measurement and Forward-Model
 Uncertainties}\label{measurement-and-forward-model-uncertainties}
 
-The reflectance and DoLP uncertainties used to weight the cost function
-include contributions from instrument uncertainty, NN forward-model
-uncertainty, and radiative transfer simulation uncertainty:
+The uncertainties used to weight the cost function account for
+contributions from the instrument, NN forward-model approximation, and
+numerical accuracy of the radiative transfer (RT) simulations used to
+generate the NN training data. For reflectance and DoLP, respectively,
 
 \begin{equation}\phantomsection\label{eq-sigma-rho}{
 \sigma_\rho^2
@@ -2307,63 +2331,118 @@ and
 \sigma_{P,\mathrm{RT}}^2.
 }\end{equation}
 
+Here, \(\sigma_{\mathrm{ins}}\) represents the instrument measurement
+uncertainty, \(\sigma_{\mathrm{NN}}\) represents the uncertainty
+introduced by the NN approximation of the forward model, and
+\(\sigma_{\mathrm{RT}}\) represents the numerical uncertainty of the RT
+calculations.
+
 The NN forward-model uncertainties are determined during NN training and
 evaluation (\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021};
 \citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}), with the current
 NN architectures and associated uncertainties summarized in
-Table~\ref{tbl-nn-arch}. At present, these uncertainties are assumed to
-be spectrally and angularly uncorrelated.
+Table~\ref{tbl-nn-arch}. In the current implementation, the
+uncertainties are assumed to be spectrally and angularly uncorrelated,
+such that \(\mathbf{S}_{\epsilon}\) is diagonal.
 
 \section{Nonlinear Least-Squares
 Optimization}\label{nonlinear-least-squares-optimization}
 
-FastMAPOL uses the \textbf{Trust Region Reflective (TRF)} nonlinear
-least-squares algorithm implemented in SciPy
-(\citeproc{ref-Branch:1999aa}{Branch, Coleman, and Li 1999};
-\citeproc{ref-SciPy:2020aa}{P. Virtanen et al. 2020}). The algorithm
-iteratively updates the state vector while enforcing the prescribed
-parameter bounds.
+As discussed in M. Gao et al. (\citeproc{ref-Gao:2021aa}{2021}), to
+minimize the cost function, FastMAPOL uses the \textbf{Subspace
+Trust-Region Interior Reflective (STIR)} method
+(\citeproc{ref-Branch:1999aa}{Branch, Coleman, and Li 1999}),
+implemented as the \textbf{Trust Region Reflective (TRF)} nonlinear
+least-squares algorithm in the Python SciPy package
+(\citeproc{ref-SciPy:2020aa}{P. Virtanen et al. 2020}). The method
+iteratively solves for the state vector \(\mathbf{x}\) while enforcing
+prescribed lower and upper bounds on the retrieved parameters.
 
-At iteration \(j\), the NN forward model evaluates the simulated
-measurements for the current state vector \({\mathbf x}_j\). The
+STIR belongs to the family of trust-region least-squares methods and is
+closely related to the Levenberg--Marquardt approach
+(\citeproc{ref-More:1978aa}{Moré 1978}), while extending the
+optimization to efficiently handle bound-constrained problems. The
+method provides good numerical stability near parameter boundaries,
+which is particularly important for FastMAPOL because many aerosol and
+surface parameters are restricted to physically meaningful or
+model-defined ranges.
+
+The name \textbf{STIR} summarizes several key features of the
+optimization:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Subspace (S):} the optimization step can be determined within
+  a reduced-dimensional subspace, improving computational efficiency for
+  large optimization problems.
+\item
+  \textbf{Trust Region (T):} the nonlinear cost function is locally
+  approximated using the residuals and Jacobian, and the state-vector
+  update is restricted to a region where this local approximation is
+  considered reliable.
+\item
+  \textbf{Interior (I):} the optimization maintains the state parameters
+  within their prescribed bounds and uses their distances from the
+  bounds in scaling the optimization problem.
+\item
+  \textbf{Reflective (R):} reflected search directions are considered
+  near parameter boundaries, allowing the optimization to continue
+  efficiently within the feasible parameter space.
+\end{itemize}
+
+At each FastMAPOL iteration, the NN forward model calculates the
+simulated measurements and residuals for the current state vector. The
 Jacobian matrix,
 
 \begin{equation}\phantomsection\label{eq-retrieval-jacobian}{
-K_{mn}
+K_{ij}
 =
-\frac{\partial F_m}{\partial x_n},
+\frac{\partial F_i}{\partial x_j},
 }\end{equation}
 
-describes the sensitivity of each modeled measurement to each state
-parameter and is calculated efficiently through automatic
-differentiation.
+provides the sensitivity of each modeled measurement \(F_i\) to each
+retrieved state parameter \(x_j\).
 
-The forward-model residuals and Jacobian are supplied to the nonlinear
-least-squares optimizer to determine the next update of the state
-vector. This process is repeated until convergence or until the maximum
-allowed number of iterations is reached.
+The forward operation of the NN is defined in
+Appendix~\ref{sec-nn-model}. During the forward pass, the intermediate
+values at each NN layer are stored and subsequently used to calculate
+the Jacobian through either forward-mode automatic differentiation
+(Table~\ref{tbl-ad-forward}) or reverse-mode automatic differentiation
+(backpropagation; Table~\ref{tbl-ad-reverse}).
+
+The residuals and Jacobian are supplied to the TRF optimizer to
+determine the next update of the state vector. This process is repeated
+until the convergence criteria are satisfied or the maximum number of
+iterations is reached.
 
 \section{Convergence}\label{convergence}
 
-The retrieval convergence is evaluated from the relative change in the
-cost function between successive iterations:
+FastMAPOL uses three convergence criteria in the TRF optimization, with
+a tolerance of 0.01 applied to each:
 
-\begin{equation}\phantomsection\label{eq-delta-chi}{
-\frac{|\chi_j^2-\chi_{j-1}^2|}
-{\chi_j^2}
-<
-\eta,
-}\end{equation}
+\begin{itemize}
+\tightlist
+\item
+  \texttt{ftol\ =\ 0.01}, based on the change in the cost function;
+\item
+  \texttt{xtol\ =\ 0.01}, based on the change in the state vector; and
+\item
+  \texttt{gtol\ =\ 0.01}, based on the optimality condition determined
+  from the cost-function gradient.
+\end{itemize}
 
-where \(j\) is the iteration index and \(\eta\) is the convergence
-tolerance. FastMAPOL uses \(\eta=0.01\).
+The optimization terminates when the corresponding SciPy TRF convergence
+criterion is satisfied. The resulting state vector provides the
+retrieved aerosol and surface properties for the pixel.
 
-The converged state vector provides the retrieved aerosol and surface
-properties for the pixel. The solution is subsequently evaluated by the
-adaptive multi-angle data-screening procedure described in
-Appendix~\ref{sec-data-screening}. If measurements are excluded during
-screening, another inversion is performed using the previous solution as
-the initial state.
+Following convergence, the retrieval is evaluated using the adaptive
+multi-angle data-screening procedure described in
+Appendix~\ref{sec-data-screening}. If one or more measurements are
+excluded by the screening criteria, the inversion is repeated using the
+previous solution as the initial state. This screening and re-retrieval
+process continues until the screening criteria are satisfied or the
+maximum number of screening passes is reached.
 
 \section{Interpretation of the Cost
 Function}\label{interpretation-of-the-cost-function}
@@ -2392,8 +2471,9 @@ retrieved parameters are neglected, the DOF can be approximated from the
 number of measurements. More generally, the effective DOF depends on the
 information content of the measurements and retrieved state parameters
 and can be evaluated using the Jacobian and error covariance matrices
-(\citeproc{ref-Gao:2021bb}{Meng Gao et al. 2021};
-\citeproc{ref-Gao:2023bb}{M. Gao, Knobelspiesse, et al. 2023}).
+(\citeproc{ref-Gao:2021bb}{Meng Gao et al. 2021},
+\citeproc{ref-Gao:2026aa}{2026}; \citeproc{ref-Gao:2023bb}{M. Gao,
+Knobelspiesse, et al. 2023}).
 
 \chapter{Retrieval Algorithm: Adaptive Multi-angle Data
 Screening}\label{sec-data-screening}
@@ -2519,40 +2599,59 @@ accuracy was systematically evaluated in M. Gao, Franz, et al.
 \section{Neural Network Architecture}\label{neural-network-architecture}
 
 A feed-forward NN with \(k\) hidden layers can be expressed recursively
-as
+as summarized in Table~\ref{tbl-nn-forward}.
 
-\[
-\mathbf{h}_1 =
-\Phi\left(\mathbf{W}_1^T\mathbf{x}+\mathbf{b}_1\right),
-\]
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\caption{NN forward model.}\label{tbl-nn-forward}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Layer}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{NN forward model}
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Layer}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{NN forward model}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Input & \(\mathbf{h}_0=\mathbf{x}\) \\
+Layer 1 &
+\(\mathbf{h}_1=\Phi(\mathbf{W}_1^T\mathbf{h}_0+\mathbf{b}_1)\) \\
+Layer \(p+1\) &
+\(\mathbf{h}_{p+1}=\Phi(\mathbf{W}_{p+1}^T\mathbf{h}_p+\mathbf{b}_{p+1})\) \\
+Output &
+\(\mathbf{y}=\mathbf{W}_{k+1}^T\mathbf{h}_k+\mathbf{b}_{k+1}\) \\
+\end{longtable}
 
-\[
-\mathbf{h}_{p+1} =
-\Phi\left(\mathbf{W}_{p+1}^T\mathbf{h}_p+\mathbf{b}_{p+1}\right),
-\qquad p=1,\ldots,k-1,
-\]
-
-and
-
-\[
-\mathbf{y} =
-\mathbf{W}_{k+1}^T\mathbf{h}_k+\mathbf{b}_{k+1},
-\]
-
-where \(\mathbf{x}\) is the forward-model input vector, \(\mathbf{y}\)
+Here, \(\mathbf{x}\) is the forward-model input vector, \(\mathbf{y}\)
 contains the NN-predicted reflectance or DoLP, \(\mathbf{W}_p\) and
 \(\mathbf{b}_p\) are the trainable weight matrices and bias vectors, and
-\(\mathbf{h}_p\) represents the output of hidden layer \(p\).
+\(\mathbf{h}_p\) is the output of hidden layer \(p\).
 
-The nonlinear activation function is the LeakyReLU function,
+The nonlinear activation function \(\Phi\) is the LeakyReLU function,
+applied element-wise as
 
-\[
-\Phi(z)=\max(0,z)+0.01\min(0,z).
-\]
+\begin{equation}\phantomsection\label{eq-leakyrelu}{
+\Phi(\mathbf{Z})_{mi}
+=
+\max(0,\mathbf{Z}_{mi})
++
+\alpha\min(0,\mathbf{Z}_{mi}),
+}\end{equation}
 
-LeakyReLU was selected because it provided slightly better accuracy than
-the standard ReLU activation in the NN training experiments
-(\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021}).
+where \(\alpha=0.01\), and \(m\) and \(i\) denote the matrix indices of
+\(\mathbf{Z}\). LeakyReLU was selected because it provided slightly
+better accuracy than the standard ReLU activation in the NN training
+experiments (\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021}).
 
 For the PACE implementation described in M. Gao, Franz, et al.
 (\citeproc{ref-Gao:2023aa}{2023}), the primary reflectance and DoLP NNs
@@ -2868,21 +2967,11 @@ defined as follows:
 
 Here, index \(m\) indicates the viewing and solar angles, index \(i\)
 indicates the wavelength, and index \(j\) indicates the state parameter.
-Table~\ref{tbl-nn-forward} illustrates the structure of the NN. The
-nonlinear activation function \(\Phi\) is the LeakyReLU function, which
-is defined as
+Table~\ref{tbl-nn-forward} illustrates the structure of the NN.
 
-\begin{equation}\phantomsection\label{eq-leakyrelu}{
-\Phi(\mathbf{Z})_{mi}
-=
-\max(0,\mathbf{Z}_{mi})
-+
-\alpha \times \min(0,\mathbf{Z}_{mi}).
-}\end{equation}
-
-where \(\alpha=0.01\), and \(\mathbf{Z}\) is a matrix with \(m\) and
-\(i\) as its indices. The derivative with respect to each element in
-\(\Phi\) is defined as
+Based on the the LeakyReLU activation function defined in
+Appendix~\ref{sec-nn-model}, its derivative with respect to each element
+in \(\Phi\) is defined as
 
 \begin{equation}\phantomsection\label{eq-D}{
 \mathbf{D}_{mi}
@@ -2896,36 +2985,12 @@ where \(\alpha=0.01\), and \(\mathbf{Z}\) is a matrix with \(m\) and
 \end{cases}
 }\end{equation}
 
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
-\caption{NN forward model.}\label{tbl-nn-forward}\tabularnewline
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-\textbf{Layers}
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\textbf{NN forward model}
-\end{minipage} \\
-\midrule\noalign{}
-\endfirsthead
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-\textbf{Layers}
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\textbf{NN forward model}
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Input & \(\mathbf{h}_0=\mathbf{x}\) \\
-Layer 1 &
-\(\mathbf{h}_1=\Phi(\mathbf{W}_1^T\mathbf{h}_0+\mathbf{b}_1)\) \\
-Layer \(p+1\) &
-\(\mathbf{h}_{p+1}=\Phi(\mathbf{W}_{p+1}^T\mathbf{h}_p+\mathbf{b}_{p+1})\) \\
-Output &
-\(\mathbf{y}=\mathbf{W}_{k+1}^T\mathbf{h}_k+\mathbf{b}_{k+1}\) \\
-\end{longtable}
+The forward operation of the NN is defined in
+Appendix~\ref{sec-nn-model}. During the forward pass, the intermediate
+values at each NN layer are stored and subsequently used to calculate
+the Jacobian through either forward-mode automatic differentiation
+(Table~\ref{tbl-ad-forward}) or reverse-mode automatic differentiation
+(backpropagation; Table~\ref{tbl-ad-reverse}).
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
@@ -3175,16 +3240,15 @@ methods.}
 \chapter{Uncertainty Quantification: Theory and
 Validation}\label{sec-uq-theory}
 
-surface properties. The uncertainty framework propagates uncertainties
-associated with the measurements and forward model through the retrieval
-based on the sensitivity of the forward model to the retrieved state
-parameters. Corresponding uncertainty products were generated for the
-global Day-In-The-Life (DITL) test dataset and are available through
-OB.DAAC (\citeproc{ref-Gao:2022aa}{M. Gao et al. 2022}). However,
-because of the additional computational cost associated with uncertainty
-propagation, these uncertainty variables are not included in the current
-FastMAPOL V3 and V4 operational products and are planned for a future
-release.
+The uncertainty framework propagates uncertainties associated with the
+measurements and forward model through the retrieval based on the
+sensitivity of the forward model to the retrieved state parameters.
+Corresponding uncertainty products were generated for the global
+Day-In-The-Life (DITL) test dataset and are available through OB.DAAC
+(\citeproc{ref-Gao:2022aa}{M. Gao et al. 2022}). However, because of the
+additional computational cost associated with uncertainty propagation,
+these uncertainty variables are not included in the current FastMAPOL V3
+and V4 operational products and are planned for a future release.
 
 This chapter reviews the methodology for pixel-level uncertainty
 quantification through error propagation and describes approaches for
@@ -3201,58 +3265,16 @@ geophysical products.
 
 The FastMAPOL retrieval minimizes the difference between the
 measurements and forward-model calculations using the normalized cost
-function
+function as discussed in Appendix~\ref{sec-retrieval-inversion}.
 
-\begin{equation}\phantomsection\label{eq-uq-cost}{
-\chi^2 =
-\frac{1}{N}
-\left[
-\mathbf{F}(\mathbf{x})-\mathbf{m}
-\right]^T
-\mathbf{S}_{\epsilon}^{-1}
-\left[
-\mathbf{F}(\mathbf{x})-\mathbf{m}
-\right],
-}\end{equation}
-
-where \(\mathbf{m}\) is the measurement vector containing reflectance
-and DoLP observations from all available wavelengths and viewing angles,
-\(\mathbf{F}(\mathbf{x})\) is the corresponding forward-model
-calculation, \(\mathbf{x}\) is the retrieved state vector, and \(N\) is
-the total number of measurements.
-
-The error covariance matrix \(\mathbf{S}_{\epsilon}\) describes the
-uncertainties associated with the measurements and forward model. The
-diagonal uncertainty for each observation includes contributions from
-the instrument, NN approximation, and numerical accuracy of the
-radiative transfer (RT) simulations:
-
-\begin{equation}\phantomsection\label{eq-uq-total}{
-\sigma_{\epsilon}^2
-=
-\sigma_{\mathrm{ins}}^2
-+
-\sigma_{\mathrm{NN}}^2
-+
-\sigma_{\mathrm{RT}}^2,
-}\end{equation}
-
-where
-
-\begin{itemize}
-\tightlist
-\item
-  \(\sigma_{\mathrm{ins}}\) represents the measurement uncertainty,
-\item
-  \(\sigma_{\mathrm{NN}}\) represents the uncertainty introduced by the
-  NN approximation of the forward model, and
-\item
-  \(\sigma_{\mathrm{RT}}\) represents the numerical uncertainty of the
-  RT calculations used to generate the NN training data.
-\end{itemize}
-
-These contributions are assumed to be mutually independent in
-Equation~\ref{eq-uq-total}.
+Note that the error covariance matrix \(\mathbf{S}_{\epsilon}\)
+describes the uncertainties associated with the measurements and forward
+model. The diagonal uncertainty \[\sigma_{\epsilon}\] for each
+observation includes contributions from the instrument
+\(\sigma_{\mathrm{ins}}\), NN approximation \(\sigma_{\mathrm{NN}}\),
+and numerical accuracy of the radiative transfer (RT) simulation
+\(\sigma_{\mathrm{RT}}\). These contributions are assumed to be mutually
+independent in \textbf{?@eq-uq-total}.
 
 The current implementation assumes that the measurement errors are
 uncorrelated, such that \(\mathbf{S}_{\epsilon}\) is diagonal. This
@@ -3264,10 +3286,10 @@ represented through the off-diagonal elements of
 
 Additional forward-model errors resulting from incomplete physical
 representation of the observed scene are not explicitly included in
-Equation~\ref{eq-uq-total}. FastMAPOL uses adaptive multi-angle
-screening to identify and remove observations that cannot be adequately
-represented by the forward model, thereby reducing the influence of
-these modeling errors on the retrieval.
+\textbf{?@eq-uq-total}. FastMAPOL uses adaptive multi-angle screening to
+identify and remove observations that cannot be adequately represented
+by the forward model, thereby reducing the influence of these modeling
+errors on the retrieval.
 
 \section{Pixel-Level Retrieval
 Uncertainty}\label{pixel-level-retrieval-uncertainty}
@@ -6334,6 +6356,11 @@ Bailey. 2016. \emph{Atmospheric Correction for Satellite Ocean Color
 Radiometry}. National Aeronautics; Space Administration, Washington,
 D.C.United States.
 \url{https://oceancolor.gsfc.nasa.gov/docs/technical/NASA-TM-2016-217551.pdf}.
+
+\bibitem[\citeproctext]{ref-More:1978aa}
+Moré, Jorge J. 1978. {``The Levenberg-Marquardt Algorithm:
+Implementation and Theory.''} In \emph{Numerical Analysis}, edited by G.
+A. Watson, 105--16. Berlin, Heidelberg: Springer Berlin Heidelberg.
 
 \bibitem[\citeproctext]{ref-Morel:2002aa}
 Morel, André, David Antoine, and Bernard Gentili. 2002. {``Bidirectional

@@ -1,6 +1,6 @@
 # Uncertainty Quantification: Theory and Validation {#sec-uq-theory}
 
-surface properties. The uncertainty framework propagates uncertainties associated with the measurements and forward model through the retrieval based on the sensitivity of the forward model to the retrieved state parameters. Corresponding uncertainty products were generated for the global Day-In-The-Life (DITL) test dataset and are available through OB.DAAC [@Gao:2022aa]. However, because of the additional computational cost associated with uncertainty propagation, these uncertainty variables are not included in the current FastMAPOL V3 and V4 operational products and are planned for a future release.
+The uncertainty framework propagates uncertainties associated with the measurements and forward model through the retrieval based on the sensitivity of the forward model to the retrieved state parameters. Corresponding uncertainty products were generated for the global Day-In-The-Life (DITL) test dataset and are available through OB.DAAC [@Gao:2022aa]. However, because of the additional computational cost associated with uncertainty propagation, these uncertainty variables are not included in the current FastMAPOL V3 and V4 operational products and are planned for a future release.
 
 This chapter reviews the methodology for pixel-level uncertainty quantification through error propagation and describes approaches for evaluating and validating the resulting uncertainty estimates.
 
@@ -8,45 +8,13 @@ The approach follows the error-propagation framework of @Rodgers:2000aa and uses
 
 ## Input Uncertainty Model
 
-The FastMAPOL retrieval minimizes the difference between the measurements and forward-model calculations using the normalized cost function
+The FastMAPOL retrieval minimizes the difference between the measurements and forward-model calculations using the normalized cost function as discussed in @sec-retrieval-inversion.  
 
-$$
-\chi^2 =
-\frac{1}{N}
-\left[
-\mathbf{F}(\mathbf{x})-\mathbf{m}
-\right]^T
-\mathbf{S}_{\epsilon}^{-1}
-\left[
-\mathbf{F}(\mathbf{x})-\mathbf{m}
-\right],
-$$ {#eq-uq-cost}
-
-where $\mathbf{m}$ is the measurement vector containing reflectance and DoLP observations from all available wavelengths and viewing angles, $\mathbf{F}(\mathbf{x})$ is the corresponding forward-model calculation, $\mathbf{x}$ is the retrieved state vector, and $N$ is the total number of measurements.
-
-The error covariance matrix $\mathbf{S}_{\epsilon}$ describes the uncertainties associated with the measurements and forward model. The diagonal uncertainty for each observation includes contributions from the instrument, NN approximation, and numerical accuracy of the radiative transfer (RT) simulations:
-
-$$
-\sigma_{\epsilon}^2
-=
-\sigma_{\mathrm{ins}}^2
-+
-\sigma_{\mathrm{NN}}^2
-+
-\sigma_{\mathrm{RT}}^2,
-$$ {#eq-uq-total}
-
-where
-
-- $\sigma_{\mathrm{ins}}$ represents the measurement uncertainty,
-- $\sigma_{\mathrm{NN}}$ represents the uncertainty introduced by the NN approximation of the forward model, and
-- $\sigma_{\mathrm{RT}}$ represents the numerical uncertainty of the RT calculations used to generate the NN training data.
-
-These contributions are assumed to be mutually independent in @eq-uq-total.
+Note that the error covariance matrix $\mathbf{S}_{\epsilon}$ describes the uncertainties associated with the measurements and forward model. The diagonal uncertainty $\sigma_{\epsilon}$ for each observation includes contributions from the instrument $\sigma_{\mathrm{ins}}$, NN approximation $\sigma_{\mathrm{NN}}$, and numerical accuracy of the radiative transfer (RT) simulation $\sigma_{\mathrm{RT}}$. These contributions are assumed to be mutually independent.
 
 The current implementation assumes that the measurement errors are uncorrelated, such that $\mathbf{S}_{\epsilon}$ is diagonal. This assumption simplifies the uncertainty propagation and retrieval optimization. Correlated spectral and angular uncertainties can be represented through the off-diagonal elements of $\mathbf{S}_{\epsilon}$ when such information is quantifized (@sec-uq-correlation)
 
-Additional forward-model errors resulting from incomplete physical representation of the observed scene are not explicitly included in @eq-uq-total. FastMAPOL uses adaptive multi-angle screening to identify and remove observations that cannot be adequately represented by the forward model, thereby reducing the influence of these modeling errors on the retrieval.
+Additional forward-model errors resulting from incomplete physical representation of the observed scene are not explicitly included. FastMAPOL uses adaptive multi-angle screening to identify and remove observations that cannot be adequately represented by the forward model, thereby reducing the influence of these modeling errors on the retrieval.
 
 ## Pixel-Level Retrieval Uncertainty
 
