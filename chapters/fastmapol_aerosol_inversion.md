@@ -1,4 +1,4 @@
-# Aerosol Characterization: Two-way conversions between submode volume density and bulk effective size
+# Aerosol: Effective Size Inversion {#sec-aerosol-model-inversion}
 
 In the aerosol model adopted here, the retrieved state vector contains the volume densities of the fixed log-normal submodes. From these submode volume densities, one can compute bulk properties such as total fine-mode volume density, total coarse-mode volume density, effective radius, and effective variance for the fine and coarse aerosol populations.
 
@@ -232,8 +232,6 @@ that is consistent with the FastMAPOL parameterization.
 
 This recovered vector is not necessarily the unique physical aerosol decomposition of the original product. Rather, it is the unique decomposition **within the chosen fixed log-normal basis**.
 
-
-
 ## Extension to six-mode models
 
 The same approach extends naturally to a six-mode basis.
@@ -259,36 +257,3 @@ Inverse direction:
 - bulk volume density, effective radius, and effective variance $\rightarrow$ approximate submode volume densities
 
 Because the modal radii and widths are fixed, the inversion becomes a small linear algebra problem. This makes it straightforward to map bulk aerosol products from other algorithms onto the FastMAPOL five-mode or six-mode parameterization and enables direct product intercomparison at the submode level.
-
-## [Optional] Code test
-moment: `mkv(r, sigma, k)`
-Compute coarse mode volume density: `invert_coarse`
-Compute fine mode volume density: `invert_fine`
-Pixel by pixel conversion: `update_vdv(datax)
-
-Using the prescribed mode radii and widths,
-
-$$
-r_v = [0.1,\ 0.1732,\ 0.3,\ 1.0,\ 2.9]
-$$
-
-and
-
-$$
-\sigma = [0.35,\ 0.35,\ 0.35,\ 0.5,\ 0.5],
-$$
-
-the code:
-
-1. reads bulk fine- and coarse-mode quantities from the dataset,
-2. solves the 3-by-3 linear system for the fine-mode subvolumes,
-3. solves the 2-by-2 linear system for the coarse-mode subvolumes,
-4. concatenates the recovered values into five reconstructed submode volume densities,
-5. stores them as new variables:
-   - `vd_mode1_new`
-   - `vd_mode2_new`
-   - `vd_mode3_new`
-   - `vd_mode4_new`
-   - `vd_mode5_new`
-
-Thus the output is a recovered five-mode volume-density representation that can be directly compared with the original FastMAPOL state vector or with any other product expressed in the same basis.

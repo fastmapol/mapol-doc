@@ -93,7 +93,8 @@ book:
     - chapters/fastmapol_aerosol_height.md
     - chapters/fastmapol_aerosol_shape.md
     - chapters/fastmapol_aerosol_component.md
-    - chapters/fastmapol_aerosol_model2_math.md
+    - chapters/fastmapol_aerosol_math.md
+    - chapters/fastmapol_aerosol_inversion.md
     - chapters/fastmapol_model_ocean.md
     - chapters/fastmapol_ocean_color.md
     - chapters/fastmapol_model_land.md

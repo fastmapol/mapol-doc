@@ -1791,8 +1791,7 @@ sensor\_view\_angle & (number\_of\_views) & Viewing angle geometry \\
 
 \bookmarksetup{startatroot}
 
-\chapter{SPEXone Aerosol and Ocean Product Validation
-(V3)}\label{spexone-aerosol-and-ocean-product-validation-v3}
+\chapter{SPEXone L2 Validation (V3)}\label{spexone-l2-validation-v3}
 
 This page summarizes validation results for aerosol and ocean products
 retrieved from the PACE multi-angle polarimeters using the
@@ -1898,8 +1897,7 @@ components.
 
 \bookmarksetup{startatroot}
 
-\chapter{HARP2 L2 Aerosol and Ocean Product Validation with DITL
-data}\label{harp2-l2-aerosol-and-ocean-product-validation-with-ditl-data}
+\chapter{HARP2 L2 Validation (DITL)}\label{harp2-l2-validation-ditl}
 
 \section{Overview}\label{overview-1}
 
@@ -2058,8 +2056,7 @@ using DITL data.
 
 \bookmarksetup{startatroot}
 
-\chapter{HARP2 Aerosol, OCEAN and LAND Product Validation
-(V4)}\label{harp2-aerosol-ocean-and-land-product-validation-v4}
+\chapter{HARP2 L2 Validation (V4)}\label{harp2-l2-validation-v4}
 
 This page summarizes validation results for aerosol and surface products
 retrieved from the PACE multi-angle polarimeters using the
@@ -3269,12 +3266,12 @@ function as discussed in Appendix~\ref{sec-retrieval-inversion}.
 
 Note that the error covariance matrix \(\mathbf{S}_{\epsilon}\)
 describes the uncertainties associated with the measurements and forward
-model. The diagonal uncertainty \[\sigma_{\epsilon}\] for each
+model. The diagonal uncertainty \(\sigma_{\epsilon}\) for each
 observation includes contributions from the instrument
 \(\sigma_{\mathrm{ins}}\), NN approximation \(\sigma_{\mathrm{NN}}\),
 and numerical accuracy of the radiative transfer (RT) simulation
 \(\sigma_{\mathrm{RT}}\). These contributions are assumed to be mutually
-independent in \textbf{?@eq-uq-total}.
+independent.
 
 The current implementation assumes that the measurement errors are
 uncorrelated, such that \(\mathbf{S}_{\epsilon}\) is diagonal. This
@@ -3285,11 +3282,11 @@ represented through the off-diagonal elements of
 (Appendix~\ref{sec-uq-correlation})
 
 Additional forward-model errors resulting from incomplete physical
-representation of the observed scene are not explicitly included in
-\textbf{?@eq-uq-total}. FastMAPOL uses adaptive multi-angle screening to
-identify and remove observations that cannot be adequately represented
-by the forward model, thereby reducing the influence of these modeling
-errors on the retrieval.
+representation of the observed scene are not explicitly included.
+FastMAPOL uses adaptive multi-angle screening to identify and remove
+observations that cannot be adequately represented by the forward model,
+thereby reducing the influence of these modeling errors on the
+retrieval.
 
 \section{Pixel-Level Retrieval
 Uncertainty}\label{pixel-level-retrieval-uncertainty}
@@ -3721,7 +3718,8 @@ considering correlation between angles following
 same maximum-likelihood approach is used to retrieve the state
 parameters in FastMAPOL by minimizing a cost function that represents
 the difference between the measurements and forward-model calculations
-(\citeproc{ref-Rodgers:2000aa}{Rodgers 2000}) but in a matrix form:
+but in a matrix as discussed in Appendix~\ref{sec-retrieval-inversion}.
+We can further simplify the cost function expression as:
 
 \begin{equation}\phantomsection\label{eq-chi2}{
 \chi^2
@@ -4121,6 +4119,15 @@ HARP2 and SPEXone for advanced retrieval studies
 (\citeproc{ref-Aryal:2026aa}{Aryal et al. 2026}). The component-based
 aerosol model is described separately in
 Appendix~\ref{sec-aerosol-component}.
+
+In general, the effective radius and effective variance can be derived
+from any aerosol size distribution, as described in
+Appendix~\ref{sec-aerosol-model-math}. Conversely, when the effective
+radius and other size-distribution parameters are known, the aerosol
+mode volume densities can be derived by solving a linear system, as
+discussed in Appendix~\ref{sec-aerosol-model-inversion}. This can be
+useful for cross-comparisons of data products based on different aerosol
+size representations.
 
 This chapter focuses primarily on the Aer-1 and Aer-2 representations
 under the assumption of spherical particles. For PACE HARP2 and SPEXone
@@ -4744,7 +4751,7 @@ This formulation allows FastMAPOL to represent variations in aerosol
 size and particle shape within a consistent volume-based aerosol
 framework.
 
-\chapter{Aerosol Component Approach}\label{sec-aerosol-component}
+\chapter{Aerosol: Component Approach}\label{sec-aerosol-component}
 
 In the aerosol component approach, aerosols are represented by an
 external mixture of different components with assumed size distribution
@@ -4812,8 +4819,7 @@ and Angstrom exponents (AE). For more details, readers are referred to
 the published papers (\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024},
 \citeproc{ref-Aryal:2026aa}{2026}).
 
-\chapter{Aerosol: More on Size
-Distributions}\label{sec-aerosol-model-math}
+\chapter{Aerosol: Mathematical Details}\label{sec-aerosol-model-math}
 
 This chapter provides the mathematical relationships used to convert
 between number- and volume-based aerosol size distributions and to
@@ -5289,6 +5295,402 @@ state vector and the number-, area-, and optically weighted quantities
 used to characterize aerosol properties. The same moment framework
 applies to individual log-normal modes, multimode distributions, and
 fine/coarse aerosol partitions.
+
+\chapter{Aerosol: Effective Size
+Inversion}\label{sec-aerosol-model-inversion}
+
+In the aerosol model adopted here, the retrieved state vector contains
+the volume densities of the fixed log-normal submodes. From these
+submode volume densities, one can compute bulk properties such as total
+fine-mode volume density, total coarse-mode volume density, effective
+radius, and effective variance for the fine and coarse aerosol
+populations.
+
+The same relationship can also be used in the reverse direction. If
+another algorithm provides bulk aerosol quantities such as fine-mode and
+coarse-mode volume density, effective radius, and effective variance,
+then these bulk quantities can be used to approximately recover the
+corresponding submode volume densities under the assumed fixed
+log-normal basis. This provides a practical way to compare external
+aerosol products with the FastMAPOL parameterization.
+
+The theory below summarizes this inversion.
+
+\section{Fixed log-normal basis}\label{fixed-log-normal-basis}
+
+Assume each aerosol submode is represented by a fixed log-normal
+\textbf{volume} distribution with prescribed volume-mean radius
+\(r_{v,i}\) and logarithmic standard deviation \(\sigma_i\). The only
+unknown for each submode is its column volume density \(V_i\).
+
+For the five-mode basis used here (Aer-1), the fixed parameters are
+
+\[
+r_v = [0.1,\ 0.1732,\ 0.3,\ 1.0,\ 2.9] \ \mu m
+\]
+
+and
+
+\[
+\sigma = [0.35,\ 0.35,\ 0.35,\ 0.5,\ 0.5].
+\]
+
+The first three modes represent the fine aerosol, and the last two modes
+represent the coarse aerosol.
+
+\section{Moments for a log-normal volume
+distribution}\label{moments-for-a-log-normal-volume-distribution}
+
+For a single log-normal volume mode, define the moment
+
+\[
+m'_k = \int r^k \frac{dV(r)}{d\ln r} d\ln r.
+\]
+
+For the assumed log-normal form, this moment can be written analytically
+as
+
+\[
+m'_{k,i} = V_i \, r_{v,i}^k \exp\left(\frac{k^2 \sigma_i^2}{2}\right).
+\]
+
+For convenience, define
+
+\[
+M_k(r_{v,i},\sigma_i)=r_{v,i}^k \exp\left(\frac{k^2 \sigma_i^2}{2}\right).
+\]
+
+Then the moment of mode \(i\) is simply
+
+\[
+m'_{k,i}=V_i M_k(r_{v,i},\sigma_i).
+\]
+
+\section{Bulk fine- and coarse-mode
+constraints}\label{bulk-fine--and-coarse-mode-constraints}
+
+For a group of modes, the bulk volume density is the sum of the
+component volumes:
+
+\[
+V_d = \sum_i V_i.
+\]
+
+Using the volume-distribution moments, the effective radius is
+
+\[
+r_{eff}=\frac{\sum_i m'_{0,i}}{\sum_i m'_{-1,i}}
+       =\frac{\sum_i V_i}{\sum_i V_i M_{-1}(r_{v,i},\sigma_i)}.
+\]
+
+Therefore,
+
+\[
+\sum_i V_i M_{-1}(r_{v,i},\sigma_i)=\frac{V_d}{r_{eff}}.
+\]
+
+Similarly, the effective variance is
+
+\[
+\nu_{eff}=\frac{\left(\sum_i m'_{1,i}\right)\left(\sum_i m'_{-1,i}\right)}
+{\left(\sum_i m'_{0,i}\right)^2}-1.
+\]
+
+Using the previous relations,
+
+\[
+\nu_{eff}+1
+=\frac{\left(\sum_i V_i M_1(r_{v,i},\sigma_i)\right)\left(V_d/r_{eff}\right)}{V_d^2},
+\]
+
+which gives
+
+\[
+\sum_i V_i M_1(r_{v,i},\sigma_i)
+=(1+\nu_{eff})V_d r_{eff}.
+\]
+
+These three equations form the basis for the inversion from bulk
+effective properties back to submode volume densities.
+
+\section{Fine-mode inversion}\label{fine-mode-inversion}
+
+The fine aerosol is represented by three fixed submodes, with unknown
+volumes \(V_1\), \(V_2\), and \(V_3\).
+
+Because there are three unknowns, three independent bulk constraints are
+required:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  total fine-mode volume density
+\item
+  fine-mode effective radius
+\item
+  fine-mode effective variance
+\end{enumerate}
+
+Let
+
+\[
+A_i = M_{-1}(r_{v,i},\sigma_i)
+\]
+
+and
+
+\[
+B_i = M_{1}(r_{v,i},\sigma_i),
+\]
+
+for the three fine modes.
+
+Then the fine-mode inversion is determined by the linear system
+
+\[
+V_1 + V_2 + V_3 = V_{d,f},
+\]
+
+\[
+A_1V_1 + A_2V_2 + A_3V_3 = \frac{V_{d,f}}{r_{eff,f}},
+\]
+
+\[
+B_1V_1 + B_2V_2 + B_3V_3 = (1+\nu_{eff,f})V_{d,f}r_{eff,f}.
+\]
+
+In matrix form,
+
+\[
+\begin{bmatrix}
+1 & 1 & 1 \\
+A_1 & A_2 & A_3 \\
+B_1 & B_2 & B_3
+\end{bmatrix}
+\begin{bmatrix}
+V_1 \\ V_2 \\ V_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+V_{d,f} \\
+V_{d,f}/r_{eff,f} \\
+(1+\nu_{eff,f})V_{d,f}r_{eff,f}
+\end{bmatrix}.
+\]
+
+\section{Coarse-mode inversion}\label{coarse-mode-inversion}
+
+The coarse aerosol is represented by two fixed submodes, with unknown
+volumes \(V_4\) and \(V_5\).
+
+Because there are only two unknowns, only two independent constraints
+are needed:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  total coarse-mode volume density
+\item
+  coarse-mode effective radius
+\end{enumerate}
+
+Let
+
+\[
+A_i = M_{-1}(r_{v,i},\sigma_i)
+\]
+
+for the two coarse modes.
+
+Then the coarse-mode inversion is determined by
+
+\[
+V_4 + V_5 = V_{d,c},
+\]
+
+\[
+A_4V_4 + A_5V_5 = \frac{V_{d,c}}{r_{eff,c}}.
+\]
+
+In matrix form,
+
+\[
+\begin{bmatrix}
+1 & 1 \\
+A_4 & A_5
+\end{bmatrix}
+\begin{bmatrix}
+V_4 \\ V_5
+\end{bmatrix}
+=
+\begin{bmatrix}
+V_{d,c} \\
+V_{d,c}/r_{eff,c}
+\end{bmatrix}.
+\]
+
+Since there are only two coarse submodes, the effective variance is not
+needed as an independent input. In this basis, once \(V_{d,c}\) and
+\(r_{eff,c}\) are specified, the pair \((V_4,V_5)\) is uniquely
+determined. The resulting coarse-mode effective variance is then implied
+by the recovered submode mixture.
+
+\section{Why the inversion is linear}\label{why-the-inversion-is-linear}
+
+A useful feature of this formulation is that the inversion is linear in
+the unknown submode volume densities.
+
+This is possible because:
+
+\begin{itemize}
+\tightlist
+\item
+  the mode radii \(r_{v,i}\) are fixed,
+\item
+  the logarithmic widths \(\sigma_i\) are fixed,
+\item
+  the bulk quantities can be written as linear combinations of \(V_i\)
+  after rearranging the effective-radius and effective-variance
+  formulas.
+\end{itemize}
+
+Therefore, recovering the submode volumes reduces to solving a small
+linear system.
+
+\section{Interpretation}\label{interpretation}
+
+This inversion should be interpreted as a projection of an external bulk
+aerosol product onto the fixed FastMAPOL submode basis.
+
+That is, if another algorithm reports:
+
+\begin{itemize}
+\tightlist
+\item
+  fine-mode volume density \(V_{d,f}\)
+\item
+  coarse-mode volume density \(V_{d,c}\)
+\item
+  fine-mode effective radius \(r_{eff,f}\)
+\item
+  coarse-mode effective radius \(r_{eff,c}\)
+\item
+  fine-mode effective variance \(\nu_{eff,f}\)
+\item
+  optionally coarse-mode effective variance \(\nu_{eff,c}\)
+\end{itemize}
+
+then one may recover an approximate set of five submode volume densities
+
+\[
+[V_1,V_2,V_3,V_4,V_5]
+\]
+
+that is consistent with the FastMAPOL parameterization.
+
+This recovered vector is not necessarily the unique physical aerosol
+decomposition of the original product. Rather, it is the unique
+decomposition \textbf{within the chosen fixed log-normal basis}.
+
+\section{Extension to six-mode
+models}\label{extension-to-six-mode-models}
+
+The same approach extends naturally to a six-mode basis.
+
+If the fine and coarse partitions still have fixed mode radii and
+widths, then the inversion remains a linear system, but the number of
+independent bulk constraints must match the number of unknown submode
+volumes in each partition.
+
+For example:
+
+\begin{itemize}
+\tightlist
+\item
+  three fine modes require three bulk constraints,
+\item
+  two coarse modes require two constraints,
+\item
+  three coarse modes would require three independent coarse-mode
+  constraints.
+\end{itemize}
+
+In general, the inversion is possible whenever the number of bulk
+moments provided is sufficient to determine the unknown modal
+amplitudes.
+
+\section{Summary}\label{summary-3}
+
+The submode volume densities and the bulk effective properties are
+related in both directions within a fixed log-normal aerosol basis.
+
+Forward direction: - submode volume densities \(\rightarrow\) bulk
+volume density, effective radius, and effective variance
+
+Inverse direction: - bulk volume density, effective radius, and
+effective variance \(\rightarrow\) approximate submode volume densities
+
+Because the modal radii and widths are fixed, the inversion becomes a
+small linear algebra problem. This makes it straightforward to map bulk
+aerosol products from other algorithms onto the FastMAPOL five-mode or
+six-mode parameterization and enables direct product intercomparison at
+the submode level.
+
+\section{{[}Optional{]} Code test}\label{optional-code-test}
+
+moment: \texttt{mkv(r,\ sigma,\ k)} Compute coarse mode volume density:
+\texttt{invert\_coarse} Compute fine mode volume density:
+\texttt{invert\_fine} Pixel by pixel conversion: `update\_vdv(datax)
+
+Using the prescribed mode radii and widths,
+
+\[
+r_v = [0.1,\ 0.1732,\ 0.3,\ 1.0,\ 2.9]
+\]
+
+and
+
+\[
+\sigma = [0.35,\ 0.35,\ 0.35,\ 0.5,\ 0.5],
+\]
+
+the code:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  reads bulk fine- and coarse-mode quantities from the dataset,
+\item
+  solves the 3-by-3 linear system for the fine-mode subvolumes,
+\item
+  solves the 2-by-2 linear system for the coarse-mode subvolumes,
+\item
+  concatenates the recovered values into five reconstructed submode
+  volume densities,
+\item
+  stores them as new variables:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{vd\_mode1\_new}
+  \item
+    \texttt{vd\_mode2\_new}
+  \item
+    \texttt{vd\_mode3\_new}
+  \item
+    \texttt{vd\_mode4\_new}
+  \item
+    \texttt{vd\_mode5\_new}
+  \end{itemize}
+\end{enumerate}
+
+Thus the output is a recovered five-mode volume-density representation
+that can be directly compared with the original FastMAPOL state vector
+or with any other product expressed in the same basis.
 
 \chapter{Ocean: Bio-Optical Model}\label{sec-ocean-model}
 
@@ -5809,6 +6211,11 @@ Parameter & Description \\
 \(B_{pol}\) & polarization scaling parameter \\
 \end{longtable}
 
+Here, the retrieved \(f_{\mathrm{iso}}\), \(k_{\mathrm{vol}}\),
+\(k_{\mathrm{geo}}\), and \(B_{\mathrm{pol}}\) parameters are reported
+in the product file as \texttt{land\_fiso}, \texttt{land\_kvol},
+\texttt{land\_kgeo}, and \texttt{land\_bp}, respectively.
+
 \subsection{Geometry Definition}\label{geometry-definition}
 
 Define cosine terms:
@@ -5890,16 +6297,15 @@ The phase angle used in BRDF models is
 \section{Ross Volumetric Kernel}\label{ross-volumetric-kernel}
 
 The volumetric kernel represents multiple scattering within vegetation
-canopies.
+canopies {[}Roujean, Leroy, and Deschamps
+(\citeproc{ref-Roujean:1992aa}{1992}); Wanner@1995aa;
+Strahler:1999aa){]}.
 
 \[
 K_{vol} =
 \frac{\left(\frac{\pi}{2}-\Theta_{phase}\right)\cos\Theta_{phase} + \sin\Theta_{phase}}
 {|\mu_s| + |\mu_v|}-\frac{\pi}{4}
 \]
-
-Reference: Roujean et al.~(1992), JGR Atmosphere; Wanner et al.~(1995),
-JGR.
 
 \section{Li Geometric Kernel
 (Li-Sparse-R)}\label{li-geometric-kernel-li-sparse-r}
@@ -6071,7 +6477,7 @@ Abs(A-B)/(A+B).
 \subsection{Polarization Kernel}\label{polarization-kernel}
 
 In the current framework, we adopt the polarized Kernel based on Maignan
-et al., (2009):
+et al. (\citeproc{ref-Maignan:2009aa}{2009}) :
 
 \[
 \mathbf{K}_{pol} =
@@ -6092,26 +6498,37 @@ v_{fac} = 0.1
 
 For scalar radiative transfer simulations, only \(R_{11}\) is used.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\section{White-Sky Albedo}\label{white-sky-albedo}
 
-\section{References}\label{references}
+The \textbf{white-sky albedo (WSA)}, also referred to as the
+bihemispherical reflectance, represents the surface albedo under
+completely diffuse illumination. For the RossThick--LiSparse-Reciprocal
+BRDF model, WSA can be derived directly from the three BRDF kernel
+coefficients (\citeproc{ref-Strahler:1999aa}{Strahler et al. 1999}). In
+the FastMAPOL MAPOL\_LAND product suite, this quantity is reported as
+\texttt{land\_white\_sky\_albedo}.
 
-Maignan, F., et al., (2009) \emph{Polarized reflectances of natural
-surfaces: Spaceborne measurements and analytical modeling.} Remote
-Sensing of Environment, Volume 113, Issue 12, Pages 2642-2650,
-https://doi.org/10.1016/j.rse.2009.07.022.
+\begin{equation}\phantomsection\label{eq-white-sky-albedo}{
+\alpha_{\mathrm{WSA}}
+=
+f_{\mathrm{iso}}
++
+0.189184\,f_{\mathrm{vol}}
+-
+1.377622\,f_{\mathrm{geo}},
+}\end{equation}
 
-MODIS Surface Reflectance ATBD\\
-https://modis.gsfc.nasa.gov/data/atbd/atbd\_mod09.pdf
+where \(f_{\mathrm{iso}}\), \(f_{\mathrm{vol}}\), and
+\(f_{\mathrm{geo}}\) are the isotropic, volumetric-scattering, and
+geometric-optical kernel coefficients, respectively. The numerical
+factors represent the hemispherical integrals of the corresponding
+Ross--Li kernels.
 
-Roujean, J.-L., M.Leroy, and P.-Y.Deschamps (1992), A bidirectional
-reflectance model of the Earth's surface for the correction of remote
-sensing data, J. Geophys. Res., 97(D18), 20455--20468,
-doi:10.1029/92JD01411.
-
-Wanner, W., Li, X., \& Strahler, A. (1995)\\
-\emph{On the derivation of kernels for kernel-driven BRDF models.}\\
-Journal of Geophysical Research.
+Unlike black-sky albedo, which depends on the solar zenith angle,
+white-sky albedo is integrated over all illumination directions and
+therefore does not depend on a specific solar geometry. In FastMAPOL,
+WSA provides a compact quantity for characterizing the overall surface
+reflectance represented by the retrieved Ross--Li BRDF parameters.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
@@ -6337,6 +6754,13 @@ Inherent-Optical-Property-Centered Approach to Correct the Angular
 Effects in Water-Leaving Radiance.''} \emph{Appl. Opt.} 50 (19):
 3155--67. \url{https://doi.org/10.1364/AO.50.003155}.
 
+\bibitem[\citeproctext]{ref-Maignan:2009aa}
+Maignan, Fabienne, François-Marie Bréon, Emilie Fédèle, and Marc
+Bouvier. 2009. {``Polarized Reflectances of Natural Surfaces: Spaceborne
+Measurements and Analytical Modeling.''} \emph{Remote Sensing of
+Environment} 113 (12): 2642--50.
+https://doi.org/\url{https://doi.org/10.1016/j.rse.2009.07.022}.
+
 \bibitem[\citeproctext]{ref-Meng:2010aa}
 Meng, Zhaokai, Ping Yang, George W. Kattawar, Lei Bi, K. N. Liou, and
 Istvan Laszlo. 2010. {``Single-Scattering Properties of Tri-Axial
@@ -6407,6 +6831,13 @@ Sounding:theory and Practice}. World Scientific World Scientific
 Publishing, Singapore.
 https://doi.org/\url{https://doi.org/10.1142/3171}.
 
+\bibitem[\citeproctext]{ref-Roujean:1992aa}
+Roujean, Jean-Louis, Marc Leroy, and Pierre-Yves Deschamps. 1992. {``A
+Bidirectional Reflectance Model of the Earth's Surface for the
+Correction of Remote Sensing Data.''} \emph{Journal of Geophysical
+Research: Atmospheres} 97 (D18): 20455--68.
+https://doi.org/\url{https://doi.org/10.1029/92JD01411}.
+
 \bibitem[\citeproctext]{ref-Saito:2021aa}
 Saito, Masanori, Ping Yang, Jiachen Ding, and Xu Liu. 2021. {``A
 Comprehensive Database of the Optical Properties of Irregular Aerosol
@@ -6432,6 +6863,14 @@ Loftin, and P. Jeremy Werdell. 2018. {``Performance Metrics for the
 Assessment of Satellite Data Products: An Ocean Color Case Study.''}
 \emph{Opt. Express} 26 (6): 7404--22.
 \url{https://doi.org/10.1364/OE.26.007404}.
+
+\bibitem[\citeproctext]{ref-Strahler:1999aa}
+Strahler, Alan H., Wolfgang Lucht, Crystal Barker Schaaf, Trevor Tsang,
+Feng Gao, Xiaowen Li, Jan-Peter Muller, Philip Lewis, and Michael J.
+Barnsley. 1999. {``{MODIS BRDF/Albedo Product: Algorithm Theoretical
+Basis Document}.''} NASA EOS-MODIS Document Version 5.0. NASA Goddard
+Space Flight Center.
+\url{https://modis.gsfc.nasa.gov/data/atbd/atbd_mod09.pdf}.
 
 \bibitem[\citeproctext]{ref-Twardowski:2018aa}
 Twardowski, Michael, and Alberto Tonizzo. 2018. {``Ocean Color

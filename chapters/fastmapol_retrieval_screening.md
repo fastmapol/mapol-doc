@@ -1,19 +1,29 @@
 # Retrieval Algorithm: Adaptive Multi-angle Data Screening {#sec-data-screening}
 
-Within the FastMAPOL retrieval algorithm, an adaptive multi-angle data screening approach is implemented, which conducts automatic data quality analysis and data screening. A flowchart is summarized in Figure @fig-flowchart-screening B ((../figure/fig_data_screening.png). More details in the algorithm and applications are in @Gao:2021bb.
+FastMAPOL implements an adaptive multi-angle data screening approach to identify and remove individual observations that cannot be adequately represented by the forward model, while retaining valid measurements from the same pixel. This approach is particularly useful for multi-angle polarimetric observations, where clouds, sunglint, surface heterogeneity, or other scene-dependent effects may affect only a subset of viewing angles. The overall retrieval and screening workflow is illustrated in @fig-flowchart-screening, with additional details and applications provided in @Gao:2021bb.
 
-![Flowcharts for (A) FastMAPOL retrievals and (B) retrievals with the multi-angle polarimetric data screening (MAPDS).** In panel **(A)**, $\Delta\chi^2 = |\chi_i^2-\chi_{i-1}^2|$ indicates the changes of the cost function between two iterations with $\eta$ as threshold. In panel **(B)**, $\Delta\rho_t$ and $\Delta P_t$ indicate the difference between forward model and measurements for reflectance and DoLP with $\xi$ as threshold. The dashed box in **(B)** represents the same retrieval process as shown in the dashed box in **(A)**. A maximum three passes (indicated by the loop in **(B)**) are used in the data screening process.Figure is adopted from @Gao:2021bb](../figure/fig_data_screening.png){#fig-flowchart-screening width=80%}
+![FastMAPOL retrieval workflow (A) and adaptive multi-angle polarimetric data screening (MAPDS) procedure (B). Adapted from @Gao:2021bb.](../figure/fig_data_screening.png){#fig-flowchart-screening width=80%}
 
-After each converged FastMAPOL retrieval, the residuals between each measurement and the forward model prediction are used to evaluate the data quality under the criteria:
+## Screening Criteria
+
+After each converged FastMAPOL retrieval, the residuals between the measurements and forward-model predictions are evaluated for each viewing angle. For reflectance and DoLP, the screening criteria are
 
 $$
 \frac{|\Delta\rho_t|}{\sigma_\rho} < \xi,
 \qquad
-\frac{|\Delta P_t|}{\sigma_P} < \xi
-$$
+\frac{|\Delta P_t|}{\sigma_P} < \xi,
+$$ {#eq-data-screening}
 
-where the residuals are compared with the uncertainty model defined in the cost function, and $\xi$ is a threshold. When either the reflectance or DoLP does not satisfy the criteria, the corresponding measurement is excluded from the cost function calculation (i.e., the view angle which cannot be represented well by the forward model is removed), and a new FastMAPOL retrieval is performed. In practice, additional screening rules based on the criteria may be used depending on the data quality of the field measurements.
+where $\Delta\rho_t$ and $\Delta P_t$ are the differences between the measurements and forward-model predictions, $\sigma_\rho$ and $\sigma_P$ are the corresponding uncertainties defined in the retrieval cost function, and $\xi$ is the screening threshold.
 
-This process is repeated until all angles remaining satisfy above conditions. Note that the whole data screening process will include several retrieval passes, each involving multiple iterations until convergence. At the end of each retrieval pass based on the new forward model fittings, all measurements used in the retrieval are evaluated above and subsequently excluded from the next round if they failed to pass.
+If either reflectance or DoLP fails the screening criterion, the corresponding viewing angle is excluded from the cost function and the retrieval is repeated using the remaining observations. Additional screening criteria may also be applied for specific datasets or retrieval configurations.
 
-The data screening approach is an adaptive process, since it depends on the fitting at each iteration for each pixel. A threshold value of $\xi=3$ is used in this study, which can be further tuned when more data is available. We found at most three passes of retrievals are sufficient to remove most of the problematic angles. Since the retrieved parameters from last retrieval can be used as the initial values to the next retrieval, the total speed to conduct data screening are usually less than three times of the single round retrieval.
+## Adaptive Screening and Iterative Retrieval
+
+The screening is adaptive because the residuals depend on the retrieved state for each pixel. After each retrieval pass, all remaining viewing angles are reevaluated using the updated forward-model fit. Measurements that fail the criteria are excluded, and a new retrieval is performed.
+
+As illustrated in panel B of @fig-flowchart-screening, the screening and retrieval cycle is repeated until the remaining observations satisfy the screening criteria or the maximum number of screening passes is reached. The solution from the previous retrieval is used as the initial state for the next pass, reducing the additional computational cost.
+
+A threshold of $\xi=3$ is typically used in FastMAPOL. In practice, up to three screening passes are generally sufficient to remove problematic viewing angles [@Gao:2021bb]. Because each subsequent retrieval starts from the previous solution, the total computational cost is typically less than three times that of a single retrieval.
+
+In panel A of @fig-flowchart-screening, $\Delta\chi^2$ represents the change in the cost function used to evaluate retrieval convergence. Panel B shows the outer MAPDS loop, in which the converged retrieval is evaluated using $\Delta\rho_t$ and $\Delta P_t$ before potentially initiating another retrieval pass.

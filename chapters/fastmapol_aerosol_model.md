@@ -10,7 +10,9 @@ FastMAPOL supports several aerosol representations with increasing complexity:
 - **Aer-2:** six predefined log-normal modes
 - **Aer-3:** aerosol components represented by chemical composition
 
-The currently released HARP2 and SPEXone FastMAPOL products (V1--V4) use the five-mode **Aer-1** representation [@Gao:2021aa; @Gao:2023aa; @Gao:2026aa]. The six-mode **Aer-2** representation was developed for retrievals using RSP observations that include shortwave-infrared (SWIR) measurements [@Gao:2018aa]. **Aer-3** represents aerosols through aerosol components and has been applied to HARP2 and SPEXone for advanced retrieval studies [@Aryal:2026aa]. The component-based aerosol model is described separately in @sec-aerosol-component.
+The currently released HARP2 and SPEXone FastMAPOL products (V1--V4) use the five-mode **Aer-1** representation [@Gao:2021aa; @Gao:2023aa; @Gao:2026aa]. The six-mode **Aer-2** representation was developed for retrievals using RSP observations that include shortwave-infrared (SWIR) measurements [@Gao:2018aa]. **Aer-3** represents aerosols through aerosol components and has been applied to HARP2 and SPEXone for advanced retrieval studies [@Aryal:2026aa]. The component-based aerosol model is described separately in @sec-aerosol-component. 
+
+In general, the effective radius and effective variance can be derived from any aerosol size distribution, as described in @sec-aerosol-model-math. Conversely, when the effective radius and other size-distribution parameters are known, the aerosol mode volume densities can be derived by solving a linear system, as discussed in @sec-aerosol-model-inversion. This can be useful for cross-comparisons of data products based on different aerosol size representations.
 
 This chapter focuses primarily on the Aer-1 and Aer-2 representations under the assumption of spherical particles. For PACE HARP2 and SPEXone data product, aerosol particle shape is represented as a mixture of spherical and nonspherical particles, as implemented in the current FastMAPOL V3 and V4 products [@Gao:2026aa]. The treatment of aerosol particle shape and nonsphericity is described in detail in @sec-aerosol-shape. 
 
@@ -165,8 +167,11 @@ Bulk effective radius and effective variance are calculated from the combined ae
 $$
 r_{\mathrm{eff}}
 =
-\frac{\sum_i m_{3,i}}
-{\sum_i m_{2,i}},
+\frac{
+\int r^3(dN/dr)\,dr
+}{
+\int r^2(dN/dr)\,dr
+}
 $$
 
 and
@@ -175,17 +180,16 @@ $$
 \nu_{\mathrm{eff}}
 =
 \frac{
-\left(\sum_i m_{4,i}\right)
-\left(\sum_i m_{2,i}\right)
+\int
+(r-r_{\mathrm{eff}})^2
+r^2(dN/dr)\,dr
 }{
-\left(\sum_i m_{3,i}\right)^2
-}
--1,
+r_{\mathrm{eff}}^2
+\int r^2(dN/dr)\,dr
+}.
 $$
 
-where $m_{k,i}$ represents the $k$th moment of mode $i$.
-
-These quantities can be calculated for the total aerosol distribution or separately for the fine and coarse modes by restricting the mode summation.
+These quantities can be calculated for the total aerosol distribution or separately for the fine and coarse modes by restricting the mode summation [@sec-aerosol-model-math].
 
 Although the three fine modes in Aer-1 and Aer-2 have the same logarithmic standard deviation, the effective radius and effective variance of the combined fine-mode distribution vary according to the relative retrieved volume densities of the three modes.
 

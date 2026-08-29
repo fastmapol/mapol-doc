@@ -107,17 +107,16 @@ The computational advantage of combining NN forward models with AD is substantia
 
 Using AD further reduced the average CPU retrieval time to approximately 0.6 s with forward-mode AD and 0.3 s with reverse-mode AD, corresponding to an additional speedup of approximately 5--10 relative to the NN-based FD implementation. GPU processing further reduced the retrieval times to approximately 0.08 s and 0.05 s for forward- and reverse-mode AD, respectively.
 
-
 | Forward Model | Jacobian Method | Hardware | Retrieval Time | Approximate Speedup |
 |---|---|---|---:|---:|
-| Radiative transfer | FD (central) | CPU | $\sim$1 h | 1 |
-| Neural network | FD (central) | CPU | $\sim$3 s | $\sim$1,200 |
-| Neural network | AD (forward) | CPU | $\sim$0.6 s | $\sim$6,000 |
-| Neural network | AD (reverse) | CPU | $\sim$0.3 s | $\sim$12,000 |
-| Neural network | AD (forward) | GPU | $\sim$0.08 s | $\sim$45,000 |
-| Neural network | AD (reverse) | GPU | $\sim$0.05 s | $\sim$72,000 |
+| Radiative transfer | FD (central) | CPU | ~1 h | 1× |
+| Neural network | FD (central) | CPU | ~3 s | ~1,200× |
+| Neural network | AD (forward) | CPU | ~0.6 s | ~6,000× |
+| Neural network | AD (reverse) | CPU | ~0.3 s | ~12,000× |
+| Neural network | AD (forward) | GPU | ~0.08 s | ~45,000× |
+| Neural network | AD (reverse) | GPU | ~0.05 s | ~72,000× |
 
-: Approximate FastMAPOL retrieval times using conventional radiative transfer and NN forward models with finite-difference and automatic-differentiation Jacobians. {#tbl-ad-efficiency}
+: Approximate FastMAPOL retrieval times using conventional radiative transfer and NN forward models with finite-difference (FD) and automatic-differentiation (AD) Jacobians. {#tbl-ad-efficiency}
 
 Among the tested approaches, reverse-mode AD provides the highest computational efficiency. FastMAPOL therefore uses reverse-mode AD as the default method for calculating the Jacobian matrix during retrieval optimization. Further speed up is discussed by the use of cascading NN for first guess and full retrievals @sec-nn-model.
 
