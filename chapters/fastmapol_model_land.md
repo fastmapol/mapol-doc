@@ -270,6 +270,24 @@ $$
 K_{geo} = O - \sec\theta'_s - \sec\theta'_v + \frac{1}{2}(1+\cos\xi) \\, \sec\theta'_s \\,  \sec\theta'_v
 $$
 
+## White-Sky Albedo
+
+The **white-sky albedo (WSA)**, also referred to as the bihemispherical reflectance, represents the surface albedo under completely diffuse illumination. For the RossThick–LiSparse-Reciprocal BRDF model, WSA can be derived directly from the three BRDF kernel coefficients [@Strahler:1999aa]. In the FastMAPOL MAPOL_LAND product suite, this quantity is reported as `land_white_sky_albedo`.
+
+$$
+\alpha_{\mathrm{WSA}}
+=
+f_{\mathrm{iso}}
++
+0.189184\,f_{\mathrm{vol}}
+-
+1.377622\,f_{\mathrm{geo}},
+$$ {#eq-white-sky-albedo}
+
+where $f_{\mathrm{iso}}$, $f_{\mathrm{vol}}$, and $f_{\mathrm{geo}}$ are the isotropic, volumetric-scattering, and geometric-optical kernel coefficients, respectively. The numerical factors represent the hemispherical integrals of the corresponding Ross–Li kernels.
+
+Unlike black-sky albedo, which depends on the solar zenith angle, white-sky albedo is integrated over all illumination directions and therefore does not depend on a specific solar geometry. In FastMAPOL, WSA provides a compact quantity for characterizing the overall surface reflectance represented by the retrieved Ross–Li BRDF parameters.
+
 ## Polarized Surface Reflectance (BPDF)
 
 Scattering angle have been defined above $\Theta$. Assuming a flat surface which produce the same scattering angle, the incident angle relative to the flat surface would be: 
@@ -376,20 +394,3 @@ Note: The original formulation includes an NDVI factor in $\mathbf{K}_{pol}$ , w
 For scalar radiative transfer simulations, only $R_{11}$ is used.
 
 
-## White-Sky Albedo
-
-The **white-sky albedo (WSA)**, also referred to as the bihemispherical reflectance, represents the surface albedo under completely diffuse illumination. For the RossThick–LiSparse-Reciprocal BRDF model, WSA can be derived directly from the three BRDF kernel coefficients [@Strahler:1999aa]. In the FastMAPOL MAPOL_LAND product suite, this quantity is reported as `land_white_sky_albedo`.
-
-$$
-\alpha_{\mathrm{WSA}}
-=
-f_{\mathrm{iso}}
-+
-0.189184\,f_{\mathrm{vol}}
--
-1.377622\,f_{\mathrm{geo}},
-$$ {#eq-white-sky-albedo}
-
-where $f_{\mathrm{iso}}$, $f_{\mathrm{vol}}$, and $f_{\mathrm{geo}}$ are the isotropic, volumetric-scattering, and geometric-optical kernel coefficients, respectively. The numerical factors represent the hemispherical integrals of the corresponding Ross–Li kernels.
-
-Unlike black-sky albedo, which depends on the solar zenith angle, white-sky albedo is integrated over all illumination directions and therefore does not depend on a specific solar geometry. In FastMAPOL, WSA provides a compact quantity for characterizing the overall surface reflectance represented by the retrieved Ross–Li BRDF parameters.

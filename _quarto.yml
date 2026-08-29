@@ -154,6 +154,9 @@ format:
     toc-depth: 3
     toc-location: right
 
+    # Do not display author/affiliation metadata on chapter pages
+    title-block-style: none
+    
     code-fold: false
     smooth-scroll: true
     link-external-newwindow: true
