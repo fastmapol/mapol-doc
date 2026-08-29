@@ -1,6 +1,6 @@
 # Aerosol Model {#sec-aerosol-model}
 
-This chapter describes the aerosol representations used in FastMAPOL and the aerosol properties derived from the retrieved state vector. The mathematical formulation of log-normal size distributions, including conversions between number- and volume-density representations and the calculation of distribution moments, is provided separately in @sec-aerosol-size-math.
+This chapter describes the aerosol representations used in FastMAPOL and the aerosol properties derived from the retrieved state vector. The mathematical formulation of log-normal size distributions, including conversions between number- and volume-density representations and the calculation of distribution moments, is provided separately in @sec-aerosol-model-math.
 
 ## Aerosol Model Overview
 
@@ -12,7 +12,7 @@ FastMAPOL supports several aerosol representations with increasing complexity:
 
 The currently released HARP2 and SPEXone FastMAPOL products (V1--V4) use the five-mode **Aer-1** representation [@Gao:2021aa; @Gao:2023aa; @Gao:2026aa]. The six-mode **Aer-2** representation was developed for retrievals using RSP observations that include shortwave-infrared (SWIR) measurements [@Gao:2018aa]. **Aer-3** represents aerosols through aerosol components and has been applied to HARP2 and SPEXone for advanced retrieval studies [@Aryal:2026aa]. The component-based aerosol model is described separately in @sec-aerosol-component.
 
-This chapter focuses primarily on the Aer-1 and Aer-2 representations.
+This chapter focuses primarily on the Aer-1 and Aer-2 representations under the assumption of spherical particles. For PACE HARP2 and SPEXone data product, aerosol particle shape is represented as a mixture of spherical and nonspherical particles, as implemented in the current FastMAPOL V3 and V4 products [@Gao:2026aa]. The treatment of aerosol particle shape and nonsphericity is described in detail in @sec-aerosol-shape. 
 
 ## Log-Normal Aerosol Modes
 
@@ -156,7 +156,7 @@ C_{\mathrm{ext},i}(\lambda)
 V_{0,i}.
 $$
 
-The mathematical derivation of the conversion between volume and number distributions is provided in @sec-aerosol-size-math.
+The mathematical derivation of the conversion between volume and number distributions is provided in @sec-aerosol-model-math.
 
 ## Effective Radius and Effective Variance
 
@@ -189,7 +189,7 @@ These quantities can be calculated for the total aerosol distribution or separat
 
 Although the three fine modes in Aer-1 and Aer-2 have the same logarithmic standard deviation, the effective radius and effective variance of the combined fine-mode distribution vary according to the relative retrieved volume densities of the three modes.
 
-Detailed derivations of these expressions are provided in @sec-aerosol-size-math.
+Detailed derivations of these expressions are provided in @sec-aerosol-model-math.
 
 ## Aerosol Products
 

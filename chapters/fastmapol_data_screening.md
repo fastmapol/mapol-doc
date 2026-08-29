@@ -1,6 +1,6 @@
 # Adaptive Multi-angle Data Screening {#sec-data-screening}
 
-Within the FastMAPOL retrieval algorithm, an adaptive multi-angle data screening approach is implemented, which conducts automatic data quality analysis and data screening. A flowchart is summarized in Figure @fig-flowchart-screening B ((../figure/fig_data_screening.png). More details in the algorithm and applications are in @2021bb.
+Within the FastMAPOL retrieval algorithm, an adaptive multi-angle data screening approach is implemented, which conducts automatic data quality analysis and data screening. A flowchart is summarized in Figure @fig-flowchart-screening B ((../figure/fig_data_screening.png). More details in the algorithm and applications are in @Gao:2021bb.
 
 ![Flowcharts for (A) FastMAPOL retrievals and (B) retrievals with the multi-angle polarimetric data screening (MAPDS).** In panel **(A)**, $\Delta\chi^2 = |\chi_i^2-\chi_{i-1}^2|$ indicates the changes of the cost function between two iterations with $\eta$ as threshold. In panel **(B)**, $\Delta\rho_t$ and $\Delta P_t$ indicate the difference between forward model and measurements for reflectance and DoLP with $\xi$ as threshold. The dashed box in **(B)** represents the same retrieval process as shown in the dashed box in **(A)**. A maximum three passes (indicated by the loop in **(B)**) are used in the data screening process.Figure is adopted from @Gao:2021bb](../figure/fig_data_screening.png){#fig-flowchart-screening width=80%}
 

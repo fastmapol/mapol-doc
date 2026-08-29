@@ -291,7 +291,7 @@ Meng Gao, \quad Pengwang Zhai, \quad Kamal Aryal, \quad Kirk
 Knobelspiesse, \quad Bryan Franz \\
 \textbf{POC} &
 Meng Gao \;(\href{mailto:meng.gao@nasa.gov}{meng.gao@nasa.gov}) \\
-\textbf{Date} & 2026-08-28 \\
+\textbf{Date} & 2026-08-29 \\
 \textbf{Keywords} &
 PACE \textperiodcentered\ Polarization \textperiodcentered\ Multi-angle \textperiodcentered\ Aerosol \textperiodcentered\ Ocean
 Color \textperiodcentered\ Deep Learning \\
@@ -824,17 +824,17 @@ SeaDAS}\label{data-visualization-with-seadas}
 \markboth{Data Visualization with SeaDAS}{Data Visualization with
 SeaDAS}
 
-\begin{figure}
-
-\begin{minipage}{0.55\linewidth}
 FastMAPOL products can also be accessed, explored, and visualized using
 NASA's Sea, Earth, Atmosphere Data Analysis System
 (\href{https://www.earthdata.nasa.gov/data/tools/seadas}{SeaDAS}).
 SeaDAS provides a comprehensive graphical environment for discovering,
 processing, displaying, analyzing, and performing quality control of
 satellite-based Earth science data. The software provides several tools
-for working with HARP2 and SPEXone FastMAPOL L2 and L3
-products:\textbf{Data Discovery and Processing}
+for working with HARP2 and SPEXone FastMAPOL L2 and L3 products. It is
+especially useful to explore the multi-angle ocean and land surface
+reflectance.
+
+\textbf{Data Discovery and Processing}
 
 \begin{itemize}
 \tightlist
@@ -862,23 +862,7 @@ products:\textbf{Data Discovery and Processing}
 \end{itemize}
 
 Support for PACE polarimeter products in SeaDAS has been provided by
-Bing Yang and the SeaDAS team.\end{minipage}%
-%
-\begin{minipage}{0.45\linewidth}
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{figure/seadas_cloud_search.png}
-
-}
-
-\subcaption{SeaDAS tools for browsing and subsetting L2 data}
-
-\end{figure}%
-
-\end{minipage}%
-
-\end{figure}%
+Bing Yang and the SeaDAS team.
 
 \bookmarksetup{startatroot}
 
@@ -1054,7 +1038,8 @@ and ozone column density \(n_{\mathrm{O}_3}\) are considered as input
 parameters, with values obtained from the MERRA-2 reanalysis
 (\citeproc{ref-Gelaro:2017aa}{Gelaro et al. 2017}).
 
-More details are provided in Appendix~\ref{sec-rt-model}.
+More details are provided in Appendix~\ref{sec-rt-model} and
+Appendix~\ref{sec-rt-shell}.
 
 \textbf{Aerosol model}
 
@@ -1079,7 +1064,9 @@ and \(\mathrm{sph}_c\). The aerosol vertical distribution is
 parameterized by the aerosol layer height (\(z_c\)), defined as the
 center of a Gaussian vertical profile describing aerosol number density.
 
-More details are provided in Appendix~\ref{sec-aerosol-model}.
+More details are provided in Appendix~\ref{sec-aerosol-model},
+Appendix~\ref{sec-aerosol-height} and
+Appendix~\ref{sec-aerosol-component}.
 
 \textbf{Ocean model}
 
@@ -1254,7 +1241,8 @@ SSA (fine) & \(6\times64\times64\times34\) & 0.003 \\
 SSA (coarse) & \(5\times64\times64\times34\) & 0.01 \\
 \end{longtable}
 
-More details are provided in Appendix~\ref{sec-nn-model}.
+More details are provided in Appendix~\ref{sec-nn-model} and
+Appendix~\ref{sec-nn-ad}.
 
 \section{Retrieval and optimization}\label{retrieval-and-optimization}
 
@@ -1383,6 +1371,30 @@ number and information content of the retrieved parameters and can be
 evaluated using the Jacobian and error covariance matrices
 (\citeproc{ref-Gao:2021bb}{Meng Gao et al. 2021};
 \citeproc{ref-Gao:2023bb}{M. Gao, Knobelspiesse, et al. 2023}).
+
+\section{Data screening and uncertainty
+quantifization}\label{data-screening-and-uncertainty-quantifization}
+
+FastMAPOL incorporates adaptive multi-angle data screening and
+pixel-level uncertainty quantification to improve retrieval robustness
+and characterize retrieval confidence. The data-screening approach
+identifies and removes individual viewing angles that cannot be
+adequately represented by the forward model, while retaining valid
+observations from the same pixel whenever sufficient information remains
+for retrieval. This is particularly important for multi-angle
+polarimetric observations, where clouds, sunglint, surface
+heterogeneity, and other scene-dependent effects may affect only a
+subset of viewing angles. The screening methodology is described in
+detail in Appendix~\ref{sec-data-screening}.
+
+FastMAPOL also provides a framework for propagating measurement and
+forward-model uncertainties into the retrieved state parameters and
+derived geophysical products using the forward-model Jacobian and
+retrieval covariance matrix. Automatic differentiation enables efficient
+calculation of the derivatives required for pixel-level uncertainty
+propagation. The methodology and approaches for evaluating the resulting
+uncertainty estimates are described in Appendix~\ref{sec-uq-theory} and
+Appendix~\ref{sec-uq-correlation} when considering data correlations.
 
 \bookmarksetup{startatroot}
 
@@ -2281,7 +2293,8 @@ and colored dissolved organic matter (\citeproc{ref-Zhai:2015aa}{Zhai et
 al. 2015}, \citeproc{ref-Zhai:2017aa}{2017}). - An improved
 pseudos-spherical shell (IPSS) algorithm is used to improve the
 simulation of radiance field over polar regions
-(\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}).
+(\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}). More details are in
+Appendix~\ref{sec-rt-shell}.
 
 For this work, RTSOS is configured to simulate polarized radiance fields
 for randomly generated Earth systems for the PACE instruments
@@ -2292,8 +2305,403 @@ the radiative transfer system.
 \textbf{Code repository} The RTSOS is made public by Dr.~Pengwang Zhai
 in github.
 
-\chapter{Neural Network Forward Model and Analytical
-Jacobian}\label{sec-nn-model}
+\chapter{Radiative Transfer Model: Spherical shell
+correction}\label{sec-rt-shell}
+
+As discussed in Appendix~\ref{sec-rt-model}, theforward model are
+generated using a PACE-tailored vector radiative transfer model based on
+the successive orders of scattering method
+(\citeproc{ref-Zhai:2022bb}{Zhai et al. 2022}). An improved
+pseudo-spherical shell (IPSS) correction is applied to improve
+simulation fidelity at large solar and viewing zenith angles
+(\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}).
+
+Reflectance and degree of linear polarization (DoLP) are simulated at
+the PACE satellite altitude of approximately 676 km above Earth's
+surface. The solar and viewing geometries are defined at the Earth's
+surface following PACE L1C format definition (all geometries in the L1C
+file follllows the same convention), as illustrated in
+Figure~\ref{fig-system}, using the geometric transformations derived in
+Zhai and Hu (\citeproc{ref-Zhai:2022aa}{2022}).
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{chapters/../figure/fig_rt_shell.png}
+
+}
+
+\caption{\label{fig-system}Spherical-shell geometry of the
+Earth--atmosphere system. Radiative transfer simulations are performed
+for the geometry defined at the satellite by the solar and viewing
+zenith angles \(\theta'_0\) and \(\theta'_v\), respectively. These
+angles are transformed to the corresponding geometry at the Earth's
+surface, with solar and viewing zenith angles \(\theta_0\) and
+\(\theta_v\). Solar and viewing azimuth angles also depend on the
+reference frame but are not shown.}
+
+\end{figure}%
+
+\chapter{Neural Network Forward Model and Training}\label{sec-nn-model}
+
+FastMAPOL uses deep feed-forward neural networks (NNs) as
+computationally efficient emulators of the vector radiative transfer
+(RT) forward model. Separate NNs are trained for reflectance (\(\rho\))
+and degree of linear polarization (DoLP, \(P\)), allowing their
+different angular characteristics and accuracy requirements to be
+treated independently. The general NN methodology follows M. Gao et al.
+(\citeproc{ref-Gao:2021aa}{2021}), with subsequent improvements for PACE
+polarimeter retrievals described in M. Gao, Franz, et al.
+(\citeproc{ref-Gao:2023aa}{2023}).
+
+\section{Training Data}\label{training-data}
+
+The NN training data are generated from the high-accuracy vector RT
+simulations described in the previous section. The training parameter
+space covers the aerosol, ocean surface, atmospheric, and
+observation-geometry parameters required by the FastMAPOL forward model.
+Compared with the earlier AirHARP implementation
+(\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021}), the PACE implementation
+extends the parameter space to include aerosol layer height (ALH) and
+surface pressure and covers a larger range of viewing geometries {[}M.
+Gao, Franz, et al. (\citeproc{ref-Gao:2023aa}{2023}); Gao:2026aa{]}. The
+latter is enabled by the improved pseudo-spherical shell (IPSS)
+correction (\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}) and the use of
+viewing geometry defined at the Earth's surface.
+
+A total of 10,000-20,000 independent RT cases are generated by randomly
+sampling the model input parameters over their prescribed ranges,
+depending on the accuracy requirement and complexities of the RT system.
+Aerosol optical depth (AOD) is often niformly sampled between 0.01 and
+0.5 and is used, together with the sampled aerosol size and composition
+parameters, to determine the aerosol volume densities following the
+strategy described in M. Gao et al. (\citeproc{ref-Gao:2021aa}{2021}).
+Note that the NN can be still used for AOD larger than 0.5, but the
+sampling is not optimal as the range less than 0.5, and have showing a
+negative bias in the retrievals (\citeproc{ref-Gao:2026aa}{Meng Gao et
+al. 2026}). Further expansions are planned for future versions.
+
+A single RT simulation provides radiances over a large number of viewing
+geometries. This allows multiple viewing directions to be sampled from
+each RT case and substantially increases the effective size of the NN
+training dataset without requiring additional full RT calculations. This
+approach is analogous to data augmentation in machine learning.
+
+For example for the training of NN for HARP2, sets of 100, 400, and 1000
+viewing geometries are sampled from each of the 10,000 RT simulations,
+resulting in approximately 1 million, 4 million, and 10 million training
+samples, respectively. The impact of this data augmentation on NN
+accuracy was systematically evaluated in M. Gao, Franz, et al.
+(\citeproc{ref-Gao:2023aa}{2023}).
+
+\section{Neural Network Architecture}\label{neural-network-architecture}
+
+A feed-forward NN with \(k\) hidden layers can be expressed recursively
+as
+
+\[
+\mathbf{h}_1 =
+\Phi\left(\mathbf{W}_1^T\mathbf{x}+\mathbf{b}_1\right),
+\]
+
+\[
+\mathbf{h}_{p+1} =
+\Phi\left(\mathbf{W}_{p+1}^T\mathbf{h}_p+\mathbf{b}_{p+1}\right),
+\qquad p=1,\ldots,k-1,
+\]
+
+and
+
+\[
+\mathbf{y} =
+\mathbf{W}_{k+1}^T\mathbf{h}_k+\mathbf{b}_{k+1},
+\]
+
+where \(\mathbf{x}\) is the forward-model input vector, \(\mathbf{y}\)
+contains the NN-predicted reflectance or DoLP, \(\mathbf{W}_p\) and
+\(\mathbf{b}_p\) are the trainable weight matrices and bias vectors, and
+\(\mathbf{h}_p\) represents the output of hidden layer \(p\).
+
+The nonlinear activation function is the LeakyReLU function,
+
+\[
+\Phi(z)=\max(0,z)+0.01\min(0,z).
+\]
+
+LeakyReLU was selected because it provided slightly better accuracy than
+the standard ReLU activation in the NN training experiments
+(\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021}).
+
+For the PACE implementation described in M. Gao, Franz, et al.
+(\citeproc{ref-Gao:2023aa}{2023}), the primary reflectance and DoLP NNs
+contain 17 inputs and 4 outputs. Multiple architectures were evaluated,
+ranging from two hidden layers with 64 or 128 nodes per layer to three
+hidden layers with 128, 256, or 512 nodes per layer. For convenience, an
+architecture with three hidden layers containing 256 nodes each is
+denoted as \(256^3\).
+
+\section{Training Procedure}\label{training-procedure}
+
+The NN inputs and outputs are normalized before training to reduce
+differences in scale among the forward-model parameters and output
+quantities. The NN parameters are optimized using mini-batch training. A
+batch size of 1024 is used, and the Adam optimization algorithm
+(\citeproc{ref-Kingma:2014aa}{Kingma and Ba 2015}) is applied to update
+the NN weights and biases. The NN models are implemented and trained
+using PyTorch (\citeproc{ref-Paszke:2019aa}{Paszke et al. 2019}).
+
+The simulated dataset is randomly divided into 70\% for training and
+30\% for validation. The training subset is used to optimize the NN
+parameters, while the independent validation subset is used to monitor
+generalization and identify overfitting. Increasing both the number of
+training samples and the NN size was found to reduce the training and
+validation errors, with the larger augmented datasets substantially
+reducing the difference between the two.
+
+\section{Measurement-Uncertainty-Aware
+Training}\label{measurement-uncertainty-aware-training}
+
+A key improvement in the PACE FastMAPOL NN training is the use of a
+measurement-uncertainty-aware cost function
+(\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}).
+
+Conventional NN training minimizes a mean squared error (MSE) between
+the RT simulations and NN predictions. This approach can be problematic
+for ocean reflectance because the sunglint signal can become strongly
+peaked at low wind speeds. The large magnitude of reflectance near the
+specular direction can dominate the MSE and reduce the relative
+importance of other viewing geometries.
+
+Earlier implementations addressed this problem by excluding observations
+near the specular reflection direction from the training data
+(\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021}). However, removing
+sunglint observations also eliminates information useful for retrieving
+ocean surface wind speed and aerosol properties
+(\citeproc{ref-Gao:2021bb}{Meng Gao et al. 2021}).
+
+FastMAPOL instead retains these observations and normalizes the NN
+residuals by the assumed measurement uncertainties. The training cost
+functions for reflectance and DoLP are defined as
+
+\[
+\chi^2_{\mathrm{NN},\rho}
+=
+\frac{1}{N}
+\sum_i
+\frac{
+\left[
+\rho_t(i)-\rho_t^{\mathrm{NN}}(\mathbf{x};i)
+\right]^2
+}{
+\sigma_\rho^2(i)
+},
+\]
+
+and
+
+\[
+\chi^2_{\mathrm{NN},P}
+=
+\frac{1}{N}
+\sum_i
+\frac{
+\left[
+P_t(i)-P_t^{\mathrm{NN}}(\mathbf{x};i)
+\right]^2
+}{
+\sigma_P^2(i)
+},
+\]
+
+where \(\rho_t\) and \(P_t\) are the RT-generated training values,
+\(\rho_t^{\mathrm{NN}}\) and \(P_t^{\mathrm{NN}}\) are the corresponding
+NN predictions, and \(N\) is the number of samples in a training batch.
+
+The uncertainty model used for NN training follows that used in the
+retrieval:
+
+\[
+\sigma_\rho = 0.03\rho_t,
+\qquad
+\sigma_P = 0.005.
+\]
+
+For reflectance, this formulation approximately represents a relative or
+percentage fitting error and prevents the large absolute magnitude of
+sunglint reflectance from dominating the optimization. It therefore
+allows both sunglint and non-sunglint geometries to be represented
+within the same training framework.
+
+For DoLP, \(\sigma_P\) is constant, so the uncertainty-normalized cost
+function is mathematically equivalent to a scaled MSE. Because DoLP
+remains bounded and does not exhibit the same large-magnitude sunglint
+behavior as reflectance, its training is less affected by this issue.
+
+An additional advantage of this formulation is that the NN training
+accuracy can be interpreted directly relative to the measurement
+uncertainty. For example,
+
+\[
+\chi^2_{\mathrm{NN}}=0.01
+\]
+
+corresponds to a typical NN residual of approximately
+
+\[
+\sqrt{0.01}=0.1
+\]
+
+times the assumed measurement uncertainty.
+
+\section{Training Performance and NN
+Selection}\label{training-performance-and-nn-selection}
+
+The effects of NN architecture and training-data size were
+systematically evaluated using datasets containing 1 million, 4 million,
+and 10 million samples. Increasing the NN size generally decreases both
+the training and validation cost functions. However, for smaller
+training datasets, sufficiently large networks can begin to overfit, as
+indicated by a validation cost larger than the training cost.
+
+Increasing the augmented training dataset from 1 million to 4 million
+and ultimately 10 million samples reduces this difference and allows
+larger NN architectures to be effectively trained. With 10 million
+samples, the reflectance NN converges to a cost function of
+approximately 0.01. This corresponds to a typical NN residual of
+approximately 0.1 times the assumed 3\% reflectance measurement
+uncertainty, or about 0.3\%.
+
+DoLP requires a larger NN to reach a comparable normalized training
+accuracy because the assumed DoLP measurement uncertainty, 0.005,
+imposes a more stringent absolute accuracy requirement. With 10 million
+samples and a \(512^3\) architecture, the DoLP cost function is
+approximately 0.04, corresponding to an NN error of approximately
+
+\[
+\sqrt{0.04}\times0.005
+=
+0.001.
+\]
+
+A similar level of normalized accuracy for reflectance can be achieved
+with the smaller \(256^3\) architecture.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{chapters/../figure/fig_rt_nn.png}
+
+}
+
+\caption{\label{fig-nn-cost}Training cost functions for reflectance
+(top) and DoLP (bottom) as a function of NN architecture and
+training-data size. The NN architectures are represented using compact
+notation; for example, \(128^3\) denotes three hidden layers with 128
+nodes per layer.}
+
+\end{figure}%
+
+\section{Cascaded Neural Network Forward
+Model}\label{cascaded-neural-network-forward-model}
+
+FastMAPOL uses a two-level cascaded NN scheme to balance computational
+efficiency and forward-model accuracy.
+
+Also with the example of NN training with HARP2 data in M. Gao, Franz,
+et al. (\citeproc{ref-Gao:2023aa}{2023}), in the first retrieval stage,
+relatively compact NNs are used to rapidly approach the solution:
+
+\begin{itemize}
+\tightlist
+\item
+  Reflectance: \(64^2\)
+\item
+  DoLP: \(128^2\)
+\end{itemize}
+
+The resulting state vector is then used as the initial condition for a
+second retrieval stage employing higher-accuracy NNs:
+
+\begin{itemize}
+\tightlist
+\item
+  Reflectance: \(256^3\)
+\item
+  DoLP: \(512^3\)
+\end{itemize}
+
+Each retrieval stage itself involves multiple nonlinear optimization
+iterations. The smaller first-stage NNs therefore reduce the
+computational cost of iterations performed while the solution is still
+relatively far from the optimum, whereas the larger second-stage NNs
+provide the accuracy required near the final solution.
+
+Tests comparing single-level and two-level retrievals show similar
+retrieval uncertainties when the same high-accuracy NN is used in the
+final stage. The cascade therefore improves computational efficiency
+without appreciably affecting retrieval accuracy.
+
+The NN representation also enables the Jacobian matrix required by the
+nonlinear optimization to be calculated analytically using automatic
+differentiation and the chain rule (\citeproc{ref-Gao:2021bb}{Meng Gao
+et al. 2021}) with more discussion in Appendix~\ref{sec-nn-ad}, avoiding
+the substantially larger computational cost of finite-difference
+Jacobians.
+
+\section{Independent Evaluation of NN
+Accuracy}\label{independent-evaluation-of-nn-accuracy}
+
+In addition to the training and validation datasets, NN accuracy was
+evaluated using 1000 independent RT simulations with realistic HARP
+viewing geometries that were not used during NN training. The NN
+predictions were compared directly with the corresponding high-accuracy
+RT simulations using metrics including the mean absolute error (MAE) and
+root mean square error (RMSE):
+
+\[
+\mathrm{MAE}
+=
+\frac{1}{N}
+\sum_{i=1}^{N}
+\left|R_i-T_i\right|,
+\]
+
+\[
+\mathrm{RMSE}
+=
+\sqrt{
+\frac{1}{N}
+\sum_{i=1}^{N}
+\left(R_i-T_i\right)^2
+},
+\]
+
+where \(T_i\) represents the RT simulation and \(R_i\) represents the
+corresponding NN prediction.
+
+MAE is less sensitive to a small number of large residuals and was
+therefore found to provide a robust characterization of the typical NN
+error. Based on this independent evaluation, the reflectance uncertainty
+for the \(512^3\) NN is approximately 0.5\%, while the corresponding
+DoLP uncertainty is approximately 0.002. These estimates are slightly
+larger than, but generally consistent with, those inferred directly from
+the uncertainty-normalized training cost functions.
+
+The RT calculations used to generate the training data are configured
+with numerical accuracy substantially better than both the measurement
+uncertainty and NN approximation error for HARP2 {[}M. Gao et al.
+(\citeproc{ref-Gao:2021aa}{2021}); Gao:2023aa{]} and SPEXone
+{[}Gao:2026aa{]}. Consequently, the NN forward models provide an
+efficient approximation of the full vector RT calculations while
+maintaining the accuracy required for FastMAPOL retrievals. For
+application to measured data, the complete uncertainty budget should
+account for measurement uncertainty, NN approximation uncertainty, and
+RT-model numerical uncertainty.
+
+\chapter{Analytical Jacobian through automatic
+differentiation}\label{sec-nn-ad}
 
 The MAP retrievals are often computationally expensive due to their high
 dimensionality and iterative nature, with multiple forward model and
@@ -2303,13 +2711,13 @@ must be repeated several times. Therefore, fast forward model and
 Jacobian matrix calculations are advantageous for efficient processing,
 which was a motivation for the use of NN forward models for AirHARP in
 M. Gao et al. (\citeproc{ref-Gao:2021aa}{2021}). In this work, we
-provide the definition of the NN and the use of automatic
-differentiation to compute the Jacobian matrix analytically, as opposed
-to numerically through finite differencing, by exploiting the
-differentiable properties of the NN models. For details on the NN
-training strategies, please refer to M. Gao, Franz, et al.
-(\citeproc{ref-Gao:2023aa}{2023}) and M. Gao et al.
-(\citeproc{ref-Gao:2021aa}{2021}).
+discuss the use of automatic differentiation to compute the Jacobian
+matrix analytically, as opposed to numerically through finite
+differencing, by exploiting the differentiable properties of the NN
+models. For details on the NN and its training strategies, please refer
+to Appendix~\ref{sec-nn-model} and M. Gao et al.
+(\citeproc{ref-Gao:2021aa}{2021}) and M. Gao, Franz, et al.
+(\citeproc{ref-Gao:2023aa}{2023}).
 
 The NN forward model developed in M. Gao et al.
 (\citeproc{ref-Gao:2021aa}{2021}) is a feed-forward neural network as
@@ -2322,6 +2730,9 @@ et al. 2021}; \citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}).
 
 Correspondingly, \(\mathbf{y}\) is the output layer for either
 reflectance or DoLP at the four AirHARP bands.
+
+\section{Mathematical formula of automatic
+differentiation}\label{mathematical-formula-of-automatic-differentiation}
 
 For application to multi-angle measurements, the NN needs to be called
 to simulate \(\mathbf{y}\) for each set of viewing and solar geometries
@@ -2538,834 +2949,704 @@ Jacobian matrix, enabling substantial acceleration of retrieval
 algorithms such as FastMAPOL that involve a large number of state
 parameters and making them more suitable for practical applications.
 
-\chapter{Aerosol Characterization : size distribution and
-representation}\label{sec-aerosol-model}
+\section{Retrieval Efficiency Using Automatic
+Differentiation}\label{retrieval-efficiency-using-automatic-differentiation}
 
-FastMAPOL supports several aerosol representations with increasing
-complexity:
+The computational efficiency of FastMAPOL was evaluated using three
+approaches for calculating the Jacobian matrix: finite differences (FD)
+with central differencing, forward-mode automatic differentiation (AD),
+and reverse-mode AD.
+
+Figure~\ref{fig-nn-ad} compares the retrieved \(\chi^2\) distributions
+and computational times obtained using the different Jacobian methods in
+the example for HARP instrument Meng Gao et al.
+(\citeproc{ref-Gao:2021bb}{2021}). The three approaches converge to
+similar \(\chi^2\) distributions, indicating that the use of AD does not
+appreciably affect the retrieval solution. The \(\chi^2\) distributions
+vary with the number of available viewing angles but can be well
+represented by the theoretical \(\chi^2\) distribution with the
+corresponding degrees of freedom. For reflectance and DoLP observations
+with the same number of viewing angles \(N_v\), the total number of
+measurements is \(N = 2N_v\).
+
+The computational advantage of combining NN forward models with AD is
+substantial. Retrievals using the conventional radiative transfer model
+together with FD typically required approximately one hour to converge
+on a CPU (AMD EPYC processor). Replacing the radiative transfer
+calculations with NN forward models reduced the average retrieval time
+to approximately 3 s using the same FD approach .
+
+Using AD further reduced the average CPU retrieval time to approximately
+0.6 s with forward-mode AD and 0.3 s with reverse-mode AD, corresponding
+to an additional speedup of approximately 5--10 relative to the NN-based
+FD implementation. GPU processing further reduced the retrieval times to
+approximately 0.08 s and 0.05 s for forward- and reverse-mode AD,
+respectively.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1765}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2353}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2353}}@{}}
+\caption{Approximate FastMAPOL retrieval times using conventional
+radiative transfer and NN forward models with finite-difference and
+automatic-differentiation
+Jacobians.}\label{tbl-ad-efficiency}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Forward Model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Jacobian Method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Hardware
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Retrieval Time
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Approximate Speedup
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Forward Model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Jacobian Method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Hardware
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Retrieval Time
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Approximate Speedup
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Radiative transfer & FD (central) & CPU & \$\sim\$1 h & 1 \\
+Neural network & FD (central) & CPU & \$\sim\$3 s & \$\sim\$1,200 \\
+Neural network & AD (forward) & CPU & \$\sim\$0.6 s & \$\sim\$6,000 \\
+Neural network & AD (reverse) & CPU & \$\sim\$0.3 s & \$\sim\$12,000 \\
+Neural network & AD (forward) & GPU & \$\sim\$0.08 s & \$\sim\$45,000 \\
+Neural network & AD (reverse) & GPU & \$\sim\$0.05 s & \$\sim\$72,000 \\
+\end{longtable}
+
+Among the tested approaches, reverse-mode AD provides the highest
+computational efficiency. FastMAPOL therefore uses reverse-mode AD as
+the default method for calculating the Jacobian matrix during retrieval
+optimization. Further speed up is discussed by the use of cascading NN
+for first guess and full retrievals Appendix~\ref{sec-nn-model}.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{chapters/../figure/fig_rt_ad.png}
+
+}
+
+\caption{\label{fig-nn-ad}Comparison of the retrieved \(\chi^2\)
+distributions and computational times using finite-difference (FD),
+forward-mode automatic differentiation (AD), and reverse-mode AD
+methods.}
+
+\end{figure}%
+
+\chapter{Adaptive Multi-angle Data Screening}\label{sec-data-screening}
+
+Within the FastMAPOL retrieval algorithm, an adaptive multi-angle data
+screening approach is implemented, which conducts automatic data quality
+analysis and data screening. A flowchart is summarized in Figure
+Figure~\ref{fig-flowchart-screening} B
+((../figure/fig\_data\_screening.png). More details in the algorithm and
+applications are in Meng Gao et al. (\citeproc{ref-Gao:2021bb}{2021}).
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{chapters/../figure/fig_data_screening.png}
+
+}
+
+\caption{\label{fig-flowchart-screening}Flowcharts for (A) FastMAPOL
+retrievals and (B) retrievals with the multi-angle polarimetric data
+screening (MAPDS).** In panel \textbf{(A)},
+\(\Delta\chi^2 = |\chi_i^2-\chi_{i-1}^2|\) indicates the changes of the
+cost function between two iterations with \(\eta\) as threshold. In
+panel \textbf{(B)}, \(\Delta\rho_t\) and \(\Delta P_t\) indicate the
+difference between forward model and measurements for reflectance and
+DoLP with \(\xi\) as threshold. The dashed box in \textbf{(B)}
+represents the same retrieval process as shown in the dashed box in
+\textbf{(A)}. A maximum three passes (indicated by the loop in
+\textbf{(B)}) are used in the data screening process.Figure is adopted
+from Meng Gao et al. (\citeproc{ref-Gao:2021bb}{2021})}
+
+\end{figure}%
+
+After each converged FastMAPOL retrieval, the residuals between each
+measurement and the forward model prediction are used to evaluate the
+data quality under the criteria:
+
+\[
+\frac{|\Delta\rho_t|}{\sigma_\rho} < \xi,
+\qquad
+\frac{|\Delta P_t|}{\sigma_P} < \xi
+\]
+
+where the residuals are compared with the uncertainty model defined in
+the cost function, and \(\xi\) is a threshold. When either the
+reflectance or DoLP does not satisfy the criteria, the corresponding
+measurement is excluded from the cost function calculation (i.e., the
+view angle which cannot be represented well by the forward model is
+removed), and a new FastMAPOL retrieval is performed. In practice,
+additional screening rules based on the criteria may be used depending
+on the data quality of the field measurements.
+
+This process is repeated until all angles remaining satisfy above
+conditions. Note that the whole data screening process will include
+several retrieval passes, each involving multiple iterations until
+convergence. At the end of each retrieval pass based on the new forward
+model fittings, all measurements used in the retrieval are evaluated
+above and subsequently excluded from the next round if they failed to
+pass.
+
+The data screening approach is an adaptive process, since it depends on
+the fitting at each iteration for each pixel. A threshold value of
+\(\xi=3\) is used in this study, which can be further tuned when more
+data is available. We found at most three passes of retrievals are
+sufficient to remove most of the problematic angles. Since the retrieved
+parameters from last retrieval can be used as the initial values to the
+next retrieval, the total speed to conduct data screening are usually
+less than three times of the single round retrieval.
+
+\chapter{Uncertainty Quantification}\label{sec-uq-theory}
+
+surface properties. The uncertainty framework propagates uncertainties
+associated with the measurements and forward model through the retrieval
+based on the sensitivity of the forward model to the retrieved state
+parameters. Corresponding uncertainty products were generated for the
+global Day-In-The-Life (DITL) test dataset and are available through
+OB.DAAC (\citeproc{ref-Gao:2022aa}{M. Gao et al. 2022}). However,
+because of the additional computational cost associated with uncertainty
+propagation, these uncertainty variables are not included in the current
+FastMAPOL V3 and V4 operational products and are planned for a future
+release.
+
+This chapter reviews the methodology for pixel-level uncertainty
+quantification through error propagation and describes approaches for
+evaluating and validating the resulting uncertainty estimates.
+
+The approach follows the error-propagation framework of Rodgers
+(\citeproc{ref-Rodgers:2000aa}{2000}) and uses the Jacobian matrix
+calculated from the neural-network (NN) forward model through automatic
+differentiation (AD). This enables uncertainties to be calculated
+efficiently for both directly retrieved state parameters and derived
+geophysical products.
+
+\section{Input Uncertainty Model}\label{input-uncertainty-model}
+
+The FastMAPOL retrieval minimizes the difference between the
+measurements and forward-model calculations using the normalized cost
+function
+
+\begin{equation}\phantomsection\label{eq-uq-cost}{
+\chi^2 =
+\frac{1}{N}
+\left[
+\mathbf{F}(\mathbf{x})-\mathbf{m}
+\right]^T
+\mathbf{S}_{\epsilon}^{-1}
+\left[
+\mathbf{F}(\mathbf{x})-\mathbf{m}
+\right],
+}\end{equation}
+
+where \(\mathbf{m}\) is the measurement vector containing reflectance
+and DoLP observations from all available wavelengths and viewing angles,
+\(\mathbf{F}(\mathbf{x})\) is the corresponding forward-model
+calculation, \(\mathbf{x}\) is the retrieved state vector, and \(N\) is
+the total number of measurements.
+
+The error covariance matrix \(\mathbf{S}_{\epsilon}\) describes the
+uncertainties associated with the measurements and forward model. The
+diagonal uncertainty for each observation includes contributions from
+the instrument, NN approximation, and numerical accuracy of the
+radiative transfer (RT) simulations:
+
+\begin{equation}\phantomsection\label{eq-uq-total}{
+\sigma_{\epsilon}^2
+=
+\sigma_{\mathrm{ins}}^2
++
+\sigma_{\mathrm{NN}}^2
++
+\sigma_{\mathrm{RT}}^2,
+}\end{equation}
+
+where
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Aer-1:} five predefined log-normal modes
+  \(\sigma_{\mathrm{ins}}\) represents the measurement uncertainty,
 \item
-  \textbf{Aer-2:} six predefined log-normal modes
+  \(\sigma_{\mathrm{NN}}\) represents the uncertainty introduced by the
+  NN approximation of the forward model, and
 \item
-  \textbf{Aer-3:} aerosol components represented by chemical composition
+  \(\sigma_{\mathrm{RT}}\) represents the numerical uncertainty of the
+  RT calculations used to generate the NN training data.
 \end{itemize}
 
-These aerosol models share a common mathematical framework for size
-integration, mode summation, optical properties, and bulk aerosol
-products. This chapter summarizes the formulation used to connect the
-retrieved state variables to physically meaningful aerosol quantities,
-including optical depth, effective radius, effective variance, fine-mode
-fraction, and volume fraction. In this chapter, we focused on the first
-two models. \textbf{Aer-1:} is used in the currently released HARP2 and
-SPEXone data products (V1-V4)(\citeproc{ref-Gao:2021aa}{M. Gao et al.
-2021}; \citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023};
-\citeproc{ref-Gao:2026aa}{Meng Gao et al. 2026}). \textbf{Aer-2:} was
-used in the study of RSP data (\citeproc{ref-Gao:2018aa}{Meng Gao et al.
-2018}), where SWIR bands are available. \textbf{Aer-3:} corresponds to
-the aerosol component approach (\citeproc{ref-Aryal:2026aa}{Aryal et al.
-2026}), which has been applied to HARP2 and SPEXone for advanced studies
-of complex aerosol and ocean properties. More details are provided in
-Appendix~\ref{sec-aerosol-component}.
+These contributions are assumed to be mutually independent in
+Equation~\ref{eq-uq-total}.
 
-\section{Overview}\label{overview-2}
+The current implementation assumes that the measurement errors are
+uncorrelated, such that \(\mathbf{S}_{\epsilon}\) is diagonal. This
+assumption simplifies the uncertainty propagation and retrieval
+optimization. Correlated spectral and angular uncertainties can be
+represented through the off-diagonal elements of
+\(\mathbf{S}_{\epsilon}\) when such information is quantifized
+(Appendix~\ref{sec-uq-correlation})
 
-The aerosol model formulation includes the following key elements:
+Additional forward-model errors resulting from incomplete physical
+representation of the observed scene are not explicitly included in
+Equation~\ref{eq-uq-total}. FastMAPOL uses adaptive multi-angle
+screening to identify and remove observations that cannot be adequately
+represented by the forward model, thereby reducing the influence of
+these modeling errors on the retrieval.
+
+\section{Pixel-Level Retrieval
+Uncertainty}\label{pixel-level-retrieval-uncertainty}
+
+FastMAPOL estimates the theoretical uncertainty for each individual
+retrieval by propagating the input uncertainties into the retrieved
+state space.
+
+Under the local linearity and Gaussian-error assumptions, the retrieval
+covariance matrix is approximated by
+
+\begin{equation}\phantomsection\label{eq-uq-propagation}{
+\mathbf{S}^{-1}
+=
+\mathbf{K}^T
+\mathbf{S}_{\epsilon}^{-1}
+\mathbf{K}
++
+\mathbf{S}_{a}^{-1},
+}\end{equation}
+
+where \(\mathbf{S}\) is the retrieval covariance matrix,
+\(\mathbf{S}_{\epsilon}\) is the input error covariance matrix,
+\(\mathbf{K}\) is the Jacobian matrix, and \(\mathbf{S}_{a}\) represents
+the effective prior covariance matrix.
+
+The Jacobian matrix describes the sensitivity of each modeled
+observation to each retrieved state parameter:
+
+\begin{equation}\phantomsection\label{eq-uq-jacobian}{
+K_{ij}(\mathbf{x})
+=
+\frac{\partial F_i(\mathbf{x})}{\partial x_j},
+}\end{equation}
+
+where index \(i\) represents a measurement and index \(j\) represents a
+retrieved parameter.
+
+The \(1\sigma\) uncertainty of a directly retrieved parameter \(x_j\) is
+obtained from the corresponding diagonal element of the retrieval
+covariance matrix:
+
+\begin{equation}\phantomsection\label{eq-uq-state}{
+\sigma_{x_j}
+=
+\sqrt{S_{jj}}.
+}\end{equation}
+
+The off-diagonal elements of \(\mathbf{S}\) describe the error
+covariance among retrieved parameters and therefore provide information
+on parameter coupling within the inversion.
+
+\section{Treatment of Retrieval
+Bounds}\label{treatment-of-retrieval-bounds}
+
+FastMAPOL does not use explicit \emph{a priori} state information as an
+additional term in the retrieval cost function. Instead, each state
+parameter is constrained to a physically meaningful range during the
+nonlinear least-squares optimization.
+
+These retrieval bounds act as implicit prior constraints. For
+uncertainty propagation, \(\mathbf{S}_{a}\) is approximated as a
+diagonal matrix based on the permitted range of each state parameter.
+This prevents the propagated uncertainty from becoming substantially
+larger than the physically plausible parameter range.
+
+This treatment is an approximation to the Bayesian formalism of Rodgers
+(\citeproc{ref-Rodgers:2000aa}{2000}). For well-constrained retrievals,
+the measurement information dominates Equation~\ref{eq-uq-propagation}
+and the assumed prior covariance generally has little numerical effect.
+
+\section{Uncertainty of Derived Geophysical
+Products}\label{uncertainty-of-derived-geophysical-products}
+
+Many FastMAPOL products are derived from the retrieved state vector
+rather than retrieved directly. Examples include aerosol optical depth
+(AOD), single-scattering albedo (SSA), and quantities derived through
+atmospheric correction.
+
+For a derived quantity
+
+\[
+a=a(\mathbf{x}),
+\]
+
+its uncertainty is propagated from the full state covariance matrix as
+
+\begin{equation}\phantomsection\label{eq-uq-derived}{
+\sigma_a
+=
+\sqrt{
+\sum_i
+\sum_j
+S_{ij}
+\frac{\partial a}{\partial x_i}
+\frac{\partial a}{\partial x_j}
+}.
+}\end{equation}
+
+Equivalently, defining the gradient
+
+\[
+\mathbf{g}_a
+=
+\frac{\partial a}{\partial\mathbf{x}},
+\]
+
+the propagated variance can be written compactly as
+
+\begin{equation}\phantomsection\label{eq-uq-derived-matrix}{
+\sigma_a^2
+=
+\mathbf{g}_a^T
+\mathbf{S}
+\mathbf{g}_a.
+}\end{equation}
+
+This formulation retains the covariance among retrieved state
+parameters. Neglecting the off-diagonal elements of \(\mathbf{S}\) can
+therefore produce different uncertainty estimates when the derived
+quantity depends on multiple correlated retrieval parameters.
+
+FastMAPOL uses automatic differentiation to calculate the derivatives
+required in Equation~\ref{eq-uq-jacobian} and
+Equation~\ref{eq-uq-derived}. This approach is applied to derived
+aerosol properties such as AOD and SSA as well as quantities associated
+with atmospheric correction.
+
+\section{Automatic Differentiation for Uncertainty
+Propagation}\label{automatic-differentiation-for-uncertainty-propagation}
+
+Calculation of the Jacobian matrix can be computationally expensive when
+conventional finite differences (FD) are used. For a state vector
+containing many parameters, the forward model must be evaluated
+repeatedly after perturbing each parameter.
+
+Because the FastMAPOL forward model is represented by differentiable
+neural networks, the required derivatives can instead be calculated
+analytically through automatic differentiation. AD applies the chain
+rule directly through the NN operations and avoids the repeated
+perturbation calculations required by FD as discussed in
+Appendix~\ref{sec-nn-ad}.
+
+The same framework can be used to calculate both
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  the forward-model Jacobian \(\mathbf{K}\) required for retrieval
+  optimization and Equation~\ref{eq-uq-propagation}, and
+\item
+  the derivatives of derived products with respect to the state vector
+  required by Equation~\ref{eq-uq-derived}.
+\end{enumerate}
+
+Reverse-mode AD provides particularly high computational efficiency for
+the FastMAPOL retrieval and is therefore used as the default approach
+for Jacobian and uncertainty calculations.
+
+This allows pixel-level uncertainties to be produced as an integral part
+of the retrieval rather than through a separate computationally
+expensive uncertainty analysis.
+
+\section{Interpretation of Theoretical
+Uncertainty}\label{interpretation-of-theoretical-uncertainty}
+
+The propagated uncertainties represent the expected \(1\sigma\)
+dispersion of the retrieved quantities under the assumptions of the
+uncertainty model and the local linearization of the forward model.
+
+These theoretical uncertainties do not necessarily capture every source
+of retrieval error. Differences between theoretical uncertainty and
+actual retrieval performance can arise from several factors, including:
 
 \begin{itemize}
 \tightlist
 \item
-  size integration over each particle size distribution
+  incomplete or inaccurate representation of the physical scene by the
+  forward model,
 \item
-  calculation of effective radius and effective variance
+  uncertainties or correlations not represented in
+  \(\mathbf{S}_{\epsilon}\),
 \item
-  multi-mode considerations
+  nonlinearities in the forward model,
 \item
-  derivation of aerosol products such as fine-volume fraction (FVF) and
-  fine-mode fraction (FMF)
+  insufficient measurement information for separating correlated state
+  parameters,
+\item
+  convergence to a local rather than global minimum,
+\item
+  retrieval parameters approaching imposed physical boundaries, and
+\item
+  numerical convergence criteria used by the nonlinear optimization.
 \end{itemize}
 
-\section{Aerosol density
-distributions}\label{aerosol-density-distributions}
-
-\subsection{Conversion between volume and number density log-normal
-distributions}\label{conversion-between-volume-and-number-density-log-normal-distributions}
-
-Both the number density and the volume density can be represented by
-log-normal distributions. The two forms are equivalent and can be
-converted into each other by changing the mean radius and the
-normalization constant.
-
-For a monomodal system, the volume and number size distributions are
-written as
-
-\[
-\frac{d V(r)}{d \ln r}= \frac{V_{0}}{\sqrt{2 \pi} \sigma_{v}} \exp\left[-\frac{(\ln r-\ln r_{v})^2}{2 \sigma_{v}^2}\right],
-\]
-
-\[
-\frac{d N(r)}{d \ln r}= \frac{N_{0}}{\sqrt{2 \pi} \sigma_{n}} \exp\left[-\frac{(\ln r-\ln r_{n})^2}{2 \sigma_{n}^2}\right].
-\]
-
-Here, \(r_v\) and \(r_n\) are the mean radii for the volume and number
-distributions, respectively, and \(\sigma_v\) and \(\sigma_n\) are the
-corresponding logarithmic standard deviations. The formulation follows
-Xu (2016, Appendix A6), with the corrected definition of \(\sigma\) as
-confirmed by Pengwang Zhai through personal communication with Feng Xu.
-
-Since particle volume and number are related by
-
-\[
-V=\frac{4\pi}{3}Nr^3,
-\]
-
-the corresponding differential distributions satisfy
-
-\[
-\frac{d V(r)}{d \ln r}=\frac{4\pi}{3} r^3 \frac{d N(r)}{d \ln r}.
-\]
-
-Using this relation, the following identities are obtained:
-
-\[
-\sigma_{n}=\sigma_{v}=\sigma,
-\]
-
-\[
-r_{n}=r_{v} \exp(-3 \sigma^2),
-\]
-
-\[
-N_{0}=V_{0} \frac{3}{4 \pi r_{v}^3}\exp(4.5 \sigma^2),
-\]
-
-\[
-N_{0}=V_{0} \frac{3}{4 \pi r_{n}^3}\exp(-4.5 \sigma^2).
-\]
-
-These results are consistent with the derivation given by R.G. Grainger.
-The last two expressions provide an internal consistency check.
-
-\section{Optical depth}\label{optical-depth}
-
-Using the conversion above, the column-integrated number density can be
-expressed in terms of the column-integrated volume density as
-
-\[
-N_{0}=V_{0} \frac{3}{4 \pi r_{v}^3}\exp(4.5 \sigma^2).
-\]
-
-The aerosol optical depth is defined as
-
-\[
-\tau_a=\sum_{i=1}^{N_c} C_{ext,i} N_i,
-\]
-
-where \(C_{ext,i}\) is the extinction cross section of component \(i\)
-in units of \(\mu m^2\), and \(N_i\) is the corresponding column number
-density in units of \(\mu m^{-2}\).
-
-Here, column number density is equivalent to vertically integrated
-number density. If the local number density is \(n\) in units of
-\(\mu m^{-3}\) and the layer thickness is \(z\) in units of \(\mu m\),
-then
-
-\[
-N = n z.
-\]
-
-Using column volume density, the optical depth can be rewritten as
-
-\[
-\tau_a = \sum_{i=1}^{N_c} C_{ext,i} N_i,
-\]
-
-\[
-\tau_a = \sum_{i=1}^{N_c} C_{ext,i} V_i \frac{3}{4 \pi r_{v}^3}\exp(4.5 \sigma^2),
-\]
-
-\[
-\tau_a = \sum_{i=1}^{N_c} \left[C_{ext,i} \frac{3}{4 \pi r_{v}^3}\exp(4.5 \sigma^2)\right] V_i.
-\]
-
-The unit of column volume density is \(\mu m^3 \mu m^{-2}\), which
-reduces to \(\mu m\).
-
-If a maximum optical depth \(\tau_{max}\) is prescribed, then the
-corresponding maximum allowed volume density for each component is
-
-\[
-V_i=\tau_{max}\left[C_{ext,i} \frac{3}{4 \pi r_{v}^3}\exp(4.5 \sigma^2)\right]^{-1},
-\]
-
-or equivalently
-
-\[
-V_i=\tau_{max} \exp(4.5 \sigma^2) \frac{4 \pi r_{v}^3}{3 C_{ext,i}}.
-\]
-
-A practical bound on \(V_i\) can be estimated at a reference wavelength
-such as \(550 \, nm\) by computing extinction cross sections over the
-expected refractive-index range for each mode. For the lower bound, one
-may use a real refractive index close to that of water at \(550 \, nm\),
-approximately 1.3.
-
-In general, increasing the imaginary part of the refractive index
-increases the extinction cross section. For coarse particles, however,
-the extinction is often much less sensitive to refractive index than to
-particle size.
-
-\section{Convention for size
-distributions}\label{convention-for-size-distributions}
-
-The size distributions may be defined with respect to either \(r\) or
-\(\ln r\). These forms are related by
-
-\[
-\frac{d N(r)}{d r}=\frac{1}{r}\frac{d N(r)}{d \ln r},
-\]
-
-\[
-\frac{d V(r)}{d r}=\frac{1}{r}\frac{d V(r)}{d \ln r}.
-\]
-
-This distinction is important when comparing formulations from different
-references or numerical implementations.
-
-\section{Moments of the particle size
-distribution}\label{moments-of-the-particle-size-distribution}
-
-For later use, define the \(k\)th moment of the number size distribution
-as
-
-\[
-m_k=\int_{0}^{\infty} r^k \frac{d N(r)}{d r} \, d r,
-\]
-
-which is equivalently
-
-\[
-m_k=\int_{-\infty}^{\infty} r^k \frac{d N(r)}{d \ln r} \, d \ln r.
-\]
-
-For a log-normal number distribution,
-
-\[
-m_k=N_0 r_n^k \exp\left(\frac{k^2}{2} \sigma^2\right).
-\]
-
-The dimension is consistent: \(m_k\) has units of \(r^k\), while
-\(\sigma\) is dimensionless.
-
-Substituting the number-volume conversion into the moment expression
-gives
-
-\[
-m_k=N_0 r_n^k \exp\left(\frac{k^2}{2} \sigma^2\right),
-\]
-
-\[
-m_k=V_{0} \frac{3}{4 \pi r_{v}^3}\exp(4.5 \sigma^2)r^k_{v} \exp(-3k \sigma^2) \exp\left(\frac{k^2}{2} \sigma^2\right),
-\]
-
-and therefore
-
-\[
-m_k=V_{0} \frac{3}{4 \pi} r^{k-3}_v\exp\left[\frac{(k-3)^2\sigma^2}{2} \right].
-\]
-
-This result preserves dimensional consistency because \(V_0\) carries
-the dimension of \(r^3\).
-
-A useful special case is \(k=3\), for which
-
-\[
-m_3=\frac{3V_0}{4\pi}.
-\]
-
-Thus, the third moment depends directly on the total particle volume.
-
-\section{\texorpdfstring{Effective radius and effective variance in
-terms of
-\(dN/d\ln r\)}{Effective radius and effective variance in terms of dN/d\textbackslash ln r}}\label{effective-radius-and-effective-variance-in-terms-of-dndln-r}
-
-The effective radius, or area-weighted mean radius, is defined as
-
-\[
-r_{eff}=\frac{\int_{r_1}^{r_2} r \, r^2 (dN(r)/dr) \, dr}{\int_{r_1}^{r_2} r^2 (dN(r)/dr) \, dr}
-=\frac{m_3}{m_2}.
-\]
-
-The weighting by particle area reflects the fact that radiative
-extinction is approximately proportional to particle cross-sectional
-area.
-
-The effective variance is defined as
-
-\[
-\nu_{eff}=\frac{\int_{r_1}^{r_2}(r-r_{eff})^2 r^2 (dN(r)/dr) \, dr}
-{r^2_{eff} \int_{r_1}^{r_2}r^2 (dN(r)/dr) \, dr},
-\]
-
-which can be written in terms of moments as
-
-\[
-\nu_{eff}= \frac{m_4 m_2}{m_3^2}-1.
-\]
-
-This expression is equally valid for distributions written in terms of
-\(dN(r)/d\ln r\).
-
-For a log-normal number distribution
-
-\[
-\frac{d N(r)}{d \ln r}=\frac{N_0}{\sqrt{2 \pi} \sigma} \exp\left[-\frac{(\ln r-\ln r_n)^2}{2 \sigma^2}\right],
-\]
-
-the effective radius and effective variance are
-
-\[
-r_{eff}=r_n \exp\left(\frac{5}{2} \sigma^2\right),
-\]
-
-\[
-\nu_{eff}=\exp (\sigma^2)-1.
-\]
-
-Using the relation between number-mean and volume-mean radius,
-
-\[
-r_{eff}=r_n \exp(2.5 \sigma^2),
-\]
-
-\[
-r_{eff}=r_v \exp(-3 \sigma^2) \exp(2.5 \sigma^2),
-\]
-
-\[
-r_{eff}=r_v \exp(-0.5 \sigma^2).
-\]
-
-Thus, the effective radius is always larger than the number-mean radius
-and smaller than the volume-mean radius.
-
-For small \(\sigma^2\), the approximations
-
-\[
-\nu_{eff}=\exp (\sigma^2)-1 \approx \sigma^2
-\]
+Consequently, theoretical uncertainty estimates should be evaluated
+against retrieval errors obtained from synthetic experiments or
+independent validation measurements whenever possible.
+
+\section{Evaluation of Retrieval
+Uncertainty}\label{evaluation-of-retrieval-uncertainty}
+
+For synthetic retrieval experiments, retrieval errors can be calculated
+directly because the true state is known. For validation against
+independent measurements, the corresponding reference observations can
+be used as an estimate of truth, with their own uncertainties considered
+when interpreting the comparison.
+
+Two useful metrics for characterizing retrieval errors are the root mean
+square error (RMSE) and mean absolute error (MAE):
+
+\begin{equation}\phantomsection\label{eq-uq-rmse}{
+\mathrm{RMSE}
+=
+\sqrt{
+\frac{1}{M}
+\sum_{i=1}^{M}
+(R_i-T_i)^2
+},
+}\end{equation}
 
 and
 
-\[
-r_{eff}= r_v \exp(-0.5 \sigma^2) \approx r_v
-\]
-
-show that the effective variance is approximately the square of the
-logarithmic standard deviation, while the effective radius approaches
-the volume-mean radius.
-
-\section{\texorpdfstring{Effective radius and variance in terms of
-\(dV/d\ln r\)}{Effective radius and variance in terms of dV/d\textbackslash ln r}}\label{effective-radius-and-variance-in-terms-of-dvdln-r}
-
-Because the retrieval state is often expressed in terms of volume
-density, it is useful to write effective radius and effective variance
-directly in terms of the volume distribution.
-
-Starting from
-
-\[
-\frac{d V(r)}{d \ln r}=\frac{4\pi}{3} r^3 \frac{d N(r)}{d \ln r},
-\]
-
-the effective radius becomes
-
-\[
-r_{eff}=\frac{\int_{\ln r_1}^{\ln r_2} (dV(r)/d\ln r) \, d\ln r}
-{\int_{\ln r_1}^{\ln r_2} r^{-1} (dV(r)/d\ln r) \, d\ln r}.
-\]
-
-Define the moments of the volume distribution as
-
-\[
-m'_k = \int_{\ln r_1}^{\ln r_2} r^k \left(\frac{dV(r)}{d\ln r}\right) d\ln r.
-\]
-
-Then
-
-\[
-r_{eff}= \frac{m'_0}{m'_{-1}}.
-\]
-
-Similarly, the effective variance becomes
-
-\[
-\nu_{eff}=\frac{\int_{\ln r_1}^{\ln r_2}(r-r_{eff})^2 r^{-1} (dV(r)/d\ln r) \, d\ln r}
-{r^2_{eff} \int_{\ln r_1}^{\ln r_2} r^{-1} (dV(r)/d\ln r) \, d\ln r},
-\]
-
-which simplifies to
-
-\[
-\nu_{eff}= \frac{m'_{-1} m'_1}{m'^2_0}-1.
-\]
-
-For discrete numerical implementation, the moment may be written
-schematically as
-
-\[
-m'_k \approx \sum_i r(i)^k v(i,j),
-\]
-
-where \(i\) indexes the size grid and \(j\) indexes pixel or retrieval
-location. The constant increment \(d\ln r\) is omitted here for brevity.
-
-For a log-normal volume distribution,
-
-\[
-m'_k =V_{0} \frac{3}{4 \pi} r^{k}_v\exp\left[\frac{k^2\sigma^2}{2} \right].
-\]
-
-For a multimode distribution, the effective quantities become
-
-\[
-r_{eff}=\frac{\sum_i m_{3,i}}{\sum_i m_{2,i}}
-\]
-
-and
-
-\[
-\nu_{eff}=\frac{\sum_i m_{4,i} \sum_i m_{2,i}}{(\sum_i m_{3,i})^2}-1
-\]
-
-when expressed through number-density moments, or equivalently
-
-\[
-r_{eff}=\frac{\sum_i m'_{0,i}}{\sum_i m'_{-1,i}},
-\]
-
-\[
-\nu_{eff}=\frac{\sum_i m'_{1,i} \sum_i m'_{-1,i}}{(\sum_i m'_{0,i})^2}-1
-\]
-
-when expressed through volume-density moments.
-
-\section{Multi-mode distributions}\label{multi-mode-distributions}
-
-When the aerosol is represented as a sum of log-normal modes,
-
-\[
-\frac{d V(r)}{d \ln r}= \sum_i \frac{V_{0,i}}{\sqrt{2 \pi} \sigma_{v,i}} \exp\left[-\frac{(\ln r-\ln r_{v,i})^2}{2 \sigma_{v,i}^2}\right],
-\]
-
-\[
-\frac{d N(r)}{d \ln r}= \sum_i \frac{N_{0,i}}{\sqrt{2 \pi} \sigma_{n,i}} \exp\left[-\frac{(\ln r-\ln r_{n,i})^2}{2 \sigma_{n,i}^2}\right].
-\]
-
-For each mode, the conversion relations are
-
-\[
-\sigma_{n,i}=\sigma_{v,i}=\sigma_i,
-\]
-
-\[
-r_{n,i}=r_{v,i} \exp(-3 \sigma_{i}^2),
-\]
-
-\[
-N_{0,i}=V_{0,i} \frac{3}{4 \pi r_{v,i}^3}\exp(4.5 \sigma_{i}^2),
-\]
-
-\[
-N_{0,i}=V_{0,i} \frac{3}{4 \pi r_{n,i}^3}\exp(-4.5 \sigma_{i}^2).
-\]
-
-The distinction between number weighting and volume weighting remains
-important, since the same physical aerosol can have different mean radii
-depending on which representation is used.
-
-For the volume-mode parameterization adopted from O. Dubovik et al.
-(\citeproc{ref-Dubovik:2011aa}{2011}) and Xu et al.
-(\citeproc{ref-Xu:2016aa}{2016}), the nominal mode radii are
-
-\[
-0.1,\ 0.1732,\ 0.3,\ 1.0,\ 2.9 \ \mu m
-\]
-
-with logarithmic standard deviations
-
-\[
-0.35,\ 0.35,\ 0.35,\ 0.5,\ 0.5.
-\]
-
-The impact of the number of modes are further discussed by Fu:2020aa. We
-adopted this approach as default aerosol model (Aer-1). Meng Gao et al.
-(\citeproc{ref-Gao:2018aa}{2018}) add an additional coarse mode to deal
-with the larger aerosol size when using the SWIR bands from RSP. The
-nomial radii and standard deviations are 8.4 \(\mu m\) and 0.5, which is
-called (Aer-2).
-
-\section{Averaged extinction cross
-section}\label{averaged-extinction-cross-section}
-
-When extinction is averaged over a volume-based aerosol model, number
-density must first be recovered from the volume density.
-
-For the same total particle volume, a fine mode contains far more
-particles than a coarse mode. As a result, fine-mode particles can
-dominate number-weighted optical properties even when their volume
-contribution is modest.
-
-For two modes, the total extinction can be written as
-
-\[
-C_{ext,t}=C_{ext,f} n_f+C_{ext,c} n_c,
-\]
-
-or in terms of volume density,
-
-\[
-C_{ext,t}= C_{ext,f} \frac{3 V_f}{4\pi r^3_{v,f}}\exp(4.5 \sigma^2_f)+
-C_{ext,c} \frac{3 V_c}{4\pi r^3_{v,c}}\exp(4.5 \sigma^2_c).
-\]
-
-To compare fine- and coarse-mode contributions, consider the ratio
-
-\[
-\frac{C_{ext,f} \frac{3 V_f}{4\pi r^3_{v,f}}\exp(4.5 \sigma^2_f)}
-{C_{ext,c} \frac{3 V_c}{4\pi r^3_{v,c}}\exp(4.5 \sigma^2_c)}.
-\]
-
-If the logarithmic standard deviations are assumed equal, this ratio
-simplifies to an expression proportional to
-
-\[
-\frac{V_f}{V_c}\frac{Q_{ext,f} r_{v,c}}{Q_{ext,c} r_{v,f}},
-\]
-
-showing explicitly how fine-mode dominance arises from both larger
-number concentration per unit volume and the size dependence of
-extinction efficiency.
-
-\section{Effective radius and variance for multimode
-aerosols}\label{effective-radius-and-variance-for-multimode-aerosols}
-
-The total number density and total volume density are
-
-\[
-N_0=\sum_i N_{0,i},
-\]
-
-\[
-V_0=\sum_i V_{0,i}.
-\]
-
-The effective radius and effective variance of the combined distribution
-are
-
-\[
-r_{eff}=\frac{\sum_i m_{3,i}}{\sum_i m_{2,i}},
-\]
-
-\[
-\nu_{eff}=\frac{\sum_i m_{4,i} \sum_i m_{2,i}}{(\sum_i m_{3,i})^2}-1.
-\]
-
-\section{Fine and coarse mode
-partitions}\label{fine-and-coarse-mode-partitions}
-
-To discuss fine-mode and coarse-mode aerosol separately, the mode
-summation may be restricted to selected ranges.
-
-For the Aer-1 and Aer-2 parameterization adopted here:
-
-\begin{itemize}
-\tightlist
+\begin{equation}\phantomsection\label{eq-uq-mae}{
+\mathrm{MAE}
+=
+\frac{1}{M}
+\sum_{i=1}^{M}
+|R_i-T_i|,
+}\end{equation}
+
+where \(R_i\) is the retrieved value, \(T_i\) is the corresponding
+reference value, and \(M\) is the number of retrieval cases.
+
+For a zero-mean Gaussian error distribution,
+
+\begin{equation}\phantomsection\label{eq-uq-rmse-mae}{
+\mathrm{RMSE}
+=
+\sqrt{\frac{\pi}{2}}
+\,\mathrm{MAE}.
+}\end{equation}
+
+MAE is generally less sensitive to outliers than RMSE. Comparing the two
+metrics therefore provides information about whether the observed
+retrieval-error distribution is consistent with a Gaussian distribution.
+
+\section{Monte Carlo Error
+Propagation}\label{monte-carlo-error-propagation}
+
+Direct comparison between pixel-level theoretical uncertainties and
+observed retrieval errors is not straightforward. The theoretical
+uncertainty represents the expected standard deviation of a probability
+distribution for an individual retrieval, whereas the observed error is
+a single realization of that distribution.
+
+One component in FastMAPOL is to use a sampling-based approach, referred
+to as \textbf{Monte Carlo Error Propagation (MCEP)}, to place
+theoretical and observed retrieval errors into a common statistical
+framework as discussed in M. Gao et al.
+(\citeproc{ref-Gao:2022aa}{2022}).
+
+For each retrieval with theoretical uncertainty \(\sigma_i\), a random
+theoretical error is sampled as
+
+\begin{equation}\phantomsection\label{eq-uq-mcep}{
+e_i^{\mathrm{theory}}
+\sim
+\mathcal{N}(0,\sigma_i^2).
+}\end{equation}
+
+The resulting ensemble of sampled errors represents the error
+distribution expected from the pixel-level theoretical uncertainties.
+
+The MCEP procedure consists of the following steps:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
 \item
-  \textbf{fine mode:} modes 1 to 3, with volume-mean radii from \(0.1\)
-  to \(0.3 \, \mu m\)
+  \textbf{Perform the retrieval and calculate pixel-level
+  uncertainty.}\\
+  For each retrieval, calculate the theoretical \(1\sigma\) uncertainty
+  using Equation~\ref{eq-uq-propagation} or
+  Equation~\ref{eq-uq-derived}.
 \item
-  \textbf{coarse mode:} modes 4 and above, with volume-mean radii from
-  \(1.0\), \(2.9, (and 8.4) \mu m\)
-\end{itemize}
-
-Although the first three fine modes share the same logarithmic standard
-deviation, their effective variance can still change because the bulk
-quantity depends on the relative partitioning among the mode volumes.
-
-\section{Aerosol products}\label{aerosol-products}
-
-The aerosol model supports the derivation of bulk products from the
-retrieved mode volumes and optical properties. These include, for
-example:
-
-\begin{itemize}
-\tightlist
+  \textbf{Sample theoretical retrieval errors.}\\
+  For each case, generate a random error from a zero-mean Gaussian
+  distribution with standard deviation equal to its theoretical
+  uncertainty.
 \item
-  \textbf{FMF:} fine-mode fraction, typically defined from fine-mode
-  optical depth relative to total optical depth at a reference
-  wavelength
-\item
-  \textbf{FVF:} fine-volume fraction, defined from fine-mode particle
-  volume relative to total particle volume
-\item
-  effective radius and effective variance for fine, coarse, or total
-  aerosol
-\item
-  spectrally resolved optical depth and related intensive properties
-\end{itemize}
+  \textbf{Calculate observed retrieval errors.}\\
+  Determine the actual retrieval error from the difference between the
+  retrieved and reference values:
 
-The exact definition of each product depends on the chosen aerosol
-representation and on whether the partitioning is performed by mode, by
-size, or by composition.
+  \[
+  e_i^{\mathrm{obs}}=R_i-T_i.
+  \]
+\item
+  \textbf{Compare the error distributions.}\\
+  Compare the sampled theoretical and observed error distributions using
+  statistics such as MAE, RMSE, percentiles, or their complete
+  probability distributions.
+\item
+  \textbf{Evaluate statistical variability.}\\
+  Repeat the random sampling to estimate the uncertainty of the ensemble
+  metrics themselves. This is particularly important when only a limited
+  number of validation cases are available.
+\end{enumerate}
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=16cm,height=\textheight,keepaspectratio]{chapters/../figure/fig_uq_mcep.png}
+
+}
+
+\caption{\label{fig-uq-mcep}Schematic demonstration of the Monte Carlo
+Error Propagation (MCEP) approach for comparing pixel-level theoretical
+uncertainties with retrieval errors. The theoretical uncertainties are
+used to generate random error realizations, which can then be compared
+statistically with errors calculated from retrieval and reference
+values.}
+
+\end{figure}%
+
+MCEP therefore converts a collection of heterogeneous pixel-level
+uncertainties into an ensemble error distribution that can be compared
+directly with the observed retrieval-error distribution.
+
+Importantly, the method does not require the distribution of the
+retrieved geophysical quantity itself, such as AOD, to be Gaussian. Each
+individual theoretical uncertainty is used to generate its own
+conditional error distribution, and the resulting ensemble may have a
+substantially non-Gaussian shape.
+
+\section{Uncertainty for Logarithmically Distributed
+Quantities}\label{uncertainty-for-logarithmically-distributed-quantities}
+
+Some retrieved quantities, particularly chlorophyll-\emph{a}
+concentration (Chla), span several orders of magnitude and are more
+appropriately evaluated in logarithmic space.
+
+Following Seegers et al. (\citeproc{ref-Seegers:2018aa}{2018}), a
+logarithmic MAE metric can be defined as
+
+\[
+\mathrm{MAE(log)}
+=
+10^Y,
+\]
+
+where
+
+\begin{equation}\phantomsection\label{eq-uq-maelog}{
+Y
+=
+\frac{1}{M}
+\sum_{i=1}^{M}
+\left|
+\log_{10}(R_i)
+-
+\log_{10}(T_i)
+\right|.
+}\end{equation}
+
+A value of \(\mathrm{MAE(log)}=1.2\), for example, represents a typical
+multiplicative difference of approximately 20\%.
+
+To compare the theoretical Chla uncertainty with errors expressed in
+logarithmic space, the propagated uncertainty can be transformed as
+
+\begin{equation}\phantomsection\label{eq-uq-chla-log}{
+\sigma_{\log_{10}(\mathrm{Chla})}
+=
+\frac{
+\sigma_{\mathrm{Chla}}
+}{
+\mathrm{Chla}\ln(10)
+}.
+}\end{equation}
+
+This transformation allows the pixel-level theoretical uncertainty and
+validation statistics to be evaluated consistently for quantities
+spanning a large dynamic range.
 
 \section{Summary}\label{summary-1}
 
-The aerosol model is built on a consistent log-normal framework that
-links retrieved mode volumes to number density, optical depth, size
-moments, and bulk aerosol properties. The volume-based representation is
-particularly convenient for retrieval, while the number-based
-representation remains useful for interpreting extinction and other
-radiatively weighted quantities. The relationships summarized here
-provide the basis for size integration, mode summation, and the
-calculation of operational aerosol products in FastMAPOL.
+The FastMAPOL uncertainty framework provides pixel-level uncertainty
+estimates that are physically connected to the measurement information
+and the sensitivity of the forward model. The principal components of
+the framework are:
 
-\chapter{Aerosol Vertical Profile and Layer
-Height}\label{sec-aerosol-height}
+\begin{itemize}
+\tightlist
+\item
+  an input uncertainty model incorporating measurement, NN, and RT
+  numerical uncertainties;
+\item
+  Jacobian-based propagation of input uncertainties into the retrieved
+  state vector;
+\item
+  full covariance information describing uncertainty and coupling among
+  retrieved parameters;
+\item
+  propagation of the state covariance to derived products such as AOD
+  and SSA;
+\item
+  efficient calculation of the required derivatives using automatic
+  differentiation; and
+\item
+  statistical evaluation of theoretical uncertainties against synthetic
+  or validation data using MCEP.
+\end{itemize}
 
-This chapter describes the aerosol vertical distribution assumed in
-FastMAPOL and defines the aerosol layer height (ALH) used in the
-retrieval. The ALH retrieval and its uncertainty, including the
-dependence on aerosol loading, are discussed in detail in M. Gao, Franz,
-et al. (\citeproc{ref-Gao:2023aa}{2023}).
+Together, these components provide both an uncertainty estimate for
+future FastMAPOL retrieval and a framework for evaluating whether those
+theoretical uncertainties are representative of observed retrieval
+performance.
 
-As described in previous chapters, the FastMAPOL forward radiative
-transfer simulations are performed for a coupled atmosphere--surface
-system, including coupled atmosphere--ocean simulations for ocean
-retrievals. The vertical distribution of atmospheric molecules follows
-the U.S. Standard Atmosphere (\citeproc{ref-Anderson:1986aa}{Anderson et
-al. 1986}). Aerosols are represented by a single layer with a Gaussian
-vertical number-density distribution.
+\chapter{Uncertainty Quantifization with Angular
+Correlations}\label{sec-uq-correlation}
 
-\section{Gaussian Aerosol Vertical
-Profile}\label{gaussian-aerosol-vertical-profile}
-
-Using the conventional Gaussian notation, the aerosol vertical profile
-can be written as
-
-\[
-f(z) =
-A\exp\left[
--\frac{(z-z_{\mathrm{c}})^2}{2\sigma^2}
-\right],
-\]
-
-where \(f(z)\) is the aerosol number-density profile, \(z_{\mathrm{c}}\)
-is the center or peak height of the aerosol layer, and \(\sigma\) is the
-standard deviation of the Gaussian distribution. For an unbounded
-Gaussian profile, the normalization factor is
-
-\[
-A = \frac{N_t}{\sigma\sqrt{2\pi}},
-\]
-
-where \(N_t\) is the total aerosol column number density.
-
-The relationship between the Gaussian standard deviation and the full
-width at half maximum (FWHM) is
-
-\[
-\mathrm{FWHM}
-=
-2\sqrt{2\ln 2}\,\sigma.
-\]
-
-FastMAPOL V3 and V4 processing assumes an aerosol-layer FWHM of 2 km.
-Therefore,
-
-\[
-\sigma =
-\frac{\mathrm{FWHM}}
-{2\sqrt{2\ln 2}}
-=
-\frac{2}
-{2\sqrt{2\ln 2}}
-\approx 0.85~\mathrm{km}.
-\]
-
-Thus, the Gaussian aerosol profile used in FastMAPOL has a fixed width,
-while the layer center height \(z_{\mathrm{c}}\) is varied in the
-forward model and retrieved as the aerosol layer height parameter.
-
-\section{Definition of Aerosol Layer
-Height}\label{definition-of-aerosol-layer-height}
-
-Aerosol layer height can be defined in different ways depending on the
-measurement and retrieval methodology. For example, lidar-based
-quantities are often expressed as extinction- or backscatter-weighted
-mean heights.
-
-For the FastMAPOL aerosol model, the aerosol microphysical and optical
-properties are assumed to be vertically homogeneous within the
-prescribed Gaussian distribution. A corresponding profile-weighted mean
-height can therefore be defined as
-
-\[
-\bar{z} =
-\frac{\displaystyle\int_{z_1}^{z_2} z\,f(z)\,dz}
-{\displaystyle\int_{z_1}^{z_2} f(z)\,dz},
-\]
-
-where \(z\) is altitude in kilometers and \(f(z)\) is the prescribed
-aerosol vertical profile, here we choose \(z_1\) and \(z_2\) as 0, and
-50km.
-
-For a Gaussian profile sufficiently far from the lower and upper
-atmospheric boundaries, \(\bar{z}\) is approximately equal to the
-Gaussian center height \(z_{\mathrm{c}}\). However, differences can
-occur when the Gaussian distribution is truncated by the surface,
-particularly for aerosol layers close to the ground. For example,
-\(z_{\mathrm{c}}\) values of 0, 0.5, 1.0, and 2.0 km correspond to
-profile-weighted mean heights \(\bar{z}\) of approximately 0.68, 0.89,
-1.19, and 2.02 km, respectively.
-
-This distinction is important when comparing FastMAPOL-retrieved ALH
-with validation datasets, such as HSRL-2 or ATLID aboard EarthCARE,
-particularly for cases with substantial aerosol loading near the
-surface. In such cases, the retrieved Gaussian center height
-\(z_{\mathrm{c}}\) and the profile-weighted mean height \(\bar{z}\) may
-differ appreciably and should therefore be interpreted consistently when
-performing validation.
-
-\section{Relationship to the Wu et
-al.~Parameterization}\label{relationship-to-the-wu-et-al.-parameterization}
-
-We follow the definition of aerosol vertical profile from L. Wu et al.
-(\citeproc{ref-Wu:2015aa}{2015}), however, an important notation
-difference exists between the Gaussian profile used in the FastMAPOL
-formulation and that introduced by L. Wu et al.
-(\citeproc{ref-Wu:2015aa}{2015}).
-
-Wu et al.~expressed the aerosol vertical distribution as
-
-\[
-f(z) =
-A\exp\left[
--4\ln(2)
-\frac{(z-z_{\mathrm{c}})^2}{\sigma'^2}
-\right],
-\]
-
-where \(A\) is a normalization factor, \(z_{\mathrm{c}}\) is the center
-height of the aerosol layer, and \(\sigma'\) describes the width of the
-aerosol height distribution.
-
-Although \(\sigma'\) was used as the width parameter, it is \textbf{not
-the standard deviation of a conventional Gaussian distribution}. From
-the form of the exponent, \(\sigma'\) corresponds directly to the FWHM:
-
-\[
-\sigma' = \mathrm{FWHM}.
-\]
-
-Wu et al.~adopted
-
-\[
-\sigma' = 2~\mathrm{km},
-\]
-
-corresponding to an aerosol-layer FWHM of 2 km.
-
-This distinction is a caveat regarding the notation used for the
-Gaussian width; the two mathematical formulations are equivalent when
-the width parameters are interpreted consistently. \textbf{FastMAPOL V3
-and V4 use an aerosol-layer FWHM of 2 km, equivalent to a Gaussian
-standard deviation of approximately 0.85 km.} Thus, the two formulations
-describe the same aerosol vertical profile despite the different
-definitions of the width parameter.
-
-\chapter{Aerosol Characterization: Component
-Approach}\label{sec-aerosol-component}
-
-In the aerosol component approach, aerosols are represented by an
-external mixture of different components with assumed size distribution
-and refractive index spectra. The components are resolved in two size
-modes: fine mode and coarse mode. The fine mode aerosols consist of fine
-mode non-absorbing insoluble (FNAI), brown carbon (BrC), black carbon
-(BC) and fine mode non absorbing soluble (FNAS), whereas the coarse mode
-consists of sea salt (SS) and non-spherical dust (Dust). These
-components represent the most abundant marine aerosols found in the
-coastal environment and align with the aerosol components in chemical
-transport models such as Global Ozone Chemistry Aerosol Radiation and
-Transport (GOCART) model (\citeproc{ref-Chin:2000aa}{Chin et al. 2000}).
-
-Each aerosol component follows the lognormal size distribution:
-
-\[
-\frac{dV_i(r)}{d\ln r} = \frac{V_i}{\sigma_i\sqrt{2\pi}} \exp \left( - \frac{(\ln r - \ln r_i)^2}{2\sigma_i^2} \right)
-\]
-
-Where, \(r_i\) and \(\sigma_i\) represent the respective dry radius by
-volume and the standard deviation of a component with total volume
-column density \(V_i\).
-
-The components FNAI, BC and Dust are hydrophobic whereas SS and FNAS are
-hygroscopic and their growth factors are taken from Optical Properties
-of Aerosol and Clouds (OPAC) package (\citeproc{ref-Hess:1998aa}{Hess,
-Koepke, and Schult 1998}). 50\% of BrC are assumed to be hygroscopic,
-the rest being hydrophobic similar to organic carbon component of
-GOCART. The growth factors at different relative humidities are used in
-the single parameter growth equation from
-(\citeproc{ref-Gasso:2000aa}{Gassó et al. 2000}) to obtain the parameter
-(\(\gamma\)) as:
-
-\[
-\frac{r_{RH}}{r_\circ} = \left(\frac{1}{1-RH}\right)^\frac{\gamma}{3}
-\]
-
-The parameter \(\gamma\) solved from \(r_{RH}/r_\circ\) at known RH
-values can be used to obtain the radius at any relative humidity
-(\(r_{RH}\)) from dry radius (\(r_\circ\)).
-
-Polarimetric single scattering properties of spherical components are
-modeled using the Lorenz-Mie code developed by Mishchenko, Travis, and
-Lacis (\citeproc{ref-Mishchenko:2002aa}{2002}). The non-spherical dust
-properties are adopted from Meng et al.
-(\citeproc{ref-Meng:2010aa}{2010}). The aerosol number density \(N\) as
-a function of height \(z\) is assumed to be gaussian with peak
-represented by aerosol layer height (ALH)
-(\citeproc{ref-Wu:2016aa}{Lianghai Wu et al. 2016}), following the
-discussion in Appendix~\ref{sec-aerosol-height}, assuming FWHM is fixed
-at 2 km.
-
-The aerosol retrieval parameters include total aerosol optical depth
-(AOD), aerosol layer height (ALH), fine mode fraction (FVF) and the
-volume fractions of four aerosol components (FNAI, BrC, BC, SS). The
-volume fractions of fine and coarse modes are normalized to one so that
-the volume fractions of FNAS and Dust are determined by FNAS = 1 - FNAI
-- BrC - BC and Dust = 1 - SS. The total volume fractions of each
-component are determined by multiplying them with FVF (fine mode) and 1
-- FVF (coarse mode), respectively. The overall aerosol phase matrix is a
-sum of the fine and coarse modes weighted by FVF. The retrieved
-fractions along with RH is used in the single scattering calculation to
-obtain other aerosol optical propertis single scattering albedo (SSA)
-and Angstrom exponents (AE). For more details, readers are referred to
-the published papers (\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024},
-\citeproc{ref-Aryal:2026aa}{2026}).
-
-\chapter{Uncertainty Estimation and Angular
-Correlations}\label{uncertainty-estimation-and-angular-correlations}
-
-In this section, we discuss the general retrieval approach considering
-correlation between angles following (\citeproc{ref-Gao:2023bb}{M. Gao,
-Knobelspiesse, et al. 2023}). The same maximum-likelihood approach is
-used to retrieve the state parameters in FastMAPOL by minimizing a cost
-function that represents the difference between the measurements and
-forward-model calculations (\citeproc{ref-Rodgers:2000aa}{Rodgers 2000})
-but in a matrix form:
+Following the uncertainty quantification discussion in
+Appendix~\ref{sec-uq-theory}, we discuss the general retrieval approach
+considering correlation between angles following
+(\citeproc{ref-Gao:2023bb}{M. Gao, Knobelspiesse, et al. 2023}). The
+same maximum-likelihood approach is used to retrieve the state
+parameters in FastMAPOL by minimizing a cost function that represents
+the difference between the measurements and forward-model calculations
+(\citeproc{ref-Rodgers:2000aa}{Rodgers 2000}) but in a matrix form:
 
 \begin{equation}\phantomsection\label{eq-chi2}{
 \chi^2
@@ -3728,9 +4009,544 @@ zero-order term. The Python packages StatsModels
 (\citeproc{ref-Virtanen:2018aa}{Virtanen et al. 2018}) are used to
 conduct the autocorrelation analyses.
 
+\chapter{Aerosol Model}\label{sec-aerosol-model}
+
+This chapter describes the aerosol representations used in FastMAPOL and
+the aerosol properties derived from the retrieved state vector. The
+mathematical formulation of log-normal size distributions, including
+conversions between number- and volume-density representations and the
+calculation of distribution moments, is provided separately in
+Appendix~\ref{sec-aerosol-model-math}.
+
+\section{Aerosol Model Overview}\label{aerosol-model-overview}
+
+FastMAPOL supports several aerosol representations with increasing
+complexity:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Aer-1:} five predefined log-normal modes
+\item
+  \textbf{Aer-2:} six predefined log-normal modes
+\item
+  \textbf{Aer-3:} aerosol components represented by chemical composition
+\end{itemize}
+
+The currently released HARP2 and SPEXone FastMAPOL products (V1--V4) use
+the five-mode \textbf{Aer-1} representation
+(\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021};
+\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023};
+\citeproc{ref-Gao:2026aa}{Meng Gao et al. 2026}). The six-mode
+\textbf{Aer-2} representation was developed for retrievals using RSP
+observations that include shortwave-infrared (SWIR) measurements
+(\citeproc{ref-Gao:2018aa}{Meng Gao et al. 2018}). \textbf{Aer-3}
+represents aerosols through aerosol components and has been applied to
+HARP2 and SPEXone for advanced retrieval studies
+(\citeproc{ref-Aryal:2026aa}{Aryal et al. 2026}). The component-based
+aerosol model is described separately in
+Appendix~\ref{sec-aerosol-component}.
+
+This chapter focuses primarily on the Aer-1 and Aer-2 representations.
+
+\section{Log-Normal Aerosol Modes}\label{log-normal-aerosol-modes}
+
+In Aer-1 and Aer-2, the aerosol size distribution is represented as a
+linear combination of predefined log-normal modes. Each mode has a
+prescribed characteristic radius and distribution width, while its
+column volume density is varied in the forward model and retrieval.
+
+The total volume size distribution is
+
+\[
+\frac{dV(r)}{d\ln r}
+=
+\sum_i
+\frac{V_{0,i}}{\sqrt{2\pi}\sigma_i}
+\exp
+\left[
+-\frac{(\ln r-\ln r_{v,i})^2}{2\sigma_i^2}
+\right],
+\]
+
+where \(V_{0,i}\) is the column volume density of mode \(i\),
+\(r_{v,i}\) is its volume-mean radius, and \(\sigma_i\) is the
+logarithmic standard deviation.
+
+Because the mode radii and widths are prescribed, the retrieved mode
+volume densities determine the shape and magnitude of the overall
+aerosol size distribution.
+
+\section{Aer-1: Five-Mode Aerosol
+Model}\label{aer-1-five-mode-aerosol-model}
+
+The default FastMAPOL aerosol representation, Aer-1, follows the
+multimode parameterization adopted from O. Dubovik et al.
+(\citeproc{ref-Dubovik:2011aa}{2011}) and Xu et al.
+(\citeproc{ref-Xu:2016aa}{2016}).
+
+The five volume-mode radii are
+
+\[
+0.1,\ 0.1732,\ 0.3,\ 1.0,\ 2.9\ \mu\mathrm{m},
+\]
+
+with corresponding logarithmic standard deviations
+
+\[
+0.35,\ 0.35,\ 0.35,\ 0.5,\ 0.5.
+\]
+
+The first three modes represent fine-mode aerosols, while the last two
+represent coarse-mode aerosols:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Fine mode:} \(r_v=0.1\), \(0.1732\), and
+  \(0.3\ \mu\mathrm{m}\)
+\item
+  \textbf{Coarse mode:} \(r_v=1.0\) and \(2.9\ \mu\mathrm{m}\)
+\end{itemize}
+
+The relative contributions of these predefined modes allow FastMAPOL to
+represent a range of aerosol size distributions without directly
+retrieving the radius and width of individual log-normal modes.
+
+The impact of the number of aerosol modes on retrieval performance is
+discussed in Fu et al. (\citeproc{ref-Fu:2020aa}{2020}).
+
+\section{Aer-2: Six-Mode Aerosol
+Model}\label{aer-2-six-mode-aerosol-model}
+
+Aer-2 extends Aer-1 by adding an additional large coarse mode. This
+representation was introduced in Meng Gao et al.
+(\citeproc{ref-Gao:2018aa}{2018}) for RSP retrievals, where SWIR
+observations provide additional sensitivity to large aerosol particles.
+
+The additional mode has
+
+\[
+r_v=8.4\ \mu\mathrm{m},
+\qquad
+\sigma=0.5.
+\]
+
+Aer-2 therefore contains the same three fine modes as Aer-1 but extends
+the coarse-mode representation to
+
+\[
+1.0,\ 2.9,\ 8.4\ \mu\mathrm{m}.
+\]
+
+The additional large-particle mode provides greater flexibility for
+representing coarse aerosols when sufficient SWIR information is
+available.
+
+\section{Fine and Coarse Aerosol
+Partitioning}\label{fine-and-coarse-aerosol-partitioning}
+
+For Aer-1 and Aer-2, fine- and coarse-mode aerosol properties are
+calculated by grouping the predefined modes:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Fine aerosol:} modes 1--3
+\item
+  \textbf{Coarse aerosol:} modes 4 and above
+\end{itemize}
+
+The total column volume density is
+
+\[
+V_0=\sum_i V_{0,i}.
+\]
+
+The fine-volume fraction (FVF) is therefore
+
+\[
+\mathrm{FVF}
+=
+\frac{
+\sum_{i\in\mathrm{fine}}V_{0,i}
+}{
+\sum_i V_{0,i}
+}.
+\]
+
+In contrast, the fine-mode fraction (FMF) is defined using aerosol
+optical depth:
+
+\[
+\mathrm{FMF}(\lambda)
+=
+\frac{
+\tau_{\mathrm{fine}}(\lambda)
+}{
+\tau_{\mathrm{total}}(\lambda)
+}.
+\]
+
+FVF and FMF describe different aspects of the aerosol distribution. FVF
+is a particle-volume fraction, whereas FMF is an optically weighted
+quantity and therefore depends on wavelength, particle size, and aerosol
+optical properties.
+
+\section{Aerosol Optical Depth}\label{aerosol-optical-depth}
+
+The aerosol optical depth is obtained by integrating the extinction
+contribution from all aerosol modes:
+
+\[
+\tau_a(\lambda)
+=
+\sum_i
+C_{\mathrm{ext},i}(\lambda)N_{0,i},
+\]
+
+where \(C_{\mathrm{ext},i}\) is the size-averaged extinction cross
+section and \(N_{0,i}\) is the column number density of mode \(i\).
+
+Because FastMAPOL retrieves column volume density, the corresponding
+column number density is calculated from
+
+\[
+N_{0,i}
+=
+V_{0,i}
+\frac{3}{4\pi r_{v,i}^3}
+\exp(4.5\sigma_i^2).
+\]
+
+Thus,
+
+\[
+\tau_a(\lambda)
+=
+\sum_i
+\left[
+C_{\mathrm{ext},i}(\lambda)
+\frac{3}{4\pi r_{v,i}^3}
+\exp(4.5\sigma_i^2)
+\right]
+V_{0,i}.
+\]
+
+The mathematical derivation of the conversion between volume and number
+distributions is provided in Appendix~\ref{sec-aerosol-model-math}.
+
+\section{Effective Radius and Effective
+Variance}\label{effective-radius-and-effective-variance}
+
+Bulk effective radius and effective variance are calculated from the
+combined aerosol size distribution. For a multimode aerosol,
+
+\[
+r_{\mathrm{eff}}
+=
+\frac{\sum_i m_{3,i}}
+{\sum_i m_{2,i}},
+\]
+
+and
+
+\[
+\nu_{\mathrm{eff}}
+=
+\frac{
+\left(\sum_i m_{4,i}\right)
+\left(\sum_i m_{2,i}\right)
+}{
+\left(\sum_i m_{3,i}\right)^2
+}
+-1,
+\]
+
+where \(m_{k,i}\) represents the \(k\)th moment of mode \(i\).
+
+These quantities can be calculated for the total aerosol distribution or
+separately for the fine and coarse modes by restricting the mode
+summation.
+
+Although the three fine modes in Aer-1 and Aer-2 have the same
+logarithmic standard deviation, the effective radius and effective
+variance of the combined fine-mode distribution vary according to the
+relative retrieved volume densities of the three modes.
+
+Detailed derivations of these expressions are provided in
+Appendix~\ref{sec-aerosol-model-math}.
+
+\section{Aerosol Products}\label{aerosol-products}
+
+The retrieved mode volume densities, together with the retrieved aerosol
+optical properties, are used to derive a range of aerosol products,
+including:
+
+\begin{itemize}
+\tightlist
+\item
+  aerosol optical depth (AOD)
+\item
+  fine-mode and coarse-mode AOD
+\item
+  fine-mode fraction (FMF)
+\item
+  fine-volume fraction (FVF)
+\item
+  effective radius
+\item
+  effective variance
+\item
+  single-scattering albedo (SSA)
+\item
+  spectrally dependent aerosol optical properties
+\end{itemize}
+
+These quantities may be calculated for the total aerosol distribution or
+separately for the fine and coarse modes.
+
+The predefined multimode representation therefore provides a flexible
+connection between the FastMAPOL retrieval state vector and physically
+interpretable aerosol size and optical properties.
+
+\chapter{Aerosol Vertical Profile and Layer
+Height}\label{sec-aerosol-height}
+
+This chapter describes the aerosol vertical distribution assumed in
+FastMAPOL and defines the aerosol layer height (ALH) used in the
+retrieval. The ALH retrieval and its uncertainty, including the
+dependence on aerosol loading, are discussed in detail in M. Gao, Franz,
+et al. (\citeproc{ref-Gao:2023aa}{2023}).
+
+As described in previous chapters, the FastMAPOL forward radiative
+transfer simulations are performed for a coupled atmosphere--surface
+system, including coupled atmosphere--ocean simulations for ocean
+retrievals. The vertical distribution of atmospheric molecules follows
+the U.S. Standard Atmosphere (\citeproc{ref-Anderson:1986aa}{Anderson et
+al. 1986}). Aerosols are represented by a single layer with a Gaussian
+vertical number-density distribution.
+
+\section{Gaussian Aerosol Vertical
+Profile}\label{gaussian-aerosol-vertical-profile}
+
+Using the conventional Gaussian notation, the aerosol vertical profile
+can be written as
+
+\[
+n(z) =
+A\exp\left[
+-\frac{(z-z_{\mathrm{c}})^2}{2\sigma^2}
+\right],
+\]
+
+where \(n(z)\) is the aerosol number-density profile, \(z_{\mathrm{c}}\)
+is the center or peak height of the aerosol layer, and \(\sigma\) is the
+standard deviation of the Gaussian distribution. For an unbounded
+Gaussian profile, the normalization factor is
+
+\[
+A = \frac{N_t}{\sigma\sqrt{2\pi}},
+\]
+
+where \(N_t\) is the total aerosol column number density.
+
+The relationship between the Gaussian standard deviation and the full
+width at half maximum (FWHM) is
+
+\[
+\mathrm{FWHM}
+=
+2\sqrt{2\ln 2}\,\sigma.
+\]
+
+FastMAPOL V3 and V4 processing assumes an aerosol-layer FWHM of 2 km.
+Therefore,
+
+\[
+\sigma =
+\frac{\mathrm{FWHM}}
+{2\sqrt{2\ln 2}}
+=
+\frac{2}
+{2\sqrt{2\ln 2}}
+\approx 0.85~\mathrm{km}.
+\]
+
+Thus, the Gaussian aerosol profile used in FastMAPOL has a fixed width,
+while the layer center height \(z_{\mathrm{c}}\) is varied in the
+forward model and retrieved as the aerosol layer height parameter.
+
+\section{Definition of Aerosol Layer
+Height}\label{definition-of-aerosol-layer-height}
+
+Aerosol layer height can be defined in different ways depending on the
+measurement and retrieval methodology. For example, lidar-based
+quantities are often expressed as extinction- or backscatter-weighted
+mean heights.
+
+For the FastMAPOL aerosol model, the aerosol microphysical and optical
+properties are assumed to be vertically homogeneous within the
+prescribed Gaussian distribution. A corresponding profile-weighted mean
+height can therefore be defined as
+
+\[
+\bar{z} =
+\frac{\displaystyle\int_{z_1}^{z_2} z\,n(z)\,dz}
+{\displaystyle\int_{z_1}^{z_2} n(z)\,dz},
+\]
+
+where \(z\) is altitude in kilometers and \(n(z)\) is the prescribed
+aerosol vertical profile, here we choose \(z_1\) and \(z_2\) as 0, and
+50km.
+
+For a Gaussian profile sufficiently far from the lower and upper
+atmospheric boundaries, \(\bar{z}\) is approximately equal to the
+Gaussian center height \(z_{\mathrm{c}}\). However, differences can
+occur when the Gaussian distribution is truncated by the surface,
+particularly for aerosol layers close to the ground as show in Table
+Table~\ref{tbl-alh-height}.
+
+\begin{longtable}[]{@{}rr@{}}
+\caption{Relationship between the Gaussian center height
+\(z_{\mathrm{c}}\) and the profile-weighted mean aerosol height
+\(\bar{z}\) for the FastMAPOL aerosol vertical
+profile.}\label{tbl-alh-height}\tabularnewline
+\toprule\noalign{}
+\(z_{\mathrm{c}}\) (km) & \(\bar{z}\) (km) \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\(z_{\mathrm{c}}\) (km) & \(\bar{z}\) (km) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0.0 & 0.68 \\
+0.5 & 0.89 \\
+1.0 & 1.19 \\
+2.0 & 2.02 \\
+\end{longtable}
+
+This distinction is important when comparing FastMAPOL-retrieved ALH
+with validation datasets, such as HSRL-2 or ATLID aboard EarthCARE,
+particularly for cases with substantial aerosol loading near the
+surface. In such cases, the retrieved Gaussian center height
+\(z_{\mathrm{c}}\) and the profile-weighted mean height \(\bar{z}\) may
+differ appreciably and should therefore be interpreted consistently when
+performing validation.
+
+\section{Relationship to the Wu et
+al.~Parameterization}\label{relationship-to-the-wu-et-al.-parameterization}
+
+We follow the definition of aerosol vertical profile from L. Wu et al.
+(\citeproc{ref-Wu:2015aa}{2015}), however, an important notation
+difference exists between the Gaussian profile used in the FastMAPOL
+formulation and that introduced by L. Wu et al.
+(\citeproc{ref-Wu:2015aa}{2015}).
+
+Wu et al.~expressed the aerosol vertical distribution as
+
+\[
+n(z) =
+A\exp\left[
+-4\ln(2)
+\frac{(z-z_{\mathrm{c}})^2}{\sigma'^2}
+\right],
+\]
+
+where \(A\) is a normalization factor, \(z_{\mathrm{c}}\) is the center
+height of the aerosol layer, and \(\sigma'\) describes the width of the
+aerosol height distribution.
+
+Although \(\sigma'\) was used as the width parameter, it is \textbf{not
+the standard deviation of a conventional Gaussian distribution}. From
+the form of the exponent, \(\sigma'\) corresponds directly to the FWHM:
+
+\[
+\sigma' = \mathrm{FWHM} = 2~\mathrm{km}.
+\]
+
+This distinction is a caveat regarding the notation used for the
+Gaussian width; the two mathematical formulations are equivalent when
+the width parameters are interpreted consistently. \textbf{FastMAPOL V3
+and V4 adopt the aerosol-layer FWHM of 2 km, equivalent to a Gaussian
+standard deviation of approximately 0.85 km.} Thus, the two formulations
+describe the same aerosol vertical profile despite the different
+definitions of the width parameter.
+
+\chapter{Aerosol Characterization: Component
+Approach}\label{sec-aerosol-component}
+
+In the aerosol component approach, aerosols are represented by an
+external mixture of different components with assumed size distribution
+and refractive index spectra. The components are resolved in two size
+modes: fine mode and coarse mode. The fine mode aerosols consist of fine
+mode non-absorbing insoluble (FNAI), brown carbon (BrC), black carbon
+(BC) and fine mode non absorbing soluble (FNAS), whereas the coarse mode
+consists of sea salt (SS) and non-spherical dust (Dust). These
+components represent the most abundant marine aerosols found in the
+coastal environment and align with the aerosol components in chemical
+transport models such as Global Ozone Chemistry Aerosol Radiation and
+Transport (GOCART) model (\citeproc{ref-Chin:2000aa}{Chin et al. 2000}).
+
+Each aerosol component follows the lognormal size distribution:
+
+\[
+\frac{dV_i(r)}{d\ln r} = \frac{V_i}{\sigma_i\sqrt{2\pi}} \exp \left( - \frac{(\ln r - \ln r_i)^2}{2\sigma_i^2} \right)
+\]
+
+Where, \(r_i\) and \(\sigma_i\) represent the respective dry radius by
+volume and the standard deviation of a component with total volume
+column density \(V_i\).
+
+The components FNAI, BC and Dust are hydrophobic whereas SS and FNAS are
+hygroscopic and their growth factors are taken from Optical Properties
+of Aerosol and Clouds (OPAC) package (\citeproc{ref-Hess:1998aa}{Hess,
+Koepke, and Schult 1998}). 50\% of BrC are assumed to be hygroscopic,
+the rest being hydrophobic similar to organic carbon component of
+GOCART. The growth factors at different relative humidities are used in
+the single parameter growth equation from
+(\citeproc{ref-Gasso:2000aa}{Gassó et al. 2000}) to obtain the parameter
+(\(\gamma\)) as:
+
+\[
+\frac{r_{RH}}{r_\circ} = \left(\frac{1}{1-RH}\right)^\frac{\gamma}{3}
+\]
+
+The parameter \(\gamma\) solved from \(r_{RH}/r_\circ\) at known RH
+values can be used to obtain the radius at any relative humidity
+(\(r_{RH}\)) from dry radius (\(r_\circ\)).
+
+Polarimetric single scattering properties of spherical components are
+modeled using the Lorenz-Mie code developed by Mishchenko, Travis, and
+Lacis (\citeproc{ref-Mishchenko:2002aa}{2002}). The non-spherical dust
+properties are adopted from Meng et al.
+(\citeproc{ref-Meng:2010aa}{2010}). The aerosol number density \(N\) as
+a function of height \(z\) is assumed to be gaussian with peak
+represented by aerosol layer height (ALH)
+(\citeproc{ref-Wu:2016aa}{Lianghai Wu et al. 2016}), following the
+discussion in Appendix~\ref{sec-aerosol-height}, assuming FWHM is fixed
+at 2 km.
+
+The aerosol retrieval parameters include total aerosol optical depth
+(AOD), aerosol layer height (ALH), fine mode fraction (FVF) and the
+volume fractions of four aerosol components (FNAI, BrC, BC, SS). The
+volume fractions of fine and coarse modes are normalized to one so that
+the volume fractions of FNAS and Dust are determined by FNAS = 1 - FNAI
+- BrC - BC and Dust = 1 - SS. The total volume fractions of each
+component are determined by multiplying them with FVF (fine mode) and 1
+- FVF (coarse mode), respectively. The overall aerosol phase matrix is a
+sum of the fine and coarse modes weighted by FVF. The retrieved
+fractions along with RH is used in the single scattering calculation to
+obtain other aerosol optical propertis single scattering albedo (SSA)
+and Angstrom exponents (AE). For more details, readers are referred to
+the published papers (\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024},
+\citeproc{ref-Aryal:2026aa}{2026}).
+
 \chapter{Ocean Bio-Optical Model}\label{sec-ocean-model}
 
-\section{Overview}\label{overview-3}
+\section{Overview}\label{overview-2}
 
 FastMAPOL retrieves ocean optical properties by coupling the aerosol
 retrieval with a forward radiative transfer model of ocean inherent
@@ -4552,6 +5368,484 @@ Wanner, W., Li, X., \& Strahler, A. (1995)\\
 \emph{On the derivation of kernels for kernel-driven BRDF models.}\\
 Journal of Geophysical Research.
 
+\chapter{Mathematical Formulation of Aerosol Size
+Distributions}\label{sec-aerosol-model-math}
+
+This chapter provides the mathematical relationships used to convert
+between number- and volume-based aerosol size distributions and to
+calculate the moments, effective radius, and effective variance used by
+the FastMAPOL aerosol model.
+
+The operational aerosol representation and the definitions of the Aer-1
+and Aer-2 models are described in Appendix~\ref{sec-aerosol-model}.
+
+\section{Number and Volume Size
+Distributions}\label{number-and-volume-size-distributions}
+
+For a single log-normal aerosol mode, the volume distribution is
+
+\[
+\frac{dV(r)}{d\ln r}
+=
+\frac{V_0}{\sqrt{2\pi}\sigma_v}
+\exp
+\left[
+-\frac{(\ln r-\ln r_v)^2}{2\sigma_v^2}
+\right],
+\]
+
+and the corresponding number distribution is
+
+\[
+\frac{dN(r)}{d\ln r}
+=
+\frac{N_0}{\sqrt{2\pi}\sigma_n}
+\exp
+\left[
+-\frac{(\ln r-\ln r_n)^2}{2\sigma_n^2}
+\right].
+\]
+
+Here, \(V_0\) and \(N_0\) are the integrated volume and number
+densities, \(r_v\) and \(r_n\) are the volume-mean and number-mean
+radii, and \(\sigma_v\) and \(\sigma_n\) are the corresponding
+logarithmic standard deviations.
+
+Particle volume and number are related through
+
+\[
+dV(r)
+=
+\frac{4\pi}{3}r^3dN(r).
+\]
+
+Therefore,
+
+\[
+\frac{dV(r)}{d\ln r}
+=
+\frac{4\pi}{3}r^3
+\frac{dN(r)}{d\ln r}.
+\]
+
+\section{Conversion Between Number and Volume
+Distributions}\label{conversion-between-number-and-volume-distributions}
+
+The equivalent log-normal number and volume distributions have the same
+logarithmic width:
+
+\[
+\sigma_n=\sigma_v=\sigma.
+\]
+
+Their characteristic radii are related by
+
+\[
+r_n
+=
+r_v\exp(-3\sigma^2).
+\]
+
+The corresponding integrated number and volume densities satisfy
+
+\[
+N_0
+=
+V_0
+\frac{3}{4\pi r_v^3}
+\exp(4.5\sigma^2),
+\]
+
+or equivalently,
+
+\[
+N_0
+=
+V_0
+\frac{3}{4\pi r_n^3}
+\exp(-4.5\sigma^2).
+\]
+
+These relationships allow FastMAPOL's volume-based retrieval state to be
+converted into the number-density representation required for
+calculations of particle extinction and other number-weighted
+quantities.
+
+\section{Distribution Convention}\label{distribution-convention}
+
+A particle size distribution may be expressed with respect to either
+\(r\) or \(\ln r\). The two representations are related by
+
+\[
+\frac{dN(r)}{dr}
+=
+\frac{1}{r}
+\frac{dN(r)}{d\ln r},
+\]
+
+and
+
+\[
+\frac{dV(r)}{dr}
+=
+\frac{1}{r}
+\frac{dV(r)}{d\ln r}.
+\]
+
+This distinction is important when comparing size-distribution
+parameters and moment definitions among different references and
+numerical implementations.
+
+\section{Moments of the Number
+Distribution}\label{moments-of-the-number-distribution}
+
+Define the \(k\)th moment of the number size distribution as
+
+\[
+m_k
+=
+\int_0^\infty
+r^k
+\frac{dN(r)}{dr}\,dr.
+\]
+
+Equivalently,
+
+\[
+m_k
+=
+\int_{-\infty}^{\infty}
+r^k
+\frac{dN(r)}{d\ln r}\,d\ln r.
+\]
+
+For a log-normal number distribution,
+
+\[
+m_k
+=
+N_0r_n^k
+\exp
+\left(
+\frac{k^2\sigma^2}{2}
+\right).
+\]
+
+Substituting the number-volume relationships gives an equivalent
+expression in terms of the volume-distribution parameters:
+
+\[
+m_k
+=
+V_0
+\frac{3}{4\pi}
+r_v^{k-3}
+\exp
+\left[
+\frac{(k-3)^2\sigma^2}{2}
+\right].
+\]
+
+For \(k=3\),
+
+\[
+m_3
+=
+\frac{3V_0}{4\pi},
+\]
+
+showing the direct relationship between the third number-distribution
+moment and total particle volume.
+
+\section{Effective Radius}\label{effective-radius}
+
+The effective radius is the area-weighted mean particle radius:
+
+\[
+r_{\mathrm{eff}}
+=
+\frac{
+\int r^3(dN/dr)\,dr
+}{
+\int r^2(dN/dr)\,dr
+}
+=
+\frac{m_3}{m_2}.
+\]
+
+For a log-normal number distribution,
+
+\[
+r_{\mathrm{eff}}
+=
+r_n
+\exp
+\left(
+\frac{5}{2}\sigma^2
+\right).
+\]
+
+Using
+
+\[
+r_n=r_v\exp(-3\sigma^2),
+\]
+
+this can also be written as
+
+\[
+r_{\mathrm{eff}}
+=
+r_v
+\exp
+\left(
+-\frac{1}{2}\sigma^2
+\right).
+\]
+
+Thus,
+
+\[
+r_n < r_{\mathrm{eff}} < r_v
+\]
+
+for a distribution with finite width.
+
+\section{Effective Variance}\label{effective-variance}
+
+The effective variance is defined as
+
+\[
+\nu_{\mathrm{eff}}
+=
+\frac{
+\int
+(r-r_{\mathrm{eff}})^2
+r^2(dN/dr)\,dr
+}{
+r_{\mathrm{eff}}^2
+\int r^2(dN/dr)\,dr
+}.
+\]
+
+Using the distribution moments,
+
+\[
+\nu_{\mathrm{eff}}
+=
+\frac{m_4m_2}{m_3^2}-1.
+\]
+
+For a log-normal distribution,
+
+\[
+\nu_{\mathrm{eff}}
+=
+\exp(\sigma^2)-1.
+\]
+
+For sufficiently narrow distributions,
+
+\[
+\nu_{\mathrm{eff}}
+\approx
+\sigma^2,
+\]
+
+and
+
+\[
+r_{\mathrm{eff}}
+\approx
+r_v.
+\]
+
+\section{Moments of the Volume
+Distribution}\label{moments-of-the-volume-distribution}
+
+Because FastMAPOL uses volume density in the retrieval state vector, the
+same quantities can be expressed directly using volume-distribution
+moments.
+
+Define
+
+\[
+m'_k
+=
+\int
+r^k
+\frac{dV(r)}{d\ln r}
+\,d\ln r.
+\]
+
+The effective radius is then
+
+\[
+r_{\mathrm{eff}}
+=
+\frac{m'_0}{m'_{-1}},
+\]
+
+and the effective variance is
+
+\[
+\nu_{\mathrm{eff}}
+=
+\frac{
+m'_{-1}m'_1
+}{
+(m'_0)^2
+}
+-1.
+\]
+
+For a log-normal volume distribution,
+
+\[
+m'_k
+=
+V_0
+r_v^k
+\exp
+\left(
+\frac{k^2\sigma^2}{2}
+\right).
+\]
+
+These expressions are mathematically equivalent to those derived from
+the number distribution.
+
+\section{Multimode Aerosol
+Distributions}\label{multimode-aerosol-distributions}
+
+For a multimode aerosol,
+
+\[
+\frac{dV(r)}{d\ln r}
+=
+\sum_i
+\frac{V_{0,i}}{\sqrt{2\pi}\sigma_i}
+\exp
+\left[
+-\frac{(\ln r-\ln r_{v,i})^2}
+{2\sigma_i^2}
+\right].
+\]
+
+The corresponding total moment is obtained by summing the moments of the
+individual modes:
+
+\[
+m_k
+=
+\sum_i m_{k,i}.
+\]
+
+Therefore,
+
+\[
+r_{\mathrm{eff}}
+=
+\frac{
+\sum_i m_{3,i}
+}{
+\sum_i m_{2,i}
+},
+\]
+
+and
+
+\[
+\nu_{\mathrm{eff}}
+=
+\frac{
+\left(\sum_i m_{4,i}\right)
+\left(\sum_i m_{2,i}\right)
+}{
+\left(\sum_i m_{3,i}\right)^2
+}
+-1.
+\]
+
+Using volume-distribution moments, the equivalent expressions are
+
+\[
+r_{\mathrm{eff}}
+=
+\frac{
+\sum_i m'_{0,i}
+}{
+\sum_i m'_{-1,i}
+},
+\]
+
+and
+
+\[
+\nu_{\mathrm{eff}}
+=
+\frac{
+\left(\sum_i m'_{1,i}\right)
+\left(\sum_i m'_{-1,i}\right)
+}{
+\left(\sum_i m'_{0,i}\right)^2
+}
+-1.
+\]
+
+The same expressions can be applied to the fine or coarse aerosol
+distributions by restricting the summation to the corresponding modes.
+
+\section{Relationship Between Volume and Optical
+Weighting}\label{relationship-between-volume-and-optical-weighting}
+
+The distinction between volume and number weighting is important when
+interpreting multimode aerosol properties. For the same total particle
+volume, smaller particles correspond to a substantially larger number of
+particles than larger particles.
+
+For two aerosol modes, the extinction contribution can be expressed as
+
+\[
+\tau
+=
+C_{\mathrm{ext},f}N_f
++
+C_{\mathrm{ext},c}N_c.
+\]
+
+Using volume density,
+
+\[
+\tau
+=
+C_{\mathrm{ext},f}
+\frac{3V_f}{4\pi r_{v,f}^3}
+\exp(4.5\sigma_f^2)
++
+C_{\mathrm{ext},c}
+\frac{3V_c}{4\pi r_{v,c}^3}
+\exp(4.5\sigma_c^2).
+\]
+
+Thus, the relative optical contribution of two modes depends not only on
+their volume fractions but also on particle size and extinction
+efficiency.
+
+This distinction explains why the fine-volume fraction and fine-mode
+optical-depth fraction are not equivalent and why both quantities
+provide useful but different information about the retrieved aerosol
+distribution.
+
+\section{Summary}\label{summary-2}
+
+The mathematical formulation presented here provides the connection
+between the volume-based aerosol representation used in the FastMAPOL
+state vector and the number-, area-, and optically weighted quantities
+used to characterize aerosol properties. The same moment framework
+applies to individual log-normal modes, multimode distributions, and
+fine/coarse aerosol partitions.
+
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
 \bibitem[\citeproctext]{ref-Anderson:1986aa}
@@ -4625,6 +5919,13 @@ Atmospheres} 111: D11208. \url{https://doi.org/10.1029/2005JD006619}.
 Fournier, Georges R., and J. Luc Forand. 1994. {``Analytic Phase
 Function for Ocean Water.''} \emph{Proc.SPIE} 2258: 2258 - 2258 - 8.
 \url{https://doi.org/10.1117/12.190063}.
+
+\bibitem[\citeproctext]{ref-Fu:2020aa}
+Fu, G., O. Hasekamp, J. Rietjens, M. Smit, A. Di Noia, B. Cairns, A.
+Wasilewski, et al. 2020. {``Aerosol Retrievals from Different
+Polarimeters During the ACEPOLcampaign Using a Common Retrieval
+Algorithm.''} \emph{Atmospheric Measurement Techniques Discussions} 13:
+553--73. https://doi.org/\url{https://doi.org/10.5194/amt-13-553-2020}.
 
 \bibitem[\citeproctext]{ref-Gao:2026aa}
 Gao, Meng, Kamal Aryal, Peng-Wang Zhai, Kirk Knobelspiesse, Bryan Franz,
@@ -4731,6 +6032,10 @@ Huot, Y, A Morel, M S Twardowski, D Stramski, and R A Reynolds. 2008.
 {``{Particle optical backscattering along a chlorophyll gradient in the
 upper layer of the eastern South Pacific Ocean}.''}
 \emph{Biogeosciences} 5 (2): 495--507.
+
+\bibitem[\citeproctext]{ref-Kingma:2014aa}
+Kingma, Diederik P., and Jimmy Ba. 2015. {``Adam: A Method for
+Stochastic Optimization.''} \url{https://arxiv.org/abs/1412.6980}.
 
 \bibitem[\citeproctext]{ref-Knobelspiesse:2012aa}
 Knobelspiesse, Kirk, Brian Cairns, Michael Mishchenko, Jacek Chowdhary,
@@ -4842,6 +6147,13 @@ Seabold, Skipper, and Josef Perktold. 2010. {``Statsmodels: Econometric
 and Statistical Modeling with Python.''} In \emph{Proceedings of the 9th
 Python in Science Conference}.
 
+\bibitem[\citeproctext]{ref-Seegers:2018aa}
+Seegers, Bridget N., Richard P. Stumpf, Blake A. Schaeffer, Keith A.
+Loftin, and P. Jeremy Werdell. 2018. {``Performance Metrics for the
+Assessment of Satellite Data Products: An Ocean Color Case Study.''}
+\emph{Opt. Express} 26 (6): 7404--22.
+\url{https://doi.org/10.1364/OE.26.007404}.
+
 \bibitem[\citeproctext]{ref-Twardowski:2018aa}
 Twardowski, Michael, and Alberto Tonizzo. 2018. {``Ocean Color
 Analytical Model Explicitly Dependent on the Volume Scattering
@@ -4879,6 +6191,13 @@ Litvinov, et al. 2016. {``{Joint retrieval of aerosol and water-leaving
 radiance from multispectral, multiangular and polarimetric measurements
 over ocean}.''} \emph{Atmospheric Measurement Techniques} 9 (7):
 2877--907.
+
+\bibitem[\citeproctext]{ref-Zhai:2022bb}
+Zhai, Peng-Wang, Meng Gao, Bryan A. Franz, P. Jeremy Werdell, Amir
+Ibrahim, Yongxiang Hu, and Jacek Chowdhary. 2022. {``A Radiative
+Transfer Simulator for PACE: Theory and Applications.''} \emph{Frontiers
+in Remote Sensing} 3 (840188).
+\url{https://doi.org/10.3389/frsen.2022.840188}.
 
 \bibitem[\citeproctext]{ref-Zhai:2022aa}
 Zhai, Peng-Wang, and Yongxiang Hu. 2022. {``An Improved Pseudo Spherical

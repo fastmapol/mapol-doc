@@ -62,7 +62,7 @@ Version 3.0 products remain available for users who need access to the earlier F
 
 # Release Notes {.unnumbered}
 
-## FastMAPOL Product Release Notes (V4)
+## Version 4.0
 The FastMAPOL Version 4 release notes are available through the 
 [PACE Release Notes](https://pace.oceansciences.org/access_pace_data.htm) 
 or under **Documents** on the Earthdata product pages linked above. Note that these links are subject to change; the relevant release information is also provided below for reference. 
@@ -73,7 +73,7 @@ or under **Documents** on the Earthdata product pages linked above. Note that th
 
 <!--[NASA PACE Data Access page](https://pace.oceansciences.org/access_pace_data.htm).-->
 
-### HARP2 Level-2 Products
+### HARP2 Level-2 Products {.unnumbered .unlisted}
 
 - MAPOL_LAND (Aerosol and Land Properties, FastMAPOL Algorithm)
 
@@ -100,14 +100,14 @@ or under **Documents** on the Earthdata product pages linked above. Note that th
 - MAPOL_LAND is undergoing active testing and improvement. The current version shows significant biases in both fine- and coarse-mode aerosol properties and should therefore be used with caution.
 
 
-### HARP2 Level-3 Products
+### HARP2 Level-3 Products {.unnumbered .unlisted}
 
 HARP2 Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectangular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:
 
 - MAPOL_OCEAN: aerosol and ocean properties from FastMAPOL algorithm
 - MAPOL_LAND: aerosol and land properties from FastMAPOL algorithm
 
-### SPEXone Level-2 Products
+### SPEXone Level-2 Products {.unnumbered .unlisted}
 
 **Changes from Version 3**
 
@@ -124,13 +124,13 @@ HARP2 Level-2 products are composited into global Level-3 binned and mapped prod
 - Over coastal waters, Rrs and AOD exhibit stronger coupling and higher retrieval uncertainties, as discussed in the above paper. Improvements are planned to better account for complex water optical properties (Aryal, K., M. Gao, P. Zhai, B. A. Franz, K. Knobelspiesse, A. Ibrahim, and J. Werdell. 2026. “Aerosol and Ocean Color Retrievals from the FastMAPOL/Component Algorithm Using NASA's PACE Polarimetric Measurements.” *Optics Express*, 34(16), 29139. [https://doi.org/10.1364/OE.607432](https://doi.org/10.1364/OE.607432)).
 
 
-### SPEXone Level-3 Products
+### SPEXone Level-3 Products {.unnumbered .unlisted}
 
 SPEXone Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:
 
 - MAPOL_OCEAN: aerosol and ocean properties from FastMAPOL algorithm
 
-## FastMAPOL Product Release Notes (V3)
+## Version 3.0
 
 The FastMAPOL Version 3 release notes are available through the 
 [PACE Release Notes](https://pace.oceansciences.org/access_pace_data.htm) 
@@ -139,7 +139,7 @@ or under **Documents** on the Earthdata product pages linked above. Note that th
 <!--The FastMAPOL Version 3 release notes are available in the 
 [PACE Version 3 Release Notes](https://oceandata.sci.gsfc.nasa.gov/files/reprocessing/PACE_SPEXone_V3_Release_Notes.pdf) or under **Documents** on the Earthdata product pages linked above.-->
 
-### SPEXone Level-2 Products
+### SPEXone Level-2 Products {.unnumbered .unlisted}
 
 - MAPOL_OCEAN (Aerosol and Ocean Properties from FastMAPOL Algorithm)
 
@@ -169,7 +169,7 @@ This is the first release of Level-2 and Level-3 products from the FastMAPOL alg
 - High Rrs bias at 678 nm likely due to influence of the Oxygen A-band.
 
 
-### SPEXone Level-3 Products
+### SPEXone Level-3 Products {.unnumbered .unlisted}
 
 SPEXone Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:
 
@@ -179,7 +179,7 @@ SPEXone Level-2 products are composited into global Level-3 binned and mapped pr
 - MAPOL_OCEAN: aerosol and ocean properties over ocean from FastMAPOL algorithm
 
 
-### HARP2 Level-2 Products
+### HARP2 Level-2 Products {.unnumbered .unlisted}
 
 **MAPOL_OCEAN (Aerosol and Ocean Properties from FastMAPOL Algorithm)**
 
@@ -210,7 +210,7 @@ This is the first release of Level-2 and Level-3 products from the FastMAPOL alg
 - Fewer polarization measurements than radiance measurements are successfully fitted, as indicated by valid angle counts (Nv_ref and Nv_dolp) and angular data mask (mask_ref and mask_dolp).
 
 
-### HARP2 Level-3 Products
+### HARP2 Level-3 Products {.unnumbered .unlisted}
 
 HARP2 Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:
 
@@ -227,12 +227,13 @@ These notebook tutorials are available through the [PACE Help Hub](https://nasa.
 - [SPEXone Aerosols (FastMAPOL)](https://nasa.github.io/oceandata-notebooks/notebooks/spexone/spexone_l2_fastmapol_aerosol_product.html) - Analyzing aerosol retrievals over ocean from SPEXone measurements with the FastMAPOL algorithm
 
 # Data Visualization with SeaDAS {.unnumbered} 
-
+<!--
 ::: {layout-ncol=2}
 
 ::: {.column width="55%"}
+-->
 
-FastMAPOL products can also be accessed, explored, and visualized using NASA's Sea, Earth, Atmosphere Data Analysis System ([SeaDAS](https://www.earthdata.nasa.gov/data/tools/seadas)). SeaDAS provides a comprehensive graphical environment for discovering, processing, displaying, analyzing, and performing quality control of satellite-based Earth science data. The software provides several tools for working with HARP2 and SPEXone FastMAPOL L2 and L3 products:
+FastMAPOL products can also be accessed, explored, and visualized using NASA's Sea, Earth, Atmosphere Data Analysis System ([SeaDAS](https://www.earthdata.nasa.gov/data/tools/seadas)). SeaDAS provides a comprehensive graphical environment for discovering, processing, displaying, analyzing, and performing quality control of satellite-based Earth science data. The software provides several tools for working with HARP2 and SPEXone FastMAPOL L2 and L3 products. It is especially useful to explore the multi-angle ocean and land surface reflectance. 
 
 **Data Discovery and Processing**
 
@@ -247,6 +248,7 @@ FastMAPOL products can also be accessed, explored, and visualized using NASA's S
 
 Support for PACE polarimeter products in SeaDAS has been provided by Bing Yang and the SeaDAS team.
 
+<!--
 :::
 
 ::: {.column width="45%"}
@@ -256,5 +258,6 @@ Support for PACE polarimeter products in SeaDAS has been provided by Bing Yang a
 :::
 
 :::
+-->
 
 

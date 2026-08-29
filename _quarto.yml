@@ -22,7 +22,7 @@ atbd-website:
 # Document metadata
 # --------------------------------------------------
 
-version: "1.0"
+version: "1.1"
 institution: "NASA Goddard Space Flight Center (GSFC)"
 mission: "PACE"
 
@@ -82,13 +82,15 @@ book:
   appendices:
     - chapters/fastmapol_appendix_intro.md
     - chapters/fastmapol_pace_simulator.md
-    - chapters/fastmapol_nn_forward.md
+    - chapters/fastmapol_rt_shell.md
+    - chapters/fastmapol_nn_model.md
     - chapters/fastmapol_nn_ad.md
     - chapters/fastmapol_data_screening.md
     - chapters/fastmapol_uq_theory.md
     - chapters/fastmapol_uq_correlation.md
     - chapters/fastmapol_aerosol_model.md
     - chapters/fastmapol_aerosol_height.md
+    - chapters/fastmapol_aerosol_shape.md
     - chapters/fastmapol_aerosol_component.md
     - chapters/fastmapol_model_ocean.md
     - chapters/fastmapol_ocean_color.md

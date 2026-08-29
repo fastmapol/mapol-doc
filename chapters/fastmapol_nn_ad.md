@@ -118,7 +118,7 @@ The AD methods provide an efficient and accurate way to compute the Jacobian mat
 
 The computational efficiency of FastMAPOL was evaluated using three approaches for calculating the Jacobian matrix: finite differences (FD) with central differencing, forward-mode automatic differentiation (AD), and reverse-mode AD. 
 
-@fig-rt-nn compares the retrieved $\chi^2$ distributions and computational times obtained using the different Jacobian methods in the example for HARP instrument @Gao:2021bb. The three approaches converge to similar $\chi^2$ distributions, indicating that the use of AD does not appreciably affect the retrieval solution. The $\chi^2$ distributions vary with the number of available viewing angles but can be well represented by the theoretical $\chi^2$ distribution with the corresponding degrees of freedom. For reflectance and DoLP observations with the same number of viewing angles $N_v$, the total number of measurements is $N = 2N_v$.
+@fig-nn-ad compares the retrieved $\chi^2$ distributions and computational times obtained using the different Jacobian methods in the example for HARP instrument @Gao:2021bb. The three approaches converge to similar $\chi^2$ distributions, indicating that the use of AD does not appreciably affect the retrieval solution. The $\chi^2$ distributions vary with the number of available viewing angles but can be well represented by the theoretical $\chi^2$ distribution with the corresponding degrees of freedom. For reflectance and DoLP observations with the same number of viewing angles $N_v$, the total number of measurements is $N = 2N_v$.
 
 The computational advantage of combining NN forward models with AD is substantial. Retrievals using the conventional radiative transfer model together with FD typically required approximately one hour to converge on a CPU (AMD EPYC processor). Replacing the radiative transfer calculations with NN forward models reduced the average retrieval time to approximately 3 s using the same FD approach .
 
@@ -136,6 +136,6 @@ Using AD further reduced the average CPU retrieval time to approximately 0.6 s w
 
 : Approximate FastMAPOL retrieval times using conventional radiative transfer and NN forward models with finite-difference and automatic-differentiation Jacobians. {#tbl-ad-efficiency}
 
-Among the tested approaches, reverse-mode AD provides the highest computational efficiency. FastMAPOL therefore uses reverse-mode AD as the default method for calculating the Jacobian matrix during retrieval optimization. Further speed up is discussed by the use of cascading NN for first guess and full retrievals @sec-rt-nn.
+Among the tested approaches, reverse-mode AD provides the highest computational efficiency. FastMAPOL therefore uses reverse-mode AD as the default method for calculating the Jacobian matrix during retrieval optimization. Further speed up is discussed by the use of cascading NN for first guess and full retrievals @sec-nn-model.
 
-![Comparison of the retrieved $\chi^2$ distributions and computational times using finite-difference (FD), forward-mode automatic differentiation (AD), and reverse-mode AD methods.](figure/chi2_time.png){#fig-nn-ad width=10cm}
+![Comparison of the retrieved $\chi^2$ distributions and computational times using finite-difference (FD), forward-mode automatic differentiation (AD), and reverse-mode AD methods.](../figure/fig_rt_ad.png){#fig-nn-ad width=10cm}
