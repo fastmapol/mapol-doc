@@ -1,4 +1,4 @@
-# Aerosol Vertical Profile and Layer Height {#sec-aerosol-height}
+# Aerosol: Layer Height {#sec-aerosol-height}
 
 This chapter describes the aerosol vertical distribution assumed in FastMAPOL and defines the aerosol layer height (ALH) used in the retrieval. The ALH retrieval and its uncertainty, including the dependence on aerosol loading, are discussed in detail in @Gao:2023aa.
 

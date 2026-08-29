@@ -1,4 +1,4 @@
-# Mathematical Formulation of Aerosol Size Distributions {#sec-aerosol-model-math}
+# Aerosol: More on Size Distributions {#sec-aerosol-model-math}
 
 This chapter provides the mathematical relationships used to convert between number- and volume-based aerosol size distributions and to calculate the moments, effective radius, and effective variance used by the FastMAPOL aerosol model.
 

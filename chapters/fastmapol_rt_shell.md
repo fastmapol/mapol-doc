@@ -1,4 +1,4 @@
-# Radiative Transfer Model: Spherical shell correction {#sec-rt-shell}
+# Radiative Transfer: Spherical Shell Correction {#sec-rt-shell}
 
 As discussed in @sec-rt-model, theforward model are generated using a PACE-tailored vector radiative transfer model based on the successive orders of scattering method [@Zhai:2022bb]. An improved pseudo-spherical shell (IPSS) correction is applied to improve simulation fidelity at large solar and viewing zenith angles [@Zhai:2022aa].
 

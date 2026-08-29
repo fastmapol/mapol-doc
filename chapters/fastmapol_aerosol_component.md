@@ -1,4 +1,4 @@
-# Aerosol Characterization: Component Approach {#sec-aerosol-component}
+# Aerosol Component Approach {#sec-aerosol-component}
 
 In the aerosol component approach, aerosols are represented by an external mixture of different components with assumed size distribution and refractive index spectra. The components are resolved in two size modes: fine mode and coarse mode. The fine mode aerosols consist of fine mode non-absorbing insoluble (FNAI), brown carbon (BrC), black carbon (BC) and fine mode non absorbing soluble (FNAS), whereas the coarse mode consists of sea salt (SS) and non-spherical dust (Dust). These components represent the most abundant marine aerosols found in the coastal environment and align with the aerosol components in chemical transport models such as Global Ozone Chemistry Aerosol Radiation and Transport (GOCART) model [@Chin:2000aa]. 
 

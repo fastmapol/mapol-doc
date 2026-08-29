@@ -1,4 +1,4 @@
-# Analytical Jacobian through automatic differentiation {#sec-nn-ad}
+# Neural Network: Analytical Jacobian {#sec-nn-ad}
 
 The MAP retrievals are often computationally expensive due to their high dimensionality and iterative nature, with multiple forward model and Jacobian calculations. The data screening approach developed here further increases the demand for CPU computations because the retrieval must be repeated several times. Therefore, fast forward model and Jacobian matrix calculations are advantageous for efficient processing, which was a motivation for the use of NN forward models for AirHARP in @Gao:2021aa. In this work, we discuss the use of automatic differentiation to compute the Jacobian matrix analytically, as opposed to numerically through finite differencing, by exploiting the differentiable properties of the NN models. For details on the NN and its training strategies, please refer to @sec-nn-model and @Gao:2021aa and @Gao:2023aa.
 
@@ -17,17 +17,9 @@ $$
 {\partial \mathbf{x}_{mj}}
 $$ {#eq-jacobian}
 
-Here, index $m$ indicates the viewing and solar angles, index $i$ indicates the wavelength, and index $j$ indicates the state parameter. @tbl-nn-forward illustrates the structure of the NN. The nonlinear activation function $\Phi$ is the LeakyReLU function, which is defined as
+Here, index $m$ indicates the viewing and solar angles, index $i$ indicates the wavelength, and index $j$ indicates the state parameter. @tbl-nn-forward illustrates the structure of the NN. 
 
-$$
-\Phi(\mathbf{Z})_{mi}
-=
-\max(0,\mathbf{Z}_{mi})
-+
-\alpha \times \min(0,\mathbf{Z}_{mi}).
-$$ {#eq-leakyrelu}
-
-where $\alpha=0.01$, and $\mathbf{Z}$ is a matrix with $m$ and $i$ as its indices. The derivative with respect to each element in $\Phi$ is defined as
+Based on the the LeakyReLU activation function defined in @sec-nn-model, its derivative with respect to each element in $\Phi$ is defined as
 
 $$
 \mathbf{D}_{mi}
@@ -41,16 +33,7 @@ $$
 \end{cases}
 $$ {#eq-D}
 
-
-| **Layers** | **NN forward model** |
-|---|---|
-| Input | $\mathbf{h}_0=\mathbf{x}$ |
-| Layer 1 | $\mathbf{h}_1=\Phi(\mathbf{W}_1^T\mathbf{h}_0+\mathbf{b}_1)$ |
-| Layer $p+1$ | $\mathbf{h}_{p+1}=\Phi(\mathbf{W}_{p+1}^T\mathbf{h}_p+\mathbf{b}_{p+1})$ |
-| Output | $\mathbf{y}=\mathbf{W}_{k+1}^T\mathbf{h}_k+\mathbf{b}_{k+1}$ |
-
-: NN forward model. {#tbl-nn-forward}
-
+The forward operation of the NN is defined in @sec-nn-model. During the forward pass, the intermediate values at each NN layer are stored and subsequently used to calculate the Jacobian through either forward-mode automatic differentiation (@tbl-ad-forward) or reverse-mode automatic differentiation (backpropagation; @tbl-ad-reverse).
 
 | **Layers** | **AD: Forward mode** |
 |---|---|

@@ -1,4 +1,4 @@
-# FastMAPOL Retrieval Framework
+# FastMAPOL Retrieval Framework {#sec-retrieval}
 
 FastMAPOL is an efficient coupled aerosol and ocean color retrieval algorithm that combines neural network (NN) forward models with iterative optimization [@Gao:2021aa; @Gao:2021bb; @Gao:2023aa; @Gao:2026aa]. The NN forward models emulate vector radiative transfer calculations for a coupled atmosphere-ocean system based on the PACE simulator [@Zhai:2009aa; @Zhai:2010aa; @Zhai:2022aa]. Please find more details in the NN, automatic differentiaton and aerosol and surface model details in the technical section. 
 
@@ -94,14 +94,14 @@ Additional neural network models are trained to compute AOD and SSA for both fin
 
 More details are provided in @sec-nn-model and @sec-nn-ad. 
 
-## Retrieval and optimization
+## Retrieval and Optimization
 
-FastMAPOL determines the optimal values of the state parameters by minimizing the difference between the measurements and NN forward model predictions. An iterative optimization approach is used. The NN forward model computes the reflectance and degree of linear polarization (DoLP), defined as
+FastMAPOL determines the aerosol and surface state parameters by minimizing the differences between multi-angle polarimetric measurements and NN forward-model predictions. The measurements used in the retrieval are reflectance and degree of linear polarization (DoLP), defined as
 
 $$
 \rho_t
 =
-\frac{\pi L_t}{\mu_0 F_0}
+\frac{\pi L_t}{\mu_0 F_0},
 $$ {#eq-rho}
 
 and
@@ -114,70 +114,23 @@ $$ {#eq-DoLP}
 
 where $L_t$, $Q_t$, and $U_t$ are the Stokes parameters at the sensor altitude, $F_0$ is the extraterrestrial solar irradiance, and $\mu_0$ is the cosine of the solar zenith angle.
 
-The differences between the measurements and model predictions are represented by a cost function, $\chi^2$, based on Bayesian theory [@Rodgers:2000aa]:
+The retrieval minimizes the normalized cost function
 
 $$
 \chi^2({\mathbf x})
 =
 \frac{1}{N}
 \sum_i
-\left(
+\left[
 \frac{[\rho_t(i)-\rho_t^f({\mathbf x};i)]^2}{\sigma_\rho^2(i)}
 +
 \frac{[P_t(i)-P_t^f({\mathbf x};i)]^2}{\sigma_P^2(i)}
-\right).
+\right],
 $$ {#eq-cost}
 
-Here, $\rho_t^f$ and $P_t^f$ are the reflectance and DoLP computed by the NN forward model. The state vector ${\mathbf x}$ contains the retrieved aerosol, ocean, and surface parameters described in @tbl-param-ranges. The subscript $i$ denotes the measurement index, where one measurement is defined as a pair of reflectance and DoLP values at a given viewing angle and wavelength, and $N$ is the total number of measurements used in the retrieval.
+where $\rho_t^f$ and $P_t^f$ are the NN forward-model predictions, ${\mathbf x}$ is the retrieval state vector, and $\sigma_\rho$ and $\sigma_P$ are the corresponding uncertainties. The state vector contains the retrieved aerosol and surface parameters described in @tbl-param-ranges.
 
-The total uncertainties of reflectance and DoLP used in the cost function are denoted by $\sigma_\rho$ and $\sigma_P$, respectively. These include contributions from instrument uncertainties $\sigma_{\mathrm{ins}}$, NN forward model uncertainties $\sigma_{\mathrm{NN}}$, and radiative transfer simulation uncertainties $\sigma_{\mathrm{RT}}$ used to train the NN:
-
-$$
-\sigma_\rho^2
-=
-\sigma_{\rho,\mathrm{ins}}^2
-+
-\sigma_{\rho,\mathrm{NN}}^2
-+
-\sigma_{\rho,\mathrm{RT}}^2,
-$$ {#eq-sigma-rho}
-
-$$
-\sigma_P^2
-=
-\sigma_{P,\mathrm{ins}}^2
-+
-\sigma_{P,\mathrm{NN}}^2
-+
-\sigma_{P,\mathrm{RT}}^2.
-$$ {#eq-sigma-P}
-
-The NN forward-model uncertainties are determined during NN training and evaluation [@Gao:2021aa; @Gao:2023aa], with the current NN architectures and associated uncertainties summarized in @tbl-nn-arch. At present, uncertainties are assumed to be spectrally and angularly uncorrelated.
-
-During FastMAPOL retrievals, with each iteration, the state vector ${\mathbf x}$ is updated, and the NN forward model is used to compute $\rho_t^f$ and $P_t^f$, from which a new value of the cost function is calculated. The Jacobian matrix is used to determine the magnitude and direction of the update to ${\mathbf x}$. The NN forward model and analytical calculation of the Jacobian matrix through automatic differentiation are described in the following section.
-
-This iterative process continues until the convergence criterion is met:
-
-$$
-\frac{|\chi_i^2-\chi_{i-1}^2|}
-{\chi_i^2}
-<
-\eta,
-$$ {#eq-delta-chi}
-
-where $i$ is the iteration index and $\eta$ is the convergence tolerance, taken as 0.01.
-
-The convergence and overall quality of the retrieval can be evaluated using the cost function. For an ensemble of retrievals, if the residuals are consistent with the assumed uncertainties, the normalized cost-function distribution can be compared with the theoretical probability density function (PDF) of the $\chi^2$ distribution:
-
-$$
-f(\chi^2,k)
-=
-\frac{(\chi^2)^{k/2-1} k^{k/2} e^{-\chi^2 k/2}}
-{2^{k/2}\Gamma(k/2)}.
-$$ {#eq-chi2-pdf}
-
-Here, $\chi^2$ is the cost function defined in @eq-cost, $k$ is the number of degrees of freedom (DOF), and $\Gamma(k/2)$ denotes the gamma function [@Gao:2021bb]. Neglecting potential correlations among measurement uncertainties, the DOF can be approximated by the total number of measurements, $N$. More rigorously, the effective DOF depends on the number and information content of the retrieved parameters and can be evaluated using the Jacobian and error covariance matrices [@Gao:2021bb; @Gao:2023bb].
-
+FastMAPOL solves this nonlinear optimization problem iteratively using the NN forward model and its Jacobian calculated through automatic differentiation. Details of the inversion, uncertainty weighting, convergence criteria, and optimization algorithm are provided in @sec-retrieval-inversion. 
 
 ## Data screening and uncertainty quantifization
 FastMAPOL incorporates adaptive multi-angle data screening and pixel-level uncertainty quantification to improve retrieval robustness and characterize retrieval confidence. The data-screening approach identifies and removes individual viewing angles that cannot be adequately represented by the forward model, while retaining valid observations from the same pixel whenever sufficient information remains for retrieval. This is particularly important for multi-angle polarimetric observations, where clouds, sunglint, surface heterogeneity, and other scene-dependent effects may affect only a subset of viewing angles. The screening methodology is described in detail in @sec-data-screening.

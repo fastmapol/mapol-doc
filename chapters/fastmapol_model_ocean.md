@@ -1,4 +1,4 @@
-# Ocean Bio-Optical Model {#sec-ocean-model}
+# Ocean: Bio-Optical Model {#sec-ocean-model}
 
 ## Overview
 

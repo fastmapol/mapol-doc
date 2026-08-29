@@ -1,238 +1,129 @@
-# Aerosol Particle Shape and Nonspherical Representation {#sec-aerosol-shape}
+# Aerosol: Shape and Nonsphericity {#sec-aerosol-shape}
 
-FastMAPOL accounts for aerosol particle nonsphericity by allowing each aerosol size mode to contain a mixture of spherical and nonspherical particles [@Gao:2026aa]. Nonspherical particles can be represented using the spheroidal particle model following @Dubovik:2006aa or the irregular hexahedral particle model following @Saito:2021aa. This treatment is particularly important for mineral dust and other irregular particles, whose polarized scattering properties can differ substantially from those of equivalent spherical particles. For the current FastMAPOL V3 and V4 operational products, the spheroidal model is used by default to represent variations in aerosol particle shape.
+FastMAPOL accounts for aerosol particle nonsphericity by allowing each aerosol size mode to contain a mixture of spherical and nonspherical particles [@Gao:2026aa]. Nonspherical particles can be represented using the spheroidal particle model following @Dubovik:2006aa or the irregular hexahedral particle model following @Saito:2021aa. This treatment is particularly important for mineral dust and other irregular particles, whose polarized scattering properties can differ substantially from those of equivalent spherical particles.
 
-The particle-shape representation is applied independently of the aerosol size-mode representation described in @sec-aerosol-model. Thus, both fine- and coarse-mode aerosols can contain mixtures of spherical and nonspherical particles.
-
-## Spherical Fraction
-
-FastMAPOL defines the **spherical fraction**, denoted here as $f_{\mathrm{sph}}$, as the fraction of the aerosol particle volume represented by spherical particles:
-
-$$$
-f_{\mathrm{sph}}
-=
-\frac{V_{\mathrm{sph}}}
-{V_{\mathrm{sph}}+V_{\mathrm{nonsph}}},
-$$ {#eq-spherical-fraction}
-
-where $V_{\mathrm{sph}}$ and $V_{\mathrm{nonsph}}$ are the column volume densities of spherical and nonspherical particles, respectively.
-
-The total aerosol volume density is therefore
-
-$$$
-
-# V_{\mathrm{tot}}
-
-V_{\mathrm{sph}}+V_{\mathrm{nonsph}},
-
-$$
-
-and the two particle-shape components can be written as
-
-$$
-
-# V_{\mathrm{sph}}
-
-f_{\mathrm{sph}}V_{\mathrm{tot}},
-
-$$
-$$
-
-# V_{\mathrm{nonsph}}
-
-(1-f_{\mathrm{sph}})V_{\mathrm{tot}}.
-
-$$
-
-The spherical fraction ranges from
-
-$$
-
-0\le f_{\mathrm{sph}}\le1.
-
-$$
-
-The limiting cases have straightforward interpretations:
-
-- $f_{\mathrm{sph}}=1$: all aerosol particle volume is represented by spherical particles;
-- $f_{\mathrm{sph}}=0$: all aerosol particle volume is represented by nonspherical particles;
-- $0<f_{\mathrm{sph}}<1$: the aerosol mode is represented by a volume-weighted mixture of spherical and nonspherical particles.
-
-Because $f_{\mathrm{sph}}$ is defined as a **volume fraction**, it should not be interpreted as the fraction of the number of particles that are spherical. The corresponding number fractions can differ substantially because particle number depends strongly on particle size.
+For the current FastMAPOL V3 and V4 operational products, the spheroidal model is used by default. The particle-shape representation is applied independently of the aerosol size-mode representation described in @sec-aerosol-model.
 
 ## Spherical and Nonspherical Particle Models
 
-The spherical component is modeled using spherical-particle scattering calculations. The nonspherical component is represented by an ensemble of spheroidal particles following @Dubovik:2006aa and irregular hexahedral particle model following @Saito:2021aa.
+The spherical aerosol component is modeled using spherical-particle scattering calculations, while the nonspherical component can be represented by an ensemble of spheroidal particles [@Dubovik:2006aa] or irregular hexahedral particles [@Saito:2021aa].
 
-For a given aerosol mode, the spherical and nonspherical components use the same aerosol microphysical state, including the prescribed size distribution and complex refractive index, while differing in their particle-shape representation.
+For a given aerosol mode, the spherical and nonspherical components share the same prescribed size distribution and complex refractive index but differ in their particle-shape representation. The resulting single-particle optical properties, including extinction, scattering, absorption, and the scattering phase matrix, are used by the vector radiative transfer model.
 
-For each component, the single-particle calculations provide the quantities required by the vector radiative transfer model, including extinction, scattering, absorption, and the scattering phase matrix.
+These nonspherical representations approximate the ensemble-averaged optical properties of irregular aerosol particles without explicitly describing the detailed morphology of individual particles.
 
-Either spheroidal or hexadedral representation provides an approximation for the ensemble-averaged optical properties of naturally occurring nonspherical aerosols without considering the detailed shape of each individual particle to be specified.
+## Spherical Fraction
+
+FastMAPOL characterizes particle shape using the **spherical fraction**, $f_{\mathrm{sph}}$, defined as the fraction of aerosol particle volume represented by spherical particles:
+
+$$
+f_{\mathrm{sph}}
+=
+\frac{V_{\mathrm{sph}}}
+{V_{\mathrm{sph}}+V_{\mathrm{nonsph}}}.
+$$ {#eq-spherical-fraction}
+
+Here, $V_{\mathrm{sph}}$ and $V_{\mathrm{nonsph}}$ are the column volume densities of the spherical and nonspherical components, respectively.
+
+For a total aerosol volume density $V_{\mathrm{tot}}$,
+
+$$
+V_{\mathrm{sph}}
+=
+f_{\mathrm{sph}} V_{\mathrm{tot}},
+\qquad
+V_{\mathrm{nonsph}}
+=
+(1-f_{\mathrm{sph}})V_{\mathrm{tot}}.
+$$ {#eq-shape-volume}
+
+The spherical fraction is bounded by
+
+$$
+0 \le f_{\mathrm{sph}} \le 1,
+$$
+
+where $f_{\mathrm{sph}}=1$ represents completely spherical particles and $f_{\mathrm{sph}}=0$ represents completely nonspherical particles.
+
+The spherical fraction is defined as a **volume fraction**, rather than a particle number fraction.
 
 ## Mixing Spherical and Nonspherical Aerosols
 
-The optical properties of the spherical and nonspherical components are combined according to their aerosol loading. Because the FastMAPOL aerosol state is represented using particle volume, the shape partitioning is first performed in volume space using @eq-spherical-fraction.
+Because the FastMAPOL aerosol state is represented using particle volume, spherical and nonspherical components are first partitioned according to their volume fractions.
 
 For aerosol mode $i$,
 
 $$
-
-# V_{i,\mathrm{sph}}
-
-f_{\mathrm{sph},i}V_i,
-
-$$
-
-and
-
-$$
-
-# V_{i,\mathrm{nonsph}}
-
-(1-f_{\mathrm{sph},i})V_i.
-
-$$
-
-The extinction optical depth of the mixed mode is consequently
-
-$$
-
-# \tau_{\mathrm{ext},i}
-
-\tau_{\mathrm{ext},i}^{\mathrm{sph}}
-+
-\tau_{\mathrm{ext},i}^{\mathrm{nonsph}}.
-
-$$
-
-If the spherical and nonspherical components share the same conversion between volume and number density, this can be expressed as
-
-$$
-
-# \tau_{\mathrm{ext},i}
-
-V_i
-\left[
-f_{\mathrm{sph},i},
-\alpha_{\mathrm{ext},i}^{\mathrm{sph}}
-+
-(1-f_{\mathrm{sph},i}),
-\alpha_{\mathrm{ext},i}^{\mathrm{nonsph}}
-\right],
-
-$${#eq-shape-extinction}
-
-where $\alpha_{\mathrm{ext}}$ represents extinction per unit aerosol volume.
-
-Similarly, the scattering optical depth is
-
-$$
-
-# \tau_{\mathrm{sca},i}
-
-V_i
-\left[
-f_{\mathrm{sph},i},
-\alpha_{\mathrm{sca},i}^{\mathrm{sph}}
-+
-(1-f_{\mathrm{sph},i}),
-\alpha_{\mathrm{sca},i}^{\mathrm{nonsph}}
-\right].
-
-$${#eq-shape-scattering}
-
-Thus, the aerosol loading is partitioned by volume, while the resulting optical properties reflect the different extinction and scattering efficiencies of spherical and nonspherical particles.
-
-## Mixing of the Scattering Phase Matrix
-
-For polarized radiative transfer, the scattering phase matrix must also be combined consistently with the scattering contribution from each particle-shape component.
-
-Let $\mathbf{P}_{\mathrm{sph}}(\Theta)$ and $\mathbf{P}_{\mathrm{nonsph}}(\Theta)$ represent the scattering phase matrices of the spherical and nonspherical components at scattering angle $\Theta$. The phase matrix of the mixture is scattering-weighted:
-
-$$
-
-# \mathbf{P}_{\mathrm{mix}}(\Theta)
-
-\frac{
-\tau_{\mathrm{sca}}^{\mathrm{sph}}
-\mathbf{P}*{\mathrm{sph}}(\Theta)
-+
-\tau*{\mathrm{sca}}^{\mathrm{nonsph}}
-\mathbf{P}*{\mathrm{nonsph}}(\Theta)
-}{
-\tau*{\mathrm{sca}}^{\mathrm{sph}}
-+
-\tau_{\mathrm{sca}}^{\mathrm{nonsph}}
-}.
-
-$${#eq-shape-phase-matrix}
-
-This distinction is important. Although the spherical fraction is defined from **particle volume**, the phase matrix cannot in general be obtained by simply applying the same volume-weighted average,
-
-$$
-
-f_{\mathrm{sph}}\mathbf{P}*{\mathrm{sph}}
-+
-(1-f*{\mathrm{sph}})\mathbf{P}_{\mathrm{nonsph}},
-
-$$
-
-because spherical and nonspherical particles can have different scattering efficiencies. The volume partition is therefore converted into the corresponding optical contributions before the scattering properties are combined.
-
-The resulting mixed aerosol optical properties are then used by the vector radiative transfer model to calculate total and polarized radiances.
-
-## Relationship to the Multimode Aerosol Model
-
-The particle-shape treatment can be applied to each of the predefined aerosol size modes described in @sec-aerosol-model. In the general formulation,
-
-$$
-
-# V_i
-
 V_{i,\mathrm{sph}}
-+
-V_{i,\mathrm{nonsph}},
-
-$$
-
-with
-
-$$
-
-# V_{i,\mathrm{sph}}
-
+=
 f_{\mathrm{sph},i}V_i,
 \qquad
 V_{i,\mathrm{nonsph}}
-=====================
-
+=
 (1-f_{\mathrm{sph},i})V_i.
+$$ {#eq-shape-mode-volume}
+
+The corresponding extinction optical depth is additive:
 
 $$
+\tau_{\mathrm{ext},i}
+=
+\tau_{\mathrm{ext},i}^{\mathrm{sph}}
++
+\tau_{\mathrm{ext},i}^{\mathrm{nonsph}}.
+$$ {#eq-shape-extinction}
 
-The total aerosol optical properties are obtained by first combining the spherical and nonspherical contributions within each size mode and then summing the optical contributions from all aerosol modes.
-
-This separates two aspects of aerosol characterization:
-
-1. the **size-mode volume densities** determine how aerosol volume is distributed across particle sizes; and
-2. the **spherical fraction** determines how the volume within a size mode is partitioned between spherical and nonspherical particle representations.
-
-The combination allows FastMAPOL to vary aerosol size and particle shape independently within the constraints of the adopted aerosol model.
-
-## Summary
-
-FastMAPOL represents aerosol particle shape using a mixture of spherical and nonspherical particles, with the nonspherical component described by a spheroidal model following @Dubovik:2006aa. The spherical fraction $f_{\mathrm{sph}}$ is defined as the fraction of total aerosol particle volume assigned to spherical particles.
-
-For each aerosol mode,
+Expressed in terms of extinction per unit aerosol volume,
 
 $$
+\tau_{\mathrm{ext},i}
+=
+V_i
+\left[
+f_{\mathrm{sph},i}\alpha_{\mathrm{ext},i}^{\mathrm{sph}}
++
+(1-f_{\mathrm{sph},i})
+\alpha_{\mathrm{ext},i}^{\mathrm{nonsph}}
+\right],
+$$ {#eq-shape-extinction-volume}
 
-V_{\mathrm{sph}}=f_{\mathrm{sph}}V_{\mathrm{tot}},
-\qquad
-V_{\mathrm{nonsph}}=(1-f_{\mathrm{sph}})V_{\mathrm{tot}}.
+where $\alpha_{\mathrm{ext}}$ represents extinction per unit aerosol volume.
+
+The same approach is applied to the scattering optical depth and other additive optical quantities.
+
+## Scattering Phase Matrix
+
+For polarized radiative transfer, the phase matrix of the spherical and nonspherical components is combined according to their scattering contributions rather than directly according to their volume fractions.
+
+The mixed phase matrix can be written as
 
 $$
+\mathbf{P}_{\mathrm{mix}}(\Theta)
+=
+\frac{
+\tau_{\mathrm{sca}}^{\mathrm{sph}}
+\mathbf{P}_{\mathrm{sph}}(\Theta)
++
+\tau_{\mathrm{sca}}^{\mathrm{nonsph}}
+\mathbf{P}_{\mathrm{nonsph}}(\Theta)
+}{
+\tau_{\mathrm{sca}}^{\mathrm{sph}}
++
+\tau_{\mathrm{sca}}^{\mathrm{nonsph}}
+}.
+$$ {#eq-shape-phase-matrix}
 
-The volume partition is subsequently converted into the corresponding extinction and scattering contributions. Optical depths are additive, while polarized scattering properties and phase matrices are combined according to their scattering contributions. This formulation provides a consistent connection between the volume-based FastMAPOL aerosol model and the spherical/spheroidal particle-shape representation required for vector radiative transfer.
-$$
+Here, $\mathbf{P}_{\mathrm{sph}}$ and $\mathbf{P}_{\mathrm{nonsph}}$ are the scattering phase matrices of the spherical and nonspherical components, respectively.
+
+Thus, although particle shape is partitioned using **aerosol volume**, the resulting optical properties are weighted according to the corresponding extinction or scattering contributions. This distinction accounts for differences in optical efficiency between spherical and nonspherical particles.
+
+## Application to the Multimode Aerosol Model
+
+The particle-shape treatment can be applied to the predefined aerosol modes described in @sec-aerosol-model. Aerosol size and particle shape therefore represent two separate aspects of the aerosol model:
+
+- **mode volume density** determines the distribution of aerosol volume among particle sizes; and
+- **spherical fraction** determines the partitioning between spherical and nonspherical particles.
+
+The optical properties are first combined between the spherical and nonspherical components within each mode and then summed across aerosol modes.
+
+This formulation allows FastMAPOL to represent variations in aerosol size and particle shape within a consistent volume-based aerosol framework.

@@ -1,4 +1,4 @@
-# Radiative Transfer Model {#sec-rt-model}
+# Radiative Transfer: Model {#sec-rt-model}
 
 The Radiative Transfer model is based on the Successive Order of Scattering (RTSOS) method [@Zhai:2009aa; @Zhai:2010aa].
 

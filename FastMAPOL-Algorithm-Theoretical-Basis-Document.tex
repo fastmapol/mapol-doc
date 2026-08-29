@@ -375,7 +375,7 @@ When using or referring to FastMAPOL ATBD, please cite this document as:
 Gao, M., P. Zhai, K. Aryal, K. Knobelspiesse, and B. Franz.
 \emph{FastMAPOL Algorithm Theoretical Basis Document: Coupled Aerosol,
 Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry}. NASA
-Goddard Space Flight Center, Version 1.0, 2026.
+Goddard Space Flight Center, Version 0.1, 2026.
 \textless{}https://fastmapol.github.io/mapol-doc/\textgreater{}
 \end{quote}
 
@@ -468,11 +468,10 @@ earlier FastMAPOL production release.
 
 \markboth{Release Notes}{Release Notes}
 
-\section*{FastMAPOL Product Release Notes
-(V4)}\label{fastmapol-product-release-notes-v4}
-\addcontentsline{toc}{section}{FastMAPOL Product Release Notes (V4)}
+\section*{Version 4.0}\label{version-4.0-1}
+\addcontentsline{toc}{section}{Version 4.0}
 
-\markright{FastMAPOL Product Release Notes (V4)}
+\markright{Version 4.0}
 
 The FastMAPOL Version 4 release notes are available through the
 \href{https://pace.oceansciences.org/access_pace_data.htm}{PACE Release
@@ -481,7 +480,6 @@ above. Note that these links are subject to change; the relevant release
 information is also provided below for reference.
 
 \subsection*{HARP2 Level-2 Products}\label{harp2-level-2-products}
-\addcontentsline{toc}{subsection}{HARP2 Level-2 Products}
 
 \begin{itemize}
 \item
@@ -531,7 +529,6 @@ information is also provided below for reference.
 \end{itemize}
 
 \subsection*{HARP2 Level-3 Products}\label{harp2-level-3-products}
-\addcontentsline{toc}{subsection}{HARP2 Level-3 Products}
 
 HARP2 Level-2 products are composited into global Level-3 binned and
 mapped products. Daily, 8-day, and monthly Level-3 mapped products are
@@ -547,7 +544,6 @@ available list of mapped product types now include:
 \end{itemize}
 
 \subsection*{SPEXone Level-2 Products}\label{spexone-level-2-products}
-\addcontentsline{toc}{subsection}{SPEXone Level-2 Products}
 
 \textbf{Changes from Version 3}
 
@@ -588,7 +584,6 @@ available list of mapped product types now include:
 \end{itemize}
 
 \subsection*{SPEXone Level-3 Products}\label{spexone-level-3-products}
-\addcontentsline{toc}{subsection}{SPEXone Level-3 Products}
 
 SPEXone Level-2 products are composited into global Level-3 binned and
 mapped products. Daily, 8-day, and monthly Level-3 mapped products are
@@ -601,11 +596,10 @@ available list of mapped product types now include:
   MAPOL\_OCEAN: aerosol and ocean properties from FastMAPOL algorithm
 \end{itemize}
 
-\section*{FastMAPOL Product Release Notes
-(V3)}\label{fastmapol-product-release-notes-v3}
-\addcontentsline{toc}{section}{FastMAPOL Product Release Notes (V3)}
+\section*{Version 3.0}\label{version-3.0-1}
+\addcontentsline{toc}{section}{Version 3.0}
 
-\markright{FastMAPOL Product Release Notes (V3)}
+\markright{Version 3.0}
 
 The FastMAPOL Version 3 release notes are available through the
 \href{https://pace.oceansciences.org/access_pace_data.htm}{PACE Release
@@ -614,7 +608,6 @@ above. Note that these links are subject to change; the relevant release
 information is also provided below for reference.
 
 \subsection*{SPEXone Level-2 Products}\label{spexone-level-2-products-1}
-\addcontentsline{toc}{subsection}{SPEXone Level-2 Products}
 
 \begin{itemize}
 \tightlist
@@ -678,7 +671,6 @@ properties. A subset is listed here.
 \end{itemize}
 
 \subsection*{SPEXone Level-3 Products}\label{spexone-level-3-products-1}
-\addcontentsline{toc}{subsection}{SPEXone Level-3 Products}
 
 SPEXone Level-2 products are composited into global Level-3 binned and
 mapped products. Daily, 8-day, and monthly Level-3 mapped products are
@@ -701,7 +693,6 @@ available list of mapped product types now include:
 \end{itemize}
 
 \subsection*{HARP2 Level-2 Products}\label{harp2-level-2-products-1}
-\addcontentsline{toc}{subsection}{HARP2 Level-2 Products}
 
 \textbf{MAPOL\_OCEAN (Aerosol and Ocean Properties from FastMAPOL
 Algorithm)}
@@ -767,7 +758,6 @@ properties. A subset is listed here.
 \end{itemize}
 
 \subsection*{HARP2 Level-3 Products}\label{harp2-level-3-products-1}
-\addcontentsline{toc}{subsection}{HARP2 Level-3 Products}
 
 HARP2 Level-2 products are composited into global Level-3 binned and
 mapped products. Daily, 8-day, and monthly Level-3 mapped products are
@@ -999,8 +989,7 @@ Appendix provide detailed technical descriptions of:
 
 \bookmarksetup{startatroot}
 
-\chapter{FastMAPOL Retrieval
-Framework}\label{fastmapol-retrieval-framework}
+\chapter{FastMAPOL Retrieval Framework}\label{sec-retrieval}
 
 FastMAPOL is an efficient coupled aerosol and ocean color retrieval
 algorithm that combines neural network (NN) forward models with
@@ -1244,18 +1233,17 @@ SSA (coarse) & \(5\times64\times64\times34\) & 0.01 \\
 More details are provided in Appendix~\ref{sec-nn-model} and
 Appendix~\ref{sec-nn-ad}.
 
-\section{Retrieval and optimization}\label{retrieval-and-optimization}
+\section{Retrieval and Optimization}\label{retrieval-and-optimization}
 
-FastMAPOL determines the optimal values of the state parameters by
-minimizing the difference between the measurements and NN forward model
-predictions. An iterative optimization approach is used. The NN forward
-model computes the reflectance and degree of linear polarization (DoLP),
-defined as
+FastMAPOL determines the aerosol and surface state parameters by
+minimizing the differences between multi-angle polarimetric measurements
+and NN forward-model predictions. The measurements used in the retrieval
+are reflectance and degree of linear polarization (DoLP), defined as
 
 \begin{equation}\phantomsection\label{eq-rho}{
 \rho_t
 =
-\frac{\pi L_t}{\mu_0 F_0}
+\frac{\pi L_t}{\mu_0 F_0},
 }\end{equation}
 
 and
@@ -1270,107 +1258,31 @@ where \(L_t\), \(Q_t\), and \(U_t\) are the Stokes parameters at the
 sensor altitude, \(F_0\) is the extraterrestrial solar irradiance, and
 \(\mu_0\) is the cosine of the solar zenith angle.
 
-The differences between the measurements and model predictions are
-represented by a cost function, \(\chi^2\), based on Bayesian theory
-(\citeproc{ref-Rodgers:2000aa}{Rodgers 2000}):
+The retrieval minimizes the normalized cost function
 
 \begin{equation}\phantomsection\label{eq-cost}{
 \chi^2({\mathbf x})
 =
 \frac{1}{N}
 \sum_i
-\left(
+\left[
 \frac{[\rho_t(i)-\rho_t^f({\mathbf x};i)]^2}{\sigma_\rho^2(i)}
 +
 \frac{[P_t(i)-P_t^f({\mathbf x};i)]^2}{\sigma_P^2(i)}
-\right).
+\right],
 }\end{equation}
 
-Here, \(\rho_t^f\) and \(P_t^f\) are the reflectance and DoLP computed
-by the NN forward model. The state vector \({\mathbf x}\) contains the
-retrieved aerosol, ocean, and surface parameters described in
-Table~\ref{tbl-param-ranges}. The subscript \(i\) denotes the
-measurement index, where one measurement is defined as a pair of
-reflectance and DoLP values at a given viewing angle and wavelength, and
-\(N\) is the total number of measurements used in the retrieval.
+where \(\rho_t^f\) and \(P_t^f\) are the NN forward-model predictions,
+\({\mathbf x}\) is the retrieval state vector, and \(\sigma_\rho\) and
+\(\sigma_P\) are the corresponding uncertainties. The state vector
+contains the retrieved aerosol and surface parameters described in
+Table~\ref{tbl-param-ranges}.
 
-The total uncertainties of reflectance and DoLP used in the cost
-function are denoted by \(\sigma_\rho\) and \(\sigma_P\), respectively.
-These include contributions from instrument uncertainties
-\(\sigma_{\mathrm{ins}}\), NN forward model uncertainties
-\(\sigma_{\mathrm{NN}}\), and radiative transfer simulation
-uncertainties \(\sigma_{\mathrm{RT}}\) used to train the NN:
-
-\begin{equation}\phantomsection\label{eq-sigma-rho}{
-\sigma_\rho^2
-=
-\sigma_{\rho,\mathrm{ins}}^2
-+
-\sigma_{\rho,\mathrm{NN}}^2
-+
-\sigma_{\rho,\mathrm{RT}}^2,
-}\end{equation}
-
-\begin{equation}\phantomsection\label{eq-sigma-P}{
-\sigma_P^2
-=
-\sigma_{P,\mathrm{ins}}^2
-+
-\sigma_{P,\mathrm{NN}}^2
-+
-\sigma_{P,\mathrm{RT}}^2.
-}\end{equation}
-
-The NN forward-model uncertainties are determined during NN training and
-evaluation (\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021};
-\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}), with the current
-NN architectures and associated uncertainties summarized in
-Table~\ref{tbl-nn-arch}. At present, uncertainties are assumed to be
-spectrally and angularly uncorrelated.
-
-During FastMAPOL retrievals, with each iteration, the state vector
-\({\mathbf x}\) is updated, and the NN forward model is used to compute
-\(\rho_t^f\) and \(P_t^f\), from which a new value of the cost function
-is calculated. The Jacobian matrix is used to determine the magnitude
-and direction of the update to \({\mathbf x}\). The NN forward model and
-analytical calculation of the Jacobian matrix through automatic
-differentiation are described in the following section.
-
-This iterative process continues until the convergence criterion is met:
-
-\begin{equation}\phantomsection\label{eq-delta-chi}{
-\frac{|\chi_i^2-\chi_{i-1}^2|}
-{\chi_i^2}
-<
-\eta,
-}\end{equation}
-
-where \(i\) is the iteration index and \(\eta\) is the convergence
-tolerance, taken as 0.01.
-
-The convergence and overall quality of the retrieval can be evaluated
-using the cost function. For an ensemble of retrievals, if the residuals
-are consistent with the assumed uncertainties, the normalized
-cost-function distribution can be compared with the theoretical
-probability density function (PDF) of the \(\chi^2\) distribution:
-
-\begin{equation}\phantomsection\label{eq-chi2-pdf}{
-f(\chi^2,k)
-=
-\frac{(\chi^2)^{k/2-1} k^{k/2} e^{-\chi^2 k/2}}
-{2^{k/2}\Gamma(k/2)}.
-}\end{equation}
-
-Here, \(\chi^2\) is the cost function defined in Equation~\ref{eq-cost},
-\(k\) is the number of degrees of freedom (DOF), and \(\Gamma(k/2)\)
-denotes the gamma function (\citeproc{ref-Gao:2021bb}{Meng Gao et al.
-2021}). Neglecting potential correlations among measurement
-uncertainties, the DOF can be approximated by the total number of
-measurements, \(N\). More rigorously, the effective DOF depends on the
-number and information content of the retrieved parameters and can be
-evaluated using the Jacobian and error covariance matrices
-(\citeproc{ref-Gao:2021bb}{Meng Gao et al. 2021};
-\citeproc{ref-Gao:2023bb}{M. Gao, Knobelspiesse, et al. 2023}).
+FastMAPOL solves this nonlinear optimization problem iteratively using
+the NN forward model and its Jacobian calculated through automatic
+differentiation. Details of the inversion, uncertainty weighting,
+convergence criteria, and optimization algorithm are provided in
+Appendix~\ref{sec-retrieval-inversion}.
 
 \section{Data screening and uncertainty
 quantifization}\label{data-screening-and-uncertainty-quantifization}
@@ -2279,7 +2191,7 @@ development, validation, and advanced scientific analysis.
 All equations and formulations follow the conventions introduced in the
 main text unless otherwise noted.
 
-\chapter{Radiative Transfer Model}\label{sec-rt-model}
+\chapter{Radiative Transfer: Model}\label{sec-rt-model}
 
 The Radiative Transfer model is based on the Successive Order of
 Scattering (RTSOS) method (\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009},
@@ -2305,8 +2217,8 @@ the radiative transfer system.
 \textbf{Code repository} The RTSOS is made public by Dr.~Pengwang Zhai
 in github.
 
-\chapter{Radiative Transfer Model: Spherical shell
-correction}\label{sec-rt-shell}
+\chapter{Radiative Transfer: Spherical Shell
+Correction}\label{sec-rt-shell}
 
 As discussed in Appendix~\ref{sec-rt-model}, theforward model are
 generated using a PACE-tailored vector radiative transfer model based on
@@ -2343,7 +2255,216 @@ reference frame but are not shown.}
 
 \end{figure}%
 
-\chapter{Neural Network Forward Model and Training}\label{sec-nn-model}
+\chapter{Retrieval Algorithm: Inversion}\label{sec-retrieval-inversion}
+
+FastMAPOL solves the retrieval as a constrained nonlinear least-squares
+optimization problem. The cost function is defined in
+Chapter~\ref{sec-retrieval} and is restated here for completeness:
+
+\[
+\chi^2({\mathbf x})
+=
+\frac{1}{N}
+\sum_i
+\left[
+\frac{[\rho_t(i)-\rho_t^f({\mathbf x};i)]^2}{\sigma_\rho^2(i)}
++
+\frac{[P_t(i)-P_t^f({\mathbf x};i)]^2}{\sigma_P^2(i)}
+\right].
+\]
+
+The state vector \({\mathbf x}\) contains the aerosol and surface
+parameters appropriate for the selected FastMAPOL retrieval
+configuration. Each parameter is constrained to a physically meaningful
+range during the inversion.
+
+\section{Measurement and Forward-Model
+Uncertainties}\label{measurement-and-forward-model-uncertainties}
+
+The reflectance and DoLP uncertainties used to weight the cost function
+include contributions from instrument uncertainty, NN forward-model
+uncertainty, and radiative transfer simulation uncertainty:
+
+\begin{equation}\phantomsection\label{eq-sigma-rho}{
+\sigma_\rho^2
+=
+\sigma_{\rho,\mathrm{ins}}^2
++
+\sigma_{\rho,\mathrm{NN}}^2
++
+\sigma_{\rho,\mathrm{RT}}^2,
+}\end{equation}
+
+and
+
+\begin{equation}\phantomsection\label{eq-sigma-P}{
+\sigma_P^2
+=
+\sigma_{P,\mathrm{ins}}^2
++
+\sigma_{P,\mathrm{NN}}^2
++
+\sigma_{P,\mathrm{RT}}^2.
+}\end{equation}
+
+The NN forward-model uncertainties are determined during NN training and
+evaluation (\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021};
+\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023}), with the current
+NN architectures and associated uncertainties summarized in
+Table~\ref{tbl-nn-arch}. At present, these uncertainties are assumed to
+be spectrally and angularly uncorrelated.
+
+\section{Nonlinear Least-Squares
+Optimization}\label{nonlinear-least-squares-optimization}
+
+FastMAPOL uses the \textbf{Trust Region Reflective (TRF)} nonlinear
+least-squares algorithm implemented in SciPy
+(\citeproc{ref-Branch:1999aa}{Branch, Coleman, and Li 1999};
+\citeproc{ref-SciPy:2020aa}{P. Virtanen et al. 2020}). The algorithm
+iteratively updates the state vector while enforcing the prescribed
+parameter bounds.
+
+At iteration \(j\), the NN forward model evaluates the simulated
+measurements for the current state vector \({\mathbf x}_j\). The
+Jacobian matrix,
+
+\begin{equation}\phantomsection\label{eq-retrieval-jacobian}{
+K_{mn}
+=
+\frac{\partial F_m}{\partial x_n},
+}\end{equation}
+
+describes the sensitivity of each modeled measurement to each state
+parameter and is calculated efficiently through automatic
+differentiation.
+
+The forward-model residuals and Jacobian are supplied to the nonlinear
+least-squares optimizer to determine the next update of the state
+vector. This process is repeated until convergence or until the maximum
+allowed number of iterations is reached.
+
+\section{Convergence}\label{convergence}
+
+The retrieval convergence is evaluated from the relative change in the
+cost function between successive iterations:
+
+\begin{equation}\phantomsection\label{eq-delta-chi}{
+\frac{|\chi_j^2-\chi_{j-1}^2|}
+{\chi_j^2}
+<
+\eta,
+}\end{equation}
+
+where \(j\) is the iteration index and \(\eta\) is the convergence
+tolerance. FastMAPOL uses \(\eta=0.01\).
+
+The converged state vector provides the retrieved aerosol and surface
+properties for the pixel. The solution is subsequently evaluated by the
+adaptive multi-angle data-screening procedure described in
+Appendix~\ref{sec-data-screening}. If measurements are excluded during
+screening, another inversion is performed using the previous solution as
+the initial state.
+
+\section{Interpretation of the Cost
+Function}\label{interpretation-of-the-cost-function}
+
+The final cost function provides an overall measure of agreement between
+the observations and forward model relative to the assumed
+uncertainties. For an ensemble of retrievals, the distribution of the
+normalized cost function can be compared with the theoretical \(\chi^2\)
+distribution (\citeproc{ref-Gao:2021bb}{Meng Gao et al. 2021}):
+
+\begin{equation}\phantomsection\label{eq-chi2-pdf}{
+f(\chi^2,k)
+=
+\frac{
+(\chi^2)^{k/2-1}
+k^{k/2}
+\exp(-k\chi^2/2)
+}{
+2^{k/2}\Gamma(k/2)
+}.
+}\end{equation}
+
+Here, \(k\) represents the number of degrees of freedom (DOF). When
+correlations among measurement uncertainties and the effects of
+retrieved parameters are neglected, the DOF can be approximated from the
+number of measurements. More generally, the effective DOF depends on the
+information content of the measurements and retrieved state parameters
+and can be evaluated using the Jacobian and error covariance matrices
+(\citeproc{ref-Gao:2021bb}{Meng Gao et al. 2021};
+\citeproc{ref-Gao:2023bb}{M. Gao, Knobelspiesse, et al. 2023}).
+
+\chapter{Retrieval Algorithm: Adaptive Multi-angle Data
+Screening}\label{sec-data-screening}
+
+Within the FastMAPOL retrieval algorithm, an adaptive multi-angle data
+screening approach is implemented, which conducts automatic data quality
+analysis and data screening. A flowchart is summarized in Figure
+Figure~\ref{fig-flowchart-screening} B
+((../figure/fig\_data\_screening.png). More details in the algorithm and
+applications are in Meng Gao et al. (\citeproc{ref-Gao:2021bb}{2021}).
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{chapters/../figure/fig_data_screening.png}
+
+}
+
+\caption{\label{fig-flowchart-screening}Flowcharts for (A) FastMAPOL
+retrievals and (B) retrievals with the multi-angle polarimetric data
+screening (MAPDS).** In panel \textbf{(A)},
+\(\Delta\chi^2 = |\chi_i^2-\chi_{i-1}^2|\) indicates the changes of the
+cost function between two iterations with \(\eta\) as threshold. In
+panel \textbf{(B)}, \(\Delta\rho_t\) and \(\Delta P_t\) indicate the
+difference between forward model and measurements for reflectance and
+DoLP with \(\xi\) as threshold. The dashed box in \textbf{(B)}
+represents the same retrieval process as shown in the dashed box in
+\textbf{(A)}. A maximum three passes (indicated by the loop in
+\textbf{(B)}) are used in the data screening process.Figure is adopted
+from Meng Gao et al. (\citeproc{ref-Gao:2021bb}{2021})}
+
+\end{figure}%
+
+After each converged FastMAPOL retrieval, the residuals between each
+measurement and the forward model prediction are used to evaluate the
+data quality under the criteria:
+
+\[
+\frac{|\Delta\rho_t|}{\sigma_\rho} < \xi,
+\qquad
+\frac{|\Delta P_t|}{\sigma_P} < \xi
+\]
+
+where the residuals are compared with the uncertainty model defined in
+the cost function, and \(\xi\) is a threshold. When either the
+reflectance or DoLP does not satisfy the criteria, the corresponding
+measurement is excluded from the cost function calculation (i.e., the
+view angle which cannot be represented well by the forward model is
+removed), and a new FastMAPOL retrieval is performed. In practice,
+additional screening rules based on the criteria may be used depending
+on the data quality of the field measurements.
+
+This process is repeated until all angles remaining satisfy above
+conditions. Note that the whole data screening process will include
+several retrieval passes, each involving multiple iterations until
+convergence. At the end of each retrieval pass based on the new forward
+model fittings, all measurements used in the retrieval are evaluated
+above and subsequently excluded from the next round if they failed to
+pass.
+
+The data screening approach is an adaptive process, since it depends on
+the fitting at each iteration for each pixel. A threshold value of
+\(\xi=3\) is used in this study, which can be further tuned when more
+data is available. We found at most three passes of retrievals are
+sufficient to remove most of the problematic angles. Since the retrieved
+parameters from last retrieval can be used as the initial values to the
+next retrieval, the total speed to conduct data screening are usually
+less than three times of the single round retrieval.
+
+\chapter{Neural Network: Model and Training}\label{sec-nn-model}
 
 FastMAPOL uses deep feed-forward neural networks (NNs) as
 computationally efficient emulators of the vector radiative transfer
@@ -2700,8 +2821,7 @@ application to measured data, the complete uncertainty budget should
 account for measurement uncertainty, NN approximation uncertainty, and
 RT-model numerical uncertainty.
 
-\chapter{Analytical Jacobian through automatic
-differentiation}\label{sec-nn-ad}
+\chapter{Neural Network: Analytical Jacobian}\label{sec-nn-ad}
 
 The MAP retrievals are often computationally expensive due to their high
 dimensionality and iterative nature, with multiple forward model and
@@ -3052,75 +3172,8 @@ methods.}
 
 \end{figure}%
 
-\chapter{Adaptive Multi-angle Data Screening}\label{sec-data-screening}
-
-Within the FastMAPOL retrieval algorithm, an adaptive multi-angle data
-screening approach is implemented, which conducts automatic data quality
-analysis and data screening. A flowchart is summarized in Figure
-Figure~\ref{fig-flowchart-screening} B
-((../figure/fig\_data\_screening.png). More details in the algorithm and
-applications are in Meng Gao et al. (\citeproc{ref-Gao:2021bb}{2021}).
-
-\begin{figure}
-
-\centering{
-
-\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{chapters/../figure/fig_data_screening.png}
-
-}
-
-\caption{\label{fig-flowchart-screening}Flowcharts for (A) FastMAPOL
-retrievals and (B) retrievals with the multi-angle polarimetric data
-screening (MAPDS).** In panel \textbf{(A)},
-\(\Delta\chi^2 = |\chi_i^2-\chi_{i-1}^2|\) indicates the changes of the
-cost function between two iterations with \(\eta\) as threshold. In
-panel \textbf{(B)}, \(\Delta\rho_t\) and \(\Delta P_t\) indicate the
-difference between forward model and measurements for reflectance and
-DoLP with \(\xi\) as threshold. The dashed box in \textbf{(B)}
-represents the same retrieval process as shown in the dashed box in
-\textbf{(A)}. A maximum three passes (indicated by the loop in
-\textbf{(B)}) are used in the data screening process.Figure is adopted
-from Meng Gao et al. (\citeproc{ref-Gao:2021bb}{2021})}
-
-\end{figure}%
-
-After each converged FastMAPOL retrieval, the residuals between each
-measurement and the forward model prediction are used to evaluate the
-data quality under the criteria:
-
-\[
-\frac{|\Delta\rho_t|}{\sigma_\rho} < \xi,
-\qquad
-\frac{|\Delta P_t|}{\sigma_P} < \xi
-\]
-
-where the residuals are compared with the uncertainty model defined in
-the cost function, and \(\xi\) is a threshold. When either the
-reflectance or DoLP does not satisfy the criteria, the corresponding
-measurement is excluded from the cost function calculation (i.e., the
-view angle which cannot be represented well by the forward model is
-removed), and a new FastMAPOL retrieval is performed. In practice,
-additional screening rules based on the criteria may be used depending
-on the data quality of the field measurements.
-
-This process is repeated until all angles remaining satisfy above
-conditions. Note that the whole data screening process will include
-several retrieval passes, each involving multiple iterations until
-convergence. At the end of each retrieval pass based on the new forward
-model fittings, all measurements used in the retrieval are evaluated
-above and subsequently excluded from the next round if they failed to
-pass.
-
-The data screening approach is an adaptive process, since it depends on
-the fitting at each iteration for each pixel. A threshold value of
-\(\xi=3\) is used in this study, which can be further tuned when more
-data is available. We found at most three passes of retrievals are
-sufficient to remove most of the problematic angles. Since the retrieved
-parameters from last retrieval can be used as the initial values to the
-next retrieval, the total speed to conduct data screening are usually
-less than three times of the single round retrieval.
-
-\chapter{Uncertainty Quantification}\label{sec-uq-theory}
+\chapter{Uncertainty Quantification: Theory and
+Validation}\label{sec-uq-theory}
 
 surface properties. The uncertainty framework propagates uncertainties
 associated with the measurements and forward model through the retrieval
@@ -3636,7 +3689,7 @@ future FastMAPOL retrieval and a framework for evaluating whether those
 theoretical uncertainties are representative of observed retrieval
 performance.
 
-\chapter{Uncertainty Quantifization with Angular
+\chapter{Uncertainty Quantifization: Angular
 Correlations}\label{sec-uq-correlation}
 
 Following the uncertainty quantification discussion in
@@ -4006,10 +4059,10 @@ model adequately represents the uncertainty structure
 sufficient, only the first-order lag should remain prominent beyond the
 zero-order term. The Python packages StatsModels
 (\citeproc{ref-Seabold:2010aa}{Seabold and Perktold 2010}) and SciPy
-(\citeproc{ref-Virtanen:2018aa}{Virtanen et al. 2018}) are used to
+(\citeproc{ref-Virtanen:2018aa}{T. H. Virtanen et al. 2018}) are used to
 conduct the autocorrelation analyses.
 
-\chapter{Aerosol Model}\label{sec-aerosol-model}
+\chapter{Aerosol: Model Representation}\label{sec-aerosol-model}
 
 This chapter describes the aerosol representations used in FastMAPOL and
 the aerosol properties derived from the retrieved state vector. The
@@ -4047,7 +4100,13 @@ HARP2 and SPEXone for advanced retrieval studies
 aerosol model is described separately in
 Appendix~\ref{sec-aerosol-component}.
 
-This chapter focuses primarily on the Aer-1 and Aer-2 representations.
+This chapter focuses primarily on the Aer-1 and Aer-2 representations
+under the assumption of spherical particles. For PACE HARP2 and SPEXone
+data product, aerosol particle shape is represented as a mixture of
+spherical and nonspherical particles, as implemented in the current
+FastMAPOL V3 and V4 products (\citeproc{ref-Gao:2026aa}{Meng Gao et al.
+2026}). The treatment of aerosol particle shape and nonsphericity is
+described in detail in Appendix~\ref{sec-aerosol-shape}.
 
 \section{Log-Normal Aerosol Modes}\label{log-normal-aerosol-modes}
 
@@ -4310,8 +4369,7 @@ The predefined multimode representation therefore provides a flexible
 connection between the FastMAPOL retrieval state vector and physically
 interpretable aerosol size and optical properties.
 
-\chapter{Aerosol Vertical Profile and Layer
-Height}\label{sec-aerosol-height}
+\chapter{Aerosol: Layer Height}\label{sec-aerosol-height}
 
 This chapter describes the aerosol vertical distribution assumed in
 FastMAPOL and defines the aerosol layer height (ALH) used in the
@@ -4475,8 +4533,196 @@ standard deviation of approximately 0.85 km.} Thus, the two formulations
 describe the same aerosol vertical profile despite the different
 definitions of the width parameter.
 
-\chapter{Aerosol Characterization: Component
-Approach}\label{sec-aerosol-component}
+\chapter{Aerosol: Shape and Nonsphericity}\label{sec-aerosol-shape}
+
+FastMAPOL accounts for aerosol particle nonsphericity by allowing each
+aerosol size mode to contain a mixture of spherical and nonspherical
+particles (\citeproc{ref-Gao:2026aa}{Meng Gao et al. 2026}).
+Nonspherical particles can be represented using the spheroidal particle
+model following Oleg Dubovik et al.
+(\citeproc{ref-Dubovik:2006aa}{2006}) or the irregular hexahedral
+particle model following Saito et al.
+(\citeproc{ref-Saito:2021aa}{2021}). This treatment is particularly
+important for mineral dust and other irregular particles, whose
+polarized scattering properties can differ substantially from those of
+equivalent spherical particles.
+
+For the current FastMAPOL V3 and V4 operational products, the spheroidal
+model is used by default. The particle-shape representation is applied
+independently of the aerosol size-mode representation described in
+Appendix~\ref{sec-aerosol-model}.
+
+\section{Spherical and Nonspherical Particle
+Models}\label{spherical-and-nonspherical-particle-models}
+
+The spherical aerosol component is modeled using spherical-particle
+scattering calculations, while the nonspherical component can be
+represented by an ensemble of spheroidal particles
+(\citeproc{ref-Dubovik:2006aa}{Oleg Dubovik et al. 2006}) or irregular
+hexahedral particles (\citeproc{ref-Saito:2021aa}{Saito et al. 2021}).
+
+For a given aerosol mode, the spherical and nonspherical components
+share the same prescribed size distribution and complex refractive index
+but differ in their particle-shape representation. The resulting
+single-particle optical properties, including extinction, scattering,
+absorption, and the scattering phase matrix, are used by the vector
+radiative transfer model.
+
+These nonspherical representations approximate the ensemble-averaged
+optical properties of irregular aerosol particles without explicitly
+describing the detailed morphology of individual particles.
+
+\section{Spherical Fraction}\label{spherical-fraction}
+
+FastMAPOL characterizes particle shape using the \textbf{spherical
+fraction}, \(f_{\mathrm{sph}}\), defined as the fraction of aerosol
+particle volume represented by spherical particles:
+
+\begin{equation}\phantomsection\label{eq-spherical-fraction}{
+f_{\mathrm{sph}}
+=
+\frac{V_{\mathrm{sph}}}
+{V_{\mathrm{sph}}+V_{\mathrm{nonsph}}}.
+}\end{equation}
+
+Here, \(V_{\mathrm{sph}}\) and \(V_{\mathrm{nonsph}}\) are the column
+volume densities of the spherical and nonspherical components,
+respectively.
+
+For a total aerosol volume density \(V_{\mathrm{tot}}\),
+
+\begin{equation}\phantomsection\label{eq-shape-volume}{
+V_{\mathrm{sph}}
+=
+f_{\mathrm{sph}} V_{\mathrm{tot}},
+\qquad
+V_{\mathrm{nonsph}}
+=
+(1-f_{\mathrm{sph}})V_{\mathrm{tot}}.
+}\end{equation}
+
+The spherical fraction is bounded by
+
+\[
+0 \le f_{\mathrm{sph}} \le 1,
+\]
+
+where \(f_{\mathrm{sph}}=1\) represents completely spherical particles
+and \(f_{\mathrm{sph}}=0\) represents completely nonspherical particles.
+
+The spherical fraction is defined as a \textbf{volume fraction}, rather
+than a particle number fraction.
+
+\section{Mixing Spherical and Nonspherical
+Aerosols}\label{mixing-spherical-and-nonspherical-aerosols}
+
+Because the FastMAPOL aerosol state is represented using particle
+volume, spherical and nonspherical components are first partitioned
+according to their volume fractions.
+
+For aerosol mode \(i\),
+
+\begin{equation}\phantomsection\label{eq-shape-mode-volume}{
+V_{i,\mathrm{sph}}
+=
+f_{\mathrm{sph},i}V_i,
+\qquad
+V_{i,\mathrm{nonsph}}
+=
+(1-f_{\mathrm{sph},i})V_i.
+}\end{equation}
+
+The corresponding extinction optical depth is additive:
+
+\begin{equation}\phantomsection\label{eq-shape-extinction}{
+\tau_{\mathrm{ext},i}
+=
+\tau_{\mathrm{ext},i}^{\mathrm{sph}}
++
+\tau_{\mathrm{ext},i}^{\mathrm{nonsph}}.
+}\end{equation}
+
+Expressed in terms of extinction per unit aerosol volume,
+
+\begin{equation}\phantomsection\label{eq-shape-extinction-volume}{
+\tau_{\mathrm{ext},i}
+=
+V_i
+\left[
+f_{\mathrm{sph},i}\alpha_{\mathrm{ext},i}^{\mathrm{sph}}
++
+(1-f_{\mathrm{sph},i})
+\alpha_{\mathrm{ext},i}^{\mathrm{nonsph}}
+\right],
+}\end{equation}
+
+where \(\alpha_{\mathrm{ext}}\) represents extinction per unit aerosol
+volume.
+
+The same approach is applied to the scattering optical depth and other
+additive optical quantities.
+
+\section{Scattering Phase Matrix}\label{scattering-phase-matrix}
+
+For polarized radiative transfer, the phase matrix of the spherical and
+nonspherical components is combined according to their scattering
+contributions rather than directly according to their volume fractions.
+
+The mixed phase matrix can be written as
+
+\begin{equation}\phantomsection\label{eq-shape-phase-matrix}{
+\mathbf{P}_{\mathrm{mix}}(\Theta)
+=
+\frac{
+\tau_{\mathrm{sca}}^{\mathrm{sph}}
+\mathbf{P}_{\mathrm{sph}}(\Theta)
++
+\tau_{\mathrm{sca}}^{\mathrm{nonsph}}
+\mathbf{P}_{\mathrm{nonsph}}(\Theta)
+}{
+\tau_{\mathrm{sca}}^{\mathrm{sph}}
++
+\tau_{\mathrm{sca}}^{\mathrm{nonsph}}
+}.
+}\end{equation}
+
+Here, \(\mathbf{P}_{\mathrm{sph}}\) and \(\mathbf{P}_{\mathrm{nonsph}}\)
+are the scattering phase matrices of the spherical and nonspherical
+components, respectively.
+
+Thus, although particle shape is partitioned using \textbf{aerosol
+volume}, the resulting optical properties are weighted according to the
+corresponding extinction or scattering contributions. This distinction
+accounts for differences in optical efficiency between spherical and
+nonspherical particles.
+
+\section{Application to the Multimode Aerosol
+Model}\label{application-to-the-multimode-aerosol-model}
+
+The particle-shape treatment can be applied to the predefined aerosol
+modes described in Appendix~\ref{sec-aerosol-model}. Aerosol size and
+particle shape therefore represent two separate aspects of the aerosol
+model:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{mode volume density} determines the distribution of aerosol
+  volume among particle sizes; and
+\item
+  \textbf{spherical fraction} determines the partitioning between
+  spherical and nonspherical particles.
+\end{itemize}
+
+The optical properties are first combined between the spherical and
+nonspherical components within each mode and then summed across aerosol
+modes.
+
+This formulation allows FastMAPOL to represent variations in aerosol
+size and particle shape within a consistent volume-based aerosol
+framework.
+
+\chapter{Aerosol Component Approach}\label{sec-aerosol-component}
 
 In the aerosol component approach, aerosols are represented by an
 external mixture of different components with assumed size distribution
@@ -4544,831 +4790,7 @@ and Angstrom exponents (AE). For more details, readers are referred to
 the published papers (\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024},
 \citeproc{ref-Aryal:2026aa}{2026}).
 
-\chapter{Ocean Bio-Optical Model}\label{sec-ocean-model}
-
-\section{Overview}\label{overview-2}
-
-FastMAPOL retrieves ocean optical properties by coupling the aerosol
-retrieval with a forward radiative transfer model of ocean inherent
-optical properties (IOPs). The ocean optical properties are
-parameterized using bio-optical models that describe the spectral
-absorption and scattering of seawater constituents.
-
-Three parameterizations are considered:
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
-Model & Parameters & Application \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Bio-1 & 1 parameter & Open ocean (Case-1 waters) \\
-Bio-2 & 5 parameters & Coastal and optically complex waters \\
-Bio-3 & 3 parameters & Optimized coastal parameterization \\
-\end{longtable}
-
-These models describe the spectral absorption and scattering properties
-of four main water constituents:
-
-\begin{itemize}
-\tightlist
-\item
-  pure seawater
-\item
-  phytoplankton
-\item
-  non-algal particles (NAP)
-\item
-  colored dissolved organic matter (CDOM)
-\end{itemize}
-
-The total inherent optical properties are constructed from the
-contributions of these components. \textbf{Bio-1} is used in default for
-the current released data product.
-
-\section{Bio-1 Optical Model (Open
-Ocean)}\label{bio-1-optical-model-open-ocean}
-
-The \textbf{Bio-1 model} is a bio-optical parameterization designed for
-\textbf{open ocean waters (Case-1 waters)}
-(\citeproc{ref-Zhai:2015aa}{Zhai et al. 2015},
-\citeproc{ref-Zhai:2017aa}{2017}). The model can be also derived from
-the generalized Bio-2 model (\citeproc{ref-Gao:2018aa}{Meng Gao et al.
-2018}) by imposing constraints on its parameters
-(\citeproc{ref-Gao:2019bb}{M. Gao et al. 2019})
-
-In this model, the optical properties are parameterized primarily as a
-function of chlorophyll concentration \([Chl\,a]\).
-
-\subsection{Phytoplankton Absorption}\label{phytoplankton-absorption}
-
-The phytoplankton absorption coefficient \(a_{ph}\) follows the
-formulation defined in the generalized model (see Section 6.3).
-
-\subsection{Particulate Absorption}\label{particulate-absorption}
-
-For open ocean waters, the contribution of non-algal particles (NAP) is
-assumed negligible. Therefore the combined detrital and CDOM absorption
-coefficient \(a_{dg}\) depends only on phytoplankton.
-
-The value at 440 nm is parameterized as
-
-\[
-a_{dg}(440) = p_2\, a_p(440,[Chl\,a])
-\]
-
-where
-
-\[
-p_2 = 0.3 + \frac{5.7\,R_2\,a_p(440,[Chl\,a])}{0.02 + a_p(440,[Chl\,a])}.
-\]
-
-The parameter \(R_2\) is assumed to be
-
-\[
-R_2 = 0.5.
-\]
-
-The exponential spectral slope is fixed as
-
-\[
-S_{dg} = 0.018.
-\]
-
-\subsection{Particulate
-Backscattering}\label{particulate-backscattering}
-
-The particulate backscattering coefficient \(b_{bp}\) is also assumed to
-depend only on phytoplankton in open waters.
-
-The magnitude at 660 nm is parameterized as
-
-\[
-b_{bp}(660) = 0.347\,[Chl\,a]^{0.766}.
-\]
-
-The spectral slope of particulate backscattering is
-
-\[
-S_{bp} = -0.5\left(\log_{10}[Chl\,a] - 0.3\right),
-\]
-
-valid for
-
-\[
-0.02 < [Chl\,a] < 2 \; \text{mg m}^{-3}.
-\]
-
-Outside this range, the slope is set to zero.
-
-\subsection{Backscattering Fraction}\label{backscattering-fraction}
-
-The particulate backscattering fraction is parameterized as
-
-\[
-B_p = 0.002 + 0.01\left(0.5 - 0.25\log_{10}[Chl\,a]\right).
-\]
-
-The parameter \(B_p\) is assumed to be \textbf{spectrally independent}
-(Huot et al. (\citeproc{ref-Huot:2008aa}{2008})).
-
-\subsection{Phase matrix (TBD)}\label{phase-matrix-tbd}
-
-\begin{itemize}
-\tightlist
-\item
-  water
-\item
-  NAP
-\item
-  Phytoplankton (FF)
-\end{itemize}
-
-\section{Bio-2 Optical Model (Five-Parameter
-Model)}\label{bio-2-optical-model-five-parameter-model}
-
-The \textbf{Bio-2 model} describes optically complex coastal waters
-using a five-parameter parameterization (\citeproc{ref-Gao:2018aa}{Meng
-Gao et al. 2018}).
-
-The ocean is assumed to be homogeneous with a depth of \textbf{200 m}
-and composed of four optical components:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  pure seawater
-\item
-  phytoplankton covariant particles
-\item
-  non-algal particles (NAP)
-\item
-  colored dissolved organic matter (CDOM)
-\end{enumerate}
-
-CDOM contributes only to absorption, while the other components
-contribute to both absorption and scattering.
-
-The absorption and scattering coefficients of pure seawater, \(a_w\) and
-\(b_w\), are taken from laboratory measurements. The backscattering
-fraction of pure water is assumed to be
-
-\[
-B_w = 0.5.
-\]
-
-\subsection{Phytoplankton Absorption}\label{phytoplankton-absorption-1}
-
-Phytoplankton absorption is parameterized as
-
-\[
-a_{ph}(\lambda) = A_{ph}(\lambda)\,[Chl\,a]^{E_{ph}(\lambda)}.
-\]
-
-Here
-
-\begin{itemize}
-\tightlist
-\item
-  \(A_{ph}(\lambda)\) and \(E_{ph}(\lambda)\) are empirical coefficients
-\item
-  \([Chl\,a]\) is chlorophyll concentration in mg m\(^{-3}\).
-\end{itemize}
-
-\subsection{CDOM and Detrital
-Absorption}\label{cdom-and-detrital-absorption}
-
-The combined absorption coefficient of CDOM and NAP is modeled as
-
-\[
-a_{dg}(\lambda) =
-a_{dg}(440)\exp\!\left[-S_{dg}(\lambda-440)\right].
-\]
-
-The parameter \(S_{dg}\) represents the exponential spectral slope.
-
-\subsection{Particulate
-Backscattering}\label{particulate-backscattering-1}
-
-The particulate backscattering coefficient is modeled as
-
-\[
-b_{bp}(\lambda) =
-b_{bp}(660)\left(\frac{\lambda}{660}\right)^{-S_{bp}}.
-\]
-
-The spectral slope \(S_{bp}\) controls the wavelength dependence.
-
-\subsection{Backscattering Fraction}\label{backscattering-fraction-1}
-
-The particulate backscattering fraction is
-
-\[
-B_p(\lambda) =
-B_p(660)\left(\frac{\lambda}{660}\right)^{-S_{Bp}}.
-\]
-
-The parameter \(S_{Bp}\) defines the spectral variation of the
-backscattering fraction.
-
-\subsection{Total Inherent Optical
-Properties}\label{total-inherent-optical-properties}
-
-The total absorption coefficient is
-
-\[
-a(\lambda) =
-a_w(\lambda) + a_{ph}(\lambda) + a_{dg}(\lambda).
-\]
-
-The total backscattering coefficient is
-
-\[
-b_b(\lambda) =
-0.5\,b_w(\lambda) + b_{bp}(\lambda).
-\]
-
-These inherent optical properties are widely used to describe the ocean
-color spectrum in bio-optical models.
-
-\section{Bio-3 Optical Model (Three-Parameter
-Model)}\label{bio-3-optical-model-three-parameter-model}
-
-The \textbf{Bio-3 model} is a reduced-parameter version of the Bio-2
-formulation designed to balance physical realism with retrieval
-stability.
-
-In this model, a subset of the Bio-2 parameters is retrieved while the
-remaining parameters are constrained using empirical relationships
-derived from observations (\citeproc{ref-Hannadige:2023aa}{Hannadige et
-al. 2023}; \citeproc{ref-Aryal:2024aa}{Aryal et al. 2024},
-\citeproc{ref-Aryal:2026aa}{2026}).
-
-\emph{(Details of the Bio-3 parameterization will be described soon.)}
-
-\chapter{Multi-angle Ocean Color
-Product}\label{multi-angle-ocean-color-product}
-
-Ocean color signals are often represented by the remote sensing
-reflectance, \(R_{rs}(\lambda;\theta_0, \theta_v, \phi_v)\), which is
-defined as the ratio of upwelling radiance originating from the ocean
-body to downwelling irradiance just above the ocean surface, with units
-of \(\mathrm{sr}^{-1}\) (\citeproc{ref-Mobley:2016aa}{Mobley et al.
-2016}). Here \(\theta_0\) and \(\theta_v\) are the solar and viewing
-zenith angles, and \(\phi_v\) is the relative viewing azimuth angle. For
-simplicity, the wavelength dependence, \(\lambda\), which applies to all
-ocean reflectance-related variables, is omitted in the following
-notation. To derive this quantity, we need to remove the atmospheric
-path radiance and compute the water-leaving reflectance (\(\rho_w\)) as
-the reflectance originating from scattering in the ocean that reaches
-the satellite sensor:
-
-\begin{equation}\phantomsection\label{eq-rhow}{
-\rho_w(\theta_0,\theta_v,\phi_v)
-=
-\rho_t(\theta_0,\theta_v,\phi_v)
--
-\rho^{f}_{t,\mathrm{atm+sfc}}(\theta_0,\theta_v,\phi_v).
-}\end{equation}
-
-where \(\rho_t\) is the measured total reflectance at the top of
-atmosphere (TOA), and \(\rho^{f}_{t,\mathrm{atm+sfc}}\) is the
-reflectance with only atmospheric and ocean surface contributions (such
-as sunglint, white caps, etc.) computed in the forward model, denoted by
-superscript \(f\). With the multi-angle polarimetric observations
-provided by PACE, wind speed can be retrieved simultaneously with
-aerosol properties (\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021},
-\citeproc{ref-Gao:2022aa}{2022}). The joint retrieval algorithm enables
-the retrieval of ocean signals in regions affected by sunglint, which
-are often excluded or difficult to process using conventional
-single-angle ocean color remote sensing approaches
-(\citeproc{ref-Harmel:2013aa}{Harmel and Chami 2013};
-\citeproc{ref-Neukermans:2018aa}{Neukermans et al. 2018}).
-
-The remote sensing reflectance at arbitrary solar and viewing geometries
-can be derived from the water-leaving reflectance by considering the
-transmittance of both solar irradiance and surface radiance
-(\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021}) as:
-
-\begin{equation}\phantomsection\label{eq-rrs}{
-R_{rs}(\theta_0,\theta_v,\phi_v)
-=
-\left[
-\frac{\rho_w(\theta_0,\theta_v,\phi_v)}{\pi}
-\right]
-\times
-\left[
-\frac{1}
-{T_d(\theta_0)\,t_u(\theta_0,\theta_v,\phi_v)}
-\right].
-}\end{equation}
-
-where \(T_d\) represents the downwelling irradiance transmittance of the
-solar irradiance from the top of atmosphere to the surface, and \(t_u\)
-represents the upwelling radiance transmittance for the water-leaving
-radiance from the bottom of atmosphere to the satellite sensor, with
-more details in M. Gao et al. (\citeproc{ref-Gao:2021aa}{2021}).
-
-Furthermore, a BRDF correction procedure is commonly applied by mapping
-\(R_{rs}(\theta_0, \theta_v, \phi_v)\) at arbitrary geometry to the sun
-at zenith and viewing angle at nadir, denoted as \(R_{rs}(0,0)\). The
-reduction of the solar and viewing geometry angular dependency allows
-for geometrically consistent cross-instrument comparisons and validation
-with in-situ data. Based on the radiative transfer model used in this
-study, the BRDF correction factor can be computed through the modeled
-\(R_{rs}^f\) as defined in Eqs. Equation~\ref{eq-rhow} and
-Equation~\ref{eq-rrs} by replacing the real measurement by the forward
-model simulation:
-
-\begin{equation}\phantomsection\label{eq-cbrdf}{
-C_{\mathrm{BRDF}}(\theta_0,\theta,\phi)
-=
-\frac{R^f_{rs}(0,0)}
-{R^f_{rs}(\theta_0,\theta,\phi)}.
-}\end{equation}
-
-The angular distribution of the water-leaving light field, and thus this
-correction term, depends on ocean parameters including Chl-a and wind
-speed, as well as aerosol properties that modulate the diffuse skylight.
-All of these parameters are retrieved simultaneously in the algorithm.
-Note that this is an extension of the previous model in M. Gao et al.
-(\citeproc{ref-Gao:2021aa}{2021}) for smaller viewing zenith angles, and
-has been applied in synthetic PACE polarimeter data
-(\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023};
-\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024};
-\citeproc{ref-Zhang:2025aa}{Zhang et al. 2025}). Such a correction can
-be applied to estimate \(R_{rs}(0,0)\):
-
-\begin{equation}\phantomsection\label{eq-rrs00}{
-R_{rs}(0,0)
-=
-R_{rs}(\theta_0,\theta,\phi)
-\times
-C_{\mathrm{BRDF}}(\theta_0,\theta,\phi).
-}\end{equation}
-
-To expedite this process, we further developed two neural networks which
-compute \(1/(T_d t_u)\) and \(C_{\mathrm{BRDF}}/(T_d t_u)\) as
-summarized in Appendix B, which can be used to efficiently produce
-\(R_{rs}\) with and without BRDF correction.
-
-Since HARP2 and SPEXone makes measurements at multiple viewing zenith
-angles in the along-track direction), we can apply the atmospheric
-correction to each of these and derive \(R_{rs}\) with a new angle
-dimension. This satellite-based angular remote sensing reflectance
-contains information on oceanic particles and potentially also
-uncertainties from imperfect atmospheric correction. At first order, we
-can compute the angular mean and standard deviation. The mean value can
-be used to reduce random noise, while the standard deviation can be used
-to evaluate angular variability.
-
-Moreover, if the satellite-derived \(R_{rs}\) agrees with the modeled
-\(R^f_{rs}\) from the forward model, assuming the bio-optical model
-accurately represents the real water properties, we would expect the
-angular variation of the \(R_{rs}\) to be reduced by the BRDF
-correction. Therefore, BRDF correction applied on angular \(R_{rs}\) can
-be used as an indicator of the closure of the radiative transfer model
-and atmospheric correction.
-
-Multiple BRDF correction schemes have been proposed in the ocean color
-literature (\citeproc{ref-Morel:2002aa}{Morel, Antoine, and Gentili
-2002}; \citeproc{ref-Park:2005aa}{Park and Ruddick 2005};
-\citeproc{ref-Lee:2011aa}{Lee et al. 2011}; \citeproc{ref-He:2017aa}{He
-et al. 2017}; \citeproc{ref-Twardowski:2018aa}{Twardowski and Tonizzo
-2018}; \citeproc{ref-Zhang:2025aa}{Zhang et al. 2025};
-\citeproc{ref-DAlimonte:2025aa}{D'Alimonte et al. 2025};
-\citeproc{ref-Pitarch:2025aa}{Pitarch et al. 2025}). The angular
-\(R_{rs}\) observations provided by PACE from simultaneous multi-angle
-measurements can be used to evaluate these BRDF correction schemes
-across different water types, as well as angular closure analyses before
-and after BRDF correction on a pixel-by-pixel basis. For more details
-and validation results, please refer to Meng Gao et al.
-(\citeproc{ref-Gao:2026aa}{2026}).
-
-\chapter{Land Surface Reflectance Model (Ross--Li BRDF and Polarized
-BPDF)}\label{sec-land-model}
-
-This document describes the mathematical formulation of the land surface
-reflectance model implemented in the \textbf{PACE simulator}.
-
-The model combines: - Ross--Li kernel-driven BRDF\\
-- Polarized bidirectional reflectance distribution function (BPDF)\\
-- Fresnel reflection physics
-
-The output is a \textbf{4×4 Mueller matrix} describing polarized surface
-reflection.
-
-\section{Surface Reflectance Model}\label{surface-reflectance-model}
-
-The bidirectional reflectance distribution matrix \(\mathbf{R}\) of land
-surface converts the downwelling irradiance vector \(\mathbf{F}_s\) to
-upwelling radiance vector \(\mathbf{I}\) by:
-
-\[
-\mathbf{I}(\theta_v,\phi_v)= \frac{1}{\pi}\mathbf{R}(\theta_s,\theta_v,\phi_r) \\, |\cos\theta_s| \\, \mathbf{F}_s(\theta_s,\phi_s) 
-\]
-
-where \(\theta\) and \(\phi\) are the zenith and azimuth angles,
-respectively; the subscripts \(s\) and \(v\) denote the incident and
-reflected directions, respectively; \(\phi_r=\phi_v-\phi_s\) is the
-relative azimuth angle of the reflected and incident directions.
-
-In the FastMAPOL algorithm the matrix \(\mathbf{R}\) is modeled by:
-
-\[
-\mathbf{R}(\theta_s,\theta_v,\phi_r) =
-\left[
-f_{iso}
-+
-f_{vol} K_{vol}(\theta_s,\theta_v,\phi_r)
-+
-f_{geo} K_{geo}(\theta_s,\theta_v,\phi_r)
-\right]\mathbf{E}
-+
-B_{pol}\mathbf{K}_{pol}
-\]
-
-where \(\mathbf{E}\) is the 4 \(\times\) 4 null matrix except for
-\(E_{11}=1\),
-
-\[
-\mathbf{E} =
-\begin{bmatrix}
-1 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0
-\end{bmatrix}
-\]
-
-\(\mathbf{K}_{pol}\) is the polarization Kernel proportional to the
-Fresnel reflection matrix.
-
-\subsection{Scaled Parameter Formulation (Training
-Representation)}\label{scaled-parameter-formulation-training-representation}
-
-For parameter sampling (e.g., in neural network training), a scaled
-formulation is used to reduce the number of free parameters and capture
-main physics:
-
-\[
-\mathbf{R}(\theta_s,\theta_v,\phi_r) =
-\left[
-f_{iso}(\lambda)
-\left(
-1
-+
-k_{vol} K_{vol}
-+
-k_{geo} K_{geo}
-\right)
-\right]\mathbf{E}
-+
-B_{pol}\mathbf{K}_{pol}
-\]
-
-where - \(f_{iso}(\lambda)\) is spectrally dependent, and - \(k_{vol}\)
-and \(k_{geo}\) are spectrally invariant
-
-The relationship to the physical parameters is:
-
-\[
-f_{vol}(\lambda) = f_{iso}(\lambda) \times k_{vol}
-\]
-
-\[
-f_{geo}(\lambda) = f_{iso}(\lambda) \times k_{geo}
-\]
-
-\subsection{Parameter Definitions}\label{parameter-definitions}
-
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
-Parameter & Description \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\(\theta_s\) & solar zenith angle \\
-\(\phi_s\) & solar azimuth angle \\
-\(\theta_v\) & viewing zenith angle \\
-\(\phi_v\) & viewing azimuth angle \\
-\(\phi_r=\phi_v-\phi_s\) & relative azimuth angle \\
-\(f_{iso}(\lambda)\) & isotropic reflectance coefficient \\
-\(f_{vol}(\lambda)\) & volumetric scattering coefficient \\
-\(f_{geo}(\lambda)\) & geometric scattering coefficient \\
-\(k_{vol}\) & scaled volumetric scattering coefficient \\
-\(k_{geo}\) & scaled geometric scattering coefficient \\
-\(B_{pol}\) & polarization scaling parameter \\
-\end{longtable}
-
-\subsection{Geometry Definition}\label{geometry-definition}
-
-Define cosine terms:
-
-\[
-\mu_s = \cos\theta_s
-\]
-
-\[
-\mu_v = \cos\theta_v
-\]
-
-Sine terms:
-
-\[
-\sin\theta_s = \sqrt{1-\mu_s^2}
-\]
-
-\[
-\sin\theta_v = \sqrt{1-\mu_v^2}
-\]
-
-Relative azimuth:
-
-\[
-\phi_r = \phi_v - \phi_s
-\]
-
-\subsection{RTSOS Geometry Convention}\label{rtsos-geometry-convention}
-
-The model follows the \textbf{RTSOS light ray convention}, i.e., the
-zenith and azimuth angles are associated with the directional vector of
-the ligh ray.
-
-\subsubsection{Geometry Definitions}\label{geometry-definitions}
-
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
-Quantity & RTSOS definition \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-solar zenith & \(\theta_s > 90^\circ\) \\
-solar azimuth & \(\phi_s = 0\) \\
-viewing zenith & \(\theta_v < 90^\circ\) \\
-relative azimuth & \(\phi_r = \phi_v - \phi_s\) \\
-\end{longtable}
-
-\subsubsection{Scattering Planes}\label{scattering-planes}
-
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
-Condition & Geometry \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\(\phi_r = 0\) & forward scattering \\
-\(\phi_r = \pi\) & backscattering \\
-\end{longtable}
-
-\subsubsection{Scattering Angle}\label{scattering-angle}
-
-The scattering angle between illumination and viewing directions is
-
-\[
-\cos\Theta =
-\mu_s\mu_v +
-\sqrt{1-\mu_s^2}\sqrt{1-\mu_v^2}\cos(\phi_r)
-\]
-
-The phase angle used in BRDF models is
-
-\[
-\Theta_{phase} = \pi - \Theta
-\]
-
-\section{Ross Volumetric Kernel}\label{ross-volumetric-kernel}
-
-The volumetric kernel represents multiple scattering within vegetation
-canopies.
-
-\[
-K_{vol} =
-\frac{\left(\frac{\pi}{2}-\Theta_{phase}\right)\cos\Theta_{phase} + \sin\Theta_{phase}}
-{|\mu_s| + |\mu_v|}-\frac{\pi}{4}
-\]
-
-Reference: Roujean et al.~(1992), JGR Atmosphere; Wanner et al.~(1995),
-JGR.
-
-\section{Li Geometric Kernel
-(Li-Sparse-R)}\label{li-geometric-kernel-li-sparse-r}
-
-Define tangent terms:
-
-\[
-|\tan\theta_s| = \frac{\sqrt{1-\mu_s^2}}{|\mu_s|}
-\]
-
-\[
-|\tan\theta_v| = \frac{\sqrt{1-\mu_v^2}}{|\mu_v|}
-\]
-
-Projected angles:
-
-\[
-\theta'_s = \tan^{-1}(B/R \cdot |\tan\theta_s|)
-\]
-
-\[
-\theta'_v = \tan^{-1}(B/R \cdot |\tan\theta_v|)
-\]
-
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
-Parameter & Meaning \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\(B/R\) & vertical-to-horizontal crown ratio \\
-\end{longtable}
-
-\subsection{Projected Phase Angle}\label{projected-phase-angle}
-
-\[
-\cos\xi =
-\cos\theta'_s\cos\theta'_v +
-\sin\theta'_s\sin\theta'_v\cos(\phi_r+\pi)
-\]
-
-\subsection{Projected Distance}\label{projected-distance}
-
-\[
-D =
-\sqrt{
-\tan^2\theta'_s +
-\tan^2\theta'_v -
-2\tan\theta'_s\tan\theta'_v\cos(\phi_r+\pi)
-}
-\]
-
-Define:
-
-\[
-\sec\theta'_s = \frac{1}{\cos\theta'_s}
-\]
-
-\[
-\sec\theta'_v = \frac{1}{\cos\theta'_v}
-\]
-
-\subsection{\texorpdfstring{Ancillary Function
-}{Ancillary Function }}\label{ancillary-function}
-
-\[
-\cos t =
-\frac{H}{B}\frac{
-\sqrt{
-D^2 + (\tan\theta'_s\tan\theta'_v\sin(\phi_r+\pi))^2
-}}
-{\sec\theta'_s + \sec\theta'_v}
-\]
-
-If
-
-\[
-|\cos t| > 1
-\]
-
-then
-
-\[
-O = 0
-\]
-
-Otherwise
-
-\[
-O =
-\frac{1}{\pi}(t - \sin t \\, \cos t)
-(\sec\theta'_s + \sec\theta'_v)
-\]
-
-\section{Final Geometric Kernel}\label{final-geometric-kernel}
-
-\[
-K_{geo} = O - \sec\theta'_s - \sec\theta'_v + \frac{1}{2}(1+\cos\xi) \\, \sec\theta'_s \\,  \sec\theta'_v
-\]
-
-\section{Polarized Surface Reflectance
-(BPDF)}\label{polarized-surface-reflectance-bpdf}
-
-Scattering angle have been defined above \(\Theta\). Assuming a flat
-surface which produce the same scattering angle, the incident angle
-relative to the flat surface would be:
-
-\[
-\theta_1 =\frac{\pi - \Theta}{2}
-\]
-
-which also equivalent to \(\theta_1=(\theta_s+\theta_v)/2\)
-
-\subsection{Fresnel Reflection}\label{fresnel-reflection}
-
-Let the refractive index be
-
-\[
-n = n_r + i n_i
-\]
-
-Parallel polarization:
-
-\[
-r_p =
-\frac{n^2\cos\theta_1 - \sqrt{n^2-\sin^2\theta_1}}
-{n^2\cos\theta_1 + \sqrt{n^2-\sin^2\theta_1}}
-\]
-
-Perpendicular polarization:
-
-\[
-r_s =
-\frac{\cos\theta_1 - \sqrt{n^2-\sin^2\theta_1}}
-{\cos\theta_1 + \sqrt{n^2-\sin^2\theta_1}}
-\]
-
-\textbf{Assumption: \(n = 1.5 + 0i\) }
-
-\subsection{Fresnel Mueller Matrix}\label{fresnel-mueller-matrix}
-
-\[
-A = \frac{1}{2}|r_p|^2
-\]
-
-\[
-B = \frac{1}{2}|r_s|^2
-\]
-
-\[
-\gamma = r_p^* r_s
-\]
-
-\[
-\mathbf{F} =
-\begin{bmatrix}
-A+B & A-B & 0 & 0 \\
-A-B & A+B & 0 & 0 \\
-0 & 0 & Re(\gamma) & -Im(\gamma) \\
-0 & 0 & Im(\gamma) & Re(\gamma)
-\end{bmatrix}
-\]
-
-Nadir reflectance (A+B) can be approximated as \([(n-1)/(n+1)]^2=0.04\)
-for n=1.5. Brewster angle can be observed at the maximum of
-Abs(A-B)/(A+B).
-
-\subsection{Polarization Kernel}\label{polarization-kernel}
-
-In the current framework, we adopt the polarized Kernel based on Maignan
-et al., (2009):
-
-\[
-\mathbf{K}_{pol} =
-\frac{
-e^{-\tan\theta_1}e^{-v_{fac}}
-}{4(|\mu_s|+|\mu_v|)}
-\mathbf{L(\pi-i_2)}\mathbf{F} (n, \theta_1) \mathbf{L(i_1)}
-\]
-
-where \(\mathbf{L(i_1)}\) and \(\mathbf{L(\pi-i_2)}\) rotate the Stokes
-vector from the incident meridian plane to the scattering plane and back
-to the viewing meridian plane; \(i_1\) and \(i_2\) are the rotation
-angles; The factor \(v_{fac}\) is:
-
-\[
-v_{fac} = 0.1
-\]
-
-For scalar radiative transfer simulations, only \(R_{11}\) is used.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\section{References}\label{references}
-
-Maignan, F., et al., (2009) \emph{Polarized reflectances of natural
-surfaces: Spaceborne measurements and analytical modeling.} Remote
-Sensing of Environment, Volume 113, Issue 12, Pages 2642-2650,
-https://doi.org/10.1016/j.rse.2009.07.022.
-
-MODIS Surface Reflectance ATBD\\
-https://modis.gsfc.nasa.gov/data/atbd/atbd\_mod09.pdf
-
-Roujean, J.-L., M.Leroy, and P.-Y.Deschamps (1992), A bidirectional
-reflectance model of the Earth's surface for the correction of remote
-sensing data, J. Geophys. Res., 97(D18), 20455--20468,
-doi:10.1029/92JD01411.
-
-Wanner, W., Li, X., \& Strahler, A. (1995)\\
-\emph{On the derivation of kernels for kernel-driven BRDF models.}\\
-Journal of Geophysical Research.
-
-\chapter{Mathematical Formulation of Aerosol Size
+\chapter{Aerosol: More on Size
 Distributions}\label{sec-aerosol-model-math}
 
 This chapter provides the mathematical relationships used to convert
@@ -5846,6 +5268,829 @@ used to characterize aerosol properties. The same moment framework
 applies to individual log-normal modes, multimode distributions, and
 fine/coarse aerosol partitions.
 
+\chapter{Ocean: Bio-Optical Model}\label{sec-ocean-model}
+
+\section{Overview}\label{overview-2}
+
+FastMAPOL retrieves ocean optical properties by coupling the aerosol
+retrieval with a forward radiative transfer model of ocean inherent
+optical properties (IOPs). The ocean optical properties are
+parameterized using bio-optical models that describe the spectral
+absorption and scattering of seawater constituents.
+
+Three parameterizations are considered:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Model & Parameters & Application \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Bio-1 & 1 parameter & Open ocean (Case-1 waters) \\
+Bio-2 & 5 parameters & Coastal and optically complex waters \\
+Bio-3 & 3 parameters & Optimized coastal parameterization \\
+\end{longtable}
+
+These models describe the spectral absorption and scattering properties
+of four main water constituents:
+
+\begin{itemize}
+\tightlist
+\item
+  pure seawater
+\item
+  phytoplankton
+\item
+  non-algal particles (NAP)
+\item
+  colored dissolved organic matter (CDOM)
+\end{itemize}
+
+The total inherent optical properties are constructed from the
+contributions of these components. \textbf{Bio-1} is used in default for
+the current released data product.
+
+\section{Bio-1 Optical Model (Open
+Ocean)}\label{bio-1-optical-model-open-ocean}
+
+The \textbf{Bio-1 model} is a bio-optical parameterization designed for
+\textbf{open ocean waters (Case-1 waters)}
+(\citeproc{ref-Zhai:2015aa}{Zhai et al. 2015},
+\citeproc{ref-Zhai:2017aa}{2017}). The model can be also derived from
+the generalized Bio-2 model (\citeproc{ref-Gao:2018aa}{Meng Gao et al.
+2018}) by imposing constraints on its parameters
+(\citeproc{ref-Gao:2019bb}{M. Gao et al. 2019})
+
+In this model, the optical properties are parameterized primarily as a
+function of chlorophyll concentration \([Chl\,a]\).
+
+\subsection{Phytoplankton Absorption}\label{phytoplankton-absorption}
+
+The phytoplankton absorption coefficient \(a_{ph}\) follows the
+formulation defined in the generalized model (see Section 6.3).
+
+\subsection{Particulate Absorption}\label{particulate-absorption}
+
+For open ocean waters, the contribution of non-algal particles (NAP) is
+assumed negligible. Therefore the combined detrital and CDOM absorption
+coefficient \(a_{dg}\) depends only on phytoplankton.
+
+The value at 440 nm is parameterized as
+
+\[
+a_{dg}(440) = p_2\, a_p(440,[Chl\,a])
+\]
+
+where
+
+\[
+p_2 = 0.3 + \frac{5.7\,R_2\,a_p(440,[Chl\,a])}{0.02 + a_p(440,[Chl\,a])}.
+\]
+
+The parameter \(R_2\) is assumed to be
+
+\[
+R_2 = 0.5.
+\]
+
+The exponential spectral slope is fixed as
+
+\[
+S_{dg} = 0.018.
+\]
+
+\subsection{Particulate
+Backscattering}\label{particulate-backscattering}
+
+The particulate backscattering coefficient \(b_{bp}\) is also assumed to
+depend only on phytoplankton in open waters.
+
+The magnitude at 660 nm is parameterized as
+
+\[
+b_{bp}(660) = 0.347\,[Chl\,a]^{0.766}.
+\]
+
+The spectral slope of particulate backscattering is
+
+\[
+S_{bp} = -0.5\left(\log_{10}[Chl\,a] - 0.3\right),
+\]
+
+valid for
+
+\[
+0.02 < [Chl\,a] < 2 \; \text{mg m}^{-3}.
+\]
+
+Outside this range, the slope is set to zero.
+
+\subsection{Backscattering Fraction}\label{backscattering-fraction}
+
+The particulate backscattering fraction is parameterized as
+
+\[
+B_p = 0.002 + 0.01\left(0.5 - 0.25\log_{10}[Chl\,a]\right).
+\]
+
+The parameter \(B_p\) is assumed to be \textbf{spectrally independent}
+(Huot et al. (\citeproc{ref-Huot:2008aa}{2008})).
+
+\subsection{Phase matrix (TBD)}\label{phase-matrix-tbd}
+
+\begin{itemize}
+\tightlist
+\item
+  water
+\item
+  NAP
+\item
+  Phytoplankton (FF)
+\end{itemize}
+
+\section{Bio-2 Optical Model (Five-Parameter
+Model)}\label{bio-2-optical-model-five-parameter-model}
+
+The \textbf{Bio-2 model} describes optically complex coastal waters
+using a five-parameter parameterization (\citeproc{ref-Gao:2018aa}{Meng
+Gao et al. 2018}).
+
+The ocean is assumed to be homogeneous with a depth of \textbf{200 m}
+and composed of four optical components:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  pure seawater
+\item
+  phytoplankton covariant particles
+\item
+  non-algal particles (NAP)
+\item
+  colored dissolved organic matter (CDOM)
+\end{enumerate}
+
+CDOM contributes only to absorption, while the other components
+contribute to both absorption and scattering.
+
+The absorption and scattering coefficients of pure seawater, \(a_w\) and
+\(b_w\), are taken from laboratory measurements. The backscattering
+fraction of pure water is assumed to be
+
+\[
+B_w = 0.5.
+\]
+
+\subsection{Phytoplankton Absorption}\label{phytoplankton-absorption-1}
+
+Phytoplankton absorption is parameterized as
+
+\[
+a_{ph}(\lambda) = A_{ph}(\lambda)\,[Chl\,a]^{E_{ph}(\lambda)}.
+\]
+
+Here
+
+\begin{itemize}
+\tightlist
+\item
+  \(A_{ph}(\lambda)\) and \(E_{ph}(\lambda)\) are empirical coefficients
+\item
+  \([Chl\,a]\) is chlorophyll concentration in mg m\(^{-3}\).
+\end{itemize}
+
+\subsection{CDOM and Detrital
+Absorption}\label{cdom-and-detrital-absorption}
+
+The combined absorption coefficient of CDOM and NAP is modeled as
+
+\[
+a_{dg}(\lambda) =
+a_{dg}(440)\exp\!\left[-S_{dg}(\lambda-440)\right].
+\]
+
+The parameter \(S_{dg}\) represents the exponential spectral slope.
+
+\subsection{Particulate
+Backscattering}\label{particulate-backscattering-1}
+
+The particulate backscattering coefficient is modeled as
+
+\[
+b_{bp}(\lambda) =
+b_{bp}(660)\left(\frac{\lambda}{660}\right)^{-S_{bp}}.
+\]
+
+The spectral slope \(S_{bp}\) controls the wavelength dependence.
+
+\subsection{Backscattering Fraction}\label{backscattering-fraction-1}
+
+The particulate backscattering fraction is
+
+\[
+B_p(\lambda) =
+B_p(660)\left(\frac{\lambda}{660}\right)^{-S_{Bp}}.
+\]
+
+The parameter \(S_{Bp}\) defines the spectral variation of the
+backscattering fraction.
+
+\subsection{Total Inherent Optical
+Properties}\label{total-inherent-optical-properties}
+
+The total absorption coefficient is
+
+\[
+a(\lambda) =
+a_w(\lambda) + a_{ph}(\lambda) + a_{dg}(\lambda).
+\]
+
+The total backscattering coefficient is
+
+\[
+b_b(\lambda) =
+0.5\,b_w(\lambda) + b_{bp}(\lambda).
+\]
+
+These inherent optical properties are widely used to describe the ocean
+color spectrum in bio-optical models.
+
+\section{Bio-3 Optical Model (Three-Parameter
+Model)}\label{bio-3-optical-model-three-parameter-model}
+
+The \textbf{Bio-3 model} is a reduced-parameter version of the Bio-2
+formulation designed to balance physical realism with retrieval
+stability.
+
+In this model, a subset of the Bio-2 parameters is retrieved while the
+remaining parameters are constrained using empirical relationships
+derived from observations (\citeproc{ref-Hannadige:2023aa}{Hannadige et
+al. 2023}; \citeproc{ref-Aryal:2024aa}{Aryal et al. 2024},
+\citeproc{ref-Aryal:2026aa}{2026}).
+
+\emph{(Details of the Bio-3 parameterization will be described soon.)}
+
+\chapter{Multi-angle Ocean Color
+Product}\label{multi-angle-ocean-color-product}
+
+Ocean color signals are often represented by the remote sensing
+reflectance, \(R_{rs}(\lambda;\theta_0, \theta_v, \phi_v)\), which is
+defined as the ratio of upwelling radiance originating from the ocean
+body to downwelling irradiance just above the ocean surface, with units
+of \(\mathrm{sr}^{-1}\) (\citeproc{ref-Mobley:2016aa}{Mobley et al.
+2016}). Here \(\theta_0\) and \(\theta_v\) are the solar and viewing
+zenith angles, and \(\phi_v\) is the relative viewing azimuth angle. For
+simplicity, the wavelength dependence, \(\lambda\), which applies to all
+ocean reflectance-related variables, is omitted in the following
+notation. To derive this quantity, we need to remove the atmospheric
+path radiance and compute the water-leaving reflectance (\(\rho_w\)) as
+the reflectance originating from scattering in the ocean that reaches
+the satellite sensor:
+
+\begin{equation}\phantomsection\label{eq-rhow}{
+\rho_w(\theta_0,\theta_v,\phi_v)
+=
+\rho_t(\theta_0,\theta_v,\phi_v)
+-
+\rho^{f}_{t,\mathrm{atm+sfc}}(\theta_0,\theta_v,\phi_v).
+}\end{equation}
+
+where \(\rho_t\) is the measured total reflectance at the top of
+atmosphere (TOA), and \(\rho^{f}_{t,\mathrm{atm+sfc}}\) is the
+reflectance with only atmospheric and ocean surface contributions (such
+as sunglint, white caps, etc.) computed in the forward model, denoted by
+superscript \(f\). With the multi-angle polarimetric observations
+provided by PACE, wind speed can be retrieved simultaneously with
+aerosol properties (\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021},
+\citeproc{ref-Gao:2022aa}{2022}). The joint retrieval algorithm enables
+the retrieval of ocean signals in regions affected by sunglint, which
+are often excluded or difficult to process using conventional
+single-angle ocean color remote sensing approaches
+(\citeproc{ref-Harmel:2013aa}{Harmel and Chami 2013};
+\citeproc{ref-Neukermans:2018aa}{Neukermans et al. 2018}).
+
+The remote sensing reflectance at arbitrary solar and viewing geometries
+can be derived from the water-leaving reflectance by considering the
+transmittance of both solar irradiance and surface radiance
+(\citeproc{ref-Gao:2021aa}{M. Gao et al. 2021}) as:
+
+\begin{equation}\phantomsection\label{eq-rrs}{
+R_{rs}(\theta_0,\theta_v,\phi_v)
+=
+\left[
+\frac{\rho_w(\theta_0,\theta_v,\phi_v)}{\pi}
+\right]
+\times
+\left[
+\frac{1}
+{T_d(\theta_0)\,t_u(\theta_0,\theta_v,\phi_v)}
+\right].
+}\end{equation}
+
+where \(T_d\) represents the downwelling irradiance transmittance of the
+solar irradiance from the top of atmosphere to the surface, and \(t_u\)
+represents the upwelling radiance transmittance for the water-leaving
+radiance from the bottom of atmosphere to the satellite sensor, with
+more details in M. Gao et al. (\citeproc{ref-Gao:2021aa}{2021}).
+
+Furthermore, a BRDF correction procedure is commonly applied by mapping
+\(R_{rs}(\theta_0, \theta_v, \phi_v)\) at arbitrary geometry to the sun
+at zenith and viewing angle at nadir, denoted as \(R_{rs}(0,0)\). The
+reduction of the solar and viewing geometry angular dependency allows
+for geometrically consistent cross-instrument comparisons and validation
+with in-situ data. Based on the radiative transfer model used in this
+study, the BRDF correction factor can be computed through the modeled
+\(R_{rs}^f\) as defined in Eqs. Equation~\ref{eq-rhow} and
+Equation~\ref{eq-rrs} by replacing the real measurement by the forward
+model simulation:
+
+\begin{equation}\phantomsection\label{eq-cbrdf}{
+C_{\mathrm{BRDF}}(\theta_0,\theta,\phi)
+=
+\frac{R^f_{rs}(0,0)}
+{R^f_{rs}(\theta_0,\theta,\phi)}.
+}\end{equation}
+
+The angular distribution of the water-leaving light field, and thus this
+correction term, depends on ocean parameters including Chl-a and wind
+speed, as well as aerosol properties that modulate the diffuse skylight.
+All of these parameters are retrieved simultaneously in the algorithm.
+Note that this is an extension of the previous model in M. Gao et al.
+(\citeproc{ref-Gao:2021aa}{2021}) for smaller viewing zenith angles, and
+has been applied in synthetic PACE polarimeter data
+(\citeproc{ref-Gao:2023aa}{M. Gao, Franz, et al. 2023};
+\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024};
+\citeproc{ref-Zhang:2025aa}{Zhang et al. 2025}). Such a correction can
+be applied to estimate \(R_{rs}(0,0)\):
+
+\begin{equation}\phantomsection\label{eq-rrs00}{
+R_{rs}(0,0)
+=
+R_{rs}(\theta_0,\theta,\phi)
+\times
+C_{\mathrm{BRDF}}(\theta_0,\theta,\phi).
+}\end{equation}
+
+To expedite this process, we further developed two neural networks which
+compute \(1/(T_d t_u)\) and \(C_{\mathrm{BRDF}}/(T_d t_u)\) as
+summarized in Appendix B, which can be used to efficiently produce
+\(R_{rs}\) with and without BRDF correction.
+
+Since HARP2 and SPEXone makes measurements at multiple viewing zenith
+angles in the along-track direction), we can apply the atmospheric
+correction to each of these and derive \(R_{rs}\) with a new angle
+dimension. This satellite-based angular remote sensing reflectance
+contains information on oceanic particles and potentially also
+uncertainties from imperfect atmospheric correction. At first order, we
+can compute the angular mean and standard deviation. The mean value can
+be used to reduce random noise, while the standard deviation can be used
+to evaluate angular variability.
+
+Moreover, if the satellite-derived \(R_{rs}\) agrees with the modeled
+\(R^f_{rs}\) from the forward model, assuming the bio-optical model
+accurately represents the real water properties, we would expect the
+angular variation of the \(R_{rs}\) to be reduced by the BRDF
+correction. Therefore, BRDF correction applied on angular \(R_{rs}\) can
+be used as an indicator of the closure of the radiative transfer model
+and atmospheric correction.
+
+Multiple BRDF correction schemes have been proposed in the ocean color
+literature (\citeproc{ref-Morel:2002aa}{Morel, Antoine, and Gentili
+2002}; \citeproc{ref-Park:2005aa}{Park and Ruddick 2005};
+\citeproc{ref-Lee:2011aa}{Lee et al. 2011}; \citeproc{ref-He:2017aa}{He
+et al. 2017}; \citeproc{ref-Twardowski:2018aa}{Twardowski and Tonizzo
+2018}; \citeproc{ref-Zhang:2025aa}{Zhang et al. 2025};
+\citeproc{ref-DAlimonte:2025aa}{D'Alimonte et al. 2025};
+\citeproc{ref-Pitarch:2025aa}{Pitarch et al. 2025}). The angular
+\(R_{rs}\) observations provided by PACE from simultaneous multi-angle
+measurements can be used to evaluate these BRDF correction schemes
+across different water types, as well as angular closure analyses before
+and after BRDF correction on a pixel-by-pixel basis. For more details
+and validation results, please refer to Meng Gao et al.
+(\citeproc{ref-Gao:2026aa}{2026}).
+
+\chapter{Land: Surface Reflectance Model}\label{sec-land-model}
+
+This document describes the mathematical formulation of the land surface
+reflectance model implemented in the \textbf{PACE simulator}.
+
+The model combines: - Ross--Li kernel-driven BRDF\\
+- Polarized bidirectional reflectance distribution function (BPDF)\\
+- Fresnel reflection physics
+
+The output is a \textbf{4×4 Mueller matrix} describing polarized surface
+reflection.
+
+\section{Surface Reflectance Model}\label{surface-reflectance-model}
+
+The bidirectional reflectance distribution matrix \(\mathbf{R}\) of land
+surface converts the downwelling irradiance vector \(\mathbf{F}_s\) to
+upwelling radiance vector \(\mathbf{I}\) by:
+
+\[
+\mathbf{I}(\theta_v,\phi_v)= \frac{1}{\pi}\mathbf{R}(\theta_s,\theta_v,\phi_r) \\, |\cos\theta_s| \\, \mathbf{F}_s(\theta_s,\phi_s) 
+\]
+
+where \(\theta\) and \(\phi\) are the zenith and azimuth angles,
+respectively; the subscripts \(s\) and \(v\) denote the incident and
+reflected directions, respectively; \(\phi_r=\phi_v-\phi_s\) is the
+relative azimuth angle of the reflected and incident directions.
+
+In the FastMAPOL algorithm the matrix \(\mathbf{R}\) is modeled by:
+
+\[
+\mathbf{R}(\theta_s,\theta_v,\phi_r) =
+\left[
+f_{iso}
++
+f_{vol} K_{vol}(\theta_s,\theta_v,\phi_r)
++
+f_{geo} K_{geo}(\theta_s,\theta_v,\phi_r)
+\right]\mathbf{E}
++
+B_{pol}\mathbf{K}_{pol}
+\]
+
+where \(\mathbf{E}\) is the 4 \(\times\) 4 null matrix except for
+\(E_{11}=1\),
+
+\[
+\mathbf{E} =
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+\]
+
+\(\mathbf{K}_{pol}\) is the polarization Kernel proportional to the
+Fresnel reflection matrix.
+
+\subsection{Scaled Parameter Formulation (Training
+Representation)}\label{scaled-parameter-formulation-training-representation}
+
+For parameter sampling (e.g., in neural network training), a scaled
+formulation is used to reduce the number of free parameters and capture
+main physics:
+
+\[
+\mathbf{R}(\theta_s,\theta_v,\phi_r) =
+\left[
+f_{iso}(\lambda)
+\left(
+1
++
+k_{vol} K_{vol}
++
+k_{geo} K_{geo}
+\right)
+\right]\mathbf{E}
++
+B_{pol}\mathbf{K}_{pol}
+\]
+
+where - \(f_{iso}(\lambda)\) is spectrally dependent, and - \(k_{vol}\)
+and \(k_{geo}\) are spectrally invariant
+
+The relationship to the physical parameters is:
+
+\[
+f_{vol}(\lambda) = f_{iso}(\lambda) \times k_{vol}
+\]
+
+\[
+f_{geo}(\lambda) = f_{iso}(\lambda) \times k_{geo}
+\]
+
+\subsection{Parameter Definitions}\label{parameter-definitions}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Parameter & Description \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\theta_s\) & solar zenith angle \\
+\(\phi_s\) & solar azimuth angle \\
+\(\theta_v\) & viewing zenith angle \\
+\(\phi_v\) & viewing azimuth angle \\
+\(\phi_r=\phi_v-\phi_s\) & relative azimuth angle \\
+\(f_{iso}(\lambda)\) & isotropic reflectance coefficient \\
+\(f_{vol}(\lambda)\) & volumetric scattering coefficient \\
+\(f_{geo}(\lambda)\) & geometric scattering coefficient \\
+\(k_{vol}\) & scaled volumetric scattering coefficient \\
+\(k_{geo}\) & scaled geometric scattering coefficient \\
+\(B_{pol}\) & polarization scaling parameter \\
+\end{longtable}
+
+\subsection{Geometry Definition}\label{geometry-definition}
+
+Define cosine terms:
+
+\[
+\mu_s = \cos\theta_s
+\]
+
+\[
+\mu_v = \cos\theta_v
+\]
+
+Sine terms:
+
+\[
+\sin\theta_s = \sqrt{1-\mu_s^2}
+\]
+
+\[
+\sin\theta_v = \sqrt{1-\mu_v^2}
+\]
+
+Relative azimuth:
+
+\[
+\phi_r = \phi_v - \phi_s
+\]
+
+\subsection{RTSOS Geometry Convention}\label{rtsos-geometry-convention}
+
+The model follows the \textbf{RTSOS light ray convention}, i.e., the
+zenith and azimuth angles are associated with the directional vector of
+the ligh ray.
+
+\subsubsection{Geometry Definitions}\label{geometry-definitions}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Quantity & RTSOS definition \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+solar zenith & \(\theta_s > 90^\circ\) \\
+solar azimuth & \(\phi_s = 0\) \\
+viewing zenith & \(\theta_v < 90^\circ\) \\
+relative azimuth & \(\phi_r = \phi_v - \phi_s\) \\
+\end{longtable}
+
+\subsubsection{Scattering Planes}\label{scattering-planes}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Condition & Geometry \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\phi_r = 0\) & forward scattering \\
+\(\phi_r = \pi\) & backscattering \\
+\end{longtable}
+
+\subsubsection{Scattering Angle}\label{scattering-angle}
+
+The scattering angle between illumination and viewing directions is
+
+\[
+\cos\Theta =
+\mu_s\mu_v +
+\sqrt{1-\mu_s^2}\sqrt{1-\mu_v^2}\cos(\phi_r)
+\]
+
+The phase angle used in BRDF models is
+
+\[
+\Theta_{phase} = \pi - \Theta
+\]
+
+\section{Ross Volumetric Kernel}\label{ross-volumetric-kernel}
+
+The volumetric kernel represents multiple scattering within vegetation
+canopies.
+
+\[
+K_{vol} =
+\frac{\left(\frac{\pi}{2}-\Theta_{phase}\right)\cos\Theta_{phase} + \sin\Theta_{phase}}
+{|\mu_s| + |\mu_v|}-\frac{\pi}{4}
+\]
+
+Reference: Roujean et al.~(1992), JGR Atmosphere; Wanner et al.~(1995),
+JGR.
+
+\section{Li Geometric Kernel
+(Li-Sparse-R)}\label{li-geometric-kernel-li-sparse-r}
+
+Define tangent terms:
+
+\[
+|\tan\theta_s| = \frac{\sqrt{1-\mu_s^2}}{|\mu_s|}
+\]
+
+\[
+|\tan\theta_v| = \frac{\sqrt{1-\mu_v^2}}{|\mu_v|}
+\]
+
+Projected angles:
+
+\[
+\theta'_s = \tan^{-1}(B/R \cdot |\tan\theta_s|)
+\]
+
+\[
+\theta'_v = \tan^{-1}(B/R \cdot |\tan\theta_v|)
+\]
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Parameter & Meaning \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(B/R\) & vertical-to-horizontal crown ratio \\
+\end{longtable}
+
+\subsection{Projected Phase Angle}\label{projected-phase-angle}
+
+\[
+\cos\xi =
+\cos\theta'_s\cos\theta'_v +
+\sin\theta'_s\sin\theta'_v\cos(\phi_r+\pi)
+\]
+
+\subsection{Projected Distance}\label{projected-distance}
+
+\[
+D =
+\sqrt{
+\tan^2\theta'_s +
+\tan^2\theta'_v -
+2\tan\theta'_s\tan\theta'_v\cos(\phi_r+\pi)
+}
+\]
+
+Define:
+
+\[
+\sec\theta'_s = \frac{1}{\cos\theta'_s}
+\]
+
+\[
+\sec\theta'_v = \frac{1}{\cos\theta'_v}
+\]
+
+\subsection{\texorpdfstring{Ancillary Function
+}{Ancillary Function }}\label{ancillary-function}
+
+\[
+\cos t =
+\frac{H}{B}\frac{
+\sqrt{
+D^2 + (\tan\theta'_s\tan\theta'_v\sin(\phi_r+\pi))^2
+}}
+{\sec\theta'_s + \sec\theta'_v}
+\]
+
+If
+
+\[
+|\cos t| > 1
+\]
+
+then
+
+\[
+O = 0
+\]
+
+Otherwise
+
+\[
+O =
+\frac{1}{\pi}(t - \sin t \\, \cos t)
+(\sec\theta'_s + \sec\theta'_v)
+\]
+
+\section{Final Geometric Kernel}\label{final-geometric-kernel}
+
+\[
+K_{geo} = O - \sec\theta'_s - \sec\theta'_v + \frac{1}{2}(1+\cos\xi) \\, \sec\theta'_s \\,  \sec\theta'_v
+\]
+
+\section{Polarized Surface Reflectance
+(BPDF)}\label{polarized-surface-reflectance-bpdf}
+
+Scattering angle have been defined above \(\Theta\). Assuming a flat
+surface which produce the same scattering angle, the incident angle
+relative to the flat surface would be:
+
+\[
+\theta_1 =\frac{\pi - \Theta}{2}
+\]
+
+which also equivalent to \(\theta_1=(\theta_s+\theta_v)/2\)
+
+\subsection{Fresnel Reflection}\label{fresnel-reflection}
+
+Let the refractive index be
+
+\[
+n = n_r + i n_i
+\]
+
+Parallel polarization:
+
+\[
+r_p =
+\frac{n^2\cos\theta_1 - \sqrt{n^2-\sin^2\theta_1}}
+{n^2\cos\theta_1 + \sqrt{n^2-\sin^2\theta_1}}
+\]
+
+Perpendicular polarization:
+
+\[
+r_s =
+\frac{\cos\theta_1 - \sqrt{n^2-\sin^2\theta_1}}
+{\cos\theta_1 + \sqrt{n^2-\sin^2\theta_1}}
+\]
+
+\textbf{Assumption: \(n = 1.5 + 0i\) }
+
+\subsection{Fresnel Mueller Matrix}\label{fresnel-mueller-matrix}
+
+\[
+A = \frac{1}{2}|r_p|^2
+\]
+
+\[
+B = \frac{1}{2}|r_s|^2
+\]
+
+\[
+\gamma = r_p^* r_s
+\]
+
+\[
+\mathbf{F} =
+\begin{bmatrix}
+A+B & A-B & 0 & 0 \\
+A-B & A+B & 0 & 0 \\
+0 & 0 & Re(\gamma) & -Im(\gamma) \\
+0 & 0 & Im(\gamma) & Re(\gamma)
+\end{bmatrix}
+\]
+
+Nadir reflectance (A+B) can be approximated as \([(n-1)/(n+1)]^2=0.04\)
+for n=1.5. Brewster angle can be observed at the maximum of
+Abs(A-B)/(A+B).
+
+\subsection{Polarization Kernel}\label{polarization-kernel}
+
+In the current framework, we adopt the polarized Kernel based on Maignan
+et al., (2009):
+
+\[
+\mathbf{K}_{pol} =
+\frac{
+e^{-\tan\theta_1}e^{-v_{fac}}
+}{4(|\mu_s|+|\mu_v|)}
+\mathbf{L(\pi-i_2)}\mathbf{F} (n, \theta_1) \mathbf{L(i_1)}
+\]
+
+where \(\mathbf{L(i_1)}\) and \(\mathbf{L(\pi-i_2)}\) rotate the Stokes
+vector from the incident meridian plane to the scattering plane and back
+to the viewing meridian plane; \(i_1\) and \(i_2\) are the rotation
+angles; The factor \(v_{fac}\) is:
+
+\[
+v_{fac} = 0.1
+\]
+
+For scalar radiative transfer simulations, only \(R_{11}\) is used.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{References}\label{references}
+
+Maignan, F., et al., (2009) \emph{Polarized reflectances of natural
+surfaces: Spaceborne measurements and analytical modeling.} Remote
+Sensing of Environment, Volume 113, Issue 12, Pages 2642-2650,
+https://doi.org/10.1016/j.rse.2009.07.022.
+
+MODIS Surface Reflectance ATBD\\
+https://modis.gsfc.nasa.gov/data/atbd/atbd\_mod09.pdf
+
+Roujean, J.-L., M.Leroy, and P.-Y.Deschamps (1992), A bidirectional
+reflectance model of the Earth's surface for the correction of remote
+sensing data, J. Geophys. Res., 97(D18), 20455--20468,
+doi:10.1029/92JD01411.
+
+Wanner, W., Li, X., \& Strahler, A. (1995)\\
+\emph{On the derivation of kernels for kernel-driven BRDF models.}\\
+Journal of Geophysical Research.
+
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
 \bibitem[\citeproctext]{ref-Anderson:1986aa}
@@ -6135,6 +6380,13 @@ Sounding:theory and Practice}. World Scientific World Scientific
 Publishing, Singapore.
 https://doi.org/\url{https://doi.org/10.1142/3171}.
 
+\bibitem[\citeproctext]{ref-Saito:2021aa}
+Saito, Masanori, Ping Yang, Jiachen Ding, and Xu Liu. 2021. {``A
+Comprehensive Database of the Optical Properties of Irregular Aerosol
+Particles for Radiative Transfer Simulations.''} \emph{Journal of the
+Atmospheric Sciences} 78 (7): 2089--2111.
+\url{https://doi.org/10.1175/JAS-D-20-0338.1}.
+
 \bibitem[\citeproctext]{ref-Sayer:2020aa}
 Sayer, A. M., Y. Govaerts, P. Kolmonen, A. Lipponen, M. Luffarelli, T.
 Mielonen, F. Patadia, et al. 2020. {``A Review and Framework for the
@@ -6159,6 +6411,13 @@ Twardowski, Michael, and Alberto Tonizzo. 2018. {``Ocean Color
 Analytical Model Explicitly Dependent on the Volume Scattering
 Function.''} \emph{Applied Sciences} 8 (12).
 \url{https://doi.org/10.3390/app8122684}.
+
+\bibitem[\citeproctext]{ref-SciPy:2020aa}
+Virtanen, Pauli, Ralf Gommers, Travis E. Oliphant, Matt Haberland, Tyler
+Reddy, David Cournapeau, Evgeni Burovski, et al. 2020. {``{{SciPy} 1.0:
+Fundamental Algorithms for Scientific Computing in Python}.''}
+\emph{Nature Methods} 17: 261--72.
+\url{https://doi.org/10.1038/s41592-019-0686-2}.
 
 \bibitem[\citeproctext]{ref-Virtanen:2018aa}
 Virtanen, T. H., P. Kolmonen, L. Sogacheva, E. Rodrı́guez, G. Saponaro,

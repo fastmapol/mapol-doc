@@ -1,4 +1,4 @@
-# Neural Network Forward Model and Training {#sec-nn-model}
+# Neural Network: Model and Training {#sec-nn-model}
 
 FastMAPOL uses deep feed-forward neural networks (NNs) as computationally efficient emulators of the vector radiative transfer (RT) forward model. Separate NNs are trained for reflectance ($\rho$) and degree of linear polarization (DoLP, $P$), allowing their different angular characteristics and accuracy requirements to be treated independently. The general NN methodology follows @Gao:2021aa, with subsequent improvements for PACE polarimeter retrievals described in @Gao:2023aa.
 
@@ -14,35 +14,30 @@ For example for the training of NN for HARP2, sets of 100, 400, and 1000 viewing
 
 ## Neural Network Architecture
 
-A feed-forward NN with $k$ hidden layers can be expressed recursively as
+A feed-forward NN with $k$ hidden layers can be expressed recursively as summarized in @tbl-nn-forward.
+
+| **Layer** | **NN forward model** |
+|---|---|
+| Input | $\mathbf{h}_0=\mathbf{x}$ |
+| Layer 1 | $\mathbf{h}_1=\Phi(\mathbf{W}_1^T\mathbf{h}_0+\mathbf{b}_1)$ |
+| Layer $p+1$ | $\mathbf{h}_{p+1}=\Phi(\mathbf{W}_{p+1}^T\mathbf{h}_p+\mathbf{b}_{p+1})$ |
+| Output | $\mathbf{y}=\mathbf{W}_{k+1}^T\mathbf{h}_k+\mathbf{b}_{k+1}$ |
+
+: NN forward model. {#tbl-nn-forward}
+
+Here, $\mathbf{x}$ is the forward-model input vector, $\mathbf{y}$ contains the NN-predicted reflectance or DoLP, $\mathbf{W}_p$ and $\mathbf{b}_p$ are the trainable weight matrices and bias vectors, and $\mathbf{h}_p$ is the output of hidden layer $p$.
+
+The nonlinear activation function $\Phi$ is the LeakyReLU function, applied element-wise as
 
 $$
-\mathbf{h}_1 =
-\Phi\left(\mathbf{W}_1^T\mathbf{x}+\mathbf{b}_1\right),
-$$
+\Phi(\mathbf{Z})_{mi}
+=
+\max(0,\mathbf{Z}_{mi})
++
+\alpha\min(0,\mathbf{Z}_{mi}),
+$$ {#eq-leakyrelu}
 
-$$
-\mathbf{h}_{p+1} =
-\Phi\left(\mathbf{W}_{p+1}^T\mathbf{h}_p+\mathbf{b}_{p+1}\right),
-\qquad p=1,\ldots,k-1,
-$$
-
-and
-
-$$
-\mathbf{y} =
-\mathbf{W}_{k+1}^T\mathbf{h}_k+\mathbf{b}_{k+1},
-$$
-
-where $\mathbf{x}$ is the forward-model input vector, $\mathbf{y}$ contains the NN-predicted reflectance or DoLP, $\mathbf{W}_p$ and $\mathbf{b}_p$ are the trainable weight matrices and bias vectors, and $\mathbf{h}_p$ represents the output of hidden layer $p$.
-
-The nonlinear activation function is the LeakyReLU function,
-
-$$
-\Phi(z)=\max(0,z)+0.01\min(0,z).
-$$
-
-LeakyReLU was selected because it provided slightly better accuracy than the standard ReLU activation in the NN training experiments [@Gao:2021aa].
+where $\alpha=0.01$, and $m$ and $i$ denote the matrix indices of $\mathbf{Z}$. LeakyReLU was selected because it provided slightly better accuracy than the standard ReLU activation in the NN training experiments [@Gao:2021aa].
 
 For the PACE implementation described in @Gao:2023aa, the primary reflectance and DoLP NNs contain 17 inputs and 4 outputs. Multiple architectures were evaluated, ranging from two hidden layers with 64 or 128 nodes per layer to three hidden layers with 128, 256, or 512 nodes per layer. For convenience, an architecture with three hidden layers containing 256 nodes each is denoted as $256^3$.
 
