@@ -132,7 +132,9 @@ affiliations:
 # --------------------------------------------------
 
 bibliography: bib/lmfit5.bib
+csl: atbd/format.csl
 link-citations: true
+
 
 number-sections: true
 number-depth: 3

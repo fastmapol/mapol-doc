@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<style xmlns="http://purl.org/net/xbiblio/csl"
+       class="in-text"
+       version="1.0"
+       default-locale="en-US">
+
+  <info>
+    <title>FastMAPOL ATBD</title>
+    <id>http://www.zotero.org/styles/fastmapol-atbd</id>
+    <link href="http://www.zotero.org/styles/fastmapol-atbd"
+          rel="self"/>
+    <updated>2026-08-29T00:00:00+00:00</updated>
+  </info>
+
+  <!-- Author formatting -->
+  <macro name="author">
+    <names variable="author">
+      <name
+        form="short"
+        and="text"
+        delimiter=", "
+        initialize-with=". "
+        et-al-min="3"
+        et-al-use-first="1"/>
+    </names>
+  </macro>
+
+  <!-- Year -->
+  <macro name="year">
+    <date variable="issued">
+      <date-part name="year"/>
+    </date>
+  </macro>
+
+  <!-- In-text citations -->
+  <citation
+    et-al-min="3"
+    et-al-use-first="1"
+    disambiguate-add-givenname="false"
+    disambiguate-add-names="false"
+    collapse="year">
+
+    <sort>
+      <key macro="author"/>
+      <key macro="year"/>
+    </sort>
+
+    <layout prefix="(" suffix=")" delimiter="; ">
+      <group delimiter=" ">
+        <text macro="author"/>
+        <text macro="year"/>
+      </group>
+    </layout>
+
+  </citation>
+
+  <!-- Bibliography -->
+  <bibliography
+    hanging-indent="true"
+    et-al-min="10"
+    et-al-use-first="10">
+
+    <sort>
+      <key macro="author"/>
+      <key macro="year"/>
+    </sort>
+
+    <layout suffix=".">
+      <group delimiter=". ">
+        <text macro="author"/>
+
+        <text macro="year"/>
+
+        <text variable="title"/>
+
+        <group delimiter=", ">
+          <text variable="container-title" font-style="italic"/>
+          <text variable="volume" font-weight="bold"/>
+          <text variable="issue" prefix="(" suffix=")"/>
+          <text variable="page"/>
+        </group>
+
+        <text variable="DOI" prefix="https://doi.org/"/>
+      </group>
+    </layout>
+
+  </bibliography>
+
+</style>
