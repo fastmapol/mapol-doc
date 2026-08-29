@@ -75,37 +75,37 @@ or under **Documents** on the Earthdata product pages linked above. Note that th
 
 ### HARP2 Level-2 Products {.unnumbered .unlisted}
 
-- MAPOL_LAND (Aerosol and Land Properties, FastMAPOL Algorithm)
+- `MAPOL_LAND` (Aerosol and Land Properties, FastMAPOL Algorithm)
 
-- MAPOL_OCEAN (Aerosol and Ocean Properties, FastMAPOL Algorithm)
+- `MAPOL_OCEAN` (Aerosol and Ocean Properties, FastMAPOL Algorithm)
 
 **Changes from Version 3**
 
 - Uses Version 4 L1C data, with the same FastMAPOL retrieval algorithm previously applied to Version 3 data.
 
-- Aerosol retrieval quality is improved for the MAPOL_OCEAN data suites. Quality flags 0 and 1 are recommended for scientific applications.
+- Aerosol retrieval quality is improved for the `MAPOL_OCEAN` data suites. Quality flags 0 and 1 are recommended for scientific applications.
 
 - Quality flag definitions have been updated. Please refer to the new HelpHub notebooks for details:
 
   [https://nasa.github.io/oceandata-notebooks/sections/cloud-atmosphere.html](https://nasa.github.io/oceandata-notebooks/sections/cloud-atmosphere.html)
 
-- Ocean surface reflectance products Rrs1 and Rrs2 have been renamed Rrs_angular and Rrs_nadir, respectively. These represent angular Rrs before and after BRDF correction.
+- Ocean surface reflectance products `Rrs1` and `Rrs2` have been renamed `Rrs_angular` and `Rrs_nadir`, respectively. These represent angular Rrs before and after BRDF correction.
 
-- New MAPOL_LAND data suites have been added. Multi-angle land surface reflectances are reported as rhos_angular and rhos_nadir.
+- New `MAPOL_LAND` data suites have been added. Multi-angle land surface reflectances are reported as rhos_angular and rhos_nadir.
 
 **Known issues**
 
-- A substantial fraction of aerosol retrievals is associated with lower-quality retrieval conditions, including larger $\chi^2$ values and fewer valid viewing angles (nv_ref and nv_dolp). These retrievals can exhibit larger biases in aerosol optical properties such as AOD. Users are encouraged to apply the recommended quality flags.
+- A substantial fraction of aerosol retrievals is associated with lower-quality retrieval conditions, including larger $\chi^2$ values and fewer valid viewing angles (`nv_ref` and `nv_dolp`). These retrievals can exhibit larger biases in aerosol optical properties such as AOD. Users are encouraged to apply the recommended quality flags.
 
-- MAPOL_LAND is undergoing active testing and improvement. The current version shows significant biases in both fine- and coarse-mode aerosol properties and should therefore be used with caution.
+- `MAPOL_LAND` is undergoing active testing and improvement. The current version shows significant biases in both fine- and coarse-mode aerosol properties and should therefore be used with caution.
 
 
 ### HARP2 Level-3 Products {.unnumbered .unlisted}
 
 HARP2 Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectangular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:
 
-- MAPOL_OCEAN: aerosol and ocean properties from FastMAPOL algorithm
-- MAPOL_LAND: aerosol and land properties from FastMAPOL algorithm
+- `MAPOL_OCEAN`: aerosol and ocean properties from FastMAPOL algorithm
+- `MAPOL_LAND`: aerosol and land properties from FastMAPOL algorithm
 
 ### SPEXone Level-2 Products {.unnumbered .unlisted}
 
@@ -115,7 +115,7 @@ HARP2 Level-2 products are composited into global Level-3 binned and mapped prod
 
 - Retrieval performance is similar to the reported validation results against AERONET and AERONET-OC observations (Gao, M., K. Aryal, P. Zhai, K. Knobelspiesse, B. Franz, B. Cairns, I. Cetinić, G. Fu, O. Hasekamp, A. Ibrahim, A. M. Sayer, and P. J. Werdell. 2026. “Where Sky Meets Sea: Integrated Aerosol and Ocean Color Retrieval from PACE SPEXone Multi-Angle Polarimetry.” *Remote Sensing of Environment*, 345, 115603. [https://doi.org/10.1016/j.rse.2026.115603](https://doi.org/10.1016/j.rse.2026.115603)).
 
-- Rrs1 and Rrs2 have been renamed Rrs_angular and Rrs_nadir, respectively, representing angular Rrs before and after BRDF correction.
+- `Rrs1` and `Rrs2` have been renamed `Rrs_angular` and `Rrs_nadir`, respectively, representing angular Rrs before and after BRDF correction.
 
 **Known issues**
 
@@ -128,7 +128,7 @@ HARP2 Level-2 products are composited into global Level-3 binned and mapped prod
 
 SPEXone Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:
 
-- MAPOL_OCEAN: aerosol and ocean properties from FastMAPOL algorithm
+- `MAPOL_OCEAN`: aerosol and ocean properties from FastMAPOL algorithm
 
 ## Version 3.0
 
@@ -141,26 +141,26 @@ or under **Documents** on the Earthdata product pages linked above. Note that th
 
 ### SPEXone Level-2 Products {.unnumbered .unlisted}
 
-- MAPOL_OCEAN (Aerosol and Ocean Properties from FastMAPOL Algorithm)
+- `MAPOL_OCEAN` (Aerosol and Ocean Properties from FastMAPOL Algorithm)
 
 This is the first release of Level-2 and Level-3 products from the FastMAPOL algorithm as applied to SPEXone Version 3 Level-1C. The FastMAPOL algorithm generates a large suite of aerosol and ocean properties. A subset is listed here.
 
 **Provisional Products**
 
-- Aerosol Optical Thickness (aot)
-- Single Scattering Albedo (ssa)
-- Effective Radius of Fine Mode Aerosols (reff_fine)
-- Effective Radius of Coarse Mode Aerosols (reff_fine)
-- Fine Mode Fraction (fmf)
-- Fine Mode Fraction by Volume (fvf)
-- Real Index of Refraction (mr)
-- Imaginary Index of Refraction (mi)
-- Wind speed (wind_speed)
-- Chlorophyll a concentration (Chla)
-- Angular Mean Water-Leaving Reflectance before BRDF correction (Rrs1_mean)
-- Standard Deviation of Rrs1 (Rrs1_std)
-- Angular Mean Water-Leaving Reflectance after BRDF correction (Rrs2_mean)
-- Standard Deviation of Rrs2 (Rrs2_std)
+- Aerosol Optical Thickness (`aot`)
+- Single Scattering Albedo (`ssa`)
+- Effective Radius of Fine Mode Aerosols (`reff_fine`)
+- Effective Radius of Coarse Mode Aerosols (`reff_fine`)
+- Fine Mode Fraction (`fmf`)
+- Fine Mode Fraction by Volume (`fvf`)
+- Real Index of Refraction (`mr`)
+- Imaginary Index of Refraction (`mi`)
+- Wind speed (`wind_speed`)
+- Chlorophyll a concentration (`chla`)
+- Angular Mean Water-Leaving Reflectance before BRDF correction (`Rrs1_mean`)
+- Standard Deviation of Rrs1 (`Rrs1_std`)
+- Angular Mean Water-Leaving Reflectance after BRDF correction (`Rrs2_mean`)
+- Standard Deviation of Rrs2 (`Rrs2_std`)
 
 **Known issues**
 
@@ -173,34 +173,31 @@ This is the first release of Level-2 and Level-3 products from the FastMAPOL alg
 
 SPEXone Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:
 
-- AER_RTAP: aerosol optical and microphysical properties over land and ocean from RemoTAP algorithm
-- AER_RTAPLAND: retrieved land surface parameters (Ross-Li)
-- AER_RTAP_OCEAN: retrieved ocean surface parameters (phytoplankton chlorophyll)
-- MAPOL_OCEAN: aerosol and ocean properties over ocean from FastMAPOL algorithm
+- `MAPOL_OCEAN`: aerosol and ocean properties over ocean from FastMAPOL algorithm
 
 
 ### HARP2 Level-2 Products {.unnumbered .unlisted}
 
-**MAPOL_OCEAN (Aerosol and Ocean Properties from FastMAPOL Algorithm)**
+- `MAPOL_OCEAN` (Aerosol and Ocean Properties from FastMAPOL Algorithm)
 
 This is the first release of Level-2 and Level-3 products from the FastMAPOL algorithm as applied to HARP2 Version 3 Level-1C. The FastMAPOL algorithm generates a large suite of aerosol and ocean optical properties. A subset is listed here.
 
 **Provisional Products**
 
-- Aerosol Optical Thickness (aot)
-- Single Scattering Albedo (ssa)
-- Effective Radius of Fine Mode Aerosols (reff_fine)
-- Effective Radius of Coarse Mode Aerosols (reff_fine)
-- Fine Mode Fraction (fmf)
-- Fine Mode Fraction by Volume (fvf)
-- Real Index of Refraction (mr)
-- Imaginary Index of Refraction (mi)
-- Wind speed (wind_speed)
-- Chlorophyll a concentration (Chla)
-- Angular Mean Water-Leaving Reflectance before BRDF correction (Rrs1_mean)
-- Standard Deviation of Rrs1 (Rrs1_std)
-- Angular Mean Water-Leaving Reflectance after BRDF correction (Rrs2_mean)
-- Standard Deviation of Rrs2 (Rrs2_std)
+- Aerosol Optical Thickness (`aot`)
+- Single Scattering Albedo (`ssa`)
+- Effective Radius of Fine Mode Aerosols (`reff_fine`)
+- Effective Radius of Coarse Mode Aerosols (`reff_fine`)
+- Fine Mode Fraction (`fmf`)
+- Fine Mode Fraction by Volume (`fvf`)
+- Real Index of Refraction (`mr`)
+- Imaginary Index of Refraction (`mi`)
+- Wind speed (`wind_speed`)
+- Chlorophyll a concentration (`chla`)
+- Angular Mean Water-Leaving Reflectance before BRDF correction (`Rrs1_mean`)
+- Standard Deviation of Rrs1 (`Rrs1_std`)
+- Angular Mean Water-Leaving Reflectance after BRDF correction (`Rrs2_mean`)
+- Standard Deviation of Rrs2 (`Rrs2_std`)
 
 **Known issues**
 
@@ -214,7 +211,7 @@ This is the first release of Level-2 and Level-3 products from the FastMAPOL alg
 
 HARP2 Level-2 products are composited into global Level-3 binned and mapped products. Daily, 8-day, and monthly Level-3 mapped products are produced on an equirectanular grid at 0.1-deg and 1-deg resolution. The available list of mapped product types now include:
 
-- MAPOL_OCEAN: aerosol and ocean properties over ocean from FastMAPOL algorithm
+- `MAPOL_OCEAN`: aerosol and ocean properties over ocean from FastMAPOL algorithm
 
 # Jupyter Notebook Tutorials {.unnumbered} 
 
