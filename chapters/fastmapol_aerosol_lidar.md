@@ -1,5 +1,11 @@
 # Aerosol Characterization: Lidar ratio and depolarization
 
+**Implementation status**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| — | — | ✓ | — | — |
+
 ## Overview
 
 The aerosol retrieval framework provides extinction and scattering properties together with the angular scattering phase matrix. These quantities can be used to derive lidar observables, in particular the **lidar ratio** and the **linear depolarization ratio**.

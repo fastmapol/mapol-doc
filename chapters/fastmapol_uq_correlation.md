@@ -1,5 +1,11 @@
 # Uncertainty Quantifization: Angular Correlations {#sec-uq-correlation}
 
+**Implementation status**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| - | - | - | ✓ | — |
+
 Following the uncertainty quantification discussion in @sec-uq-theory, we discuss the general retrieval approach considering correlation between angles following [@Gao:2023bb]. The same maximum-likelihood approach is used to retrieve the state parameters in FastMAPOL by minimizing a cost function that represents the difference between the measurements and forward-model calculations but in a matrix as discussed in @sec-retrieval-inversion. We can further simplify the cost function expression as:
 
 $$

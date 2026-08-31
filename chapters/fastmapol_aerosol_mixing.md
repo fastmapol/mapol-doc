@@ -1,5 +1,11 @@
 # Aerosol Characterization: mixing with size, mode and shapes
 
+**Implementation status**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| ✓ | ✓ | ✓ | — | — |
+
 ## Overview
 
 This chapter describes the computation of aerosol bulk scattering properties using:

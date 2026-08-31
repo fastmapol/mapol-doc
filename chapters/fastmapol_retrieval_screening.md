@@ -1,5 +1,11 @@
 # Retrieval Algorithm: Adaptive Multi-angle Data Screening {#sec-data-screening}
 
+**Implementation status**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| ✓ | ✓ | ✓ | — | — |
+
 FastMAPOL implements an adaptive multi-angle data screening approach to identify and remove individual observations that cannot be adequately represented by the forward model, while retaining valid measurements from the same pixel. This approach is particularly useful for multi-angle polarimetric observations, where clouds, sunglint, surface heterogeneity, or other scene-dependent effects may affect only a subset of viewing angles. The overall retrieval and screening workflow is illustrated in @fig-flowchart-screening, with additional details and applications provided in @Gao:2021bb.
 
 ![FastMAPOL retrieval workflow (A) and adaptive multi-angle polarimetric data screening (MAPDS) procedure (B). Adapted from @Gao:2021bb.](../figure/fig_data_screening.png){#fig-flowchart-screening width=80%}

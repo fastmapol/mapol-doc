@@ -1,5 +1,11 @@
 # Aerosol: Layer Height {#sec-aerosol-height}
 
+**Implementation status**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| ✓ | ✓ | ✓ | — | — |
+
 This chapter describes the aerosol vertical distribution assumed in FastMAPOL and defines the aerosol layer height (ALH) used in the retrieval. The ALH retrieval and its uncertainty, including the dependence on aerosol loading, are discussed in detail in @Gao:2023aa.
 
 As described in previous chapters, the FastMAPOL forward radiative transfer simulations are performed for a coupled atmosphere–surface system, including coupled atmosphere–ocean simulations for ocean retrievals. The vertical distribution of atmospheric molecules follows the U.S. Standard Atmosphere [@Anderson:1986aa]. Aerosols are represented by a single layer with a Gaussian vertical number-density distribution.

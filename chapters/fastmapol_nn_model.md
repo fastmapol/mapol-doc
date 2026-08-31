@@ -1,5 +1,11 @@
 # Neural Network: Model and Training {#sec-nn-model}
 
+**Implementation status**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| ✓ | ✓ | ✓ | — | — |
+
 FastMAPOL uses deep feed-forward neural networks (NNs) as computationally efficient emulators of the vector radiative transfer (RT) forward model. Separate NNs are trained for reflectance ($\rho$) and degree of linear polarization (DoLP, $P$), allowing their different angular characteristics and accuracy requirements to be treated independently. The general NN methodology follows @Gao:2021aa, with subsequent improvements for PACE polarimeter retrievals described in @Gao:2023aa.
 
 ## Training Data

@@ -1,5 +1,11 @@
 # Radiative Transfer: Spherical Shell Correction {#sec-rt-shell}
 
+**Implementation status**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| ✓ | ✓ | ✓ | — | — |
+
 As discussed in @sec-rt-model and @Gao:2023aa, the FastMAPOL forward-model training data are generated using a PACE-tailored vector radiative transfer model based on the successive orders of scattering method [@Zhai:2022bb]. An improved pseudo-spherical shell (IPSS) correction is applied to account for Earth curvature and improve radiative transfer accuracy, particularly at large solar and viewing zenith angles [@Zhai:2022aa].
 
 Reflectance and degree of linear polarization (DoLP) are simulated at the PACE satellite altitude of approximately 676 km above Earth's surface. Because of Earth curvature, the solar and viewing zenith angles at the satellite altitude differ from those defined at the Earth's surface, as illustrated in @fig-system. The IPSS treatment accounts for this geometric difference when performing the radiative transfer calculations.

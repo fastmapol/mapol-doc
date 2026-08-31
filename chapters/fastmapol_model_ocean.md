@@ -1,5 +1,17 @@
 # Ocean: Bio-Optical Model {#sec-ocean-model}
 
+**Implementation status (Bio-1)**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| ✓ | ✓ | ✓ | — | — |
+
+**Implementation status (Bio-2/3)**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| - | - | - | ✓ | — |
+
 ## Overview
 
 FastMAPOL retrieves ocean optical properties by coupling the aerosol retrieval with a forward radiative transfer model of ocean inherent optical properties (IOPs). The ocean optical properties are parameterized using bio-optical models that describe the spectral absorption and scattering of seawater constituents.

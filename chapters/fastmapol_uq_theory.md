@@ -1,5 +1,11 @@
 # Uncertainty Quantification: Theory {#sec-uq-theory}
 
+**Implementation status**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| ✓ | - | - | - | — |
+
 The uncertainty framework propagates uncertainties associated with the measurements and forward model through the retrieval based on the sensitivity of the forward model to the retrieved state parameters. Corresponding uncertainty products were generated for the global Day-In-The-Life (DITL) test dataset and are available through OB.DAAC [@Gao:2022aa]. However, because of the additional computational cost associated with uncertainty propagation, these uncertainty variables are not included in the current FastMAPOL V3 and V4 operational products and are planned for a future release.
 
 This chapter reviews the methodology for pixel-level uncertainty quantification through error propagation and describes approaches for evaluating and validating the resulting uncertainty estimates.

@@ -1,5 +1,11 @@
 # Radiative Transfer: PACE Simulator {#sec-rt-model}
 
+**Implementation status**
+
+| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|:---:|:---:|:---:|:---:|:---:|
+| ✓ | ✓ | ✓ | — | — |
+
 The Radiative Transfer model is based on the Successive Order of Scattering (RTSOS) method [@Zhai:2009aa; @Zhai:2010aa].
 
 Key features:
