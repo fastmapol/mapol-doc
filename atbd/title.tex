@@ -33,9 +33,6 @@ $if(poc)$
 \textbf{POC} &
 $poc.name$ \;(\href{mailto:$poc.email$}{$poc.email$}) \\
 $endif$
-$if(date)$
-\textbf{Date} & $date$ \\
-$endif$
 $if(keywords)$
 \textbf{Keywords} &
 $for(keywords)$$keywords$$sep$ \textperiodcentered\ $endfor$ \\
@@ -43,7 +40,13 @@ $endif$
 $if(atbd-website)$
 \textbf{Website} &
 %%\href{$atbd-website.url$}{$atbd-website.name$} \\
-\url{$atbd-website.url$}
+\url{$atbd-website.url$} \\
+$endif$
+$if(version)$
+\textbf{Version} & $version$ \\
+$endif$
+$if(date)$
+\textbf{Date} & $date$ \\
 $endif$
 \end{tabular}%
 }%

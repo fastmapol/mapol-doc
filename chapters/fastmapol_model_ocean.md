@@ -194,5 +194,3 @@ These inherent optical properties are widely used to describe the ocean color sp
 The **Bio-3 model** is a reduced-parameter version of the Bio-2 formulation designed to balance physical realism with retrieval stability.
 
 In this model, a subset of the Bio-2 parameters is retrieved while the remaining parameters are constrained using empirical relationships derived from observations [@Hannadige:2023aa; @Aryal:2024aa; @Aryal:2026aa].
-
-*(Details of the Bio-3 parameterization will be described soon.)*

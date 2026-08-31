@@ -8,11 +8,13 @@ poc:
 
 keywords:
   - PACE
-  - Polarization
-  - Multi-angle
+  - FastMAPOL
+  - Multi-angle Polarimetry
   - Aerosol
   - Ocean Color
-  - Deep Learning
+  - Land
+
+keywords-display: "PACE · FastMAPOL · Multi-angle Polarimetry · Aerosol · Ocean Color · Land"
 
 atbd-website:
   name: FastMAPOL ATBD
@@ -22,7 +24,7 @@ atbd-website:
 # Document metadata
 # --------------------------------------------------
 
-version: "0.1"
+version: "0.2"
 institution: "NASA Goddard Space Flight Center (GSFC)"
 mission: "PACE"
 

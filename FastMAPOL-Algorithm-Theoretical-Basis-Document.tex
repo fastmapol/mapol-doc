@@ -252,8 +252,8 @@
 \hypersetup{
   pdftitle={FastMAPOL Algorithm Theoretical Basis Document},
   pdfauthor={Meng Gao; Pengwang Zhai; Kamal Aryal; Kirk Knobelspiesse; Bryan Franz},
-  pdfkeywords={PACE, Polarization, Multi-angle, Aerosol, Ocean
-Color, Deep Learning},
+  pdfkeywords={PACE, FastMAPOL, Multi-angle Polarimetry, Aerosol, Ocean
+Color, Land},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -291,13 +291,15 @@ Meng Gao, \quad Pengwang Zhai, \quad Kamal Aryal, \quad Kirk
 Knobelspiesse, \quad Bryan Franz \\
 \textbf{POC} &
 Meng Gao \;(\href{mailto:meng.gao@nasa.gov}{meng.gao@nasa.gov}) \\
-\textbf{Date} & 2026-08-31 \\
 \textbf{Keywords} &
-PACE \textperiodcentered\ Polarization \textperiodcentered\ Multi-angle \textperiodcentered\ Aerosol \textperiodcentered\ Ocean
-Color \textperiodcentered\ Deep Learning \\
+PACE \textperiodcentered\ FastMAPOL \textperiodcentered\ Multi-angle
+Polarimetry \textperiodcentered\ Aerosol \textperiodcentered\ Ocean
+Color \textperiodcentered\ Land \\
 \textbf{Website} &
 %%\href{https://fastmapol.github.io/mapol-doc/}{FastMAPOL ATBD} \\
-\url{https://fastmapol.github.io/mapol-doc/}
+\url{https://fastmapol.github.io/mapol-doc/} \\
+\textbf{Version} & 0.2 \\
+\textbf{Date} & 2026-08-31 \\
 \end{tabular}%
 }%
 }
@@ -360,9 +362,10 @@ information.
 \textbf{Mission} & PACE \\
 \textbf{Point of Contact} & Meng Gao
 (\href{mailto:meng.gao@nasa.gov}{\nolinkurl{meng.gao@nasa.gov}}) \\
-\textbf{Keywords} & PACE · Polarimeter · FastMAPOL · Aerosol · Ocean ·
-Land \\
+\textbf{Keywords} & PACE · FastMAPOL · Multi-angle Polarimetry · Aerosol
+· Ocean Color · Land \\
 \textbf{Website} & \url{https://fastmapol.github.io/mapol-doc/} \\
+\textbf{Version} & 0.2 \\
 \end{longtable}
 
 \section*{How to Cite}\label{how-to-cite}
@@ -375,7 +378,7 @@ When using or referring to FastMAPOL ATBD, please cite this document as:
 Gao, M., P. Zhai, K. Aryal, K. Knobelspiesse, and B. Franz.
 \emph{FastMAPOL Algorithm Theoretical Basis Document: Coupled Aerosol,
 Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry}. NASA
-Goddard Space Flight Center, Version 0.1, 2026.
+Goddard Space Flight Center, Version 0.2, 2026.
 \textless{}https://fastmapol.github.io/mapol-doc/\textgreater{}
 \end{quote}
 
@@ -2343,7 +2346,7 @@ Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-- & x & x & x & --- & --- \\
+--- & x & x & x & --- & --- \\
 \end{longtable}
 
 The Radiative Transfer model is based on the Successive Order of
@@ -2382,10 +2385,8 @@ Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-- & x & x & x & --- & --- \\
+--- & x & x & x & --- & --- \\
 \end{longtable}
-
-:::
 
 As discussed in Appendix~\ref{sec-rt-model} and Gao et al.
 (\citeproc{ref-Gao:2023aa}{2023}), the FastMAPOL forward-model training
@@ -2448,7 +2449,7 @@ Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-- & x & x & x & --- & --- \\
+--- & x & x & x & --- & --- \\
 \end{longtable}
 
 FastMAPOL formulates the retrieval as a constrained nonlinear
@@ -2681,7 +2682,7 @@ Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-- & x & x & x & --- & --- \\
+--- & x & x & x & --- & --- \\
 \end{longtable}
 
 FastMAPOL implements an adaptive multi-angle data screening approach to
@@ -4364,8 +4365,7 @@ Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
 \bottomrule\noalign{}
 \endlastfoot
 Aer-1 & x & x & x & --- & --- \\
-Aer-2 & --- & --- & --- & x & --- \\
-Aer-3 & --- & --- & --- & x & --- \\
+Aer-2/3 & --- & --- & --- & x & --- \\
 \end{longtable}
 
 This chapter describes the aerosol representations used in FastMAPOL and
@@ -4400,7 +4400,7 @@ measurements (\citeproc{ref-Gao:2018aa}{Gao et al. 2018}).
 \textbf{Aer-3} represents aerosols through aerosol components and has
 been applied to HARP2 and SPEXone for advanced retrieval studies
 (\citeproc{ref-Aryal:2026aa}{Aryal et al. 2026}). The component-based
-aerosol model is described separately in
+aerosol model is described with more details in
 Appendix~\ref{sec-aerosol-component}.
 
 In general, the effective radius and effective variance can be derived
