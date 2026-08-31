@@ -2316,20 +2316,23 @@ development. The status categories include the pre-launch
 \textbf{Day-In-The-Life (DITL)} test, with data available through
 OB.DAAC; the operational \textbf{PACE V3} and \textbf{PACE V4} products,
 available through the Earthdata Cloud; methodologies currently under
-\textbf{Evaluation}; and \textbf{Planned} future developments.
+\textbf{Evaluation}; and \textbf{Planned} future developments. When
+multiple methodological options are available, the Model field
+identifies the specific model or configuration to which the
+implementation status applies.
 
 For example:
 
 \textbf{Implementation status}
 
-\begin{longtable}[]{@{}ccccc@{}}
+\begin{longtable}[]{@{}lccccc@{}}
 \toprule\noalign{}
-DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-✓ & ✓ & ✓ & --- & --- \\
+- & x & x & x & --- & --- \\
 \end{longtable}
 
 \chapter{Radiative Transfer: PACE Simulator}\label{sec-rt-model}
@@ -4352,6 +4355,8 @@ conduct the autocorrelation analyses.
 
 \chapter{Aerosol: Model Representation}\label{sec-aerosol-model}
 
+\textbf{Implementation status}
+
 \begin{longtable}[]{@{}lccccc@{}}
 \toprule\noalign{}
 Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
@@ -4856,6 +4861,8 @@ describe the same aerosol vertical profile despite the different
 definitions of the width parameter.
 
 \chapter{Aerosol: Shape and Nonsphericity}\label{sec-aerosol-shape}
+
+\textbf{Implementation status}
 
 \begin{longtable}[]{@{}lccccc@{}}
 \toprule\noalign{}

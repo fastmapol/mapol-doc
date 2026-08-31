@@ -1,14 +1,10 @@
 # Aerosol Characterization: mixing with size, mode and shapes
 
-::: {.implementation-status}
-
 **Implementation status**
 
 | Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
 | --- |:---:|:---:|:---:|:---:|:---:|
 | — | x | x | x | — | — |
-
-:::
 
 ## Overview
 

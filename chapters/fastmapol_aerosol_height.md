@@ -1,14 +1,10 @@
 # Aerosol: Layer Height {#sec-aerosol-height}
 
-::: {.implementation-status}
-
 **Implementation status**
 
 | Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
 |---|:---:|:---:|:---:|:---:|:---:|
 | — | x | x | x | — | — |
-
-:::
 
 This chapter describes the aerosol vertical distribution assumed in FastMAPOL and defines the aerosol layer height (ALH) used in the retrieval. The ALH retrieval and its uncertainty, including the dependence on aerosol loading, are discussed in detail in @Gao:2023aa.
 

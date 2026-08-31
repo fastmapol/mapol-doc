@@ -235,15 +235,13 @@ FastMAPOL products can also be accessed, explored, and visualized using NASA's S
 **Data Discovery and Processing**
 
 - **OB_CLOUD Data Browser:** Search for data in NASA Earthdata Cloud
-- **OB_CLOUD Subset Tool:** Perform spatial and/or variable subsetting
+- **OB_CLOUD Subset Tool:** Perform spatial and/or variable subsetting (L2 data)
 
 **Visualization and Analysis**
 
 - **Band Display:** Display individual geophysical variables and spectral bands
 - **Spectrum View & Animation:** Examine and animate the spectral dependence of retrieved quantities
 - **Angular View & Animation:** Examine and animate multi-angle observations and retrieved quantities
-
-Support for PACE polarimeter products in SeaDAS has been provided by Bing Yang and the SeaDAS team.
 
 <!--
 :::

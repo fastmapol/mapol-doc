@@ -1,7 +1,5 @@
 # Radiative Transfer: Spherical Shell Correction {#sec-rt-shell}
 
-::: {.implementation-status}
-
 **Implementation status**
 
 | Model| DITL | PACE V3 | PACE V4 | Evaluation | Planned |

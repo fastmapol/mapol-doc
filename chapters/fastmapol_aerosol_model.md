@@ -1,7 +1,5 @@
 # Aerosol: Model Representation {#sec-aerosol-model}
 
-::: {.implementation-status}
-
 **Implementation status**
 
 | Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
@@ -9,8 +7,6 @@
 | Aer-1 | x | x | x | — | — |
 | Aer-2 | — | — | — | x | — |
 | Aer-3 | — | — | — | x | — |
-
-:::
 
 This chapter describes the aerosol representations used in FastMAPOL and the aerosol properties derived from the retrieved state vector. The mathematical formulation of log-normal size distributions, including conversions between number- and volume-density representations and the calculation of distribution moments, is provided separately in @sec-aerosol-model-math.
 

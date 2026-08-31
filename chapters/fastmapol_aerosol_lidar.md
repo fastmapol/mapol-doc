@@ -1,14 +1,10 @@
 # Aerosol Characterization: Lidar ratio and depolarization
 
-::: {.implementation-status}
-
 **Implementation status**
 
 | Model| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
 | --- |:---:|:---:|:---:|:---:|:---:|
 | — | — | — | x | — | — |
-
-:::
 
 ## Overview
 
