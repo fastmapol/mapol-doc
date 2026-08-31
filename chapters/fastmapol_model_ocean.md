@@ -1,16 +1,15 @@
 # Ocean: Bio-Optical Model {#sec-ocean-model}
 
-**Implementation status (Bio-1)**
+::: {.implementation-status}
 
-| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-|:---:|:---:|:---:|:---:|:---:|
-| ✓ | ✓ | ✓ | — | — |
+**Implementation status**
 
-**Implementation status (Bio-2/3)**
+| Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|---|:---:|:---:|:---:|:---:|:---:|
+| Bio-1 | x | x | x | — | — |
+| Bio-2/3 | - | - | — | x |— |
 
-| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-|:---:|:---:|:---:|:---:|:---:|
-| - | - | - | ✓ | — |
+:::
 
 ## Overview
 

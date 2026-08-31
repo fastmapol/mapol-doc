@@ -1,10 +1,14 @@
 # Aerosol: Effective Size Inversion {#sec-aerosol-model-inversion}
 
+::: {.implementation-status}
+
 **Implementation status**
 
-| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-|:---:|:---:|:---:|:---:|:---:|
-| — | — | — | ✓ | — |
+| Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+| --- |:---:|:---:|:---:|:---:|:---:|
+| - | — | — | — | x | — |
+
+:::
 
 In the aerosol model adopted here, the retrieved state vector contains the volume densities of the fixed log-normal submodes. From these submode volume densities, one can compute bulk properties such as total fine-mode volume density, total coarse-mode volume density, effective radius, and effective variance for the fine and coarse aerosol populations.
 

@@ -1,10 +1,14 @@
 # Land: Surface Reflectance Model {#sec-land-model}
 
+::: {.implementation-status}
+
 **Implementation status**
 
-| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-|:---:|:---:|:---:|:---:|:---:|
-| — | — | ✓ | — | — |
+| Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+| --- |:---:|:---:|:---:|:---:|:---:|
+| — | — | — | x | — | — |
+
+:::
 
 This document describes the mathematical formulation of the land surface reflectance model implemented in the **PACE simulator**. 
 

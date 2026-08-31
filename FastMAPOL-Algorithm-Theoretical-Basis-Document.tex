@@ -291,7 +291,7 @@ Meng Gao, \quad Pengwang Zhai, \quad Kamal Aryal, \quad Kirk
 Knobelspiesse, \quad Bryan Franz \\
 \textbf{POC} &
 Meng Gao \;(\href{mailto:meng.gao@nasa.gov}{meng.gao@nasa.gov}) \\
-\textbf{Date} & 2026-08-29 \\
+\textbf{Date} & 2026-08-31 \\
 \textbf{Keywords} &
 PACE \textperiodcentered\ Polarization \textperiodcentered\ Multi-angle \textperiodcentered\ Aerosol \textperiodcentered\ Ocean
 Color \textperiodcentered\ Deep Learning \\
@@ -2310,7 +2310,41 @@ development, validation, and advanced scientific analysis.
 All equations and formulations follow the conventions introduced in the
 main text unless otherwise noted.
 
+Each chapter provides an \textbf{implementation status} indicating where
+the described methodology has been applied or its current stage of
+development. The status categories include the pre-launch
+\textbf{Day-In-The-Life (DITL)} test, with data available through
+OB.DAAC; the operational \textbf{PACE V3} and \textbf{PACE V4} products,
+available through the Earthdata Cloud; methodologies currently under
+\textbf{Evaluation}; and \textbf{Planned} future developments.
+
+For example:
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}ccccc@{}}
+\toprule\noalign{}
+DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+✓ & ✓ & ✓ & --- & --- \\
+\end{longtable}
+
 \chapter{Radiative Transfer: PACE Simulator}\label{sec-rt-model}
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+- & x & x & x & --- & --- \\
+\end{longtable}
 
 The Radiative Transfer model is based on the Successive Order of
 Scattering (RTSOS) method (\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009},
@@ -2338,6 +2372,18 @@ in github.
 
 \chapter{Radiative Transfer: Spherical Shell
 Correction}\label{sec-rt-shell}
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+- & x & x & x & --- & --- \\
+\end{longtable}
 
 As discussed in Appendix~\ref{sec-rt-model} and Gao et al.
 (\citeproc{ref-Gao:2023aa}{2023}), the FastMAPOL forward-model training
@@ -2390,6 +2436,18 @@ maintaining surface-referenced geometry as the common interface between
 the PACE L1C measurements and the FastMAPOL NN forward models.
 
 \chapter{Retrieval Algorithm: Inversion}\label{sec-retrieval-inversion}
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+- & x & x & x & --- & --- \\
+\end{longtable}
 
 FastMAPOL formulates the retrieval as a constrained nonlinear
 least-squares optimization problem. The cost function is defined in
@@ -2612,6 +2670,18 @@ and can be evaluated using the Jacobian and error covariance matrices
 \chapter{Retrieval Algorithm: Adaptive Multi-angle Data
 Screening}\label{sec-data-screening}
 
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+- & x & x & x & --- & --- \\
+\end{longtable}
+
 FastMAPOL implements an adaptive multi-angle data screening approach to
 identify and remove individual observations that cannot be adequately
 represented by the forward model, while retaining valid measurements
@@ -2689,6 +2759,18 @@ retrieval is evaluated using \(\Delta\rho_t\) and \(\Delta P_t\) before
 potentially initiating another retrieval pass.
 
 \chapter{Neural Network: Model and Training}\label{sec-nn-model}
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}ccccc@{}}
+\toprule\noalign{}
+DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+x & x & x & --- & --- \\
+\end{longtable}
 
 FastMAPOL uses deep feed-forward neural networks (NNs) as
 computationally efficient emulators of the vector radiative transfer
@@ -3065,6 +3147,19 @@ RT-model numerical uncertainty.
 
 \chapter{Neural Network: Analytical Jacobian}\label{sec-nn-ad}
 
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+AD Forward & - & - & - & x & --- \\
+AD Reverse & x & x & x & --- & --- \\
+\end{longtable}
+
 The MAP retrievals are often computationally expensive due to their high
 dimensionality and iterative nature, with multiple forward model and
 Jacobian calculations. The data screening approach developed here
@@ -3386,6 +3481,18 @@ methods.}
 \end{figure}%
 
 \chapter{Uncertainty Quantification: Theory}\label{sec-uq-theory}
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+- & x & - & - & - & - \\
+\end{longtable}
 
 The uncertainty framework propagates uncertainties associated with the
 measurements and forward model through the retrieval based on the
@@ -3860,6 +3967,18 @@ performance.
 \chapter{Uncertainty Quantifization: Angular
 Correlations}\label{sec-uq-correlation}
 
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+- & - & - & - & x & --- \\
+\end{longtable}
+
 Following the uncertainty quantification discussion in
 Appendix~\ref{sec-uq-theory}, we discuss the general retrieval approach
 considering correlation between angles following
@@ -4233,6 +4352,18 @@ conduct the autocorrelation analyses.
 
 \chapter{Aerosol: Model Representation}\label{sec-aerosol-model}
 
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Aer-1 & x & x & x & --- & --- \\
+Aer-2 & - & - & - & x & --- \\
+Aer-3 & - & - & - & x & --- \\
+\end{longtable}
+
 This chapter describes the aerosol representations used in FastMAPOL and
 the aerosol properties derived from the retrieved state vector. The
 mathematical formulation of log-normal size distributions, including
@@ -4550,6 +4681,18 @@ interpretable aerosol size and optical properties.
 
 \chapter{Aerosol: Layer Height}\label{sec-aerosol-height}
 
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+- & x & x & x & --- & --- \\
+\end{longtable}
+
 This chapter describes the aerosol vertical distribution assumed in
 FastMAPOL and defines the aerosol layer height (ALH) used in the
 retrieval. The ALH retrieval and its uncertainty, including the
@@ -4713,6 +4856,17 @@ describe the same aerosol vertical profile despite the different
 definitions of the width parameter.
 
 \chapter{Aerosol: Shape and Nonsphericity}\label{sec-aerosol-shape}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Spheroidal & --- & --- & x & --- & --- \\
+Hexahedral & --- & --- & - & x & --- \\
+\end{longtable}
 
 FastMAPOL accounts for aerosol particle nonsphericity by allowing each
 aerosol size mode to contain a mixture of spherical and nonspherical
@@ -4902,7 +5056,20 @@ framework.
 
 \chapter{Aerosol: Component Approach}\label{sec-aerosol-component}
 
-In the aerosol component approach, aerosols are represented by an
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Aer-3 & - & - & - & x & --- \\
+\end{longtable}
+
+In the aerosol component approach (as Aer-3 in
+Appendix~\ref{sec-aerosol-model}), aerosols are represented by an
 external mixture of different components with assumed size distribution
 and refractive index spectra. The components are resolved in two size
 modes: fine mode and coarse mode. The fine mode aerosols consist of fine
@@ -4967,6 +5134,18 @@ the published papers (\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024},
 \citeproc{ref-Aryal:2026aa}{2026}).
 
 \chapter{Aerosol: Mathematical Details}\label{sec-aerosol-model-math}
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+- & x & x & x & --- & --- \\
+\end{longtable}
 
 This chapter provides the mathematical relationships used to convert
 between number- and volume-based aerosol size distributions and to
@@ -5446,6 +5625,18 @@ fine/coarse aerosol partitions.
 \chapter{Aerosol: Effective Size
 Inversion}\label{sec-aerosol-model-inversion}
 
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+- & --- & --- & --- & x & --- \\
+\end{longtable}
+
 In the aerosol model adopted here, the retrieved state vector contains
 the volume densities of the fixed log-normal submodes. From these
 submode volume densities, one can compute bulk properties such as total
@@ -5787,6 +5978,19 @@ the submode level.
 
 \chapter{Ocean: Bio-Optical Model}\label{sec-ocean-model}
 
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Bio-1 & x & x & x & --- & --- \\
+Bio-2/3 & - & - & --- & x & --- \\
+\end{longtable}
+
 \section{Overview}\label{overview-2}
 
 FastMAPOL retrieves ocean optical properties by coupling the aerosol
@@ -6052,6 +6256,18 @@ derived from observations (\citeproc{ref-Aryal:2024aa}{Aryal et al.
 \chapter{Ocean: Multi-angle Atmospheric
 Correction}\label{ocean-multi-angle-atmospheric-correction}
 
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+- & x & x & x & --- & --- \\
+\end{longtable}
+
 Ocean color signals are often represented by the remote sensing
 reflectance, \(R_{rs}(\lambda;\theta_0, \theta_v, \phi_v)\), which is
 defined as the ratio of upwelling radiance originating from the ocean
@@ -6188,6 +6404,18 @@ correction on a pixel-by-pixel basis. For more details and validation
 results, please refer to Gao et al. (\citeproc{ref-Gao:2026aa}{2026}).
 
 \chapter{Land: Surface Reflectance Model}\label{sec-land-model}
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+--- & --- & --- & x & --- & --- \\
+\end{longtable}
 
 This document describes the mathematical formulation of the land surface
 reflectance model implemented in the \textbf{PACE simulator}.

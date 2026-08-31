@@ -1,10 +1,14 @@
 # Radiative Transfer: Spherical Shell Correction {#sec-rt-shell}
 
+::: {.implementation-status}
+
 **Implementation status**
 
-| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-|:---:|:---:|:---:|:---:|:---:|
-| ✓ | ✓ | ✓ | — | — |
+| Model| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+| --- |:---:|:---:|:---:|:---:|:---:|
+|-| x | x | x | — | — |
+
+:::
 
 As discussed in @sec-rt-model and @Gao:2023aa, the FastMAPOL forward-model training data are generated using a PACE-tailored vector radiative transfer model based on the successive orders of scattering method [@Zhai:2022bb]. An improved pseudo-spherical shell (IPSS) correction is applied to account for Earth curvature and improve radiative transfer accuracy, particularly at large solar and viewing zenith angles [@Zhai:2022aa].
 

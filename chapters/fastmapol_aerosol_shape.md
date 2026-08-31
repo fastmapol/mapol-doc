@@ -1,10 +1,13 @@
 # Aerosol: Shape and Nonsphericity {#sec-aerosol-shape}
 
-**Implementation status**
+::: {.implementation-status}
 
-| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-|:---:|:---:|:---:|:---:|:---:|
-| — | — | ✓ | — | — |
+| Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+|---|:---:|:---:|:---:|:---:|:---:|
+| Spheroidal | — | — | x | — | — |
+| Hexahedral | — | — | - | x | — |
+
+:::
 
 FastMAPOL accounts for aerosol particle nonsphericity by allowing each aerosol size mode to contain a mixture of spherical and nonspherical particles [@Gao:2026aa]. Nonspherical particles can be represented using the spheroidal particle model following @Dubovik:2006aa or the irregular hexahedral particle model following @Saito:2021aa. This treatment is particularly important for mineral dust and other irregular particles, whose polarized scattering properties can differ substantially from those of equivalent spherical particles.
 

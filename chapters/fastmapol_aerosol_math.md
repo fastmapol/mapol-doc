@@ -1,10 +1,14 @@
 # Aerosol: Mathematical Details {#sec-aerosol-model-math}
 
+::: {.implementation-status}
+
 **Implementation status**
 
-| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-|:---:|:---:|:---:|:---:|:---:|
-| ✓ | ✓ | ✓ | — | — |
+| Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+| --- |:---:|:---:|:---:|:---:|:---:|
+| - | x | x | x | — | — |
+
+:::
 
 This chapter provides the mathematical relationships used to convert between number- and volume-based aerosol size distributions and to calculate the moments, effective radius, and effective variance used by the FastMAPOL aerosol model.
 

@@ -73,3 +73,10 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* Implementation status tables */
+.implementation-status table {
+  margin-left: 0;
+  margin-right: auto;
+  width: auto;
+}

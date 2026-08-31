@@ -1,10 +1,14 @@
 # Retrieval Algorithm: Inversion {#sec-retrieval-inversion}
 
+::: {.implementation-status}
+
 **Implementation status**
 
-| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-|:---:|:---:|:---:|:---:|:---:|
-| ✓ | ✓ | ✓ | — | — |
+| Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+| --- |:---:|:---:|:---:|:---:|:---:|
+| - | x | x | x | — | — |
+
+:::
 
 FastMAPOL formulates the retrieval as a constrained nonlinear least-squares optimization problem. The cost function is defined in @sec-retrieval and is restated here for completeness:
 
