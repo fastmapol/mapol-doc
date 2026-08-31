@@ -6,7 +6,7 @@
 
 | Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
 |---|:---:|:---:|:---:|:---:|:---:|
-| AD Forward| - | - | - | x | — |
+| AD Forward| — | — | — | x | — |
 | AD Reverse| x | x | x | — | — |
 
 :::

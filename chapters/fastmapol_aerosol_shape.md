@@ -7,7 +7,7 @@
 | Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
 |---|:---:|:---:|:---:|:---:|:---:|
 | Spheroidal | — | — | x | — | — |
-| Hexahedral | — | — | - | x | — |
+| Hexahedral | — | — | — | x | — |
 
 :::
 

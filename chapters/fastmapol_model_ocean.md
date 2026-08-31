@@ -7,7 +7,7 @@
 | Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
 |---|:---:|:---:|:---:|:---:|:---:|
 | Bio-1 | x | x | x | — | — |
-| Bio-2/3 | - | - | — | x |— |
+| Bio-2/3 | — | — | — | x |— |
 
 :::
 
