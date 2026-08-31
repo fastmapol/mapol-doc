@@ -17,12 +17,12 @@ These technical details are not required for general use or interpretation of th
 
 All equations and formulations follow the conventions introduced in the main text unless otherwise noted.
 
-Each chapter provides an **implementation status** indicating where the described methodology has been applied or its current stage of development. The status categories include the pre-launch **Day-In-The-Life (DITL)** test, with data available through OB.DAAC; the operational **PACE V3** and **PACE V4** products, available through the Earthdata Cloud; methodologies currently under **Evaluation**; and **Planned** future developments.
+Each chapter provides an **implementation status** indicating where the described methodology has been applied or its current stage of development. The status categories include the pre-launch **Day-In-The-Life (DITL)** test, with data available through OB.DAAC; the operational **PACE V3** and **PACE V4** products, available through the Earthdata Cloud; methodologies currently under **Evaluation**; and **Planned** future developments. When multiple methodological options are available, the Model field identifies the specific model or configuration to which the implementation status applies.
 
 For example:
 
 **Implementation status**
 
-| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-|:---:|:---:|:---:|:---:|:---:|
-| ✓ | ✓ | ✓ | — | — |
+| Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+| --- |:---:|:---:|:---:|:---:|:---:|
+| - | x | x | x | — | — |
