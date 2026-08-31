@@ -5,8 +5,7 @@
 | Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
 |---|:---:|:---:|:---:|:---:|:---:|
 | Aer-1 | x | x | x | — | — |
-| Aer-2 | — | — | — | x | — |
-| Aer-3 | — | — | — | x | — |
+| Aer-2/3 | — | — | — | x | — |
 
 This chapter describes the aerosol representations used in FastMAPOL and the aerosol properties derived from the retrieved state vector. The mathematical formulation of log-normal size distributions, including conversions between number- and volume-density representations and the calculation of distribution moments, is provided separately in @sec-aerosol-model-math.
 
@@ -18,7 +17,7 @@ FastMAPOL supports several aerosol representations with increasing complexity:
 - **Aer-2:** six predefined log-normal modes
 - **Aer-3:** aerosol components represented by chemical composition
 
-The currently released HARP2 and SPEXone FastMAPOL products (V1--V4) use the five-mode **Aer-1** representation [@Gao:2021aa; @Gao:2023aa; @Gao:2026aa]. The six-mode **Aer-2** representation was developed for retrievals using RSP observations that include shortwave-infrared (SWIR) measurements [@Gao:2018aa]. **Aer-3** represents aerosols through aerosol components and has been applied to HARP2 and SPEXone for advanced retrieval studies [@Aryal:2026aa]. The component-based aerosol model is described separately in @sec-aerosol-component. 
+The currently released HARP2 and SPEXone FastMAPOL products (V1--V4) use the five-mode **Aer-1** representation [@Gao:2021aa; @Gao:2023aa; @Gao:2026aa]. The six-mode **Aer-2** representation was developed for retrievals using RSP observations that include shortwave-infrared (SWIR) measurements [@Gao:2018aa]. **Aer-3** represents aerosols through aerosol components and has been applied to HARP2 and SPEXone for advanced retrieval studies [@Aryal:2026aa]. The component-based aerosol model is described with more details in @sec-aerosol-component. 
 
 In general, the effective radius and effective variance can be derived from any aerosol size distribution, as described in @sec-aerosol-model-math. Conversely, when the effective radius and other size-distribution parameters are known, the aerosol mode volume densities can be derived by solving a linear system, as discussed in @sec-aerosol-model-inversion. This can be useful for cross-comparisons of data products based on different aerosol size representations.
 

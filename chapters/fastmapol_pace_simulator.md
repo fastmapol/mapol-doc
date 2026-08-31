@@ -4,7 +4,7 @@
 
 | Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
 | --- |:---:|:---:|:---:|:---:|:---:|
-| - | x | x | x | — | — |
+| — | x | x | x | — | — |
 
 The Radiative Transfer model is based on the Successive Order of Scattering (RTSOS) method [@Zhai:2009aa; @Zhai:2010aa].
 
