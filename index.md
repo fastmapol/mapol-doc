@@ -35,17 +35,17 @@ FastMAPOL Level-2 (L2) and Level-3 mapped (L3M) products are distributed through
 **SPEXone MAPOL_OCEAN**
 
 - **L2:** [https://doi.org/10.5067/PACE/SPEXONE/L2/MAPOL_OCEAN/4.0](https://doi.org/10.5067/PACE/SPEXONE/L2/MAPOL_OCEAN/4.0)
-- **L3M:** Replace `L2` with `L3M` in the DOI path.
+- **L3M:** [https://doi.org/10.5067/PACE/SPEXONE/L3M/MAPOL_OCEAN/4.0](https://doi.org/10.5067/PACE/SPEXONE/L3M/MAPOL_OCEAN/4.0)
 
 **HARP2 MAPOL_OCEAN**
 
 - **L2:** [https://doi.org/10.5067/PACE/HARP2/L2/MAPOL_OCEAN/4.0](https://doi.org/10.5067/PACE/HARP2/L2/MAPOL_OCEAN/4.0)
-- **L3M:** Replace `L2` with `L3M` in the DOI path.
+- **L3M:** [https://doi.org/10.5067/PACE/HARP2/L3M/MAPOL_OCEAN/4.0](https://doi.org/10.5067/PACE/HARP2/L3M/MAPOL_OCEAN/4.0)
 
 **HARP2 MAPOL_LAND**
 
 - **L2:** [https://doi.org/10.5067/PACE/HARP2/L2/MAPOL_LAND/4.0](https://doi.org/10.5067/PACE/HARP2/L2/MAPOL_LAND/4.0)
-- **L3M:** Replace `L2` with `L3M` in the DOI path.
+- **L3M:** [https://doi.org/10.5067/PACE/HARP2/L3M/MAPOL_LAND/4.0](https://doi.org/10.5067/PACE/HARP2/L3M/MAPOL_LAND/4.0)
 
 ## Version 3.0
 
@@ -54,12 +54,12 @@ Version 3.0 products remain available for users who need access to the earlier F
 **SPEXone MAPOL_OCEAN**
 
 - **L2:** [https://doi.org/10.5067/PACE/SPEXONE/L2/MAPOL_OCEAN/3.0](https://doi.org/10.5067/PACE/SPEXONE/L2/MAPOL_OCEAN/3.0)
-- **L3M:** Replace `L2` with `L3M` in the DOI path.
+- **L2:** [https://doi.org/10.5067/PACE/SPEXONE/L3M/MAPOL_OCEAN/3.0](https://doi.org/10.5067/PACE/SPEXONE/L3M/MAPOL_OCEAN/3.0)
 
 **HARP2 MAPOL_OCEAN**
 
 - **L2:** [https://doi.org/10.5067/PACE/HARP2/L2/MAPOL_OCEAN/3.0](https://doi.org/10.5067/PACE/HARP2/L2/MAPOL_OCEAN/3.0)
-- **L3M:** Replace `L2` with `L3M` in the DOI path.
+- **L3M:** [https://doi.org/10.5067/PACE/HARP2/L3M/MAPOL_OCEAN/3.0](https://doi.org/10.5067/PACE/HARP2/L3M/MAPOL_OCEAN/3.0)
 
 # Release Notes {.unnumbered}
 
@@ -67,7 +67,6 @@ Version 3.0 products remain available for users who need access to the earlier F
 The FastMAPOL Version 4 release notes are available through the 
 [PACE Release Notes](https://pace.oceansciences.org/access_pace_data.htm) 
 or under **Documents** on the Earthdata product pages linked above. Note that these links are subject to change; the relevant release information is also provided below for reference. 
-
 
 <!--The FastMAPOL Version 4 release notes are available in the 
 [PACE Version 4 Release Notes](https://oceandata.sci.gsfc.nasa.gov/files/reprocessing/PACE_SPEXone_V4_Release_Notes.pdf) or under **Documents** on the Earthdata product pages linked above.-->
