@@ -1,8 +1,8 @@
-## Retrieval Quality Assessment and L3 Mapping.
+# Data Quality Assessment
 
 As discussed in the previous chapter, FastMAPOL provides several diagnostic variables for evaluating retrieval quality, including the cost function (`chi2`), the numbers of measurements retained in the retrieval (`nv_ref` and `nv_dolp`), measurement-level screening masks (`mask_ref` and `mask_dolp`), and an overall `quality_flag`. These diagnostics characterize different aspects of retrieval performance and allow users to select data according to the requirements of a particular application.
 
-### Quality Metrics Based on the Cost Function
+## Quality Metrics Based on the Cost Function
 
 FastMAPOL retrievals are performed using an optimal estimation framework that minimizes the cost function
 
@@ -19,7 +19,7 @@ where
 
 The variable `chi2` represents the final value of the cost function after the inversion has converged. In general, lower values of `chi2` indicate better agreement between the measurements and forward model simulations. A large `chi2` may indicate inadequate model fitting or measurement contamination associated with clouds, surface adjacency effects, or other anomalies.
 
-### Quality Metrics Based on Retained Measurements
+## Quality Metrics Based on Retained Measurements
 
 FastMAPOL employs adaptive data screening to remove measurements at specific viewing angles, spectral bands, or their combinations that cannot be adequately fitted by the forward model (see @sec-data-screening). Such measurements are often associated with clouds, land or cloud adjacency effects, or other measurement and modeling anomalies.
 
@@ -34,7 +34,7 @@ The measurement masks for individual viewing angles and spectral bands are also 
 
 These masks allow users to identify which measurements are retained or excluded at each viewing angle and wavelength. The total numbers of valid measurements indicated by `mask_ref` and `mask_dolp` are consistent with the corresponding values of `nv_ref` and `nv_dolp`, respectively.
 
-### Quality Flag
+## Quality Flag
 
 To facilitate data filtering and Level-3 processing, FastMAPOL provides an overall `quality_flag` derived from a combination of `chi2`, `nv_ref`, and `nv_dolp`. The flag therefore accounts for both the goodness of fit and the amount of measurement information retained in the retrieval.
 
@@ -49,7 +49,7 @@ In general, lower `quality_flag` values correspond to more stringent thresholds 
 
 Because SPEXone and HARP2 have different spectral and angular sampling configurations, instrument-specific thresholds are used to define the quality flags.
 
-#### SPEXone
+### SPEXone
 
 For SPEXone, the quality criteria are based on the following combinations of `chi2`, `nv_ref`, and `nv_dolp`:
 
@@ -65,7 +65,7 @@ For the current SPEXone FastMAPOL products, there are 34 spectral bands at 5 vie
 
 The SPEXone quality-flag definition remains unchanged between V3 and V4. `quality_flag = 0` applies the most stringent criteria and was used for the primary validation of the SPEXone FastMAPOL product (@Gao:2026aa). However, retrievals with `quality_flag = 1`, or in some applications `quality_flag = 2`, may also be included when greater spatial or temporal coverage is desired. Users may additionally apply their own thresholds directly to `chi2`, `nv_ref`, and `nv_dolp` when a different balance between retrieval quality and coverage is appropriate.
 
-#### HARP2
+### HARP2
 
 HARP2 has a substantially different angular sampling configuration from SPEXone, and consequently different thresholds are used. The HARP2 quality-flag definition was also updated between V3 and V4 following improvements in Level-1 calibration.
 
@@ -98,7 +98,7 @@ Therefore, when combining or comparing HARP2 V3 and V4 data, users should consid
 
 The numerical definitions of the quality flags may continue to evolve as instrument calibration, retrieval algorithms, and quality assessment procedures improve. Users should therefore refer to the release-specific product documentation when applying quality filtering.
 
-### Balancing Retrieval Quality and Data Coverage
+## Balancing Retrieval Quality and Data Coverage
 
 The appropriate quality filtering depends on the application. Restricting an analysis to retrievals that satisfy the most stringent quality criteria can improve confidence in individual pixels but also reduces spatial and temporal coverage. This trade-off can be particularly important near clouds, coastlines, and other heterogeneous scenes, where more measurements may be rejected by the adaptive screening procedure.
 
@@ -116,7 +116,7 @@ These recommendations should not be interpreted as universal thresholds. The app
 
 When comparing FastMAPOL with other datasets, both the product version and the applied quality criteria should be reported. Differences in quality filtering can affect retrieval statistics, the number of available matchups, and their spatial and temporal distribution, and should therefore be considered when interpreting intercomparisons and validation results.
 
-### Quality Selection in Level-3 Processing
+## Quality Selection in Level-3 Processing
 
 FastMAPOL Level-3 products are generated from the Level-2 retrievals using the standard OCSSW Level-3 processing tools, including `l3bin` for spatial and temporal binning and `l3mapgen` for generating mapped Level-3 products.
 
@@ -149,3 +149,11 @@ Here, `l3bin` performs the binning and quality-based selection of the Level-2 ob
 This distinction is important when interpreting Level-3 FastMAPOL products. Allowing multiple `quality_flag` values during Level-3 generation does not imply that all accepted quality classes are weighted equally within a bin. Rather, the quality flag provides a hierarchy that allows the processing to preferentially use retrievals satisfying more stringent criteria while retaining retrievals from additional quality classes to improve coverage where higher-quality retrievals are unavailable.
 
 Consequently, the quality criteria used to generate a Level-3 product should be considered together with its spatial coverage. Users generating their own Level-3 products can adjust the accepted quality range according to their application, with a more restrictive selection emphasizing retrieval quality and a broader selection emphasizing spatial and temporal coverage.
+
+## Uncertainty Assessment
+
+A rigorous approach for assessing retrieval uncertainty is to propagate measurement uncertainties through the retrieval algorithm to estimate uncertainties in the retrieved parameters (see @sec-uq-theory and @sec-uq-correlation). Such uncertainty products have been computed and released for the pre-launch Day-in-the-Life (DITL) test dataset (see @sec-harp2-ditl).
+
+Due to the additional computational cost of uncertainty propagation, pixel-level retrieval uncertainty products are not included in the current operational FastMAPOL products. Instead, the adaptive data screening and quality assessment described above provide practical measures for identifying retrievals that are less consistent with the forward model or have reduced measurement information content. In particular, adaptive data screening removes measurements that cannot be adequately represented by the forward model, thereby improving the consistency between the measurements used in the inversion and the forward model simulations. This screening is an important step in ensuring that subsequent error propagation provides an appropriate basis for retrieval uncertainty quantification.
+
+The quality metrics and flags discussed above, however, should not be interpreted as quantitative estimates of retrieval uncertainty. Detailed pixel-level uncertainty products based on error propagation are planned for future FastMAPOL data releases.

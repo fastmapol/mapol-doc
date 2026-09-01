@@ -1,4 +1,4 @@
-# HARP2 L2 Validation (DITL)
+# HARP2 L2 Validation (DITL) {#sec-harp2-ditl}
 
 ## Overview
 

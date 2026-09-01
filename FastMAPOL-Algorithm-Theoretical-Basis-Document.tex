@@ -299,7 +299,7 @@ Color \textperiodcentered\ Land \\
 %%\href{https://fastmapol.github.io/mapol-doc/}{FastMAPOL ATBD} \\
 \url{https://fastmapol.github.io/mapol-doc/} \\
 \textbf{Version} & 0.2 \\
-\textbf{Date} & 2026-08-31 \\
+\textbf{Date} & 2026-09-01 \\
 \end{tabular}%
 }%
 }
@@ -1769,99 +1769,6 @@ the retrieval \\
 \texttt{nv\_dolp} & (\texttt{number\_of\_lines},
 \texttt{pixels\_per\_line}) & Number of DoLP measurements used in the
 retrieval \\
-\texttt{nfev} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
-& Number of forward-model evaluations \\
-\texttt{njev} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
-& Number of Jacobian evaluations \\
-\texttt{timing} & (\texttt{number\_of\_lines},
-\texttt{pixels\_per\_line}) & Retrieval runtime \\
-\texttt{quality\_flag} & (\texttt{number\_of\_lines},
-\texttt{pixels\_per\_line}) & Retrieval quality indicator \\
-\texttt{ozone} & (\texttt{number\_of\_lines},
-\texttt{pixels\_per\_line}) & Total column ozone \\
-\texttt{surface\_pressure} & (\texttt{number\_of\_lines},
-\texttt{pixels\_per\_line}) & Surface pressure \\
-\end{longtable}
-
-\subsection{Retrieval Quality Metrics}\label{retrieval-quality-metrics}
-
-FastMAPOL retrievals are performed using an optimal estimation framework
-that minimizes the cost function
-
-\[
-\chi^2 = \frac{1}{N}\sum \frac{(f-m)^2}{\sigma^2}
-\]
-
-where
-
-\begin{itemize}
-\tightlist
-\item
-  \(m\) is the measurement\\
-\item
-  \(f\) is the forward model simulation
-\item
-  \(\sigma\) is measurement uncertainty\\
-\item
-  \(N\) is the number of measurements used in the retrieval.
-\end{itemize}
-
-Lower values of \(\chi^2\) indicate better agreement between
-measurements and forward model simulations.
-
-\subsection{Retrieval Quality Flag}\label{retrieval-quality-flag}
-
-A quality flag is provided to facilitate filtering and Level-3
-processing.
-
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
-quality\_flag & Description \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\texttt{0} & highest retrieval quality \\
-\texttt{1} & good retrieval quality \\
-\texttt{\textgreater{}1} & reduced quality \\
-\end{longtable}
-
-The quality flag is determined from combinations of:
-
-\begin{itemize}
-\tightlist
-\item
-  cost function value
-\item
-  number of reflectance measurements
-\item
-  number of polarization measurements.
-\end{itemize}
-
-\subsection{Angular Measurement Screening
-Masks}\label{angular-measurement-screening-masks}
-
-\textbf{Product suites:} \texttt{MAPOL\_OCEAN} and \texttt{MAPOL\_LAND}
-
-FastMAPOL performs adaptive measurement screening during the retrieval
-to identify measurements excluded from the inversion.
-
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Variable
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Dimensions
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Description
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
 \texttt{mask\_ref} & (\texttt{number\_of\_lines},
 \texttt{pixels\_per\_line}, \texttt{number\_of\_views},
 \texttt{intensity\_bands\_per\_view}) & Reflectance measurement
@@ -1870,23 +1777,104 @@ screening mask \\
 \texttt{pixels\_per\_line}, \texttt{number\_of\_views},
 \texttt{polarization\_bands\_per\_view}) & DoLP measurement screening
 mask \\
+\texttt{quality\_flag} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Retrieval quality indicator \\
+\texttt{nfev} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Number of forward-model evaluations \\
+\texttt{njev} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Number of Jacobian evaluations \\
+\texttt{timing} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Retrieval runtime \\
+\texttt{ozone} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Total column ozone \\
+\texttt{surface\_pressure} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Surface pressure \\
 \end{longtable}
 
-The screening masks are interpreted as follows:
+Further details on \texttt{chi2}, \texttt{nv\_ref}, \texttt{nv\_dolp},
+\texttt{mask\_ref}, \texttt{mask\_dolp}, and \texttt{quality\_flag} are
+provided below.
+
+The remaining variables are primarily included for diagnostic and
+debugging purposes:
+
+\begin{itemize}
+\item
+  \texttt{nfev}, \texttt{njev}, and \texttt{timing} are used to track
+  the inversion process and its computational performance.
+\item
+  \texttt{ozone} and \texttt{surface\_pressure} are typically obtained
+  from ancillary data but may be updated within the retrieval algorithm
+  to provide values at higher spatial resolution.
+\end{itemize}
+
+\subsection{Retrieval Quality Metrics Based on the Cost
+Function}\label{retrieval-quality-metrics-based-on-the-cost-function}
+
+FastMAPOL retrievals are performed using an optimal estimation framework
+that minimizes a cost function \texttt{chi2}. The variable \texttt{chi2}
+represents the final value of the cost function after the inversion has
+converged. \texttt{chi2\_first\_guess} represents the \(\chi^2\) value
+obtained from the first-guess retrieval using the smaller neural network
+in the initial retrieval stage (see Appendix~\ref{sec-nn-model}).
+
+Usually lower values of \(\chi^2\) indicate better agreement between the
+measurements and forward model simulations.
+
+\subsection{Retrieval Quality Metrics Based on Fitted
+Measurements}\label{retrieval-quality-metrics-based-on-fitted-measurements}
+
+FastMAPOL employs adaptive data screening to remove measurements at
+specific viewing angles, spectral bands, or their combinations that
+cannot be adequately fitted by the forward model (see
+Appendix~\ref{sec-data-screening}). Such measurements are often
+associated with clouds or other anomalies.
+
+The total numbers of reflectance and DoLP measurements retained in the
+retrieval are denoted by \texttt{nv\_ref} and \texttt{nv\_dolp},
+respectively. These variables also provide useful indicators of the
+retrieval quality for each pixel. If a large fraction of the
+measurements is removed, less information is available to constrain the
+retrieved parameters. Therefore, larger values of \texttt{nv\_ref} and
+\texttt{nv\_dolp} generally indicate that more measurement information
+is available for the retrieval.
+
+The measurement masks for individual viewing angles and spectral bands
+are also provided in the diagnostic data group as \texttt{mask\_ref} and
+\texttt{mask\_dolp}. These masks allow users to identify which
+measurements are retained or excluded at each viewing angle and
+wavelength. The total numbers of valid measurements indicated by
+\texttt{mask\_ref} and \texttt{mask\_dolp} are consistent with the
+corresponding values of \texttt{nv\_ref} and \texttt{nv\_dolp},
+respectively.
+
+\subsection{Retrieval Quality Flag}\label{retrieval-quality-flag}
+
+A \texttt{quality\_flag} is provided to facilitate data filtering and
+Level-3 processing. The flag is determined from a combination of
+\texttt{chi2}, \texttt{nv\_ref}, and \texttt{nv\_dolp}. In general, a
+value of \texttt{0} indicates a smaller \texttt{chi2}, corresponding to
+better agreement between the measurements and forward model simulations,
+together with larger \texttt{nv\_ref} and \texttt{nv\_dolp}, indicating
+that a larger fraction of the measurements is retained in the retrieval.
+
+Larger \texttt{quality\_flag} values generally indicate a larger
+\texttt{chi2} and/or smaller numbers of retained measurements, and
+therefore reduced retrieval quality. This may result from reduced
+information content or potential contamination by effects such as
+clouds, land, or other adjacency effects.
 
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
-Value & Meaning \\
+\texttt{quality\_flag} & Description \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\texttt{0} & Measurement used in the retrieval \\
-\texttt{1} or \texttt{NaN} & Measurement excluded from the retrieval \\
+\texttt{0} & Highest retrieval quality \\
+\texttt{1} & Good retrieval quality \\
+\texttt{\textgreater{}1} & Reduced retrieval quality \\
 \end{longtable}
-
-These masks allow users to identify the measurements retained or
-excluded at each viewing angle and wavelength.
 
 \section{Sensor Band Parameters}\label{sensor-band-parameters}
 
@@ -1917,6 +1905,424 @@ viewing angles \\
 \texttt{intensity\_bands\_per\_view}) & Intensity field center
 wavelengths at each view \\
 \end{longtable}
+
+\bookmarksetup{startatroot}
+
+\chapter{Data Quality Assessment}\label{data-quality-assessment}
+
+As discussed in the previous chapter, FastMAPOL provides several
+diagnostic variables for evaluating retrieval quality, including the
+cost function (\texttt{chi2}), the numbers of measurements retained in
+the retrieval (\texttt{nv\_ref} and \texttt{nv\_dolp}),
+measurement-level screening masks (\texttt{mask\_ref} and
+\texttt{mask\_dolp}), and an overall \texttt{quality\_flag}. These
+diagnostics characterize different aspects of retrieval performance and
+allow users to select data according to the requirements of a particular
+application.
+
+\section{Quality Metrics Based on the Cost
+Function}\label{quality-metrics-based-on-the-cost-function}
+
+FastMAPOL retrievals are performed using an optimal estimation framework
+that minimizes the cost function
+
+\[
+\chi^2 = \frac{1}{N}\sum \frac{(f-m)^2}{\sigma^2},
+\]
+
+where
+
+\begin{itemize}
+\tightlist
+\item
+  \(m\) is the measurement,
+\item
+  \(f\) is the forward model simulation,
+\item
+  \(\sigma\) is the measurement uncertainty, and
+\item
+  \(N\) is the number of measurements used in the retrieval.
+\end{itemize}
+
+The variable \texttt{chi2} represents the final value of the cost
+function after the inversion has converged. In general, lower values of
+\texttt{chi2} indicate better agreement between the measurements and
+forward model simulations. A large \texttt{chi2} may indicate inadequate
+model fitting or measurement contamination associated with clouds,
+surface adjacency effects, or other anomalies.
+
+\section{Quality Metrics Based on Retained
+Measurements}\label{quality-metrics-based-on-retained-measurements}
+
+FastMAPOL employs adaptive data screening to remove measurements at
+specific viewing angles, spectral bands, or their combinations that
+cannot be adequately fitted by the forward model (see
+Appendix~\ref{sec-data-screening}). Such measurements are often
+associated with clouds, land or cloud adjacency effects, or other
+measurement and modeling anomalies.
+
+The total numbers of reflectance and DoLP measurements retained in the
+retrieval are denoted by \texttt{nv\_ref} and \texttt{nv\_dolp},
+respectively. These variables provide additional indicators of retrieval
+quality and information content. When a large fraction of the available
+measurements is removed, fewer independent observations remain to
+constrain the retrieved parameters. Therefore, larger values of
+\texttt{nv\_ref} and \texttt{nv\_dolp} generally indicate that more
+measurement information is available to constrain the retrieval.
+
+The measurement masks for individual viewing angles and spectral bands
+are also provided in the diagnostic data group as \texttt{mask\_ref} and
+\texttt{mask\_dolp}. The screening masks are interpreted as follows:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Value & Meaning \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{0} & Measurement retained and used in the retrieval \\
+\texttt{1} or \texttt{NaN} & Measurement excluded from the retrieval \\
+\end{longtable}
+
+These masks allow users to identify which measurements are retained or
+excluded at each viewing angle and wavelength. The total numbers of
+valid measurements indicated by \texttt{mask\_ref} and
+\texttt{mask\_dolp} are consistent with the corresponding values of
+\texttt{nv\_ref} and \texttt{nv\_dolp}, respectively.
+
+\section{Quality Flag}\label{quality-flag}
+
+To facilitate data filtering and Level-3 processing, FastMAPOL provides
+an overall \texttt{quality\_flag} derived from a combination of
+\texttt{chi2}, \texttt{nv\_ref}, and \texttt{nv\_dolp}. The flag
+therefore accounts for both the goodness of fit and the amount of
+measurement information retained in the retrieval.
+
+In general, lower \texttt{quality\_flag} values correspond to more
+stringent thresholds on \texttt{chi2}, \texttt{nv\_ref}, and
+\texttt{nv\_dolp}, while larger values correspond to progressively
+relaxed thresholds. The exact definitions depend on the instrument and
+product version.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+\texttt{quality\_flag} & General interpretation \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{0} & Most stringent quality criteria \\
+\texttt{1} & Less stringent quality criteria \\
+\texttt{2} & Further relaxed quality criteria \\
+\texttt{\textgreater{}2} & Progressively relaxed quality criteria \\
+\end{longtable}
+
+Because SPEXone and HARP2 have different spectral and angular sampling
+configurations, instrument-specific thresholds are used to define the
+quality flags.
+
+\subsection{SPEXone}\label{spexone}
+
+For SPEXone, the quality criteria are based on the following
+combinations of \texttt{chi2}, \texttt{nv\_ref}, and \texttt{nv\_dolp}:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\texttt{quality\_flag}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Criteria
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{0} & \texttt{chi2\ \textless{}\ 1.5},
+\texttt{nv\_ref\ \textgreater{}\ 160}, and
+\texttt{nv\_dolp\ \textgreater{}\ 160} \\
+\texttt{1} & \texttt{chi2\ \textless{}\ 1.5},
+\texttt{nv\_ref\ \textgreater{}\ 140}, and
+\texttt{nv\_dolp\ \textgreater{}\ 140} \\
+\texttt{2} & \texttt{chi2\ \textless{}\ 2.0},
+\texttt{nv\_ref\ \textgreater{}\ 140}, and
+\texttt{nv\_dolp\ \textgreater{}\ 140} \\
+\texttt{3} & \texttt{chi2\ \textless{}\ 2.0},
+\texttt{nv\_ref\ \textgreater{}\ 100}, and
+\texttt{nv\_dolp\ \textgreater{}\ 100} \\
+\texttt{\textgreater{}3} & Progressively relaxed criteria associated
+with larger \texttt{chi2} and/or smaller \texttt{nv\_ref} and
+\texttt{nv\_dolp} \\
+\end{longtable}
+
+For the current SPEXone FastMAPOL products, there are 34 spectral bands
+at 5 viewing angles, corresponding to a maximum of 170 reflectance or
+DoLP measurements. The thresholds of \texttt{nv\ \textgreater{}\ 160}
+and \texttt{nv\ \textgreater{}\ 140} therefore correspond to retaining
+approximately 94\% and 82\% of the available measurements, respectively.
+
+The SPEXone quality-flag definition remains unchanged between V3 and V4.
+\texttt{quality\_flag\ =\ 0} applies the most stringent criteria and was
+used for the primary validation of the SPEXone FastMAPOL product (Gao et
+al. (\citeproc{ref-Gao:2026aa}{2026})). However, retrievals with
+\texttt{quality\_flag\ =\ 1}, or in some applications
+\texttt{quality\_flag\ =\ 2}, may also be included when greater spatial
+or temporal coverage is desired. Users may additionally apply their own
+thresholds directly to \texttt{chi2}, \texttt{nv\_ref}, and
+\texttt{nv\_dolp} when a different balance between retrieval quality and
+coverage is appropriate.
+
+\subsection{HARP2}\label{harp2}
+
+HARP2 has a substantially different angular sampling configuration from
+SPEXone, and consequently different thresholds are used. The HARP2
+quality-flag definition was also updated between V3 and V4 following
+improvements in Level-1 calibration.
+
+The V4 quality flags are defined as follows:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\texttt{quality\_flag}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+V4 criteria
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{0} & \texttt{chi2\ \textless{}\ 1.5},
+\texttt{nv\_ref\ \textgreater{}\ 70}, and
+\texttt{nv\_dolp\ \textgreater{}\ 70} \\
+\texttt{1} & \texttt{chi2\ \textless{}\ 1.5},
+\texttt{nv\_ref\ \textgreater{}\ 60}, and
+\texttt{nv\_dolp\ \textgreater{}\ 60} \\
+\texttt{2} & \texttt{chi2\ \textless{}\ 1.5},
+\texttt{nv\_ref\ \textgreater{}\ 40}, and
+\texttt{nv\_dolp\ \textgreater{}\ 40} \\
+\texttt{3} & \texttt{chi2\ \textless{}\ 2.0},
+\texttt{nv\_ref\ \textgreater{}\ 30}, and
+\texttt{nv\_dolp\ \textgreater{}\ 30} \\
+\texttt{\textgreater{}3} & Progressively relaxed criteria associated
+with larger \texttt{chi2} and/or smaller \texttt{nv\_ref} and
+\texttt{nv\_dolp} \\
+\end{longtable}
+
+For HARP2, a total of 90 angular measurements are available for
+reflectance and polarization. Thus, the V4 thresholds of
+\texttt{nv\ \textgreater{}\ 70} and \texttt{nv\ \textgreater{}\ 60}
+correspond to retaining approximately 78\% and 67\% of the available
+measurements, respectively.
+
+In V4, a new, more stringent criterion was introduced as
+\texttt{quality\_flag\ =\ 0}, and the numerical flag values associated
+with the existing criteria were shifted relative to V3. The definitions
+are summarized below:
+
+\begin{longtable}[]{@{}lrr@{}}
+\toprule\noalign{}
+Criteria & V3 & V4 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{chi2\ \textless{}\ 1.5}, \texttt{nv\_ref\ \textgreater{}\ 70},
+and \texttt{nv\_dolp\ \textgreater{}\ 70} & --- & \texttt{0} \\
+\texttt{chi2\ \textless{}\ 1.5}, \texttt{nv\_ref\ \textgreater{}\ 60},
+and \texttt{nv\_dolp\ \textgreater{}\ 60} & \texttt{0} & \texttt{1} \\
+\texttt{chi2\ \textless{}\ 1.5}, \texttt{nv\_ref\ \textgreater{}\ 40},
+and \texttt{nv\_dolp\ \textgreater{}\ 40} & \texttt{1} & \texttt{2} \\
+\texttt{chi2\ \textless{}\ 2.0}, \texttt{nv\_ref\ \textgreater{}\ 30},
+and \texttt{nv\_dolp\ \textgreater{}\ 30} & \texttt{2} & \texttt{3} \\
+\end{longtable}
+
+This table shows how the quality-flag definitions changed between V3 and
+V4. The same selection criteria used for \texttt{quality\_flag\ =\ 0},
+\texttt{1}, and \texttt{2} in V3 correspond to
+\texttt{quality\_flag\ =\ 1}, \texttt{2}, and \texttt{3}, respectively,
+in V4, while V4 introduces an additional \texttt{quality\_flag\ =\ 0}
+criterion with \texttt{chi2\ \textless{}\ 1.5},
+\texttt{nv\_ref\ \textgreater{}\ 70}, and
+\texttt{nv\_dolp\ \textgreater{}\ 70}.
+
+The table describes the definitions of the quality flags and should not
+be interpreted as a direct comparison of retrieval quality between V3
+and V4, because Level-1 calibration and other retrieval inputs also
+changed between product versions.
+
+Therefore, when combining or comparing HARP2 V3 and V4 data, users
+should consider the version-specific definitions rather than applying
+the same numerical \texttt{quality\_flag} threshold to both datasets.
+
+The numerical definitions of the quality flags may continue to evolve as
+instrument calibration, retrieval algorithms, and quality assessment
+procedures improve. Users should therefore refer to the release-specific
+product documentation when applying quality filtering.
+
+\section{Balancing Retrieval Quality and Data
+Coverage}\label{balancing-retrieval-quality-and-data-coverage}
+
+The appropriate quality filtering depends on the application.
+Restricting an analysis to retrievals that satisfy the most stringent
+quality criteria can improve confidence in individual pixels but also
+reduces spatial and temporal coverage. This trade-off can be
+particularly important near clouds, coastlines, and other heterogeneous
+scenes, where more measurements may be rejected by the adaptive
+screening procedure.
+
+For quantitative validation and comparisons with independent datasets,
+\texttt{quality\_flag\ =\ 0} provides the most stringent selection and
+is generally preferred when sufficient matchup samples are available.
+This helps reduce the potential influence of poorly fitted or weakly
+constrained FastMAPOL retrievals on the comparison.
+
+However, restricting an analysis to \texttt{quality\_flag\ =\ 0} can
+substantially reduce the number of available matchups and may also
+change their spatial and environmental distribution. Including
+\texttt{quality\_flag\ =\ 1} can provide a useful balance between
+retrieval quality and sampling. For applications where spatial coverage
+is particularly important, retrievals with \texttt{quality\_flag\ =\ 0},
+\texttt{1}, or \texttt{2} may be considered, depending on the required
+level of accuracy.
+
+A useful general strategy is:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\texttt{quality\_flag\ =\ 0}} --- most stringent filtering,
+  suitable for validation and quantitative comparisons when sufficient
+  data are available;
+\item
+  \textbf{\texttt{quality\_flag\ =\ 0–1}} --- increased sampling and
+  coverage while retaining relatively stringent quality criteria;
+\item
+  \textbf{\texttt{quality\_flag\ =\ 0–2}} --- broader coverage for
+  global mapping and applications where increased sampling is important.
+\end{itemize}
+
+These recommendations should not be interpreted as universal thresholds.
+The appropriate selection depends on the retrieved variable, instrument,
+product version, scene conditions, and scientific application. For more
+flexible analyses, users can directly examine \texttt{chi2},
+\texttt{nv\_ref}, and \texttt{nv\_dolp} and define application-specific
+thresholds rather than relying solely on \texttt{quality\_flag}.
+
+When comparing FastMAPOL with other datasets, both the product version
+and the applied quality criteria should be reported. Differences in
+quality filtering can affect retrieval statistics, the number of
+available matchups, and their spatial and temporal distribution, and
+should therefore be considered when interpreting intercomparisons and
+validation results.
+
+\section{Quality Selection in Level-3
+Processing}\label{quality-selection-in-level-3-processing}
+
+FastMAPOL Level-3 products are generated from the Level-2 retrievals
+using the standard OCSSW Level-3 processing tools, including
+\texttt{l3bin} for spatial and temporal binning and \texttt{l3mapgen}
+for generating mapped Level-3 products.
+
+During Level-3 binning, the \texttt{quality\_flag} is used to
+preferentially retain the best available quality class within each
+Level-3 bin. When multiple Level-2 pixels fall within the same bin,
+pixels with the lowest available \texttt{quality\_flag} are selected for
+the Level-3 statistics. For example:
+
+\begin{itemize}
+\tightlist
+\item
+  if one or more \texttt{quality\_flag\ =\ 0} pixels are available in a
+  bin, these pixels are preferentially used;
+\item
+  if no \texttt{quality\_flag\ =\ 0} pixels are available,
+  \texttt{quality\_flag\ =\ 1} pixels may be used;
+\item
+  if neither \texttt{quality\_flag\ =\ 0} nor
+  \texttt{quality\_flag\ =\ 1} pixels are available, the processing can
+  proceed to the next permitted quality level.
+\end{itemize}
+
+Thus, lower-quality retrievals do not necessarily contribute to a
+Level-3 bin simply because they are present. They provide additional
+coverage primarily where retrievals satisfying more stringent quality
+criteria are unavailable.
+
+This quality-prioritized binning provides a practical balance between
+retrieval quality and spatial coverage. Restricting Level-3 processing
+exclusively to \texttt{quality\_flag\ =\ 0} would provide the most
+stringent selection but could leave substantially more bins without
+valid data. Allowing additional quality levels, such as
+\texttt{quality\_flag\ =\ 0–1} or \texttt{0–2}, can increase Level-3
+coverage while still giving priority to the lowest available
+quality-flag value within each bin.
+
+The general processing sequence is
+
+\[
+\text{Level-2 retrievals}
+\rightarrow
+\texttt{l3bin}
+\rightarrow
+\text{Level-3 binned data}
+\rightarrow
+\texttt{l3mapgen}
+\rightarrow
+\text{Level-3 mapped products}.
+\]
+
+Here, \texttt{l3bin} performs the binning and quality-based selection of
+the Level-2 observations, while \texttt{l3mapgen} maps the resulting
+binned data onto the requested geographic grid.
+
+This distinction is important when interpreting Level-3 FastMAPOL
+products. Allowing multiple \texttt{quality\_flag} values during Level-3
+generation does not imply that all accepted quality classes are weighted
+equally within a bin. Rather, the quality flag provides a hierarchy that
+allows the processing to preferentially use retrievals satisfying more
+stringent criteria while retaining retrievals from additional quality
+classes to improve coverage where higher-quality retrievals are
+unavailable.
+
+Consequently, the quality criteria used to generate a Level-3 product
+should be considered together with its spatial coverage. Users
+generating their own Level-3 products can adjust the accepted quality
+range according to their application, with a more restrictive selection
+emphasizing retrieval quality and a broader selection emphasizing
+spatial and temporal coverage.
+
+\section{Uncertainty Assessment}\label{uncertainty-assessment}
+
+A rigorous approach for assessing retrieval uncertainty is to propagate
+measurement uncertainties through the retrieval algorithm to estimate
+uncertainties in the retrieved parameters (see
+Appendix~\ref{sec-uq-theory} and Appendix~\ref{sec-uq-correlation}).
+Such uncertainty products have been computed and released for the
+pre-launch Day-in-the-Life (DITL) test dataset (see
+Chapter~\ref{sec-harp2-ditl}).
+
+Due to the additional computational cost of uncertainty propagation,
+pixel-level retrieval uncertainty products are not included in the
+current operational FastMAPOL products. Instead, the adaptive data
+screening and quality assessment described above provide practical
+measures for identifying retrievals that are less consistent with the
+forward model or have reduced measurement information content. In
+particular, adaptive data screening removes measurements that cannot be
+adequately represented by the forward model, thereby improving the
+consistency between the measurements used in the inversion and the
+forward model simulations. This screening is an important step in
+ensuring that subsequent error propagation provides an appropriate basis
+for retrieval uncertainty quantification.
+
+The quality metrics and flags discussed above, however, should not be
+interpreted as quantitative estimates of retrieval uncertainty. Detailed
+pixel-level uncertainty products based on error propagation are planned
+for future FastMAPOL data releases.
 
 \bookmarksetup{startatroot}
 
@@ -2026,7 +2432,7 @@ components.
 
 \bookmarksetup{startatroot}
 
-\chapter{HARP2 L2 Validation (DITL)}\label{harp2-l2-validation-ditl}
+\chapter{HARP2 L2 Validation (DITL)}\label{sec-harp2-ditl}
 
 \section{Overview}\label{overview-1}
 
