@@ -24,7 +24,7 @@ $$
 \mathbf{L}=(I,Q,U,V)^T,
 $$
 
-where $I$ is the total radiance, $Q$ and $U$ describe linear polarization, and $V$ describes circular polarization. 
+where $I$ is the total radiance, $Q$ and $U$ describe linear polarization, $V$ describes circular polarization; the superscript T stands for vector transpose. 
 
 In the RTSOS formulation, the total radiation field is expressed as the sum of contributions from successive scattering orders,
 
@@ -50,15 +50,15 @@ Aerosol single-scattering properties, including extinction coefficients, single 
 
 The air–sea interface is represented as a wind-roughened surface. Reflection and transmission of polarized radiation across the interface are treated using reflection and transmission matrices, including repeated interactions between the atmosphere, ocean surface, and water body [@Zhai:2010aa].
 
-Surface roughness is parameterized primarily through wind speed using a Cox–Munk-type wave-slope distribution. Consequently, RTSOS explicitly represents the angular structure of ocean glint rather than masking the glint region by default. This feature is useful for FastMAPOL because measurements close to the glint direction contain information about surface wind speed and absorbing aerosols [@Aryal:2024aa].
+Surface roughness is parameterized primarily through wind speed using a Cox–Munk wave-slope distribution [@Cox:1954aa]. Consequently, RTSOS explicitly represents the angular structure of ocean glint rather than masking the glint region by default. This feature is useful for FastMAPOL because measurements close to the glint direction contain information about surface wind speed and absorbing aerosols [@Aryal:2024aa].
 
-Foam and whitecap fraction on rough ocean surface and their reflectance are parameterized in terms of wind speed following Koepke (1984) in the FastMAPOL simulation configuration. 
+Foam and whitecap fraction on rough ocean surface and their reflectance are parameterized in terms of wind speed following [@Koepke:1984aa] in the FastMAPOL simulation configuration. 
 
 ### Ocean body
 
-In the FastMAPOL/component implementation [@Aryal:2024aa], ocean inherent optical properties include contributions from pure seawater, phytoplankton, non-algal particles, and colored dissolved and detrital material. Particle scattering is represented through the Fourier-Forand phase function and the average Mueller matrix measured by Voss and Fry [1984], while absorption and scattering coefficients are parameterized through retrievable bio-optical quantities [@Aryal:2024aa]. The expanded representation allows the radiative transfer training database to cover waters for which IOPs do not covary uniquely with chlorophyll-a concentration.
+In the FastMAPOL/component implementation [@Aryal:2024aa], ocean inherent optical properties include contributions from pure seawater, phytoplankton, non-algal particles, and colored dissolved and detrital material. Particle scattering is represented through the Fourier-Forand phase function [@Fournier:1994aa] and the average Mueller matrix measured [Voss:1984aa], while absorption and scattering coefficients are parameterized through retrievable bio-optical quantities [@Aryal:2024aa]. The expanded representation allows the radiative transfer training database to cover waters for which IOPs do not covary uniquely with chlorophyll-a concentration.
 
-In the FastMAPOL open ocean algorithm [Reference??], the absorption and scattering of ocean waters are parameterized in terms of chlorophyll-a concentration, in order to achieve efficiency while maintaining accuracy.
+In the FastMAPOL open ocean algorithm [@Gao:2026aa], the absorption and scattering of ocean waters are parameterized in terms of chlorophyll-a concentration, in order to achieve efficiency while maintaining accuracy.
 
 ## Numerical treatment
 
@@ -123,25 +123,4 @@ RTSOS has evolved from the original coupled atmosphere–ocean model with a flat
 
 Within FastMAPOL, RTSOS provides the high-fidelity physical reference from which the neural-network forward models are constructed. The resulting framework therefore combines a rigorous coupled atmosphere–ocean and atmosphere–land vector radiative transfer model with computationally efficient machine-learning emulators, enabling simultaneous aerosol, ocean-color, and surface retrievals from PACE multi-angle polarimetric observations [@Gao:2023aa; @Aryal:2024aa; @Aryal:2026aa; @Gao:2026aa].
 
-**Code availability.** The RTSOS source code and example configurations are publicly available through the AOOG/UMBC RTSOS repository.
-
-Aryal, K., Zhai, P., Gao, M., Franz, B. A., Knobelspiesse, K., and Hu, Y., (2024). Machine learning based aerosol and ocean color joint retrieval algorithm for multiangle polarimeters over coastal waters, Opt. Express 32, 29921-29942.
-
-Fournier, G., and Forand, J. L., (1994). Analytic phase function for ocean water, in Ocean Optics XII, J. S. Jaffe, ed., Proc. SPIE 2258, 194–201.
-
-Koepke, P. (1984). Effective reflectance of oceanic whitecaps. Applied Optics, 23(11), 1816. https://doi.org/10.1364/ao.23.001816
-
-Zhai, P., Hu, Y., Trepte, C. R., Lucker, P. L. (2009). A vector radiative transfer model for coupled atmosphere and ocean systems based on successive order of scattering method. Optics express, 17(4), 2057-2079.
-
-Zhai, P., Hu, Y., Chowdhary, J., Trepte, C. R., Lucker, P. L., Josset, D. B. (2010). A vector radiative transfer model for coupled atmosphere and ocean systems with a rough interface. Journal of Quantitative Spectroscopy and Radiative Transfer, 111(7), 1025-1040.
-
-Zhai, P., Gao, M., Franz, B. A., Werdell, P. J., Ibrahim, A., Hu, Y., Chowdhary, J. (2022). A Radiative Transfer Simulator for PACE: Theory and Applications. Frontiers in Remote Sensing, 3. https://www.frontiersin.org/article/10.3389/frsen.2022.840188.[4]: 
-
-
-Voss, K. J., & Fry, E. S. (1984). Measurement of the Mueller matrix for ocean water. Applied Optics, 23(23), 4427. https://doi.org/10.1364/ao.23.004427
-The Radiative Transfer model is based on the Successive Order of Scattering (RTSOS) method [@Zhai:2009aa; @Zhai:2010aa].
-
-
-
-**Code repository**
-The RTSOS is made public by Dr. Pengwang Zhai in github.
+**Code availability.** The RTSOS source code and example configurations are publicly available through the AOOG/UMBC RTSOS repository: https://github.com/aoog-umbc/rtsos-public
