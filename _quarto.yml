@@ -76,7 +76,8 @@ book:
     - index.md
     - chapters/fastmapol_summary.md
     - chapters/fastmapol_retrieval.md
-    - chapters/fastmapol_product.md
+    - chapters/fastmapol_product_general.md
+    - chapters/fastmapol_product_quality.md
     - chapters/fastmapol_validation_spexone_v3.md
     - chapters/fastmapol_validation_harp2_ditl.md
     - chapters/fastmapol_validation_harp2_v4.md

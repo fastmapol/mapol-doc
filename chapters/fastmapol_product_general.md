@@ -176,65 +176,49 @@ These variables describe retrieval convergence and performance.
 | `chi2_first_guess` | (`number_of_lines`, `pixels_per_line`) | Cost function at the initial state |
 | `nv_ref` | (`number_of_lines`, `pixels_per_line`) | Number of reflectance measurements used in the retrieval |
 | `nv_dolp` | (`number_of_lines`, `pixels_per_line`) | Number of DoLP measurements used in the retrieval |
+| `mask_ref` | (`number_of_lines`, `pixels_per_line`, `number_of_views`, `intensity_bands_per_view`) | Reflectance measurement screening mask |
+| `mask_dolp` | (`number_of_lines`, `pixels_per_line`, `number_of_views`, `polarization_bands_per_view`) | DoLP measurement screening mask |
+| `quality_flag` | (`number_of_lines`, `pixels_per_line`) | Retrieval quality indicator |
 | `nfev` | (`number_of_lines`, `pixels_per_line`) | Number of forward-model evaluations |
 | `njev` | (`number_of_lines`, `pixels_per_line`) | Number of Jacobian evaluations |
 | `timing` | (`number_of_lines`, `pixels_per_line`) | Retrieval runtime |
-| `quality_flag` | (`number_of_lines`, `pixels_per_line`) | Retrieval quality indicator |
 | `ozone` | (`number_of_lines`, `pixels_per_line`) | Total column ozone |
 | `surface_pressure` | (`number_of_lines`, `pixels_per_line`) | Surface pressure |
 
-### Retrieval Quality Metrics
+Further details on `chi2`, `nv_ref`, `nv_dolp`, `mask_ref`, `mask_dolp`, and `quality_flag` are provided below.
 
-FastMAPOL retrievals are performed using an optimal estimation framework that minimizes the cost function
+The remaining variables are primarily included for diagnostic and debugging purposes:
 
-$$
-\chi^2 = \frac{1}{N}\sum \frac{(f-m)^2}{\sigma^2}
-$$
+* `nfev`, `njev`, and `timing` are used to track the inversion process and its computational performance.
 
-where
+* `ozone` and `surface_pressure` are typically obtained from ancillary data but may be updated within the retrieval algorithm to provide values at higher spatial resolution.
 
-- $m$ is the measurement  
-- $f$ is the forward model simulation
-- $\sigma$ is measurement uncertainty  
-- $N$ is the number of measurements used in the retrieval.
+### Retrieval Quality Metrics Based on the Cost Function
 
-Lower values of $\chi^2$ indicate better agreement between measurements and forward model simulations.
+FastMAPOL retrievals are performed using an optimal estimation framework that minimizes a cost function `chi2`. The variable `chi2` represents the final value of the cost function after the inversion has converged. `chi2_first_guess` represents the $\chi^2$ value obtained from the first-guess retrieval using the smaller neural network in the initial retrieval stage (see @sec-nn-model).
+
+Usually lower values of $\chi^2$ indicate better agreement between the measurements and forward model simulations.
+
+### Retrieval Quality Metrics Based on Fitted Measurements
+
+FastMAPOL employs adaptive data screening to remove measurements at specific viewing angles, spectral bands, or their combinations that cannot be adequately fitted by the forward model (see @sec-data-screening). Such measurements are often associated with clouds or other anomalies.
+
+The total numbers of reflectance and DoLP measurements retained in the retrieval are denoted by `nv_ref` and `nv_dolp`, respectively. These variables also provide useful indicators of the retrieval quality for each pixel. If a large fraction of the measurements is removed, less information is available to constrain the retrieved parameters. Therefore, larger values of `nv_ref` and `nv_dolp` generally indicate that more measurement information is available for the retrieval.
+
+The measurement masks for individual viewing angles and spectral bands are also provided in the diagnostic data group as `mask_ref` and `mask_dolp`. These masks allow users to identify which measurements are retained or excluded at each viewing angle and wavelength. The total numbers of valid measurements indicated by `mask_ref` and `mask_dolp` are consistent with the corresponding values of `nv_ref` and `nv_dolp`, respectively.
 
 ### Retrieval Quality Flag
 
-A quality flag is provided to facilitate filtering and Level-3 processing.
+A `quality_flag` is provided to facilitate data filtering and Level-3 processing. The flag is determined from a combination of `chi2`, `nv_ref`, and `nv_dolp`. In general, a value of `0` indicates a smaller `chi2`, corresponding to better agreement between the measurements and forward model simulations, together with larger `nv_ref` and `nv_dolp`, indicating that a larger fraction of the measurements is retained in the retrieval.
 
-| quality_flag | Description |
-|--------------|-------------|
-| `0` | highest retrieval quality |
-| `1` | good retrieval quality |
-| `>1` | reduced quality |
+Larger `quality_flag` values generally indicate a larger `chi2` and/or smaller numbers of retained measurements, and therefore reduced retrieval quality. This may result from reduced information content or potential contamination by effects such as clouds, land, or other adjacency effects.
 
-The quality flag is determined from combinations of:
-
-- cost function value
-- number of reflectance measurements
-- number of polarization measurements.
-
-### Angular Measurement Screening Masks
-
-**Product suites:** `MAPOL_OCEAN` and `MAPOL_LAND`
-
-FastMAPOL performs adaptive measurement screening during the retrieval to identify measurements excluded from the inversion.
-
-| Variable | Dimensions | Description |
-|---|---|---|
-| `mask_ref` | (`number_of_lines`, `pixels_per_line`, `number_of_views`, `intensity_bands_per_view`) | Reflectance measurement screening mask |
-| `mask_dolp` | (`number_of_lines`, `pixels_per_line`, `number_of_views`, `polarization_bands_per_view`) | DoLP measurement screening mask |
-
-The screening masks are interpreted as follows:
-
-| Value | Meaning |
+| `quality_flag` | Description |
 |---|---|
-| `0` | Measurement used in the retrieval |
-| `1` or `NaN` | Measurement excluded from the retrieval |
+| `0` | Highest retrieval quality |
+| `1` | Good retrieval quality |
+| `>1` | Reduced retrieval quality |
 
-These masks allow users to identify the measurements retained or excluded at each viewing angle and wavelength.
 
 ## Sensor Band Parameters
 
