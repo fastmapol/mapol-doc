@@ -12,10 +12,10 @@ The physical forward model underlying FastMAPOL is the **Radiative Transfer mode
 
 Key features:
 - RTSOS is capable of solving polarized radiative transfer for both atmosphere-ocean and atmosphere-land systems. 
-- In atmosphere-ocean systems, it can also simulate inelastic scattering processes, including Raman scattering and fluorescence by chlorophyll and colored dissolved organic matter [@Zhai:2015aa; @Zhai:2017aa].
+- In atmosphere-ocean systems, it can also simulate inelastic scattering processes, including Raman scattering and fluorescence by chlorophyll and colored dissolved organic matter [@Zhai:2015aa; @Zhai:2017ve].
 - An improved pseudos-spherical shell (IPSS) algorithm is used to improve the simulation of radiance field over polar regions [@Zhai:2022aa]. More details are in @sec-rt-shell. 
 
-For this work, RTSOS is configured to simulate polarized radiance fields for randomly generated Earth systems for the PACE instruments [@Zhai:2022aa]. The data are then used to train neural network forward models, which emulates the behavior of the radiative transfer system.
+For this work, RTSOS is configured to simulate polarized radiance fields for randomly generated Earth systems for the PACE instruments [@Zhai:2022bb]. The data are then used to train neural network forward models, which emulates the behavior of the radiative transfer system.
 
 ## The physics of RTSOS
 The model computes the polarized radiation field represented by the Stokes vector
@@ -29,10 +29,10 @@ where $I$ is the total radiance, $Q$ and $U$ describe linear polarization, $V$ d
 In the RTSOS formulation, the total radiation field is expressed as the sum of contributions from successive scattering orders,
 
 $$
-\mathbf{L} = \sum_{n=0}^{N_s}\mathbf{L}^{(n)} + \mathbf{L}_{geo},
+\mathbf{L} = \sum_{n=0}^{N_s}\mathbf{L}^{(n)} + \mathbf{L}_{\mathrm{geo}},
 $$
 
-where $\mathbf{L}^{(n)}$ represents the contribution from the $n$th order of scattering and $N_s$ is the maximum scattering order retained in the numerical calculation. The first-order scattering solution is evaluated directly, and each subsequent order is obtained by integrating the radiation field from the preceding order over optical depth and propagation direction [@Zhai:2009aa; @Zhai:2010aa]. $\mathbf{L}_{geo}$ is all the contributions beyond order $N_s$, which can be approximated by a geometric series.
+where $\mathbf{L}^{(n)}$ represents the contribution from the $n$th order of scattering and $N_s$ is the maximum scattering order retained in the numerical calculation. The first-order scattering solution is evaluated directly, and each subsequent order is obtained by integrating the radiation field from the preceding order over optical depth and propagation direction [@Zhai:2009aa; @Zhai:2010aa]. $\mathbf{L}_{\mathrm{geo}}$ is all the contributions beyond order $N_s$, which can be approximated by a geometric series.
 
 ## Coupled atmosphere–ocean system
 
@@ -42,7 +42,7 @@ For FastMAPOL ocean retrievals, RTSOS fully accounts for photons which undergo m
 
 Atmospheric optical properties are specified vertically in terms of layer optical depth, single-scattering albedo, and scattering phase matrix. Molecular Rayleigh scattering, gas absorption, aerosol scattering and absorption are included. RTSOS can also be used to simulate cloud radiative transfer, which is however not used in FastMAPOL.
 
-The molecular atmosphere is characterized using vertical profiles of the total atmospheric molecular number density and the mixing ratios of absorbing gases. Gas absorption from major species relevant to the PACE spectral range, including H$_2$O, CO$_2$, O$_2$, CH$_4$, O$_3$, and NO$_2$, are included. In the PACE simulator, high-resolution absorption cross sections for several gases are generated using molecular spectroscopic information from HITRAN, with additional spectral databases used for ozone and NO$_2$ [@Zhai:2022bb].
+The molecular atmosphere is characterized using vertical profiles of the total atmospheric molecular number density and the mixing ratios of absorbing gases. Gas absorption from major species relevant to the PACE spectral range, including $H_2O$, $CO_2$, $O_2$, $CH_4$, $O_3$, and $NO_2$, are included. In the PACE simulator, high-resolution absorption cross sections for several gases are generated using molecular spectroscopic information from HITRAN, with additional spectral databases used for ozone and NO$_2$ [@Zhai:2022bb].
 
 Aerosol single-scattering properties, including extinction coefficients, single scattering albedos, and Mueller scattering matrices are supplied to RTSOS. The radiative transfer solver itself is therefore not restricted to a particular aerosol particle model. Optical properties obtained from Mie calculations, T-matrix methods, discrete-dipole calculations, or other electromagnetic scattering models can be used as inputs. This flexibility is important for FastMAPOL, where aerosol properties are parameterized differently in different generations of the retrieval algorithm.
 
@@ -56,7 +56,7 @@ Foam and whitecap fraction on rough ocean surface and their reflectance are para
 
 ### Ocean body
 
-In the FastMAPOL/component implementation [@Aryal:2024aa], ocean inherent optical properties include contributions from pure seawater, phytoplankton, non-algal particles, and colored dissolved and detrital material. Particle scattering is represented through the Fourier-Forand phase function [@Fournier:1994aa] and the average Mueller matrix measured [Voss:1984aa], while absorption and scattering coefficients are parameterized through retrievable bio-optical quantities [@Aryal:2024aa]. The expanded representation allows the radiative transfer training database to cover waters for which IOPs do not covary uniquely with chlorophyll-a concentration.
+In the FastMAPOL/component implementation [@Aryal:2024aa], ocean inherent optical properties include contributions from pure seawater, phytoplankton, non-algal particles, and colored dissolved and detrital material. Particle scattering is represented through the Fournier-Forand phase function [@Fournier:1994aa] and the average Mueller matrix measured [@Voss:1984aa], while absorption and scattering coefficients are parameterized through retrievable bio-optical quantities [@Aryal:2024aa]. The expanded representation allows the radiative transfer training database to cover waters for which IOPs do not covary uniquely with chlorophyll-a concentration.
 
 In the FastMAPOL open ocean algorithm [@Gao:2026aa], the absorption and scattering of ocean waters are parameterized in terms of chlorophyll-a concentration, in order to achieve efficiency while maintaining accuracy.
 
@@ -76,7 +76,7 @@ FastMAPOL does not necessarily use every wavelength available from the instrumen
 
 $$
 \lambda =
-(385,400,410,441,470,490,510,530,549,620,670,740,873)\ {\rm nm},
+(385,400,410,441,470,490,510,530,549,620,670,740,873)\ {\mathrm nm},
 $$
 
 covering the UV, visible, and near-infrared spectral regions of SPEXone and HARP2 [@Aryal:2024aa]. The wavelength configuration may change between algorithm versions.
