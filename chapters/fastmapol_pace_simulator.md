@@ -18,7 +18,7 @@ Key features:
 For this work, RTSOS is configured to simulate polarized radiance fields for randomly generated Earth systems for the PACE instruments [@Zhai:2022bb]. The data are then used to train neural network forward models, which emulates the behavior of the radiative transfer system.
 
 ## The physics of RTSOS
-The model computes the polarized radiation field represented by the Stokes vector
+The model computes the polarized radiation field represented by the Stokes vector [@Zhai:2009aa],
 
 $$
 \mathbf{L}=(I,Q,U,V)^T,
@@ -42,7 +42,7 @@ For FastMAPOL ocean retrievals, RTSOS fully accounts for photons which undergo m
 
 Atmospheric optical properties are specified vertically in terms of layer optical depth, single-scattering albedo, and scattering phase matrix. Molecular Rayleigh scattering, gas absorption, aerosol scattering and absorption are included. RTSOS can also be used to simulate cloud radiative transfer, which is however not used in FastMAPOL.
 
-The molecular atmosphere is characterized using vertical profiles of the total atmospheric molecular number density and the mixing ratios of absorbing gases. Gas absorption from major species relevant to the PACE spectral range, including $H_2O$, $CO_2$, $O_2$, $CH_4$, $O_3$, and $NO_2$, are included. In the PACE simulator, high-resolution absorption cross sections for several gases are generated using molecular spectroscopic information from HITRAN, with additional spectral databases used for ozone and NO$_2$ [@Zhai:2022bb].
+The molecular atmosphere is characterized using vertical profiles of the total atmospheric molecular number density and the mixing ratios of absorbing gases. Gas absorption from major species relevant to the PACE spectral range, including $H_2O$, $CO_2$, $O_2$, $CH_4$, $O_3$, and $NO_2$, are included. In the PACE simulator, high-resolution absorption cross sections for several gases are generated using molecular spectroscopic information from HITRAN [@Gordon:2022], with dedicated ozone and NO$_2$ datasets used where appropriate [@Serdyuchenko:2014aa; @Burrows:1998aa; @Zhai:2022bb].
 
 Aerosol single-scattering properties, including extinction coefficients, single scattering albedos, and Mueller scattering matrices are supplied to RTSOS. The radiative transfer solver itself is therefore not restricted to a particular aerosol particle model. Optical properties obtained from Mie calculations, T-matrix methods, discrete-dipole calculations, or other electromagnetic scattering models can be used as inputs. This flexibility is important for FastMAPOL, where aerosol properties are parameterized differently in different generations of the retrieval algorithm.
 
@@ -62,7 +62,7 @@ In the FastMAPOL open ocean algorithm [@Gao:2026aa], the absorption and scatteri
 
 ## Numerical treatment
 
-RTSOS discretizes the zenith-angle dependence of the radiation field using Gaussian quadrature and represents azimuthal dependence using a Fourier expansion. Strongly forward-peaked aerosol and hydrosol scattering functions can otherwise require a large number of angular quadrature points. RTSOS therefore includes phase-function truncation techniques, including the $\delta$-M, $\delta$-fit, and related approaches, to improve computational efficiency while preserving radiometric accuracy [@Zhai:2009aa; @Zhai:2022bb].
+RTSOS discretizes the zenith-angle dependence of the radiation field using Gaussian quadrature and represents azimuthal dependence using a Fourier expansion. Strongly forward-peaked aerosol and hydrosol scattering functions can otherwise require a large number of angular quadrature points. RTSOS therefore includes phase-function truncation techniques, including the $\delta$-M [@Wiscombe:1977aa], $\delta$-fit [@Hu:2000fit], and related approaches, to improve computational efficiency while preserving radiometric accuracy [@Zhai:2009aa; @Zhai:2022bb].
 
 For geometries with large solar or viewing zenith angles, the plane-parallel approximation becomes less accurate because of the curvature of the atmosphere. RTSOS therefore incorporates an **improved pseudo-spherical shell (IPSS)** correction [@Zhai:2022aa]. The IPSS treatment calculates the exact single scattering solution with spherical geometry while using the computationally efficient plane-parallel multiple-scattering solution to estimate the higher-order contribution. This substantially improves accuracy at large zenith angles and is particularly relevant to high-latitude observations. Additional details are provided in @sec-rt-shell.
 
@@ -83,7 +83,7 @@ covering the UV, visible, and near-infrared spectral regions of SPEXone and HARP
 
 ## Radiometric quantities generated for FastMAPOL
 
-RTSOS can calculate the complete Stokes vector at the TOA, within the atmosphere, immediately above or below the ocean surface, and at specified depths within the ocean. FastMAPOL primarily uses several derived quantities from these simulations.
+RTSOS can calculate the complete Stokes vector at the TOA, within the atmosphere, immediately above or below the ocean surface, and at specified depths within the ocean [@Zhai:2009aa; @Zhai:2022bb]. FastMAPOL primarily uses several derived quantities from these simulations.
 
 The TOA reflectance is defined as
 
