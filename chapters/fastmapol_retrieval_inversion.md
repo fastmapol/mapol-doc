@@ -1,10 +1,6 @@
 # Retrieval Algorithm: Inversion {#sec-retrieval-inversion}
 
-**Implementation status**
-
-| Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-| --- |:---:|:---:|:---:|:---:|:---:|
-| — | x | x | x | — | — |
+ 
 
 FastMAPOL formulates the retrieval as a constrained nonlinear least-squares optimization problem. The cost function is defined in @sec-retrieval and is restated here for completeness:
 
@@ -65,7 +61,7 @@ $$
 \sigma_{P,\mathrm{RT}}^2.
 $$ {#eq-sigma-P}
 
-Here, $\sigma_{\mathrm{ins}}$ represents the instrument measurement uncertainty, $\sigma_{\mathrm{NN}}$ represents the uncertainty introduced by the NN approximation of the forward model, and $\sigma_{\mathrm{RT}}$ represents the numerical uncertainty of the RT calculations.
+Here, $\sigma_{\mathrm{ins}}$ represents the instrument measurement uncertainty, $\sigma_{\mathrm{NN}}$ represents the uncertainty introduced by the NN approximation of the forward model, and $\sigma_{\mathrm{RT}}$ represents the numerical uncertainty of the RT calculations. More discussions on the instrument uncertainties are provided in @sec-retrieval-unc-model.
 
 The NN forward-model uncertainties are determined during NN training and evaluation [@Gao:2021aa; @Gao:2023aa], with the current NN architectures and associated uncertainties summarized in @tbl-nn-arch. In the current implementation, the uncertainties are assumed to be spectrally and angularly uncorrelated, such that $\mathbf{S}_{\epsilon}$ is diagonal.
 

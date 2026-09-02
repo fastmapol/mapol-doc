@@ -1,4 +1,4 @@
-# Data Quality Assessment
+# Data Quality Assessment {#sec-data-quality}
 
 As discussed in the previous chapter, FastMAPOL provides several diagnostic variables for evaluating retrieval quality, including the cost function (`chi2`), the numbers of measurements retained in the retrieval (`nv_ref` and `nv_dolp`), measurement-level screening masks (`mask_ref` and `mask_dolp`), and an overall `quality_flag`. These diagnostics characterize different aspects of retrieval performance and allow users to select data according to the requirements of a particular application.
 

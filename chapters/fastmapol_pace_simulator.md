@@ -4,16 +4,17 @@
 
 | Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
 | --- |:---:|:---:|:---:|:---:|:---:|
-| — | x | x | x | — | — |
+| RTSOS Ocean | x | x | x | — | — |
+| RTSOS Land | - | - | x | — | — |
 
 ## Overview
 
-The physical forward model underlying FastMAPOL is the **Radiative Transfer model based on the Successive Order of Scattering (RTSOS)** method [@Zhai:2009aa; @Zhai:2010aa]. RTSOS is a vector radiative transfer model developed for coupled atmosphere–ocean and atmosphere-land systems. For ocean applications, the atmosphere, rough air–sea interface, and ocean body are treated as a physically coupled system so that multiple scattering among these components is explicitly included.
+The physical forward model underlying FastMAPOL is the **Radiative Transfer model based on the Successive Order of Scattering (RTSOS)** method [@Zhai:2009aa; @Zhai:2010aa]. RTSOS is a vector radiative transfer model developed for coupled atmosphere–ocean and atmosphere-land systems. For ocean applications, the atmosphere, rough air–sea interface, and ocean body are treated as a physically coupled system so that multiple scattering among these components is explicitly included. For land applications, the atmosphere and land surface are similarly treated as a physically coupled system, with their interactions explicitly accounted for.
 
 Key features:
 - RTSOS is capable of solving polarized radiative transfer for both atmosphere-ocean and atmosphere-land systems. 
 - In atmosphere-ocean systems, it can also simulate inelastic scattering processes, including Raman scattering and fluorescence by chlorophyll and colored dissolved organic matter [@Zhai:2015aa; @Zhai:2017ve].
-- An improved pseudos-spherical shell (IPSS) algorithm is used to improve the simulation of radiance field over polar regions [@Zhai:2022aa]. More details are in @sec-rt-shell. 
+- An improved pseudos-spherical shell (IPSS) algorithm is used to improve the simulation of radiance field over polar regions [@Zhai:2022aa].
 
 For this work, RTSOS is configured to simulate polarized radiance fields for randomly generated Earth systems for the PACE instruments [@Zhai:2022bb]. The data are then used to train neural network forward models, which emulates the behavior of the radiative transfer system.
 
@@ -34,35 +35,45 @@ $$
 
 where $\mathbf{L}^{(n)}$ represents the contribution from the $n$th order of scattering and $N_s$ is the maximum scattering order retained in the numerical calculation. The first-order scattering solution is evaluated directly, and each subsequent order is obtained by integrating the radiation field from the preceding order over optical depth and propagation direction [@Zhai:2009aa; @Zhai:2010aa]. $\mathbf{L}_{\mathrm{geo}}$ is all the contributions beyond order $N_s$, which can be approximated by a geometric series.
 
-## Coupled atmosphere–ocean system
+## Coupled atmosphere–surface system
 
-For FastMAPOL ocean retrievals, RTSOS fully accounts for photons which undergo multiple interactions among atmospheric molecules and aerosols, the rough ocean surface, and optically active constituents within the ocean [@Zhai:2009aa; @Zhai:2010aa; @Zhai:2017aa]. The configuration of atmosphere, surface, and ocean water body is described below.
+For FastMAPOL ocean retrievals, RTSOS fully accounts for photons which undergo multiple interactions among atmospheric molecules and aerosols, the rough ocean surface, and optically active constituents within the ocean [@Zhai:2009aa; @Zhai:2010aa; @Zhai:2017aa]. These developments supported the production of the HARP2 and SPEXone `MAPOL_OCEAN` products. More recent developments have incorporated a land surface model and have been used to produce the HARP2 `MAPOL_LAND` products.The configuration of atmosphere, surface, and ocean water body is described below.
 
 ### Atmosphere
 
 Atmospheric optical properties are specified vertically in terms of layer optical depth, single-scattering albedo, and scattering phase matrix. Molecular Rayleigh scattering, gas absorption, aerosol scattering and absorption are included. RTSOS can also be used to simulate cloud radiative transfer, which is however not used in FastMAPOL.
 
-The molecular atmosphere is characterized using vertical profiles of the total atmospheric molecular number density and the mixing ratios of absorbing gases. Gas absorption from major species relevant to the PACE spectral range, including $H_2O$, $CO_2$, $O_2$, $CH_4$, $O_3$, and $NO_2$, are included. In the PACE simulator, high-resolution absorption cross sections for several gases are generated using molecular spectroscopic information from HITRAN [@Gordon:2022], with dedicated ozone and NO$_2$ datasets used where appropriate [@Serdyuchenko:2014aa; @Burrows:1998aa; @Zhai:2022bb].
+The molecular atmosphere is characterized using vertical profiles of the total atmospheric molecular number density and the mixing ratios of absorbing gases. Gas absorption from major species relevant to the PACE spectral range, including $H_2O$, $CO_2$, $O_2$, $CH_4$, $O_3$, and $NO_2$, are included. In the PACE simulator, high-resolution absorption cross sections for several gases are generated using molecular spectroscopic information from HITRAN [@Gordon:2022aa], with dedicated ozone and NO$_2$ datasets used where appropriate [@Serdyuchenko:2014aa; @Burrows:1998aa; @Zhai:2022bb].
 
 Aerosol single-scattering properties, including extinction coefficients, single scattering albedos, and Mueller scattering matrices are supplied to RTSOS. The radiative transfer solver itself is therefore not restricted to a particular aerosol particle model. Optical properties obtained from Mie calculations, T-matrix methods, discrete-dipole calculations, or other electromagnetic scattering models can be used as inputs. This flexibility is important for FastMAPOL, where aerosol properties are parameterized differently in different generations of the retrieval algorithm.
+
+RTSOS supports flexible aerosol models, with further details on those used in FastMAPOL provided in @sec-aerosol-model. 
 
 ### Air–sea interface
 
 The air–sea interface is represented as a wind-roughened surface. Reflection and transmission of polarized radiation across the interface are treated using reflection and transmission matrices, including repeated interactions between the atmosphere, ocean surface, and water body [@Zhai:2010aa].
 
-Surface roughness is parameterized primarily through wind speed using a Cox–Munk wave-slope distribution [@Cox:1954aa]. Consequently, RTSOS explicitly represents the angular structure of ocean glint rather than masking the glint region by default. This feature is useful for FastMAPOL because measurements close to the glint direction contain information about surface wind speed and absorbing aerosols [@Aryal:2024aa].
+Surface roughness is parameterized primarily through wind speed using a Cox–Munk wave-slope distribution [@Cox:1954aa]. Consequently, RTSOS explicitly represents the angular structure of ocean glint rather than masking the glint region by default. In early versions of FastMAPOL, the NN training excluded the sunglint region to prevent the large reflectance values near glint from degrading NN accuracy at non-glint viewing angles, as implemented in the AirHARP study [@Gao:2021aa]. More recent versions of FastMAPOL accurately represent RTSOS simulations across the full range of viewing angles, including the sunglint region, through uncertainty-aware NN training, as implemented for the Version 3 and Version 4 products [@Gao:2023aa; @Gao:2026aa]. Retaining the sunglint region provides useful retrieval information, particularly for surface wind speed and absorbing aerosols for HARP2[@Gao:2023aa] and more HARP2 and SPEXone combined [@Aryal:2024aa].
 
 Foam and whitecap fraction on rough ocean surface and their reflectance are parameterized in terms of wind speed following [@Koepke:1984aa] in the FastMAPOL simulation configuration. 
 
 ### Ocean body
 
-In the FastMAPOL/component implementation [@Aryal:2024aa], ocean inherent optical properties include contributions from pure seawater, phytoplankton, non-algal particles, and colored dissolved and detrital material. Particle scattering is represented through the Fournier-Forand phase function [@Fournier:1994aa] and the average Mueller matrix measured [@Voss:1984aa], while absorption and scattering coefficients are parameterized through retrievable bio-optical quantities [@Aryal:2024aa]. The expanded representation allows the radiative transfer training database to cover waters for which IOPs do not covary uniquely with chlorophyll-a concentration.
+The ocean inherent optical properties include contributions from pure seawater, phytoplankton, non-algal particles, and colored dissolved and detrital material. Particle scattering is represented through the Fournier-Forand phase function [@Fournier:1994aa] and the average Mueller matrix measured [@Voss:1984aa], 
+while absorption and scattering coefficients are parameterized through retrievable bio-optical quantities. 
 
-In the FastMAPOL open ocean algorithm [@Gao:2026aa], the absorption and scattering of ocean waters are parameterized in terms of chlorophyll-a concentration, in order to achieve efficiency while maintaining accuracy.
+Three parameterization approaches for the bio-optical models have been evaluated, as discussed in @sec-ocean-model, with varying levels of complexity.
+
+For the single-parameter model used in Version 3 and Version 4 data production [@Gao:2023aa; @Gao:2026aa], the absorption and scattering properties of ocean water are parameterized in terms of chlorophyll-a concentration, providing computational efficiency while maintaining retrieval accuracy.
+
+For more complex waters, the absorption and scattering coefficients are parameterized using retrievable bio-optical quantities [@Aryal:2024aa; @Aryal:2026aa]. This expanded representation allows the radiative transfer training database to encompass waters in which inherent optical properties (IOPs) do not covary uniquely with chlorophyll-a concentration. This approach, also called FastMAPOL/componnet, is planned for future FastMAPOL data production over coastal waters.
+
+### Land Surface
+RTSOS also performs coupled atmosphere–land surface simulations. The land surface is represented using the Ross–Li model, as described in @sec-land-model, with the corresponding data products discussed in @sec-data-format.
 
 ## Numerical treatment
 
-RTSOS discretizes the zenith-angle dependence of the radiation field using Gaussian quadrature and represents azimuthal dependence using a Fourier expansion. Strongly forward-peaked aerosol and hydrosol scattering functions can otherwise require a large number of angular quadrature points. RTSOS therefore includes phase-function truncation techniques, including the $\delta$-M [@Wiscombe:1977aa], $\delta$-fit [@Hu:2000fit], and related approaches, to improve computational efficiency while preserving radiometric accuracy [@Zhai:2009aa; @Zhai:2022bb].
+RTSOS discretizes the zenith-angle dependence of the radiation field using Gaussian quadrature and represents azimuthal dependence using a Fourier expansion. Strongly forward-peaked aerosol and hydrosol scattering functions can otherwise require a large number of angular quadrature points. RTSOS therefore includes phase-function truncation techniques, including the $\delta$-M [@Wiscombe:1977aa], $\delta$-fit [@Hu:2000], and related approaches, to improve computational efficiency while preserving radiometric accuracy [@Zhai:2009aa; @Zhai:2022bb].
 
 For geometries with large solar or viewing zenith angles, the plane-parallel approximation becomes less accurate because of the curvature of the atmosphere. RTSOS therefore incorporates an **improved pseudo-spherical shell (IPSS)** correction [@Zhai:2022aa]. The IPSS treatment calculates the exact single scattering solution with spherical geometry while using the computationally efficient plane-parallel multiple-scattering solution to estimate the higher-order contribution. This substantially improves accuracy at large zenith angles and is particularly relevant to high-latitude observations. Additional details are provided in @sec-rt-shell.
 
@@ -72,14 +83,16 @@ RTSOS forms the monochromatic radiative transfer core of a more general PACE sim
 
 The full PACE simulator supports hyperspectral radiance simulations for OCI and multi-angle polarized radiance simulations for HARP2 and SPEXone. Instrument spectral response is important near strong molecular absorption bands, where using only the absorption coefficient at the nominal center wavelength can introduce substantial radiance errors. The PACE simulator therefore includes spectral integration procedures for resolving gas absorption within instrument bands [@Zhai:2022bb].
 
-FastMAPOL does not necessarily use every wavelength available from the instruments. Instead, instrument-dependent wavelength subsets are selected to balance information content and computational cost. For example, the FastMAPOL/component study used 13 wavelengths,
+FastMAPOL does not necessarily use every wavelength available from the instruments. Instead, instrument-dependent wavelength subsets are selected to balance information content and computational cost. The wavelength configuration may change between algorithm versions. For example, four spectral bands are used for HARP2, whereas 34 spectral bands are used for SPEXone in both V3 and V4 data (@sec-data-format).
+
+The FastMAPOL/component version implementation combines measurements from both HARP2 and SPEXone and uses a total of 13 wavelengths.
 
 $$
 \lambda =
 (385,400,410,441,470,490,510,530,549,620,670,740,873)\ {\mathrm nm},
 $$
 
-covering the UV, visible, and near-infrared spectral regions of SPEXone and HARP2 [@Aryal:2024aa]. The wavelength configuration may change between algorithm versions.
+covering the UV, visible, and near-infrared spectral regions of SPEXone and HARP2 [@Aryal:2024aa]. 
 
 ## Radiometric quantities generated for FastMAPOL
 
@@ -101,15 +114,17 @@ P_t =
 \frac{\sqrt{Q_t^2+U_t^2}}{I_t}.
 $$
 
-In addition to the total TOA signal, RTSOS can perform simulations with the ocean-body contribution removed. This produces the reflectance associated with the atmosphere and ocean surface, $\rho_{a+s}$. The water-leaving contribution reaching the sensor can therefore be obtained from
+## Atmospheric Correction and Ocean Color
+
+In addition to the total TOA signal, RTSOS can perform simulations with the ocean-body contribution removed. This produces the reflectance associated with the atmosphere and ocean surface, $\rho^{f}_{t,\mathrm{atm+sfc}}$. The water-leaving contribution reaching the sensor can therefore be obtained from
 
 $$
-\rho_w = \rho_t-\rho_{a+s}.
+\rho_w = \rho_t-\rho^{f}_{t,\mathrm{atm+sfc}}
 $$
 
-This ability to explicitly label and separate photon contributions is a useful property of the RTSOS formulation and provides a physically consistent method for atmospheric correction [@Zhai:2009aa; @Zhai:2017aa; @Aryal:2024aa].
+This ability to explicitly label and separate photon contributions is a useful property of the RTSOS formulation [@Zhai:2009aa; @Zhai:2017aa] and provides a physically consistent method for atmospheric correction. This approach has been implemented with the additional use of NNs to produce FastMAPOL ocean color products [@Gao:2021aa; @Aryal:2024aa; @Gao:2026aa].
 
-FastMAPOL also uses RTSOS to calculate quantities required for bidirectional reflectance correction. Rather than relying exclusively on an empirical BRDF correction, simulations can be performed for the retrieved atmosphere–ocean system at both the actual observation geometry and a reference geometry. This permits the angular dependence of the water-leaving radiance to be derived consistently from the same radiative transfer physics used in the retrieval [@Aryal:2024aa; @Gao:2026aa].
+FastMAPOL also uses RTSOS to calculate quantities required for bidirectional reflectance correction. Rather than relying exclusively on an empirical BRDF correction, simulations can be performed for the retrieved atmosphere–ocean system at both the actual observation geometry and a reference geometry (@sec-ocean-ac). This permits the angular dependence of the water-leaving radiance to be derived consistently from the same radiative transfer physics used in the retrieval [@Gao:2021aa; @Aryal:2024aa; @Gao:2026aa]. The corresponding products are discussed in @sec-data-format.
 
 ## Additional RTSOS capabilities
 
@@ -123,4 +138,4 @@ RTSOS has evolved from the original coupled atmosphere–ocean model with a flat
 
 Within FastMAPOL, RTSOS provides the high-fidelity physical reference from which the neural-network forward models are constructed. The resulting framework therefore combines a rigorous coupled atmosphere–ocean and atmosphere–land vector radiative transfer model with computationally efficient machine-learning emulators, enabling simultaneous aerosol, ocean-color, and surface retrievals from PACE multi-angle polarimetric observations [@Gao:2023aa; @Aryal:2024aa; @Aryal:2026aa; @Gao:2026aa].
 
-**Code availability.** The RTSOS source code and example configurations are publicly available through the AOOG/UMBC RTSOS repository: https://github.com/aoog-umbc/rtsos-public
+**Code availability.** The RTSOS code is maintained and developed by Pengwang Zhai. The source code and example configurations are publicly available through the [AOOG/UMBC RTSOS repository](https://github.com/aoog-umbc/rtsos-public). For additional information, please contact Pengwang Zhai ([pwzhai@umbc.edu](mailto:pwzhai@umbc.edu)).

@@ -1,4 +1,4 @@
-# Ocean: Multi-angle Atmospheric Correction
+# Ocean: Multi-angle Atmospheric Correction {#sec-ocean-ac}
 
 **Implementation status**
 
