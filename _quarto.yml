@@ -81,7 +81,8 @@ book:
     - chapters/fastmapol_validation_spexone_v3.md
     - chapters/fastmapol_validation_harp2_ditl.md
     - chapters/fastmapol_validation_harp2_v4.md
-
+    - chapters/references.md
+    
   appendices:
     - chapters/fastmapol_appendix_intro.md
     - chapters/fastmapol_pace_simulator.md
