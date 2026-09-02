@@ -132,6 +132,21 @@ where $\rho_t^f$ and $P_t^f$ are the NN forward-model predictions, ${\mathbf x}$
 
 FastMAPOL solves this nonlinear optimization problem iteratively using the NN forward model and its Jacobian calculated through automatic differentiation. Details of the inversion, uncertainty weighting, convergence criteria, and optimization algorithm are provided in @sec-retrieval-inversion. 
 
+## Input uncertainty model
+
+The input uncertainty model used in the retrieval cost function accounts for instrument measurement uncertainty, NN forward-model approximation, and numerical uncertainty in the radiative transfer (RT) simulations used for NN training. The RT and NN contributions are characterized based on the RT configuration and NN training performance [@Gao:2021aa;@Gao:2022aa].
+
+Instrument uncertainties are based on instrument characteristics and calibration information provided by the instrument teams. The current FastMAPOL retrievals (both V3 and V4) adopt:
+
+| Instrument | Reflectance uncertainty | DoLP uncertainty |
+|---|---:|---:|
+| HARP2 v1 | 3% | 0.005 |
+| SPEXone v1 | 2% | 0.003 |
+
+Reflectance uncertainty is relative, whereas DoLP uncertainty is absolute. These uncertainties are combined to weight the observations in the retrieval cost function.
+
+Note that **v1** denotes the current instrument uncertainty model used in the retrievals. These uncertainty models may be updated in the future to reflect changes in instrument characterization or calibration provided by the instrument teams.
+
 ## Data screening and uncertainty quantifization
 
 FastMAPOL incorporates adaptive multi-angle data screening and pixel-level uncertainty quantification to improve retrieval robustness and characterize retrieval confidence. The data-screening approach identifies and removes individual viewing angles that cannot be adequately represented by the forward model, while retaining valid observations from the same pixel whenever sufficient information remains for retrieval. This is particularly important for multi-angle polarimetric observations, where clouds, sunglint, surface heterogeneity, and other scene-dependent effects may affect only a subset of viewing angles. The screening methodology is described in detail in @sec-data-screening.

@@ -12,7 +12,8 @@
 The physical forward model underlying FastMAPOL is the **Radiative Transfer model based on the Successive Order of Scattering (RTSOS)** method [@Zhai:2009aa; @Zhai:2010aa]. RTSOS is a vector radiative transfer model developed for coupled atmosphere–ocean and atmosphere-land systems. For ocean applications, the atmosphere, rough air–sea interface, and ocean body are treated as a physically coupled system so that multiple scattering among these components is explicitly included. For land applications, the atmosphere and land surface are similarly treated as a physically coupled system, with their interactions explicitly accounted for.
 
 Key features:
-- RTSOS is capable of solving polarized radiative transfer for both atmosphere-ocean and atmosphere-land systems. 
+
+- RTSOS is capable of solving polarized radiative transfer for both atmosphere-ocean and atmosphere-land systems.
 - In atmosphere-ocean systems, it can also simulate inelastic scattering processes, including Raman scattering and fluorescence by chlorophyll and colored dissolved organic matter [@Zhai:2015aa; @Zhai:2017ve].
 - An improved pseudos-spherical shell (IPSS) algorithm is used to improve the simulation of radiance field over polar regions [@Zhai:2022aa].
 
@@ -73,7 +74,7 @@ RTSOS also performs coupled atmosphere–land surface simulations. The land surf
 
 ## Numerical treatment
 
-RTSOS discretizes the zenith-angle dependence of the radiation field using Gaussian quadrature and represents azimuthal dependence using a Fourier expansion. Strongly forward-peaked aerosol and hydrosol scattering functions can otherwise require a large number of angular quadrature points. RTSOS therefore includes phase-function truncation techniques, including the $\delta$-M [@Wiscombe:1977aa], $\delta$-fit [@Hu:2000], and related approaches, to improve computational efficiency while preserving radiometric accuracy [@Zhai:2009aa; @Zhai:2022bb].
+RTSOS discretizes the zenith-angle dependence of the radiation field using Gaussian quadrature and represents azimuthal dependence using a Fourier expansion. Strongly forward-peaked aerosol and hydrosol scattering functions can otherwise require a large number of angular quadrature points. RTSOS therefore includes phase-function truncation techniques, including the $\delta$-M [@Wiscombe:1977aa], $\delta$-fit [@Hu:2000aa], and related approaches, to improve computational efficiency while preserving radiometric accuracy [@Zhai:2009aa; @Zhai:2022bb].
 
 For geometries with large solar or viewing zenith angles, the plane-parallel approximation becomes less accurate because of the curvature of the atmosphere. RTSOS therefore incorporates an **improved pseudo-spherical shell (IPSS)** correction [@Zhai:2022aa]. The IPSS treatment calculates the exact single scattering solution with spherical geometry while using the computationally efficient plane-parallel multiple-scattering solution to estimate the higher-order contribution. This substantially improves accuracy at large zenith angles and is particularly relevant to high-latitude observations. Additional details are provided in @sec-rt-shell.
 
@@ -83,16 +84,7 @@ RTSOS forms the monochromatic radiative transfer core of a more general PACE sim
 
 The full PACE simulator supports hyperspectral radiance simulations for OCI and multi-angle polarized radiance simulations for HARP2 and SPEXone. Instrument spectral response is important near strong molecular absorption bands, where using only the absorption coefficient at the nominal center wavelength can introduce substantial radiance errors. The PACE simulator therefore includes spectral integration procedures for resolving gas absorption within instrument bands [@Zhai:2022bb].
 
-FastMAPOL does not necessarily use every wavelength available from the instruments. Instead, instrument-dependent wavelength subsets are selected to balance information content and computational cost. The wavelength configuration may change between algorithm versions. For example, four spectral bands are used for HARP2, whereas 34 spectral bands are used for SPEXone in both V3 and V4 data (@sec-data-format).
-
-The FastMAPOL/component version implementation combines measurements from both HARP2 and SPEXone and uses a total of 13 wavelengths.
-
-$$
-\lambda =
-(385,400,410,441,470,490,510,530,549,620,670,740,873)\ {\mathrm nm},
-$$
-
-covering the UV, visible, and near-infrared spectral regions of SPEXone and HARP2 [@Aryal:2024aa]. 
+FastMAPOL does not necessarily use every wavelength available from the instruments. Instead, instrument-dependent wavelength subsets are selected to balance information content and computational cost. The wavelength configuration may change between algorithm versions. For example, four spectral bands are used for HARP2, whereas 34 spectral bands are used for SPEXone in both V3 and V4 data (@sec-data-format). The FastMAPOL/component version implementation combines measurements from both HARP2 and SPEXone and uses a total of 13 wavelengths [@Aryal:2024aa] (@sec-aerosol-component).
 
 ## Radiometric quantities generated for FastMAPOL
 
@@ -124,7 +116,7 @@ $$
 
 This ability to explicitly label and separate photon contributions is a useful property of the RTSOS formulation [@Zhai:2009aa; @Zhai:2017aa] and provides a physically consistent method for atmospheric correction. This approach has been implemented with the additional use of NNs to produce FastMAPOL ocean color products [@Gao:2021aa; @Aryal:2024aa; @Gao:2026aa].
 
-FastMAPOL also uses RTSOS to calculate quantities required for bidirectional reflectance correction. Rather than relying exclusively on an empirical BRDF correction, simulations can be performed for the retrieved atmosphere–ocean system at both the actual observation geometry and a reference geometry (@sec-ocean-ac). This permits the angular dependence of the water-leaving radiance to be derived consistently from the same radiative transfer physics used in the retrieval [@Gao:2021aa; @Aryal:2024aa; @Gao:2026aa]. The corresponding products are discussed in @sec-data-format.
+FastMAPOL also uses RTSOS to calculate quantities required for bidirectional reflectance correction. Rather than relying exclusively on an empirical BRDF correction, simulations can be performed for the retrieved atmosphere–ocean system at both the actual observation geometry and a reference geometry (@sec-ocean-ac). This permits the angular dependence of the water-leaving radiance to be derived consistently from the same radiative transfer physics used in the retrieval [@Gao:2026aa]. The corresponding products are discussed in @sec-data-format.
 
 ## Additional RTSOS capabilities
 

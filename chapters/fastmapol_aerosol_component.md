@@ -28,3 +28,12 @@ Polarimetric single scattering properties of spherical components are modeled us
 
 The aerosol retrieval parameters include total aerosol optical depth (AOD), aerosol layer height (ALH), fine mode fraction (FVF) and the volume fractions of four aerosol components (FNAI, BrC, BC, SS). The volume fractions of fine and coarse modes are normalized to one so that the volume fractions of FNAS and Dust are determined by FNAS = 1 - FNAI - BrC - BC and Dust = 1 - SS. The total volume fractions of each component are determined by multiplying them with FVF (fine mode) and 1 - FVF (coarse mode), respectively. The overall aerosol phase matrix is a sum of the fine and coarse modes weighted by FVF. The retrieved fractions along with RH is used in the single scattering calculation to obtain other aerosol optical propertis single scattering albedo (SSA) and Angstrom exponents (AE). For more details, readers are referred to the published papers [@Aryal:2024aa;@Aryal:2026aa].
 
+The FastMAPOL/component version implementation combines measurements from both HARP2 and SPEXone and uses a total of 13 wavelengths:
+
+$$
+\lambda =
+(385,400,410,441,470,490,510,530,549,620,670,740,873)\ {\mathrm nm},
+$$
+
+covering the UV, visible, and near-infrared spectral regions of SPEXone and HARP2 [@Aryal:2024aa]. 
+

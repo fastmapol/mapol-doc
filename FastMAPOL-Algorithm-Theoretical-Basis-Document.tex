@@ -299,7 +299,7 @@ Color \textperiodcentered\ Land \\
 %%\href{https://fastmapol.github.io/mapol-doc/}{FastMAPOL ATBD} \\
 \url{https://fastmapol.github.io/mapol-doc/} \\
 \textbf{Version} & 0.2 \\
-\textbf{Date} & 2026-09-01 \\
+\textbf{Date} & 2026-09-02 \\
 \end{tabular}%
 }%
 }
@@ -1338,7 +1338,64 @@ Appendix~\ref{sec-uq-correlation} when considering data correlations.
 
 \bookmarksetup{startatroot}
 
-\chapter{Data Products and Format}\label{data-products-and-format}
+\chapter{Retrieval Uncertainty Model}\label{sec-retrieval-unc-model}
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+HARP2 v1 & x & x & x & --- & --- \\
+SPEXone v1 & --- & x & x & --- & --- \\
+\end{longtable}
+
+As discussed in Chapter~\ref{sec-retrieval} and later in Appendix
+Appendix~\ref{sec-retrieval-inversion}, measurement uncertainties are
+used to weight the observations in the retrieval cost function. The
+uncertainty model accounts for contributions from instrument measurement
+uncertainty, NN forward-model approximation, and numerical uncertainty
+in the radiative transfer (RT) simulations used to generate the NN
+training dataset.
+
+The RT and NN contributions are evaluated based on factors such as the
+RT model configuration, the number of Gaussian quadrature points and
+scattering orders, and the size and performance of the NN training
+dataset (Gao et al. (\citeproc{ref-Gao:2021aa}{2021})).
+
+Instrument measurement uncertainties depend on the characteristics and
+calibration performance of each instrument and are based on information
+provided by the instrument teams. For the current FastMAPOL retrievals,
+the following measurement uncertainties are adopted:
+
+\begin{longtable}[]{@{}lrr@{}}
+\toprule\noalign{}
+Instrument & Reflectance uncertainty & DoLP uncertainty \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+HARP2 v1 & 3\% & 0.005 \\
+SPEXone v1 & 2\% & 0.003 \\
+\end{longtable}
+
+The reflectance uncertainty is specified as a relative uncertainty,
+whereas the DoLP uncertainty is specified as an absolute uncertainty.
+These values are used in constructing the measurement uncertainty terms
+that weight the corresponding observations in the retrieval cost
+function.
+
+Note that \textbf{v1} denotes the current instrument uncertainty model
+used in the retrievals. These uncertainty models may be updated in the
+future to reflect changes in instrument characterization or calibration
+provided by the instrument teams.
+
+\bookmarksetup{startatroot}
+
+\chapter{Data Products and Format}\label{sec-data-format}
 
 \section{Overview}\label{overview}
 
@@ -1908,7 +1965,7 @@ wavelengths at each view \\
 
 \bookmarksetup{startatroot}
 
-\chapter{Data Quality Assessment}\label{data-quality-assessment}
+\chapter{Data Quality Assessment}\label{sec-data-quality}
 
 As discussed in the previous chapter, FastMAPOL provides several
 diagnostic variables for evaluating retrieval quality, including the
@@ -2183,7 +2240,7 @@ constrained FastMAPOL retrievals on the comparison.
 
 However, restricting an analysis to \texttt{quality\_flag\ =\ 0} can
 substantially reduce the number of available matchups and may also
-change their spatial and environmental distribution. Including
+change their spatial distribution. Including
 \texttt{quality\_flag\ =\ 1} can provide a useful balance between
 retrieval quality and sampling. For applications where spatial coverage
 is particularly important, retrievals with \texttt{quality\_flag\ =\ 0},
@@ -2757,32 +2814,362 @@ Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
---- & x & x & x & --- & --- \\
+RTSOS Ocean & x & x & x & --- & --- \\
+RTSOS Land & - & - & x & --- & --- \\
 \end{longtable}
 
-The Radiative Transfer model is based on the Successive Order of
-Scattering (RTSOS) method (\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009},
-\citeproc{ref-Zhai:2010aa}{2010}).
+\section{Overview}\label{overview-2}
+
+The physical forward model underlying FastMAPOL is the \textbf{Radiative
+Transfer model based on the Successive Order of Scattering (RTSOS)}
+method (\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009},
+\citeproc{ref-Zhai:2010aa}{2010}). RTSOS is a vector radiative transfer
+model developed for coupled atmosphere--ocean and atmosphere-land
+systems. For ocean applications, the atmosphere, rough air--sea
+interface, and ocean body are treated as a physically coupled system so
+that multiple scattering among these components is explicitly included.
+For land applications, the atmosphere and land surface are similarly
+treated as a physically coupled system, with their interactions
+explicitly accounted for.
 
 Key features: - RTSOS is capable of solving polarized radiative transfer
 for both atmosphere-ocean and atmosphere-land systems. - In
 atmosphere-ocean systems, it can also simulate inelastic scattering
 processes, including Raman scattering and fluorescence by chlorophyll
 and colored dissolved organic matter (\citeproc{ref-Zhai:2015aa}{Zhai et
-al. 2015}, \citeproc{ref-Zhai:2017aa}{2017}). - An improved
+al. 2015}, \citeproc{ref-Zhai:2017ve}{2017}). - An improved
 pseudos-spherical shell (IPSS) algorithm is used to improve the
 simulation of radiance field over polar regions
-(\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}). More details are in
-Appendix~\ref{sec-rt-shell}.
+(\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}).
 
 For this work, RTSOS is configured to simulate polarized radiance fields
 for randomly generated Earth systems for the PACE instruments
-(\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}). The data are then used
+(\citeproc{ref-Zhai:2022bb}{Zhai et al. 2022}). The data are then used
 to train neural network forward models, which emulates the behavior of
 the radiative transfer system.
 
-\textbf{Code repository} The RTSOS is made public by Dr.~Pengwang Zhai
-in github.
+\section{The physics of RTSOS}\label{the-physics-of-rtsos}
+
+The model computes the polarized radiation field represented by the
+Stokes vector (\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009}),
+
+\[
+\mathbf{L}=(I,Q,U,V)^T,
+\]
+
+where \(I\) is the total radiance, \(Q\) and \(U\) describe linear
+polarization, \(V\) describes circular polarization; the superscript T
+stands for vector transpose.
+
+In the RTSOS formulation, the total radiation field is expressed as the
+sum of contributions from successive scattering orders,
+
+\[
+\mathbf{L} = \sum_{n=0}^{N_s}\mathbf{L}^{(n)} + \mathbf{L}_{\mathrm{geo}},
+\]
+
+where \(\mathbf{L}^{(n)}\) represents the contribution from the \(n\)th
+order of scattering and \(N_s\) is the maximum scattering order retained
+in the numerical calculation. The first-order scattering solution is
+evaluated directly, and each subsequent order is obtained by integrating
+the radiation field from the preceding order over optical depth and
+propagation direction (\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009},
+\citeproc{ref-Zhai:2010aa}{2010}). \(\mathbf{L}_{\mathrm{geo}}\) is all
+the contributions beyond order \(N_s\), which can be approximated by a
+geometric series.
+
+\section{Coupled atmosphere--surface
+system}\label{coupled-atmospheresurface-system}
+
+For FastMAPOL ocean retrievals, RTSOS fully accounts for photons which
+undergo multiple interactions among atmospheric molecules and aerosols,
+the rough ocean surface, and optically active constituents within the
+ocean (\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009},
+\citeproc{ref-Zhai:2010aa}{2010}, \citeproc{ref-Zhai:2017aa}{2017}).
+These developments supported the production of the HARP2 and SPEXone
+\texttt{MAPOL\_OCEAN} products. More recent developments have
+incorporated a land surface model and have been used to produce the
+HARP2 \texttt{MAPOL\_LAND} products.The configuration of atmosphere,
+surface, and ocean water body is described below.
+
+\subsection{Atmosphere}\label{atmosphere}
+
+Atmospheric optical properties are specified vertically in terms of
+layer optical depth, single-scattering albedo, and scattering phase
+matrix. Molecular Rayleigh scattering, gas absorption, aerosol
+scattering and absorption are included. RTSOS can also be used to
+simulate cloud radiative transfer, which is however not used in
+FastMAPOL.
+
+The molecular atmosphere is characterized using vertical profiles of the
+total atmospheric molecular number density and the mixing ratios of
+absorbing gases. Gas absorption from major species relevant to the PACE
+spectral range, including \(H_2O\), \(CO_2\), \(O_2\), \(CH_4\),
+\(O_3\), and \(NO_2\), are included. In the PACE simulator,
+high-resolution absorption cross sections for several gases are
+generated using molecular spectroscopic information from HITRAN
+(\citeproc{ref-Gordon:2022aa}{Gordon et al. 2022}), with dedicated ozone
+and NO\(_2\) datasets used where appropriate
+(\citeproc{ref-Burrows:1998aa}{BURROWS et al. 1998};
+\citeproc{ref-Serdyuchenko:2014aa}{Serdyuchenko et al. 2014};
+\citeproc{ref-Zhai:2022bb}{Zhai et al. 2022}).
+
+Aerosol single-scattering properties, including extinction coefficients,
+single scattering albedos, and Mueller scattering matrices are supplied
+to RTSOS. The radiative transfer solver itself is therefore not
+restricted to a particular aerosol particle model. Optical properties
+obtained from Mie calculations, T-matrix methods, discrete-dipole
+calculations, or other electromagnetic scattering models can be used as
+inputs. This flexibility is important for FastMAPOL, where aerosol
+properties are parameterized differently in different generations of the
+retrieval algorithm.
+
+RTSOS supports flexible aerosol models, with further details on those
+used in FastMAPOL provided in Appendix~\ref{sec-aerosol-model}.
+
+\subsection{Air--sea interface}\label{airsea-interface}
+
+The air--sea interface is represented as a wind-roughened surface.
+Reflection and transmission of polarized radiation across the interface
+are treated using reflection and transmission matrices, including
+repeated interactions between the atmosphere, ocean surface, and water
+body (\citeproc{ref-Zhai:2010aa}{Zhai et al. 2010}).
+
+Surface roughness is parameterized primarily through wind speed using a
+Cox--Munk wave-slope distribution (\citeproc{ref-Cox:1954aa}{Cox and
+Munk 1954}). Consequently, RTSOS explicitly represents the angular
+structure of ocean glint rather than masking the glint region by
+default. In early versions of FastMAPOL, the NN training excluded the
+sunglint region to prevent the large reflectance values near glint from
+degrading NN accuracy at non-glint viewing angles, as implemented in the
+AirHARP study (\citeproc{ref-Gao:2021aa}{Gao et al. 2021}). More recent
+versions of FastMAPOL accurately represent RTSOS simulations across the
+full range of viewing angles, including the sunglint region, through
+uncertainty-aware NN training, as implemented for the Version 3 and
+Version 4 products (\citeproc{ref-Gao:2023aa}{Gao et al. 2023};
+\citeproc{ref-Gao:2026aa}{Gao et al. 2026}). Retaining the sunglint
+region provides useful retrieval information, particularly for surface
+wind speed and absorbing aerosols for
+HARP2(\citeproc{ref-Gao:2023aa}{Gao et al. 2023}) and more HARP2 and
+SPEXone combined (\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024}).
+
+Foam and whitecap fraction on rough ocean surface and their reflectance
+are parameterized in terms of wind speed following
+(\citeproc{ref-Koepke:1984aa}{Koepke 1984}) in the FastMAPOL simulation
+configuration.
+
+\subsection{Ocean body}\label{ocean-body}
+
+The ocean inherent optical properties include contributions from pure
+seawater, phytoplankton, non-algal particles, and colored dissolved and
+detrital material. Particle scattering is represented through the
+Fournier-Forand phase function (\citeproc{ref-Fournier:1994aa}{Fournier
+and Forand 1994}) and the average Mueller matrix measured
+(\citeproc{ref-Voss:1984aa}{Voss and Fry 1984}), while absorption and
+scattering coefficients are parameterized through retrievable
+bio-optical quantities.
+
+Three parameterization approaches for the bio-optical models have been
+evaluated, as discussed in Appendix~\ref{sec-ocean-model}, with varying
+levels of complexity.
+
+For the single-parameter model used in Version 3 and Version 4 data
+production (\citeproc{ref-Gao:2023aa}{Gao et al. 2023};
+\citeproc{ref-Gao:2026aa}{Gao et al. 2026}), the absorption and
+scattering properties of ocean water are parameterized in terms of
+chlorophyll-a concentration, providing computational efficiency while
+maintaining retrieval accuracy.
+
+For more complex waters, the absorption and scattering coefficients are
+parameterized using retrievable bio-optical quantities
+(\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024},
+\citeproc{ref-Aryal:2026aa}{2026}). This expanded representation allows
+the radiative transfer training database to encompass waters in which
+inherent optical properties (IOPs) do not covary uniquely with
+chlorophyll-a concentration. This approach, also called
+FastMAPOL/componnet, is planned for future FastMAPOL data production
+over coastal waters.
+
+\subsection{Land Surface}\label{land-surface}
+
+RTSOS also performs coupled atmosphere--land surface simulations. The
+land surface is represented using the Ross--Li model, as described in
+Appendix~\ref{sec-land-model}, with the corresponding data products
+discussed in Chapter~\ref{sec-data-format}.
+
+\section{Numerical treatment}\label{numerical-treatment}
+
+RTSOS discretizes the zenith-angle dependence of the radiation field
+using Gaussian quadrature and represents azimuthal dependence using a
+Fourier expansion. Strongly forward-peaked aerosol and hydrosol
+scattering functions can otherwise require a large number of angular
+quadrature points. RTSOS therefore includes phase-function truncation
+techniques, including the \(\delta\)-M
+(\citeproc{ref-Wiscombe:1977aa}{Wiscombe 1977}), \(\delta\)-fit
+(\citeproc{ref-Hu:2000}{\textbf{Hu:2000?}}), and related approaches, to
+improve computational efficiency while preserving radiometric accuracy
+(\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009},
+\citeproc{ref-Zhai:2022bb}{2022}).
+
+For geometries with large solar or viewing zenith angles, the
+plane-parallel approximation becomes less accurate because of the
+curvature of the atmosphere. RTSOS therefore incorporates an
+\textbf{improved pseudo-spherical shell (IPSS)} correction
+(\citeproc{ref-Zhai:2022aa}{Zhai and Hu 2022}). The IPSS treatment
+calculates the exact single scattering solution with spherical geometry
+while using the computationally efficient plane-parallel
+multiple-scattering solution to estimate the higher-order contribution.
+This substantially improves accuracy at large zenith angles and is
+particularly relevant to high-latitude observations. Additional details
+are provided in Appendix~\ref{sec-rt-shell}.
+
+\section{PACE instrument simulator}\label{pace-instrument-simulator}
+
+RTSOS forms the monochromatic radiative transfer core of a more general
+PACE simulator developed to reproduce the measurements of the three PACE
+instruments: OCI, HARP2, and SPEXone (\citeproc{ref-Zhai:2022bb}{Zhai et
+al. 2022}). The simulator couples the wavelength-dependent atmosphere
+and ocean optical properties with instrument spectral and viewing
+characteristics to generate synthetic TOA observations.
+
+The full PACE simulator supports hyperspectral radiance simulations for
+OCI and multi-angle polarized radiance simulations for HARP2 and
+SPEXone. Instrument spectral response is important near strong molecular
+absorption bands, where using only the absorption coefficient at the
+nominal center wavelength can introduce substantial radiance errors. The
+PACE simulator therefore includes spectral integration procedures for
+resolving gas absorption within instrument bands
+(\citeproc{ref-Zhai:2022bb}{Zhai et al. 2022}).
+
+FastMAPOL does not necessarily use every wavelength available from the
+instruments. Instead, instrument-dependent wavelength subsets are
+selected to balance information content and computational cost. The
+wavelength configuration may change between algorithm versions. For
+example, four spectral bands are used for HARP2, whereas 34 spectral
+bands are used for SPEXone in both V3 and V4 data
+(Chapter~\ref{sec-data-format}).
+
+The FastMAPOL/component version implementation combines measurements
+from both HARP2 and SPEXone and uses a total of 13 wavelengths.
+
+\[
+\lambda =
+(385,400,410,441,470,490,510,530,549,620,670,740,873)\ {\mathrm nm},
+\]
+
+covering the UV, visible, and near-infrared spectral regions of SPEXone
+and HARP2 (\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024}).
+
+\section{Radiometric quantities generated for
+FastMAPOL}\label{radiometric-quantities-generated-for-fastmapol}
+
+RTSOS can calculate the complete Stokes vector at the TOA, within the
+atmosphere, immediately above or below the ocean surface, and at
+specified depths within the ocean (\citeproc{ref-Zhai:2009aa}{Zhai et
+al. 2009}, \citeproc{ref-Zhai:2022bb}{2022}). FastMAPOL primarily uses
+several derived quantities from these simulations.
+
+The TOA reflectance is defined as
+
+\[
+\rho_t =
+\frac{\pi I_t}{\mu_0 F_0},
+\]
+
+where \(I_t\) is the TOA radiance, \(\mu_0\) is the cosine of the solar
+zenith angle, and \(F_0\) is the extraterrestrial solar irradiance.
+
+The degree of linear polarization is
+
+\[
+P_t =
+\frac{\sqrt{Q_t^2+U_t^2}}{I_t}.
+\]
+
+\section{Atmospheric Correction and Ocean
+Color}\label{atmospheric-correction-and-ocean-color}
+
+In addition to the total TOA signal, RTSOS can perform simulations with
+the ocean-body contribution removed. This produces the reflectance
+associated with the atmosphere and ocean surface,
+\(\rho^{f}_{t,\mathrm{atm+sfc}}\). The water-leaving contribution
+reaching the sensor can therefore be obtained from
+
+\[
+\rho_w = \rho_t-\rho^{f}_{t,\mathrm{atm+sfc}}
+\]
+
+This ability to explicitly label and separate photon contributions is a
+useful property of the RTSOS formulation
+(\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009},
+\citeproc{ref-Zhai:2017aa}{2017}) and provides a physically consistent
+method for atmospheric correction. This approach has been implemented
+with the additional use of NNs to produce FastMAPOL ocean color products
+(\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024};
+\citeproc{ref-Gao:2021aa}{Gao et al. 2021};
+\citeproc{ref-Gao:2026aa}{Gao et al. 2026}).
+
+FastMAPOL also uses RTSOS to calculate quantities required for
+bidirectional reflectance correction. Rather than relying exclusively on
+an empirical BRDF correction, simulations can be performed for the
+retrieved atmosphere--ocean system at both the actual observation
+geometry and a reference geometry (Appendix~\ref{sec-ocean-ac}). This
+permits the angular dependence of the water-leaving radiance to be
+derived consistently from the same radiative transfer physics used in
+the retrieval (\citeproc{ref-Aryal:2024aa}{Aryal et al. 2024};
+\citeproc{ref-Gao:2021aa}{Gao et al. 2021};
+\citeproc{ref-Gao:2026aa}{Gao et al. 2026}). The corresponding products
+are discussed in Chapter~\ref{sec-data-format}.
+
+\section{Additional RTSOS
+capabilities}\label{additional-rtsos-capabilities}
+
+RTSOS contains capabilities that extend beyond those required by the
+current elastic-scattering FastMAPOL retrieval. In ocean waters, the
+model can solve the inelastic vector radiative transfer equation and
+simulate Raman scattering by water as well as fluorescence by
+phytoplankton and dissolved organic matter
+(\citeproc{ref-Zhai:2015aa}{Zhai et al. 2015},
+\citeproc{ref-Zhai:2017ve}{2017}, \citeproc{ref-Zhai:2018hc}{2018}).
+These processes couple radiation at different excitation and emission
+wavelengths and are evaluated using the elastic RTSOS radiation field to
+construct the corresponding inelastic source terms.
+
+These capabilities are useful for hyperspectral ocean-color studies and
+future extensions of FastMAPOL, but they should be distinguished from
+the elastic radiative transfer simulations currently used to generate
+the primary FastMAPOL neural-network training datasets.
+
+\section{Model heritage and application to
+FastMAPOL}\label{model-heritage-and-application-to-fastmapol}
+
+RTSOS has evolved from the original coupled atmosphere--ocean model with
+a flat ocean surface (\citeproc{ref-Zhai:2009aa}{Zhai et al. 2009}) to
+the treatment of a rough ocean interface
+(\citeproc{ref-Zhai:2010aa}{Zhai et al. 2010}), from elastic scattering
+only to inelastic ocean processes (\citeproc{ref-Zhai:2015aa}{Zhai et
+al. 2015}, \citeproc{ref-Zhai:2017ve}{2017}), from plane-parallel to
+improved spherical-shell geometry (\citeproc{ref-Zhai:2022aa}{Zhai and
+Hu 2022}), and monochromatic simulation to the complete PACE instrument
+simulator (\citeproc{ref-Zhai:2022bb}{Zhai et al. 2022}).
+
+Within FastMAPOL, RTSOS provides the high-fidelity physical reference
+from which the neural-network forward models are constructed. The
+resulting framework therefore combines a rigorous coupled
+atmosphere--ocean and atmosphere--land vector radiative transfer model
+with computationally efficient machine-learning emulators, enabling
+simultaneous aerosol, ocean-color, and surface retrievals from PACE
+multi-angle polarimetric observations (\citeproc{ref-Aryal:2024aa}{Aryal
+et al. 2024}, \citeproc{ref-Aryal:2026aa}{2026};
+\citeproc{ref-Gao:2023aa}{Gao et al. 2023};
+\citeproc{ref-Gao:2026aa}{Gao et al. 2026}).
+
+\textbf{Code availability.} The RTSOS code is maintained and developed
+by Pengwang Zhai. The source code and example configurations are
+publicly available through the
+\href{https://github.com/aoog-umbc/rtsos-public}{AOOG/UMBC RTSOS
+repository}. For additional information, please contact Pengwang Zhai
+(\href{mailto:pwzhai@umbc.edu}{\nolinkurl{pwzhai@umbc.edu}}).
 
 \chapter{Radiative Transfer: Spherical Shell
 Correction}\label{sec-rt-shell}
@@ -2850,18 +3237,6 @@ maintaining surface-referenced geometry as the common interface between
 the PACE L1C measurements and the FastMAPOL NN forward models.
 
 \chapter{Retrieval Algorithm: Inversion}\label{sec-retrieval-inversion}
-
-\textbf{Implementation status}
-
-\begin{longtable}[]{@{}lccccc@{}}
-\toprule\noalign{}
-Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
---- & x & x & x & --- & --- \\
-\end{longtable}
 
 FastMAPOL formulates the retrieval as a constrained nonlinear
 least-squares optimization problem. The cost function is defined in
@@ -2941,7 +3316,8 @@ Here, \(\sigma_{\mathrm{ins}}\) represents the instrument measurement
 uncertainty, \(\sigma_{\mathrm{NN}}\) represents the uncertainty
 introduced by the NN approximation of the forward model, and
 \(\sigma_{\mathrm{RT}}\) represents the numerical uncertainty of the RT
-calculations.
+calculations. More discussions on the instrument uncertainties are
+provided in Chapter~\ref{sec-retrieval-unc-model}.
 
 The NN forward-model uncertainties are determined during NN training and
 evaluation (\citeproc{ref-Gao:2021aa}{Gao et al. 2021},
@@ -6408,7 +6784,7 @@ Bio-1 & x & x & x & --- & --- \\
 Bio-2/3 & --- & --- & --- & x & --- \\
 \end{longtable}
 
-\section{Overview}\label{overview-2}
+\section{Overview}\label{overview-3}
 
 FastMAPOL retrieves ocean optical properties by coupling the aerosol
 retrieval with a forward radiative transfer model of ocean inherent
@@ -6668,8 +7044,7 @@ derived from observations (\citeproc{ref-Aryal:2024aa}{Aryal et al.
 2024}, \citeproc{ref-Aryal:2026aa}{2026};
 \citeproc{ref-Hannadige:2023aa}{Hannadige et al. 2023}).
 
-\chapter{Ocean: Multi-angle Atmospheric
-Correction}\label{ocean-multi-angle-atmospheric-correction}
+\chapter{Ocean: Multi-angle Atmospheric Correction}\label{sec-ocean-ac}
 
 \textbf{Implementation status}
 
@@ -7293,11 +7668,23 @@ for large-scale bound-constrained minimization problems. \emph{SIAM
 Journal on Scientific Computing}, \textbf{21}, (1), 1--23.
 \url{https://doi.org/10.1137/S1064827595289108}.
 
+\bibitem[\citeproctext]{ref-Burrows:1998aa}
+BURROWS et al. 1998. ATMOSPHERIC REMOTE-SENSING REFERENCE DATA FROM
+GOME: PART 1. TEMPERATURE-DEPENDENT ABSORPTION CROSS-SECTIONS OF NO2 IN
+THE 231â794 nm RANGE. \emph{Journal of Quantitative Spectroscopy and
+Radiative Transfer}, \textbf{60}, (6), 1025--1031.
+https://doi.org/\url{https://doi.org/10.1016/S0022-4073(97)00197-0}.
+
 \bibitem[\citeproctext]{ref-Chin:2000aa}
 Chin et al. 2000. Atmospheric sulfur cycle simulated in the global model
 GOCART: Model description and global properties. \emph{Journal of
 Geophysical Research: Atmospheres}, \textbf{105}, (D20), 24671--24687.
 https://doi.org/\url{https://doi.org/10.1029/2000JD900384}.
+
+\bibitem[\citeproctext]{ref-Cox:1954aa}
+Cox and Munk. 1954. {Measurement of the Roughness of the Sea Surface
+from Photographs of the Sun's Glitter}. \emph{J. Opt. Soc. Am.},
+\textbf{44}, (11), 838--850.
 
 \bibitem[\citeproctext]{ref-DAlimonte:2025aa}
 D'Alimonte et al. 2025. Comparison of correction methods for
@@ -7396,6 +7783,12 @@ Gelaro et al. 2017. The modern-era retrospective analysis for research
 and applications, version 2 (MERRA-2). \emph{Journal of Climate},
 \textbf{30}, (14), 5419--5454.
 \url{https://doi.org/10.1175/JCLI-D-16-0758.1}.
+
+\bibitem[\citeproctext]{ref-Gordon:2022aa}
+Gordon et al. 2022. The HITRAN2020 molecular spectroscopic database.
+\emph{Journal of Quantitative Spectroscopy and Radiative Transfer},
+\textbf{277}, 107949.
+https://doi.org/\url{https://doi.org/10.1016/j.jqsrt.2021.107949}.
 
 \bibitem[\citeproctext]{ref-Hannadige:2023aa}
 Hannadige et al. 2023. Performance evaluation of three bio-optical
@@ -7552,6 +7945,12 @@ data products: An ocean color case study. \emph{Opt. Express},
 \textbf{26}, (6), 7404--7422.
 \url{https://doi.org/10.1364/OE.26.007404}.
 
+\bibitem[\citeproctext]{ref-Serdyuchenko:2014aa}
+Serdyuchenko et al. 2014. High spectral resolution ozone absorption
+cross-sections \&ndash; part 2: Temperature dependence.
+\emph{Atmospheric Measurement Techniques}, \textbf{7}, (2), 625--636.
+\url{https://doi.org/10.5194/amt-7-625-2014}.
+
 \bibitem[\citeproctext]{ref-Strahler:1999aa}
 Strahler et al. 1999.
 \href{https://modis.gsfc.nasa.gov/data/atbd/atbd_mod09.pdf}{{MODIS
@@ -7576,6 +7975,11 @@ Scientific Computing in Python}. \emph{Nature Methods}, \textbf{17},
 \bibitem[\citeproctext]{ref-Voss:1984aa}
 Voss and Fry. 1984. {Measurement of the Mueller matrix for ocean water}.
 \emph{Applied Optics}, \textbf{23}, (23), 4427--4439.
+
+\bibitem[\citeproctext]{ref-Wiscombe:1977aa}
+Wiscombe. 1977. The delta--m method: Rapid yet accurate radiative flux
+calculations for strongly asymmetric phase functions. \emph{Journal of
+Atmospheric Sciences}, \textbf{34}, 1408--1422.
 
 \bibitem[\citeproctext]{ref-Wu:2015aa}
 Wu et al. 2015. Aerosol retrieval from multiangle, multispectral
@@ -7611,10 +8015,20 @@ Zhai et al. 2015. {Contribution of Raman scattering to polarized
 radiation field in ocean waters}. \emph{Optics Express}, \textbf{23},
 (18), 23582--23596.
 
+\bibitem[\citeproctext]{ref-Zhai:2017ve}
+Zhai et al. 2017. {Vector radiative transfer model for coupled
+atmosphere and ocean systems including inelastic sources in ocean
+waters}. \emph{Optics Express}, \textbf{25}, (8), A223--A239.
+
 \bibitem[\citeproctext]{ref-Zhai:2017aa}
 Zhai et al. 2017. {Water-leaving contribution to polarized radiation
 field over ocean}. \emph{Optics Express}, \textbf{25}, (16), A689--A708.
 https://doi.org/\url{DOI:https://doi.org/10.1364/OE.25.00A689}.
+
+\bibitem[\citeproctext]{ref-Zhai:2018hc}
+Zhai et al. 2018. Radiative transfer modeling of phytoplankton
+fluorescence quenching processes. \emph{Remote Sensing}, \textbf{10},
+(8), 1309. \url{https://doi.org/10.3390/rs10081309}.
 
 \bibitem[\citeproctext]{ref-Zhai:2022bb}
 Zhai et al. 2022. A radiative transfer simulator for PACE: Theory and

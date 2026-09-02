@@ -76,7 +76,6 @@ book:
     - index.md
     - chapters/fastmapol_summary.md
     - chapters/fastmapol_retrieval.md
-    - chapters/fastmapol_retrieval_uncertainty.md
     - chapters/fastmapol_product_general.md
     - chapters/fastmapol_product_quality.md
     - chapters/fastmapol_validation_spexone_v3.md
@@ -88,6 +87,7 @@ book:
     - chapters/fastmapol_pace_simulator.md
     - chapters/fastmapol_rt_shell.md
     - chapters/fastmapol_retrieval_inversion.md
+    #- chapters/fastmapol_retrieval_uncertainty.md
     - chapters/fastmapol_retrieval_screening.md
     - chapters/fastmapol_nn_model.md
     - chapters/fastmapol_nn_ad.md
