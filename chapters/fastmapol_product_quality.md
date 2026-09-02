@@ -104,7 +104,7 @@ The appropriate quality filtering depends on the application. Restricting an ana
 
 For quantitative validation and comparisons with independent datasets, `quality_flag = 0` provides the most stringent selection and is generally preferred when sufficient matchup samples are available. This helps reduce the potential influence of poorly fitted or weakly constrained FastMAPOL retrievals on the comparison.
 
-However, restricting an analysis to `quality_flag = 0` can substantially reduce the number of available matchups and may also change their spatial and environmental distribution. Including `quality_flag = 1` can provide a useful balance between retrieval quality and sampling. For applications where spatial coverage is particularly important, retrievals with `quality_flag = 0`, `1`, or `2` may be considered, depending on the required level of accuracy.
+However, restricting an analysis to `quality_flag = 0` can substantially reduce the number of available matchups and may also change their spatial distribution. Including `quality_flag = 1` can provide a useful balance between retrieval quality and sampling. For applications where spatial coverage is particularly important, retrievals with `quality_flag = 0`, `1`, or `2` may be considered, depending on the required level of accuracy.
 
 A useful general strategy is:
 
