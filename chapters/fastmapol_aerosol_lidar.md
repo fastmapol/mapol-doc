@@ -1,4 +1,4 @@
-# Aerosol Characterization: Lidar ratio and depolarization
+# Aerosol: Lidar Ratio and Depolarization {#sec-lidar-ratio}
 
 **Implementation status**
 
@@ -8,25 +8,13 @@
 
 ## Overview
 
-The aerosol retrieval framework provides extinction and scattering properties together with the angular scattering phase matrix. These quantities can be used to derive lidar observables, in particular the **lidar ratio** and the **linear depolarization ratio**.
+The aerosol retrieval framework provides extinction and scattering properties together with the angular scattering phase matrix. These quantities can be used to derive lidar observables, in particular the **lidar ratio** and the **linear depolarization ratio** . The corresponding variable in the V4 products are `aerosol_lidar_ratio` and `aerosol_depol_ratio` as summarized in @sec-data-format.
 
 This chapter summarizes the mathematical connection between the retrieved aerosol optical properties and the lidar-relevant quantities. The focus here is on the forward relationships from extinction and phase matrix elements to the lidar ratio and depolarization, for total aerosol as well as for fine and coarse aerosol partitions.
 
 ## Scattering and extinction quantities
 
-For a given aerosol population, let
-
-$$
-C_{ext}
-$$
-
-denote the extinction coefficient or extinction cross section, and let
-
-$$
-C_{sca}
-$$
-
-denote the scattering coefficient or scattering cross section.
+For a given aerosol population, let $C_{ext}$ denote the extinction coefficient or extinction cross section, and let $C_{sca}$ denote the scattering coefficient or scattering cross section.
 
 The single-scattering albedo is defined as
 
@@ -52,12 +40,7 @@ Although the single-scattering albedo is not itself a lidar product, it provides
 
 ## Phase matrix and backscattering geometry
 
-The scattering properties of the aerosol are described by the phase matrix, written here as
-
-$$
-\mathbf{P}(\Theta),
-$$
-
+The scattering properties of the aerosol are described by the phase matrix, written here as $\mathbf{P}(\Theta)$, 
 where $\Theta$ is the scattering angle. In the standard convention for randomly oriented particles with mirror symmetry, the phase matrix contains elements such as
 
 $$

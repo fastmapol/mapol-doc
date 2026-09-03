@@ -1,50 +1,16 @@
-# Aerosol Characterization: Backscattering fraction and its relation to lidar ratio and single-scattering albedo
+# Aerosol: Lidar Ratio and Backscattering {#sec-lidar-backscattering}
+
+**Implementation status**
+
+| Model| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+| --- |:---:|:---:|:---:|:---:|:---:|
+| — | — | — | x | — | — |
 
 ## Overview
 
 The aerosol retrieval framework provides extinction and scattering properties together with the angular scattering phase matrix. These quantities determine the strength of the backscattered signal measured by a lidar system. In addition to the lidar ratio and depolarization ratio, another useful diagnostic quantity is the **backscattering fraction**, which quantifies the relative strength of scattering into the exact backscattering direction compared to the total scattering.
 
 This chapter summarizes the mathematical relationship between the **lidar ratio**, the **single-scattering albedo**, and the **backscattering fraction**. The focus is on the forward relationships linking extinction, scattering, and backscatter quantities, and on the interpretation of these quantities for total aerosol as well as for fine and coarse aerosol partitions.
-
----
-
-## Scattering and extinction quantities
-
-For a given aerosol population, let
-
-$$
-C_{ext}
-$$
-
-denote the extinction coefficient or extinction cross section, and let
-
-$$
-C_{sca}
-$$
-
-denote the scattering coefficient or scattering cross section.
-
-The single-scattering albedo is defined as
-
-$$
-\omega_0 = \frac{C_{sca}}{C_{ext}}.
-$$
-
-For a partitioned aerosol model, the same definition applies separately to the fine mode, coarse mode, and total aerosol:
-
-$$
-\omega_{0,f} = \frac{C_{sca,f}}{C_{ext,f}},
-$$
-
-$$
-\omega_{0,c} = \frac{C_{sca,c}}{C_{ext,c}},
-$$
-
-$$
-\omega_{0} = \frac{C_{sca}}{C_{ext}}.
-$$
-
-The single-scattering albedo describes the relative contribution of scattering to extinction. Although it is not itself a lidar observable, it provides an important link between extinction and backscatter quantities.
 
 ---
 

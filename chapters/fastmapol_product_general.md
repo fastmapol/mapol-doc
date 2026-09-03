@@ -87,14 +87,18 @@ The geophysical group contains aerosol optical properties, aerosol microphysical
 | `aot` | (`number_of_lines`, `pixels_per_line`, `wavelength`) | Aerosol optical depth |
 | `aot_fine` | (`number_of_lines`, `pixels_per_line`, `wavelength`) | Fine-mode aerosol optical depth |
 | `aot_coarse` | (`number_of_lines`, `pixels_per_line`, `wavelength`) | Coarse-mode aerosol optical depth |
+| `fmf` | (`number_of_lines`, `pixels_per_line`) | Fine-mode aerosol optical depth fraction |
+| `angstrom_440_870` | (`number_of_lines`, `pixels_per_line`) | Ångström exponent (440–870 nm) |
+| `angstrom_440_670` | (`number_of_lines`, `pixels_per_line`) | Ångström exponent (440–670 nm) |
 | `ssa` | (`number_of_lines`, `pixels_per_line`, `wavelength`) | Aerosol single-scattering albedo |
 | `ssa_fine` | (`number_of_lines`, `pixels_per_line`, `wavelength`) | Fine-mode single-scattering albedo |
 | `ssa_coarse` | (`number_of_lines`, `pixels_per_line`, `wavelength`) | Coarse-mode single-scattering albedo |
-| `angstrom_440_870` | (`number_of_lines`, `pixels_per_line`) | Ångström exponent (440–870 nm) |
-| `angstrom_440_670` | (`number_of_lines`, `pixels_per_line`) | Ångström exponent (440–670 nm) |
-| `fmf` | (`number_of_lines`, `pixels_per_line`) | Fine-mode aerosol optical depth fraction |
+| `aerosol_lidar_ratio` | (`number_of_lines`, `pixels_per_line`, `wavelength`) | Aerosol lidar ratio |
+| `aerosol_depol_ratio` | (`number_of_lines`, `pixels_per_line`, `wavelength`) | Aerosol depolarization ratio |
 
-These parameters describe aerosol optical loading and spectral behavior. Note that Ångström exponent (440-870 nm) is only available for HARP2 data since SPEXone do not have 870nm band. 
+These parameters (`aot`,`angstrom`,`fmf`) describe aerosol optical loading and spectral behavior. Note that Ångström exponent (440-870 nm) is only available for HARP2 data since SPEXone do not have 870nm band. Single scattering albedo (`ssa`) describe aerosol absorption property.
+
+Two new variables are added to V4 data including `aerosol_lidar_ratio` and `aerosol_depol_ratio`, for the comparison with lidar products. 
 
 ### Aerosol Microphysical Properties
 
