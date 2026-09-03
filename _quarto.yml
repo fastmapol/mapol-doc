@@ -101,9 +101,9 @@ book:
     - chapters/fastmapol_aerosol_inversion.md
     - chapters/fastmapol_model_ocean.md
     - chapters/fastmapol_ocean_color.md
-    #- chapters/fastmapol_model_land.md
     - chapters/fastmapol_model_land_summary.md
     - chapters/fastmapol_model_land_detail.md
+    - chapters/reference.md
 
 # --------------------------------------------------
 # Author affiliations

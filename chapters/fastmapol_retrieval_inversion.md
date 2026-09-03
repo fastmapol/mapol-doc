@@ -1,4 +1,4 @@
-# Retrieval Algorithm: Inversion {#sec-retrieval-inversion}
+# Retrieval: Inversion Algorithm {#sec-retrieval-inversion}
 
  
 

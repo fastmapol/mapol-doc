@@ -152,18 +152,14 @@ The polarized component of land surface reflection is represented by a BPDF base
 
 The current implementation assumes a surface refractive index of
 
-$$$
-
+$$
 n = 1.5 + 0i.
-
 $$
 
 For this refractive index, the normal-incidence Fresnel reflectance is approximately
 
 $$
-
 \left(\frac{n-1}{n+1}\right)^2 \approx 0.04.
-
 $$
 
 The magnitude of the polarized contribution is controlled by the retrieved parameter $B_{\mathrm{pol}}$.

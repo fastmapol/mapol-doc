@@ -298,8 +298,8 @@ Color \textperiodcentered\ Land \\
 \textbf{Website} &
 %%\href{https://fastmapol.github.io/mapol-doc/}{FastMAPOL ATBD} \\
 \url{https://fastmapol.github.io/mapol-doc/} \\
-\textbf{Version} & 0.2 \\
-\textbf{Date} & 2026-09-02 \\
+\textbf{Version} & 0.3 \\
+\textbf{Date} & 2026-09-03 \\
 \end{tabular}%
 }%
 }
@@ -365,7 +365,7 @@ information.
 \textbf{Keywords} & PACE · FastMAPOL · Multi-angle Polarimetry · Aerosol
 · Ocean Color · Land \\
 \textbf{Website} & \url{https://fastmapol.github.io/mapol-doc/} \\
-\textbf{Version} & 0.2 \\
+\textbf{Version} & 0.3 \\
 \end{longtable}
 
 \section*{How to Cite}\label{how-to-cite}
@@ -378,7 +378,7 @@ When using or referring to FastMAPOL ATBD, please cite this document as:
 Gao, M., P. Zhai, K. Aryal, K. Knobelspiesse, and B. Franz.
 \emph{FastMAPOL Algorithm Theoretical Basis Document: Coupled Aerosol,
 Ocean, and Land Retrievals from PACE Multi-Angle Polarimetry}. NASA
-Goddard Space Flight Center, Version 0.2, 2026.
+Goddard Space Flight Center, Version 0.3, 2026.
 \textless{}https://fastmapol.github.io/mapol-doc/\textgreater{}
 \end{quote}
 
@@ -1318,13 +1318,12 @@ The input uncertainty model used in the retrieval cost function accounts
 for instrument measurement uncertainty, NN forward-model approximation,
 and numerical uncertainty in the radiative transfer (RT) simulations
 used for NN training. The RT and NN contributions are characterized
-based on the RT configuration and NN training performance
-(\citeproc{ref-Gao:2021aa}{Gao et al. 2021},
-\citeproc{ref-Gao:2022aa}{2022}).
+based on the RT configuration and NN training performance.
 
 Instrument uncertainties are based on instrument characteristics and
-calibration information provided by the instrument teams. The current
-FastMAPOL retrievals (both V3 and V4) adopt:
+calibration information provided by the instrument teams. All FastMAPOL
+retrievals adopt the following values with discussions in
+Appendix~\ref{sec-retrieval-unc-model}:
 
 \begin{longtable}[]{@{}lrr@{}}
 \toprule\noalign{}
@@ -1336,15 +1335,6 @@ Instrument & Reflectance uncertainty & DoLP uncertainty \\
 HARP2 v1 & 3\% & 0.005 \\
 SPEXone v1 & 2\% & 0.003 \\
 \end{longtable}
-
-Reflectance uncertainty is relative, whereas DoLP uncertainty is
-absolute. These uncertainties are combined to weight the observations in
-the retrieval cost function.
-
-Note that \textbf{v1} denotes the current instrument uncertainty model
-used in the retrievals. These uncertainty models may be updated in the
-future to reflect changes in instrument characterization or calibration
-provided by the instrument teams.
 
 \section{Data screening and uncertainty
 quantifization}\label{data-screening-and-uncertainty-quantifization}
@@ -1569,6 +1559,12 @@ optical depth \\
 \texttt{aot\_coarse} & (\texttt{number\_of\_lines},
 \texttt{pixels\_per\_line}, \texttt{wavelength}) & Coarse-mode aerosol
 optical depth \\
+\texttt{fmf} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
+& Fine-mode aerosol optical depth fraction \\
+\texttt{angstrom\_440\_870} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Ångström exponent (440--870 nm) \\
+\texttt{angstrom\_440\_670} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}) & Ångström exponent (440--670 nm) \\
 \texttt{ssa} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line},
 \texttt{wavelength}) & Aerosol single-scattering albedo \\
 \texttt{ssa\_fine} & (\texttt{number\_of\_lines},
@@ -1577,17 +1573,23 @@ single-scattering albedo \\
 \texttt{ssa\_coarse} & (\texttt{number\_of\_lines},
 \texttt{pixels\_per\_line}, \texttt{wavelength}) & Coarse-mode
 single-scattering albedo \\
-\texttt{angstrom\_440\_870} & (\texttt{number\_of\_lines},
-\texttt{pixels\_per\_line}) & Ångström exponent (440--870 nm) \\
-\texttt{angstrom\_440\_670} & (\texttt{number\_of\_lines},
-\texttt{pixels\_per\_line}) & Ångström exponent (440--670 nm) \\
-\texttt{fmf} & (\texttt{number\_of\_lines}, \texttt{pixels\_per\_line})
-& Fine-mode aerosol optical depth fraction \\
+\texttt{aerosol\_lidar\_ratio} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Aerosol lidar
+ratio \\
+\texttt{aerosol\_depol\_ratio} & (\texttt{number\_of\_lines},
+\texttt{pixels\_per\_line}, \texttt{wavelength}) & Aerosol
+depolarization ratio \\
 \end{longtable}
 
-These parameters describe aerosol optical loading and spectral behavior.
-Note that Ångström exponent (440-870 nm) is only available for HARP2
-data since SPEXone do not have 870nm band.
+These parameters (\texttt{aot},\texttt{angstrom},\texttt{fmf}) describe
+aerosol optical loading and spectral behavior. Note that Ångström
+exponent (440-870 nm) is only available for HARP2 data since SPEXone do
+not have 870nm band. Single scattering albedo (\texttt{ssa}) describe
+aerosol absorption property.
+
+Two new variables are added to V4 data including
+\texttt{aerosol\_lidar\_ratio} and \texttt{aerosol\_depol\_ratio}, for
+the comparison with lidar products.
 
 \subsection{Aerosol Microphysical
 Properties}\label{aerosol-microphysical-properties}
@@ -3211,7 +3213,7 @@ the spherical-shell geometry of the Earth--atmosphere system while
 maintaining surface-referenced geometry as the common interface between
 the PACE L1C measurements and the FastMAPOL NN forward models.
 
-\chapter{Retrieval Algorithm: Inversion}\label{sec-retrieval-inversion}
+\chapter{Retrieval: Inversion Algorithm}\label{sec-retrieval-inversion}
 
 FastMAPOL formulates the retrieval as a constrained nonlinear
 least-squares optimization problem. The cost function is defined in
@@ -3292,7 +3294,7 @@ uncertainty, \(\sigma_{\mathrm{NN}}\) represents the uncertainty
 introduced by the NN approximation of the forward model, and
 \(\sigma_{\mathrm{RT}}\) represents the numerical uncertainty of the RT
 calculations. More discussions on the instrument uncertainties are
-provided in \textbf{?@sec-retrieval-unc-model}.
+provided in Appendix~\ref{sec-retrieval-unc-model}.
 
 The NN forward-model uncertainties are determined during NN training and
 evaluation (\citeproc{ref-Gao:2021aa}{Gao et al. 2021},
@@ -3432,7 +3434,66 @@ and can be evaluated using the Jacobian and error covariance matrices
 \citeproc{ref-Gao:2026aa}{2026}; \citeproc{ref-Gao:2023bb}{Gao et al.
 2023}).
 
-\chapter{Retrieval Algorithm: Adaptive Multi-angle Data
+\chapter{Retrieval: Input Uncertainty
+Model}\label{sec-retrieval-unc-model}
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+HARP2 & x & x & x & --- & --- \\
+SPEXone & --- & x & x & --- & --- \\
+\end{longtable}
+
+As discussed in Chapter~\ref{sec-retrieval} and later in Appendix
+Appendix~\ref{sec-retrieval-inversion}, measurement uncertainties are
+used to weight the observations in the retrieval cost function. The
+uncertainty model accounts for contributions from instrument measurement
+uncertainty, NN forward-model approximation, and numerical uncertainty
+in the radiative transfer (RT) simulations used to generate the NN
+training dataset.
+
+The RT and NN contributions are evaluated based on factors such as the
+RT model configuration, the number of Gaussian quadrature points and
+scattering orders, and the size and performance of the NN training
+dataset (\citeproc{ref-Gao:2021aa}{Gao et al. 2021}).
+
+Instrument measurement uncertainties depend on the characteristics and
+calibration performance of each instrument and are based on information
+provided by the instrument teams. For the current FastMAPOL retrievals
+used in all the previous versions and studies {[}Gao et al.
+(\citeproc{ref-Gao:2021aa}{2021}); Gao:2023aa; Gao et al.
+(\citeproc{ref-Gao:2026aa}{2026}){]}, the following measurement
+uncertainties are adopted:
+
+\begin{longtable}[]{@{}lrr@{}}
+\toprule\noalign{}
+Instrument & Reflectance uncertainty & DoLP uncertainty \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+HARP2 & 3\% & 0.005 \\
+SPEXone & 2\% & 0.003 \\
+\end{longtable}
+
+The reflectance uncertainty is specified as a relative uncertainty,
+whereas the DoLP uncertainty is specified as an absolute uncertainty.
+These values are used in constructing the measurement uncertainty terms
+that weight the corresponding observations in the retrieval cost
+function.
+
+Note that above table denotes the current instrument uncertainty model
+used in the retrievals. These uncertainty models may be updated in the
+future to reflect changes in instrument characterization or calibration
+provided by the instrument teams.
+
+\chapter{Retrieval: Adaptive Multi-angle Data
 Screening}\label{sec-data-screening}
 
 \textbf{Implementation status}
@@ -7193,324 +7254,192 @@ Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
 --- & --- & --- & x & --- & --- \\
 \end{longtable}
 
-This document describes the mathematical formulation of the land surface
-reflectance model implemented in the \textbf{PACE simulator}.
+FastMAPOL NNs are trained from the RTSOS (Appendix~\ref{sec-rt-model})
+with the land surface reflectance model represents both the angular
+dependence and polarization of reflected radiation from the land
+surface. The model combines:
 
-The model combines: - Ross--Li kernel-driven BRDF\\
-- Polarized bidirectional reflectance distribution function (BPDF)\\
-- Fresnel reflection physics
+\begin{itemize}
+\tightlist
+\item
+  the Ross--Li kernel-driven bidirectional reflectance distribution
+  function (BRDF);
+\item
+  a polarized bidirectional reflectance distribution function (BPDF);
+  and
+\item
+  Fresnel reflection physics.
+\end{itemize}
 
-The output is a \textbf{4×4 Mueller matrix} describing polarized surface
-reflection.
+The resulting surface reflection is represented by a \textbf{4 × 4
+Mueller matrix} and is implemented in the PACE simulator for radiative
+transfer simulations.
 
-\section{Surface Reflectance Model}\label{surface-reflectance-model}
+Detailed geometry conventions and mathematical formulations of the
+individual kernels are provided in Appendix~\ref{sec-land-model-math}.
 
-The bidirectional reflectance distribution matrix \(\mathbf{R}\) of land
-surface converts the downwelling irradiance vector \(\mathbf{F}_s\) to
-upwelling radiance vector \(\mathbf{I}\) by:
+\section{Surface Reflectance
+Representation}\label{surface-reflectance-representation}
+
+The bidirectional reflectance distribution matrix \(\mathbf{R}\)
+converts the downwelling irradiance vector \(\mathbf{F}_s\) to the
+reflected radiance vector \(\mathbf{I}\):
 
 \[
-\mathbf{I}(\theta_v,\phi_v)= \frac{1}{\pi}\mathbf{R}(\theta_s,\theta_v,\phi_r) \\, |\cos\theta_s| \\, \mathbf{F}_s(\theta_s,\phi_s) 
+\mathbf{I}(\theta_v,\phi_v)
+=
+\frac{1}{\pi}
+\mathbf{R}(\theta_s,\theta_v,\phi_r)
+|\cos\theta_s|
+\mathbf{F}_s(\theta_s,\phi_s),
 \]
 
-where \(\theta\) and \(\phi\) are the zenith and azimuth angles,
-respectively; the subscripts \(s\) and \(v\) denote the incident and
-reflected directions, respectively; \(\phi_r=\phi_v-\phi_s\) is the
-relative azimuth angle of the reflected and incident directions.
-
-In the FastMAPOL algorithm the matrix \(\mathbf{R}\) is modeled by:
+where \(\theta\) and \(\phi\) denote zenith and azimuth angles,
+respectively; subscripts \(s\) and \(v\) denote the incident and viewing
+directions; and
 
 \[
-\mathbf{R}(\theta_s,\theta_v,\phi_r) =
+\phi_r = \phi_v-\phi_s
+\]
+
+is the relative azimuth angle.
+
+The surface reflection matrix is represented as
+
+\[
+\mathbf{R}(\theta_s,\theta_v,\phi_r)
+=
 \left[
-f_{iso}
+f_{\mathrm{iso}}
 +
-f_{vol} K_{vol}(\theta_s,\theta_v,\phi_r)
+f_{\mathrm{vol}}K_{\mathrm{vol}}
 +
-f_{geo} K_{geo}(\theta_s,\theta_v,\phi_r)
+f_{\mathrm{geo}}K_{\mathrm{geo}}
 \right]\mathbf{E}
 +
-B_{pol}\mathbf{K}_{pol}
+B_{\mathrm{pol}}\mathbf{K}_{\mathrm{pol}},
 \]
 
-where \(\mathbf{E}\) is the 4 \(\times\) 4 null matrix except for
-\(E_{11}=1\),
+where
 
 \[
-\mathbf{E} =
+\mathbf{E}
+=
 \begin{bmatrix}
 1 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0
-\end{bmatrix}
+\end{bmatrix}.
 \]
 
-\(\mathbf{K}_{pol}\) is the polarization Kernel proportional to the
-Fresnel reflection matrix.
+The first term represents the scalar Ross--Li BRDF and consists of three
+components:
 
-\subsection{Scaled Parameter Formulation (Training
-Representation)}\label{scaled-parameter-formulation-training-representation}
+\begin{itemize}
+\tightlist
+\item
+  \(f_{\mathrm{iso}}\): isotropic reflectance;
+\item
+  \(f_{\mathrm{vol}}K_{\mathrm{vol}}\): volumetric scattering, primarily
+  representing vegetation-canopy effects; and
+\item
+  \(f_{\mathrm{geo}}K_{\mathrm{geo}}\): geometric-optical scattering
+  associated with surface structure and shadowing.
+\end{itemize}
 
-For parameter sampling (e.g., in neural network training), a scaled
-formulation is used to reduce the number of free parameters and capture
-main physics:
+The second term,
 
 \[
-\mathbf{R}(\theta_s,\theta_v,\phi_r) =
+B_{\mathrm{pol}}\mathbf{K}_{\mathrm{pol}},
+\]
+
+represents polarized surface reflection. The polarization kernel
+\(\mathbf{K}_{\mathrm{pol}}\) is based on Fresnel reflection following
+Maignan et al. (\citeproc{ref-Maignan:2009aa}{2009}), while
+\(B_{\mathrm{pol}}\) controls its magnitude.
+
+\section{FastMAPOL Parameterization}\label{fastmapol-parameterization}
+
+For parameter sampling and neural-network training, FastMAPOL uses a
+scaled representation that reduces the number of independent surface
+parameters:
+
+\[
+\mathbf{R}(\theta_s,\theta_v,\phi_r)
+=
+f_{\mathrm{iso}}(\lambda)
 \left[
-f_{iso}(\lambda)
-\left(
 1
 +
-k_{vol} K_{vol}
+k_{\mathrm{vol}}K_{\mathrm{vol}}
 +
-k_{geo} K_{geo}
-\right)
+k_{\mathrm{geo}}K_{\mathrm{geo}}
 \right]\mathbf{E}
 +
-B_{pol}\mathbf{K}_{pol}
+B_{\mathrm{pol}}\mathbf{K}_{\mathrm{pol}}.
 \]
 
-where - \(f_{iso}(\lambda)\) is spectrally dependent, and - \(k_{vol}\)
-and \(k_{geo}\) are spectrally invariant
-
-The relationship to the physical parameters is:
+The corresponding Ross--Li coefficients are
 
 \[
-f_{vol}(\lambda) = f_{iso}(\lambda) \times k_{vol}
+f_{\mathrm{vol}}(\lambda)
+=
+f_{\mathrm{iso}}(\lambda)k_{\mathrm{vol}},
 \]
+
+and
 
 \[
-f_{geo}(\lambda) = f_{iso}(\lambda) \times k_{geo}
+f_{\mathrm{geo}}(\lambda)
+=
+f_{\mathrm{iso}}(\lambda)k_{\mathrm{geo}}.
 \]
 
-\subsection{Parameter Definitions}\label{parameter-definitions}
+In this representation, \(f_{\mathrm{iso}}(\lambda)\) is spectrally
+dependent, whereas \(k_{\mathrm{vol}}\) and \(k_{\mathrm{geo}}\) are
+assumed to be spectrally invariant.
 
-\begin{longtable}[]{@{}ll@{}}
+The primary FastMAPOL surface parameters are:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3253}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1928}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4819}}@{}}
 \toprule\noalign{}
-Parameter & Description \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Parameter
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Product variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\(\theta_s\) & solar zenith angle \\
-\(\phi_s\) & solar azimuth angle \\
-\(\theta_v\) & viewing zenith angle \\
-\(\phi_v\) & viewing azimuth angle \\
-\(\phi_r=\phi_v-\phi_s\) & relative azimuth angle \\
-\(f_{iso}(\lambda)\) & isotropic reflectance coefficient \\
-\(f_{vol}(\lambda)\) & volumetric scattering coefficient \\
-\(f_{geo}(\lambda)\) & geometric scattering coefficient \\
-\(k_{vol}\) & scaled volumetric scattering coefficient \\
-\(k_{geo}\) & scaled geometric scattering coefficient \\
-\(B_{pol}\) & polarization scaling parameter \\
+\(f_{\mathrm{iso}}(\lambda)\) & \texttt{land\_fiso} & isotropic
+reflectance coefficient \\
+\(k_{\mathrm{vol}}\) & \texttt{land\_kvol} & scaled
+volumetric-scattering coefficient \\
+\(k_{\mathrm{geo}}\) & \texttt{land\_kgeo} & scaled geometric-scattering
+coefficient \\
+\(B_{\mathrm{pol}}\) & \texttt{land\_bp} & polarization scaling
+parameter \\
 \end{longtable}
 
-Here, the retrieved \(f_{\mathrm{iso}}\), \(k_{\mathrm{vol}}\),
-\(k_{\mathrm{geo}}\), and \(B_{\mathrm{pol}}\) parameters are reported
-in the product file as \texttt{land\_fiso}, \texttt{land\_kvol},
-\texttt{land\_kgeo}, and \texttt{land\_bp}, respectively.
-
-\subsection{Geometry Definition}\label{geometry-definition}
-
-Define cosine terms:
-
-\[
-\mu_s = \cos\theta_s
-\]
-
-\[
-\mu_v = \cos\theta_v
-\]
-
-Sine terms:
-
-\[
-\sin\theta_s = \sqrt{1-\mu_s^2}
-\]
-
-\[
-\sin\theta_v = \sqrt{1-\mu_v^2}
-\]
-
-Relative azimuth:
-
-\[
-\phi_r = \phi_v - \phi_s
-\]
-
-\subsection{RTSOS Geometry Convention}\label{rtsos-geometry-convention}
-
-The model follows the \textbf{RTSOS light ray convention}, i.e., the
-zenith and azimuth angles are associated with the directional vector of
-the ligh ray.
-
-\subsubsection{Geometry Definitions}\label{geometry-definitions}
-
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
-Quantity & RTSOS definition \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-solar zenith & \(\theta_s > 90^\circ\) \\
-solar azimuth & \(\phi_s = 0\) \\
-viewing zenith & \(\theta_v < 90^\circ\) \\
-relative azimuth & \(\phi_r = \phi_v - \phi_s\) \\
-\end{longtable}
-
-\subsubsection{Scattering Planes}\label{scattering-planes}
-
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
-Condition & Geometry \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\(\phi_r = 0\) & forward scattering \\
-\(\phi_r = \pi\) & backscattering \\
-\end{longtable}
-
-\subsubsection{Scattering Angle}\label{scattering-angle}
-
-The scattering angle between illumination and viewing directions is
-
-\[
-\cos\Theta =
-\mu_s\mu_v +
-\sqrt{1-\mu_s^2}\sqrt{1-\mu_v^2}\cos(\phi_r)
-\]
-
-The phase angle used in BRDF models is
-
-\[
-\Theta_{phase} = \pi - \Theta
-\]
-
-\section{Ross Volumetric Kernel}\label{ross-volumetric-kernel}
-
-The volumetric kernel represents multiple scattering within vegetation
-canopies {[}Roujean et al. (\citeproc{ref-Roujean:1992aa}{1992});
-Wanner@1995aa; Strahler:1999aa){]}.
-
-\[
-K_{vol} =
-\frac{\left(\frac{\pi}{2}-\Theta_{phase}\right)\cos\Theta_{phase} + \sin\Theta_{phase}}
-{|\mu_s| + |\mu_v|}-\frac{\pi}{4}
-\]
-
-\section{Li Geometric Kernel
-(Li-Sparse-R)}\label{li-geometric-kernel-li-sparse-r}
-
-Define tangent terms:
-
-\[
-|\tan\theta_s| = \frac{\sqrt{1-\mu_s^2}}{|\mu_s|}
-\]
-
-\[
-|\tan\theta_v| = \frac{\sqrt{1-\mu_v^2}}{|\mu_v|}
-\]
-
-Projected angles:
-
-\[
-\theta'_s = \tan^{-1}(B/R \cdot |\tan\theta_s|)
-\]
-
-\[
-\theta'_v = \tan^{-1}(B/R \cdot |\tan\theta_v|)
-\]
-
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
-Parameter & Meaning \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\(B/R\) & vertical-to-horizontal crown ratio \\
-\end{longtable}
-
-\subsection{Projected Phase Angle}\label{projected-phase-angle}
-
-\[
-\cos\xi =
-\cos\theta'_s\cos\theta'_v +
-\sin\theta'_s\sin\theta'_v\cos(\phi_r+\pi)
-\]
-
-\subsection{Projected Distance}\label{projected-distance}
-
-\[
-D =
-\sqrt{
-\tan^2\theta'_s +
-\tan^2\theta'_v -
-2\tan\theta'_s\tan\theta'_v\cos(\phi_r+\pi)
-}
-\]
-
-Define:
-
-\[
-\sec\theta'_s = \frac{1}{\cos\theta'_s}
-\]
-
-\[
-\sec\theta'_v = \frac{1}{\cos\theta'_v}
-\]
-
-\subsection{\texorpdfstring{Ancillary Function
-}{Ancillary Function }}\label{ancillary-function}
-
-\[
-\cos t =
-\frac{H}{B}\frac{
-\sqrt{
-D^2 + (\tan\theta'_s\tan\theta'_v\sin(\phi_r+\pi))^2
-}}
-{\sec\theta'_s + \sec\theta'_v}
-\]
-
-If
-
-\[
-|\cos t| > 1
-\]
-
-then
-
-\[
-O = 0
-\]
-
-Otherwise
-
-\[
-O =
-\frac{1}{\pi}(t - \sin t \\, \cos t)
-(\sec\theta'_s + \sec\theta'_v)
-\]
-
-\section{Final Geometric Kernel}\label{final-geometric-kernel}
-
-\[
-K_{geo} = O - \sec\theta'_s - \sec\theta'_v + \frac{1}{2}(1+\cos\xi) \\, \sec\theta'_s \\,  \sec\theta'_v
-\]
+This parameterization allows the spectral magnitude of the land
+reflectance to vary through \(f_{\mathrm{iso}}(\lambda)\) while
+describing its angular dependence using the spectrally invariant
+\(k_{\mathrm{vol}}\) and \(k_{\mathrm{geo}}\) parameters.
 
 \section{White-Sky Albedo}\label{white-sky-albedo}
 
-The \textbf{white-sky albedo (WSA)}, also referred to as the
-bihemispherical reflectance, represents the surface albedo under
-completely diffuse illumination. For the RossThick--LiSparse-Reciprocal
-BRDF model, WSA can be derived directly from the three BRDF kernel
-coefficients (\citeproc{ref-Strahler:1999aa}{Strahler et al. 1999}). In
-the FastMAPOL MAPOL\_LAND product suite, this quantity is reported as
-\texttt{land\_white\_sky\_albedo}.
+The \textbf{white-sky albedo (WSA)}, also referred to as bihemispherical
+reflectance, represents the surface albedo under completely diffuse
+illumination. For the RossThick--LiSparse-Reciprocal BRDF model, WSA can
+be derived directly from the three BRDF kernel coefficients
+(\citeproc{ref-Strahler:1999aa}{Strahler et al. 1999}):
 
 \begin{equation}\phantomsection\label{eq-white-sky-albedo}{
 \alpha_{\mathrm{WSA}}
@@ -7519,111 +7448,555 @@ f_{\mathrm{iso}}
 +
 0.189184\,f_{\mathrm{vol}}
 -
-1.377622\,f_{\mathrm{geo}},
+1.377622\,f_{\mathrm{geo}}.
 }\end{equation}
 
-where \(f_{\mathrm{iso}}\), \(f_{\mathrm{vol}}\), and
-\(f_{\mathrm{geo}}\) are the isotropic, volumetric-scattering, and
-geometric-optical kernel coefficients, respectively. The numerical
-factors represent the hemispherical integrals of the corresponding
-Ross--Li kernels.
+The numerical factors represent hemispherical integrals of the
+corresponding Ross--Li kernels.
 
-Unlike black-sky albedo, which depends on the solar zenith angle,
-white-sky albedo is integrated over all illumination directions and
-therefore does not depend on a specific solar geometry. In FastMAPOL,
-WSA provides a compact quantity for characterizing the overall surface
-reflectance represented by the retrieved Ross--Li BRDF parameters.
+Unlike black-sky albedo, which depends on solar zenith angle, white-sky
+albedo is integrated over all illumination directions and therefore does
+not depend on a specific solar geometry. In the FastMAPOL MAPOL\_LAND
+product suite, WSA is reported as \texttt{land\_white\_sky\_albedo}.
 
-\section{Polarized Surface Reflectance
-(BPDF)}\label{polarized-surface-reflectance-bpdf}
+\section{Polarized Surface
+Reflectance}\label{polarized-surface-reflectance}
 
-Scattering angle have been defined above \(\Theta\). Assuming a flat
-surface which produce the same scattering angle, the incident angle
-relative to the flat surface would be:
+The polarized component of land surface reflection is represented by a
+BPDF based on Fresnel reflection. The model uses the Fresnel Mueller
+matrix together with transformations between the incident meridian
+plane, scattering plane, and viewing meridian plane.
+
+The current implementation assumes a surface refractive index of
 
 \[
-\theta_1 =\frac{\pi - \Theta}{2}
+n = 1.5 + 0i.
 \]
 
-which also equivalent to \(\theta_1=(\theta_s+\theta_v)/2\)
-
-\subsection{Fresnel Reflection}\label{fresnel-reflection}
-
-Let the refractive index be
+For this refractive index, the normal-incidence Fresnel reflectance is
+approximately
 
 \[
-n = n_r + i n_i
+\left(\frac{n-1}{n+1}\right)^2 \approx 0.04.
 \]
 
-Parallel polarization:
+The magnitude of the polarized contribution is controlled by the
+retrieved parameter \(B_{\mathrm{pol}}\).
+
+The complete Fresnel formulation, Mueller matrix, polarization kernel,
+and reference-plane transformations are described in
+Appendix~\ref{sec-land-model-math}.
+
+For scalar radiative transfer simulations, only the \(R_{11}\) element
+of the surface reflection matrix is used. \$\$
+
+\chapter{Land: Mathematical Formulation}\label{sec-land-model-math}
+
+\textbf{Implementation status}
+
+\begin{longtable}[]{@{}lccccc@{}}
+\toprule\noalign{}
+Model & DITL & PACE V3 & PACE V4 & Evaluation & Planned \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+--- & --- & --- & x & --- & --- \\
+\end{longtable}
+
+This chapter provides the detailed mathematical formulation of the land
+surface reflectance model summarized in Appendix~\ref{sec-land-model}.
+It describes the geometry conventions, Ross volumetric kernel, Li
+geometric-optical kernel, Fresnel reflection matrix, and polarized
+surface reflection kernel used in the RTSOS
+(Appendix~\ref{sec-rt-model}) and trained into FastMAPOL NN.
+
+\section{RTSOS Geometry Convention}\label{rtsos-geometry-convention}
+
+The model follows the \textbf{RTSOS light-ray convention}, in which the
+zenith and azimuth angles are defined with respect to the direction of
+light propagation.
+
+Let \(\theta_s\) and \(\theta_v\) denote the solar and viewing zenith
+angles, respectively, and \(\phi_s\) and \(\phi_v\) the corresponding
+azimuth angles. The relative azimuth angle is defined as
 
 \[
-r_p =
-\frac{n^2\cos\theta_1 - \sqrt{n^2-\sin^2\theta_1}}
-{n^2\cos\theta_1 + \sqrt{n^2-\sin^2\theta_1}}
+\phi_r = \phi_v-\phi_s.
 \]
 
-Perpendicular polarization:
+The RTSOS geometry convention is summarized below:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Quantity & RTSOS definition \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Solar zenith & \(\theta_s > 90^\circ\) \\
+Solar azimuth & \(\phi_s=0\) \\
+Viewing zenith & \(\theta_v < 90^\circ\) \\
+Relative azimuth & \(\phi_r=\phi_v-\phi_s\) \\
+\end{longtable}
+
+Under this convention, the relative azimuth corresponds to the following
+scattering geometries:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Condition & Scattering geometry \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\phi_r=0\) & forward scattering \\
+\(\phi_r=\pi\) & backscattering \\
+\end{longtable}
+
+\subsection{Geometry Variables}\label{geometry-variables}
+
+For convenience, define the zenith-angle cosines as
 
 \[
-r_s =
-\frac{\cos\theta_1 - \sqrt{n^2-\sin^2\theta_1}}
-{\cos\theta_1 + \sqrt{n^2-\sin^2\theta_1}}
+\mu_s = \cos\theta_s,
+\qquad
+\mu_v = \cos\theta_v.
 \]
 
-\textbf{Assumption: \(n = 1.5 + 0i\) }
-
-\subsection{Fresnel Mueller Matrix}\label{fresnel-mueller-matrix}
+The corresponding sine terms are
 
 \[
-A = \frac{1}{2}|r_p|^2
+\sin\theta_s = \sqrt{1-\mu_s^2},
+\qquad
+\sin\theta_v = \sqrt{1-\mu_v^2}.
+\]
+
+\subsection{Scattering and Phase
+Angles}\label{scattering-and-phase-angles}
+
+The scattering angle \(\Theta\) between the illumination and viewing
+directions is
+
+\[
+\cos\Theta
+=
+\mu_s\mu_v
++
+\sqrt{1-\mu_s^2}
+\sqrt{1-\mu_v^2}
+\cos\phi_r.
+\]
+
+The corresponding phase angle used in the BRDF formulation is
+
+\[
+\Theta_{\mathrm{phase}}
+=
+\pi-\Theta.
+\]
+
+\section{Ross Volumetric Kernel}\label{ross-volumetric-kernel}
+
+The Ross volumetric kernel represents volumetric scattering within
+vegetation canopies (\citeproc{ref-Roujean:1992aa}{Roujean et al. 1992};
+\citeproc{ref-Strahler:1999aa}{Strahler et al. 1999};
+\citeproc{ref-Wanner:1995aa}{Wanner et al. 1995}).
+
+The RossThick volumetric kernel is
+
+\[
+K_{\mathrm{vol}}
+=
+\frac{
+\left(
+\frac{\pi}{2}-\Theta_{\mathrm{phase}}
+\right)
+\cos\Theta_{\mathrm{phase}}
++
+\sin\Theta_{\mathrm{phase}}
+}
+{
+|\mu_s|+|\mu_v|
+}
+-
+\frac{\pi}{4}.
+\]
+
+The volumetric contribution to the surface BRDF is
+
+\[
+f_{\mathrm{vol}}K_{\mathrm{vol}}.
+\]
+
+\section{Li Geometric-Optical Kernel}\label{li-geometric-optical-kernel}
+
+The Li geometric-optical kernel represents shadowing and geometric
+effects associated with three-dimensional surface structures. RTSOS uses
+the Li-Sparse-Reciprocal formulation.
+
+\subsection{Projected Zenith Angles}\label{projected-zenith-angles}
+
+Define the tangent terms
+
+\[
+|\tan\theta_s|
+=
+\frac{\sqrt{1-\mu_s^2}}{|\mu_s|},
+\]
+
+and
+
+\[
+|\tan\theta_v|
+=
+\frac{\sqrt{1-\mu_v^2}}{|\mu_v|}.
+\]
+
+The projected zenith angles are
+
+\[
+\theta'_s
+=
+\tan^{-1}
+\left(
+\frac{B}{R}|\tan\theta_s|
+\right),
+\]
+
+and
+
+\[
+\theta'_v
+=
+\tan^{-1}
+\left(
+\frac{B}{R}|\tan\theta_v|
+\right),
+\]
+
+where \(B/R\) is the vertical-to-horizontal crown-shape ratio.
+
+\subsection{Projected Phase Angle}\label{projected-phase-angle}
+
+The projected phase angle \(\xi\) is defined by
+
+\[
+\cos\xi
+=
+\cos\theta'_s\cos\theta'_v
++
+\sin\theta'_s\sin\theta'_v
+\cos(\phi_r+\pi).
+\]
+
+\subsection{Projected Distance}\label{projected-distance}
+
+The projected distance is
+
+\[
+D
+=
+\sqrt{
+\tan^2\theta'_s
++
+\tan^2\theta'_v
+-
+2\tan\theta'_s\tan\theta'_v
+\cos(\phi_r+\pi)
+}.
+\]
+
+Define
+
+\[
+\sec\theta'_s
+=
+\frac{1}{\cos\theta'_s},
+\]
+
+and
+
+\[
+\sec\theta'_v
+=
+\frac{1}{\cos\theta'_v}.
+\]
+
+\subsection{Overlap Function}\label{overlap-function}
+
+The auxiliary angle \(t\) is determined from
+
+\[
+\cos t
+=
+\frac{H}{B}
+\frac{
+\sqrt{
+D^2
++
+\left[
+\tan\theta'_s
+\tan\theta'_v
+\sin(\phi_r+\pi)
+\right]^2
+}
+}{
+\sec\theta'_s+\sec\theta'_v
+}.
+\]
+
+If
+
+\[
+|\cos t|>1,
+\]
+
+the overlap function is set to
+
+\[
+O=0.
+\]
+
+Otherwise,
+
+\[
+O
+=
+\frac{1}{\pi}
+(t-\sin t\cos t)
+(\sec\theta'_s+\sec\theta'_v).
+\]
+
+\subsection{Li Geometric Kernel}\label{li-geometric-kernel}
+
+The final geometric-optical kernel is
+
+\[
+K_{\mathrm{geo}}
+=
+O
+-
+\sec\theta'_s
+-
+\sec\theta'_v
++
+\frac{1}{2}
+(1+\cos\xi)
+\sec\theta'_s
+\sec\theta'_v.
+\]
+
+The geometric contribution to the surface BRDF is
+
+\[
+f_{\mathrm{geo}}K_{\mathrm{geo}}.
+\]
+
+\section{Polarized Surface
+Reflectance}\label{polarized-surface-reflectance-1}
+
+The polarized bidirectional reflectance distribution function is based
+on Fresnel reflection following Maignan et al.
+(\citeproc{ref-Maignan:2009aa}{2009}).
+
+\subsection{Specular Incidence Angle}\label{specular-incidence-angle}
+
+Using the scattering angle \(\Theta\) defined above, the incidence angle
+corresponding to reflection from a locally flat surface is
+
+\[
+\theta_1
+=
+\frac{\pi-\Theta}{2}.
+\]
+
+This angle is used to evaluate the Fresnel reflection coefficients.
+
+\section{Fresnel Reflection}\label{fresnel-reflection}
+
+Let the complex refractive index be
+
+\[
+n=n_r+i n_i.
+\]
+
+The amplitude reflection coefficient for parallel polarization is
+
+\[
+r_p
+=
+\frac{
+n^2\cos\theta_1
+-
+\sqrt{n^2-\sin^2\theta_1}
+}{
+n^2\cos\theta_1
++
+\sqrt{n^2-\sin^2\theta_1}
+},
+\]
+
+and that for perpendicular polarization is
+
+\[
+r_s
+=
+\frac{
+\cos\theta_1
+-
+\sqrt{n^2-\sin^2\theta_1}
+}{
+\cos\theta_1
++
+\sqrt{n^2-\sin^2\theta_1}
+}.
+\]
+
+The current implementation assumes
+
+\[
+n=1.5+0i.
+\]
+
+At normal incidence, the Fresnel reflectance can therefore be
+approximated as
+
+\[
+\left(\frac{n-1}{n+1}\right)^2
+\approx 0.04.
+\]
+
+The Brewster-angle behavior is associated with the maximum polarization
+contrast represented by
+
+\[
+\frac{|A-B|}{A+B}.
+\]
+
+\section{Fresnel Mueller Matrix}\label{fresnel-mueller-matrix}
+
+Define
+
+\[
+A=\frac{1}{2}|r_p|^2,
 \]
 
 \[
-B = \frac{1}{2}|r_s|^2
+B=\frac{1}{2}|r_s|^2,
 \]
 
-\[
-\gamma = r_p^* r_s
-\]
+and
 
 \[
-\mathbf{F} =
+\gamma=r_p^*r_s,
+\]
+
+where \(r_p^*\) denotes the complex conjugate of \(r_p\).
+
+The Fresnel reflection Mueller matrix is
+
+\[
+\mathbf{F}
+=
 \begin{bmatrix}
 A+B & A-B & 0 & 0 \\
 A-B & A+B & 0 & 0 \\
-0 & 0 & Re(\gamma) & -Im(\gamma) \\
-0 & 0 & Im(\gamma) & Re(\gamma)
-\end{bmatrix}
+0 & 0 & \operatorname{Re}(\gamma) & -\operatorname{Im}(\gamma) \\
+0 & 0 & \operatorname{Im}(\gamma) & \operatorname{Re}(\gamma)
+\end{bmatrix}.
 \]
 
-Nadir reflectance (A+B) can be approximated as \([(n-1)/(n+1)]^2=0.04\)
-for n=1.5. Brewster angle can be observed at the maximum of
-Abs(A-B)/(A+B).
+The element \(F_{11}=A+B\) represents the scalar Fresnel reflectance.
 
-\subsection{Polarization Kernel}\label{polarization-kernel}
+\section{Polarization Kernel}\label{polarization-kernel}
 
-In the current framework, we adopt the polarized Kernel based on Maignan
-et al. (\citeproc{ref-Maignan:2009aa}{2009}) :
+The polarization kernel follows the formulation of Maignan et al.
+(\citeproc{ref-Maignan:2009aa}{2009}):
 
 \[
-\mathbf{K}_{pol} =
+\mathbf{K}_{\mathrm{pol}}
+=
 \frac{
-e^{-\tan\theta_1}e^{-v_{fac}}
-}{4(|\mu_s|+|\mu_v|)}
-\mathbf{L(\pi-i_2)}\mathbf{F} (n, \theta_1) \mathbf{L(i_1)}
+e^{-\tan\theta_1}
+e^{-v_{\mathrm{fac}}}
+}{
+4(|\mu_s|+|\mu_v|)
+}
+\mathbf{L}(\pi-i_2)
+\mathbf{F}(n,\theta_1)
+\mathbf{L}(i_1),
 \]
 
-where \(\mathbf{L(i_1)}\) and \(\mathbf{L(\pi-i_2)}\) rotate the Stokes
-vector from the incident meridian plane to the scattering plane and back
-to the viewing meridian plane; \(i_1\) and \(i_2\) are the rotation
-angles; The factor \(v_{fac}\) is:
+where \(\mathbf{L}(i_1)\) rotates the Stokes vector from the incident
+meridian plane to the scattering plane, and \(\mathbf{L}(\pi-i_2)\)
+rotates it from the scattering plane to the viewing meridian plane. The
+quantities \(i_1\) and \(i_2\) are the corresponding Stokes
+reference-plane rotation angles.
+
+The empirical factor used in the current implementation is
 
 \[
-v_{fac} = 0.1
+v_{\mathrm{fac}}=0.1.
 \]
 
-For scalar radiative transfer simulations, only \(R_{11}\) is used.
+The magnitude of the polarized surface contribution is controlled by
+\(B_{\mathrm{pol}}\):
+
+\[
+\mathbf{R}_{\mathrm{pol}}
+=
+B_{\mathrm{pol}}\mathbf{K}_{\mathrm{pol}}.
+\]
+
+The NDVI-dependent scaling included in the original BPDF formulation is
+absorbed into \(B_{\mathrm{pol}}\) in the RTSOS implementation.
+
+\section{Complete Surface Reflection
+Matrix}\label{complete-surface-reflection-matrix}
+
+Combining the scalar Ross--Li BRDF and polarized BPDF components gives
+
+\[
+\mathbf{R}
+=
+\left[
+f_{\mathrm{iso}}
++
+f_{\mathrm{vol}}K_{\mathrm{vol}}
++
+f_{\mathrm{geo}}K_{\mathrm{geo}}
+\right]\mathbf{E}
++
+B_{\mathrm{pol}}\mathbf{K}_{\mathrm{pol}}.
+\]
+
+Equivalently, using the scaled parameterization,
+
+\[
+\mathbf{R}
+=
+f_{\mathrm{iso}}(\lambda)
+\left[
+1
++
+k_{\mathrm{vol}}K_{\mathrm{vol}}
++
+k_{\mathrm{geo}}K_{\mathrm{geo}}
+\right]\mathbf{E}
++
+B_{\mathrm{pol}}\mathbf{K}_{\mathrm{pol}}.
+\]
+
+For scalar radiative transfer simulations, only the \(R_{11}\) element
+is used.
+
+\chapter*{References}\label{references}
+\addcontentsline{toc}{chapter}{References}
+
+\markboth{References}{References}
+
+\newpage{}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{1}
@@ -7968,6 +8341,12 @@ Scientific Computing in Python}. \emph{Nature Methods}, \textbf{17},
 \bibitem[\citeproctext]{ref-Voss:1984aa}
 Voss and Fry. 1984. {Measurement of the Mueller matrix for ocean water}.
 \emph{Applied Optics}, \textbf{23}, (23), 4427--4439.
+
+\bibitem[\citeproctext]{ref-Wanner:1995aa}
+Wanner et al. 1995. On the derivation of kernels for kernel-driven
+models of bidirectional reflectance. \emph{Journal of Geophysical
+Research: Atmospheres}, \textbf{100}, (D10), 21077--21089.
+https://doi.org/\url{https://doi.org/10.1029/95JD02371}.
 
 \bibitem[\citeproctext]{ref-Wiscombe:1977aa}
 Wiscombe. 1977. The delta--m method: Rapid yet accurate radiative flux

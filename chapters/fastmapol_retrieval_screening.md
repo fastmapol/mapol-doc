@@ -1,4 +1,4 @@
-# Retrieval Algorithm: Adaptive Multi-angle Data Screening {#sec-data-screening}
+# Retrieval: Adaptive Multi-angle Data Screening {#sec-data-screening}
 
 **Implementation status**
 

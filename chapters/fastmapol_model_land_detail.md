@@ -1,4 +1,4 @@
-# Land Surface Reflectance: Mathematical Formulation {#sec-land-model-math}
+# Land: Mathematical Formulation {#sec-land-model-math}
 
 **Implementation status**
 
