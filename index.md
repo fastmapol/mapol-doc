@@ -63,15 +63,13 @@ Version 3.0 products remain available for users who need access to the earlier F
 
 # Release Notes {.unnumbered}
 
+The FastMAPOL SPEXone release notes are available under [Documents and Resources on the Earthdata SPEXone product pages](https://www.earthdata.nasa.gov/data/catalog/ob-cloud-pace-spexone-l2-mapol-ocean-4.0#documents-and-resources). The FastMAPOL HARP2 release notes are similarly available under [Documents and Resources on the Earthdata HARP2 product pages](https://www.earthdata.nasa.gov/data/catalog/ob-cloud-pace-harp2-l2-mapol-ocean-4.0#documents-and-resources).
+
+The PACE release notes available through the [PACE Data Access page](https://pace.oceansciences.org/access_pace_data.htm) may not always contain the most up-to-date product-specific information.
+
+Because these links are subject to change, the relevant release information is also provided below for reference.
+
 ## Version 4.0
-The FastMAPOL Version 4 release notes are available through the 
-[PACE Release Notes](https://pace.oceansciences.org/access_pace_data.htm) 
-or under **Documents** on the Earthdata product pages linked above. Note that these links are subject to change; the relevant release information is also provided below for reference. 
-
-<!--The FastMAPOL Version 4 release notes are available in the 
-[PACE Version 4 Release Notes](https://oceandata.sci.gsfc.nasa.gov/files/reprocessing/PACE_SPEXone_V4_Release_Notes.pdf) or under **Documents** on the Earthdata product pages linked above.-->
-
-<!--[NASA PACE Data Access page](https://pace.oceansciences.org/access_pace_data.htm).-->
 
 ### HARP2 Level-2 Products {.unnumbered .unlisted}
 
@@ -131,13 +129,6 @@ SPEXone Level-2 products are composited into global Level-3 binned and mapped pr
 - `MAPOL_OCEAN`: aerosol and ocean properties from FastMAPOL algorithm
 
 ## Version 3.0
-
-The FastMAPOL Version 3 release notes are available through the 
-[PACE Release Notes](https://pace.oceansciences.org/access_pace_data.htm) 
-or under **Documents** on the Earthdata product pages linked above. Note that these links are subject to change; the relevant release information is also provided below for reference.
-
-<!--The FastMAPOL Version 3 release notes are available in the 
-[PACE Version 3 Release Notes](https://oceandata.sci.gsfc.nasa.gov/files/reprocessing/PACE_SPEXone_V3_Release_Notes.pdf) or under **Documents** on the Earthdata product pages linked above.-->
 
 ### SPEXone Level-2 Products {.unnumbered .unlisted}
 
