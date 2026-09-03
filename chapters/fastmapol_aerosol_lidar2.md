@@ -1,167 +1,253 @@
-# Aerosol: Lidar Ratio and Backscattering {#sec-lidar-backscattering}
+# Aerosol: Backscattering Fraction {#sec-lidar-backscattering}
 
 **Implementation status**
 
-| Model| DITL | PACE V3 | PACE V4 | Evaluation | Planned |
-| --- |:---:|:---:|:---:|:---:|:---:|
-| — | — | — | x | — | — |
+| Model | DITL | PACE V3 | PACE V4 | Evaluation | Planned |
+| ----- | :--: | :-----: | :-----: | :--------: | :-----: |
+| —     |   —  |    —    |    x    |      —     |    —    |
 
 ## Overview
 
-The aerosol retrieval framework provides extinction and scattering properties together with the angular scattering phase matrix. These quantities determine the strength of the backscattered signal measured by a lidar system. In addition to the lidar ratio and depolarization ratio, another useful diagnostic quantity is the **backscattering fraction**, which quantifies the relative strength of scattering into the exact backscattering direction compared to the total scattering.
+The FastMAPOL aerosol retrieval provides aerosol extinction and scattering properties together with lidar-relevant quantities such as the lidar ratio. These properties can also be used to estimate the **backscattering fraction**, which characterizes the fraction of aerosol scattering directed into the backward hemisphere.
 
-This chapter summarizes the mathematical relationship between the **lidar ratio**, the **single-scattering albedo**, and the **backscattering fraction**. The focus is on the forward relationships linking extinction, scattering, and backscatter quantities, and on the interpretation of these quantities for total aerosol as well as for fine and coarse aerosol partitions.
+Formally, calculation of the hemispheric backscattering fraction requires integration of the aerosol phase function over all backward scattering directions. The full angular phase function, however, is not provided in the FastMAPOL product. Therefore, the backscattering fraction reported here is approximated from the lidar backscatter at $\Theta=180^\circ$ by assuming that the exact-backscatter value is representative of scattering throughout the backward hemisphere.
 
----
+This chapter describes the formal definition of the backscattering fraction, the approximation used in FastMAPOL, and its relationship to the lidar ratio and single-scattering albedo.
 
-## Backscatter coefficient
+## Backscattering Fraction
 
-The lidar backscatter coefficient represents the strength of scattering into the exact backscattering direction.
-
-The lidar ratio is defined as
+Let $\alpha_{\mathrm{sca}}$ denote the aerosol scattering coefficient and $\mathbf{P}(\Theta)$ the aerosol phase matrix, where $\Theta$ is the scattering angle. The phase function $P_{11}$ is normalized such that
 
 $$
-S_a = \frac{C_{ext}}{\beta},
-$$
-
-where
-
-- $C_{ext}$ is the aerosol extinction coefficient,
-- $\beta$ is the aerosol backscatter coefficient.
-
-Rearranging the definition gives
-
-$$
-\beta = \frac{C_{ext}}{S_a}.
-$$
-
----
-
-## Definition of backscattering fraction
-
-The **backscattering fraction** quantifies the fraction of total scattering directed into the exact backscattering direction. It is defined as
-
-$$
-\beta_{\mathrm{frac}} = \frac{\beta}{C_{sca}}.
-$$
-
-Substituting the expression for the backscatter coefficient,
-
-$$
-\beta_{\mathrm{frac}}
+\int_{4\pi}P_{11}(\Theta,\phi)\,d\Omega
 =
-\frac{C_{ext}/S_a}{C_{sca}}.
+4\pi.
 $$
 
----
+The hemispheric backscattering fraction, denoted here by $B_a$, is the fraction of total scattered radiation directed into the backward hemisphere:
 
-## Relation between backscattering fraction and single-scattering albedo
-
-Using the definition of single-scattering albedo,
-
-$$
-\omega_0 = \frac{C_{sca}}{C_{ext}},
-$$
-
-we can write
-
-$$
-C_{sca} = \omega_0 C_{ext}.
-$$
-
-Substituting this into the expression for backscattering fraction,
-
-$$
-\beta_{\mathrm{frac}}
+$$$
+B_a
 =
-\frac{C_{ext}}
-{S_a \, \omega_0 C_{ext}}.
+\frac{1}{4\pi}
+\int_{\Omega_{\mathrm{back}}}
+P_{11}(\Theta,\phi)\,d\Omega.
+$$ {#eq-backscatter-fraction}
+
+For an azimuthally symmetric phase function, this becomes
+
+$$$
+
+# B_a
+
+\frac{1}{2}
+\int_{\pi/2}^{\pi}
+P_{11}(\Theta)\sin\Theta,d\Theta.
+
+$${#eq-backscatter-fraction-axisymmetric}
+
+The backscattering fraction is dimensionless and ranges from 0 to 1.
+
+## Approximation from Exact Backscatter
+
+Evaluation of @eq-backscatter-fraction requires the complete phase function over the backward hemisphere. Because the full angular phase function is not provided in the FastMAPOL product, the backscattering fraction is approximated using the phase function at exact backscatter.
+
+The approximation assumes that
+
 $$
 
-Canceling the extinction coefficient yields
+P_{11}(\Theta)
+\approx
+P_{11}(\pi),
+\qquad
+\frac{\pi}{2}\leq\Theta\leq\pi.
 
 $$
+
+Under this assumption,
+
+$$
+
+B_a
+\approx
+\frac{1}{2}
+P_{11}(\pi)
+\int_{\pi/2}^{\pi}\sin\Theta,d\Theta,
+
+$$
+
+which gives
+
+$$
+
+B_a
+\approx
+\frac{P_{11}(\pi)}{2}.
+
+$${#eq-backscatter-fraction-approx}
+
+Equivalently, the backward hemisphere subtends a solid angle of $2\pi$ sr. The approximation therefore treats the exact-backscatter scattering strength as uniform over this $2\pi$-sr hemisphere.
+
+This approximation should be distinguished from the formal hemispheric integration in @eq-backscatter-fraction. Aerosol phase functions are generally not uniform over the backward hemisphere, and the approximation is intended to provide a simple diagnostic based on the available exact-backscatter information.
+
+## Relation to Lidar Ratio
+
+The aerosol backscatter coefficient at exact backscatter is
+
+$$
+
+# \beta_a
+
+\frac{\alpha_{\mathrm{sca}}}{4\pi}
+P_{11}(\pi),
+
+$$
+
+where $\alpha_{\mathrm{sca}}$ is the aerosol scattering coefficient.
+
+The aerosol lidar ratio is defined as
+
+$$
+
+# S_a
+
+\frac{\alpha_{\mathrm{ext}}}{\beta_a},
+
+$$
+
+where $\alpha_{\mathrm{ext}}$ is the aerosol extinction coefficient.
+
+The single-scattering albedo is
+
+$$
+
+# \omega_0
+
+\frac{\alpha_{\mathrm{sca}}}
+{\alpha_{\mathrm{ext}}}.
+
+$$
+
+Combining these relationships gives
+
+$$
+
+# \frac{\beta_a}{\alpha_{\mathrm{sca}}}
+
+# \frac{1}{S_a\omega_0}
+
+\frac{P_{11}(\pi)}{4\pi}.
+
+$$
+
+Multiplying by the solid angle of the backward hemisphere, $2\pi$, gives the approximate backscattering fraction:
+
+$$
+
+B_a
+\approx
+2\pi
+\frac{\beta_a}{\alpha_{\mathrm{sca}}}.
+
+$$
+
+Therefore,
+
+$$
+
 \boxed{
-\beta_{\mathrm{frac}}
-=
-\frac{1}{S_a \, \omega_0}
+B_a
+\approx
+\frac{2\pi}{S_a\omega_0}
+========================
+
+\frac{P_{11}(\pi)}{2}
 }
-$$
 
-This relation provides a direct connection between the lidar ratio, the single-scattering albedo, and the backscattering fraction.
+$${#eq-backscatter-fraction-lidar}
 
----
+This relationship allows a dimensionless estimate of the backscattering fraction to be derived from the lidar ratio and single-scattering albedo without requiring the full angular phase function.
 
-## Fine, coarse, and total backscattering fraction
+## Fine, Coarse, and Total Aerosol
 
-Applying the same definition to each aerosol partition gives
+The same approximation can be applied separately to the fine and coarse aerosol modes.
 
-$$
-\beta_{\mathrm{frac},f}
-=
-\frac{1}{S_{a,f} \, \omega_{0,f}},
-$$
+For the fine mode,
 
 $$
-\beta_{\mathrm{frac},c}
-=
-\frac{1}{S_{a,c} \, \omega_{0,c}},
-$$
+
+B_{a,f}
+\approx
+\frac{2\pi}
+{S_{a,f}\omega_{0,f}},
 
 $$
-\beta_{\mathrm{frac}}
-=
-\frac{1}{S_a \, \omega_0}.
-$$
 
-Therefore, the backscattering fraction for each mode depends directly on the corresponding lidar ratio and single-scattering albedo.
-
----
-
-## Units and interpretation
-
-The backscattering fraction defined here corresponds to scattering into the exact backscattering direction. Its units are
+and for the coarse mode,
 
 $$
-\mathrm{sr^{-1}},
-$$
 
-because the lidar ratio has units of steradians and the single-scattering albedo is dimensionless.
-
-The relation
-
-$$
-\beta_{\mathrm{frac}}=\frac{1}{S_a \, \omega_0}
-$$
-
-provides a clear physical interpretation:
-
-- Larger lidar ratio corresponds to weaker backscatter relative to extinction.
-- Smaller single-scattering albedo (more absorbing aerosol) increases the inferred backscattering fraction.
-- Strong forward-scattering particles tend to produce small backscattering fractions and large lidar ratios.
-
----
-
-## Summary
-
-The backscattering fraction can be derived directly from the lidar ratio and the single-scattering albedo without explicit evaluation of the phase matrix, provided that the backscatter coefficient is defined consistently.
-
-The key relations are:
+B_{a,c}
+\approx
+\frac{2\pi}
+{S_{a,c}\omega_{0,c}}.
 
 $$
-\beta = \frac{C_{ext}}{S_a},
-$$
+
+For the total aerosol,
 
 $$
-\omega_0 = \frac{C_{sca}}{C_{ext}},
+
+B_a
+\approx
+\frac{2\pi}
+{S_a\omega_0}.
+
 $$
 
-and
+Because the backscatter coefficient and scattering coefficient are additive, the total approximate backscattering fraction can also be expressed as a scattering-weighted combination of the fine- and coarse-mode values:
 
 $$
-\beta_{\mathrm{frac}}
-=
-\frac{1}{S_a \, \omega_0}.
+
+B_a
+\approx
+\frac{
+\alpha_{\mathrm{sca},f}B_{a,f}
++
+\alpha_{\mathrm{sca},c}B_{a,c}
+}{
+\alpha_{\mathrm{sca},f}
++
+\alpha_{\mathrm{sca},c}
+}.
+
 $$
 
-These relations establish the mathematical connection between extinction, scattering, and backscatter quantities used in aerosol characterization and lidar diagnostics.
+Thus, the total backscattering fraction is generally not a simple arithmetic average of the fine- and coarse-mode values.
+
+## Interpretation and Limitations
+
+The backscattering fraction $B_a$ is dimensionless and provides a compact measure of the relative amount of aerosol scattering directed toward the backward hemisphere. Larger values indicate relatively stronger backward scattering, whereas smaller values indicate scattering that is more strongly concentrated in other directions.
+
+The FastMAPOL quantity described here is an **approximation** to the hemispheric backscattering fraction. It assumes that the phase function at exact backscatter,
+
+$$
+
+P_{11}(\pi),
+
+$$
+
+is representative of the entire backward hemisphere. In reality, $P_{11}(\Theta)$ can vary substantially between $90^\circ$ and $180^\circ$, depending on aerosol particle size, shape, and refractive index.
+
+Consequently,
+
+$$
+
+B_a
+\approx
+\frac{2\pi}{S_a\omega_0}
+
+$$
+
+should be interpreted as an **exact-backscatter-based estimate** rather than a phase-function-integrated hemispheric backscattering fraction. Calculation of the latter requires the complete angular phase function over the backward hemisphere.
+$$

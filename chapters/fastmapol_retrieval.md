@@ -134,18 +134,14 @@ FastMAPOL solves this nonlinear optimization problem iteratively using the NN fo
 
 ## Input uncertainty model
 
-The input uncertainty model used in the retrieval cost function accounts for instrument measurement uncertainty, NN forward-model approximation, and numerical uncertainty in the radiative transfer (RT) simulations used for NN training. The RT and NN contributions are characterized based on the RT configuration and NN training performance [@Gao:2021aa;@Gao:2022aa].
+The input uncertainty model used in the retrieval cost function accounts for instrument measurement uncertainty, NN forward-model approximation, and numerical uncertainty in the radiative transfer (RT) simulations used for NN training. The RT and NN contributions are characterized based on the RT configuration and NN training performance. 
 
-Instrument uncertainties are based on instrument characteristics and calibration information provided by the instrument teams. The current FastMAPOL retrievals (both V3 and V4) adopt:
+Instrument uncertainties are based on instrument characteristics and calibration information provided by the instrument teams. All FastMAPOL retrievals adopt the following values with discussions in @sec-retrieval-unc-model:
 
 | Instrument | Reflectance uncertainty | DoLP uncertainty |
 |---|---:|---:|
 | HARP2 v1 | 3% | 0.005 |
 | SPEXone v1 | 2% | 0.003 |
-
-Reflectance uncertainty is relative, whereas DoLP uncertainty is absolute. These uncertainties are combined to weight the observations in the retrieval cost function.
-
-Note that **v1** denotes the current instrument uncertainty model used in the retrievals. These uncertainty models may be updated in the future to reflect changes in instrument characterization or calibration provided by the instrument teams.
 
 ## Data screening and uncertainty quantifization
 

@@ -20,7 +20,7 @@ The output is a **4×4 Mueller matrix** describing polarized surface reflection.
 The bidirectional reflectance distribution matrix $\mathbf{R}$ of land surface converts the downwelling irradiance vector $\mathbf{F}_s$ to upwelling radiance vector $\mathbf{I}$ by:
 
 $$
-\mathbf{I}(\theta_v,\phi_v)= \frac{1}{\pi}\mathbf{R}(\theta_s,\theta_v,\phi_r) \\, |\cos\theta_s| \\, \mathbf{F}_s(\theta_s,\phi_s) 
+\mathbf{I}(\theta_v,\phi_v)= \frac{1}{\pi}\mathbf{R}(\theta_s,\theta_v,\phi_r) |\cos\theta_s| \mathbf{F}_s(\theta_s,\phi_s) 
 $$
 
 where $\theta$ and $\phi$ are the zenith and azimuth angles, respectively; the subscripts $s$ and $v$ denote the incident and reflected directions, respectively; $\phi_r=\phi_v-\phi_s$ is the relative azimuth angle of the reflected and incident directions.
