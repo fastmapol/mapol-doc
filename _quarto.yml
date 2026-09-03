@@ -94,9 +94,9 @@ book:
     - chapters/fastmapol_uq_theory.md
     - chapters/fastmapol_uq_correlation.md
     - chapters/fastmapol_aerosol_model.md
+    - chapters/fastmapol_aerosol_component.md
     - chapters/fastmapol_aerosol_height.md
     - chapters/fastmapol_aerosol_shape.md
-    - chapters/fastmapol_aerosol_component.md
     - chapters/fastmapol_aerosol_math.md
     - chapters/fastmapol_aerosol_inversion.md
     - chapters/fastmapol_model_ocean.md
