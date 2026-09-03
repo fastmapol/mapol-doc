@@ -24,7 +24,7 @@ atbd-website:
 # Document metadata
 # --------------------------------------------------
 
-version: "0.2"
+version: "0.3"
 institution: "NASA Goddard Space Flight Center (GSFC)"
 mission: "PACE"
 

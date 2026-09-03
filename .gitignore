@@ -25,3 +25,9 @@ docs/
 **/*.pdf
 docs/**/*.pdf
 /.quarto/
+*.aux
+*.lof
+*.log
+*.lot
+*.toc
+index.*

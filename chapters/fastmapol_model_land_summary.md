@@ -132,7 +132,7 @@ This parameterization allows the spectral magnitude of the land reflectance to v
 
 The **white-sky albedo (WSA)**, also referred to as bihemispherical reflectance, represents the surface albedo under completely diffuse illumination. For the RossThick–LiSparse-Reciprocal BRDF model, WSA can be derived directly from the three BRDF kernel coefficients [@Strahler:1999aa]:
 
-$$$
+$$
 \alpha_{\mathrm{WSA}}
 =
 f_{\mathrm{iso}}
